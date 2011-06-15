@@ -1,0 +1,122 @@
+#!/bin/sh
+
+############################################################
+# General configuration settings for irdata.
+
+SYSPREFIX=                                  # system-wide installation prefix
+EMAIL=                                      # e-mail address for anonymous FTP logins
+
+
+
+############################################################
+# Program and resource locations.
+
+PROGNAME=`basename "$0"`
+SCRIPTS=`dirname "$0"`
+
+alias normpath="python -c 'import os, sys; print os.path.normpath(sys.argv[1])'"
+
+if [ -e "$SCRIPTS/../data" ]; then
+    DATA=`normpath "$SCRIPTS/../data"`        # relative location of the data
+elif [ -e "$SYSPREFIX/var/lib/irdata/data" ]; then
+    DATA="$SYSPREFIX/var/lib/irdata/data"     # system-wide location of the data
+else
+    echo "Cannot locate the irdata data directory." 1>&2
+    exit 1
+fi
+
+if [ -e "$SCRIPTS/../logs" ]; then
+    LOGS=`normpath "$SCRIPTS/../logs"`        # relative location of the logs
+elif [ -e "$SYSPREFIX/var/log/irdata" ]; then
+    LOGS="$SYSPREFIX/var/log/irdata"          # system-wide location of the logs
+else
+    LOGS=
+fi
+
+
+
+############################################################
+# Source locations and details.
+#
+# Each section contains potentially editable definitions
+# followed by calculated definitions that should probably
+# not be changed.
+
+ALLSOURCES="BIND_TRANSLATION CORUM INNATEDB MATRIXDB MPACT MPIDB MPPI UNIPROT"
+
+############################################################
+# BIND Translation
+
+BIND_TRANSLATION_DOWNLOAD_FILES="BINDTranslation_v1_xml_AllSpecies.tar.gz"
+BIND_TRANSLATION_MIRROR='http://download.baderlab.org'
+
+BIND_TRANSLATION_RELEASE_URL="$BIND_TRANSLATION_MIRROR/BINDTranslation/release1_0/"
+BIND_TRANSLATION_DIR_NAME="BIND_Translation"
+
+############################################################
+# CORUM
+
+CORUM_DOWNLOAD_FILES="allComplexes.psimi.zip"
+CORUM_MIRROR='http://mips.gsf.de'
+
+CORUM_RELEASE_URL="$CORUM_MIRROR/genre/export/sites/default/corum/"
+CORUM_DIR_NAME="CORUM"
+
+############################################################
+# InnateDB
+
+INNATEDB_DOWNLOAD_FILES="innatedb_20110306.xml.gz"
+INNATEDB_MIRROR='http://www.innatedb.com'
+
+INNATEDB_RELEASE_URL="$INNATEDB_MIRROR/download/interactions/"
+INNATEDB_DIR_NAME="InnateDB"
+
+############################################################
+# MatrixDB
+
+MATRIXDB_DOWNLOAD_FILES="MatrixDB_20100826.xml.zip"
+MATRIXDB_MIRROR='http://matrixdb.ibcp.fr'
+
+MATRIXDB_RELEASE_URL="$MATRIXDB_MIRROR/current/"
+MATRIXDB_DIR_NAME="MatrixDB"
+
+############################################################
+# MPACT
+
+MPACT_DOWNLOAD_FILES="mpact-complete.psi25.xml.gz"
+MPACT_MIRROR='ftp://ftpmips.gsf.de'
+
+MPACT_RELEASE_URL="$MPACT_MIRROR/yeast/PPI/"
+MPACT_DIR_NAME="MPACT"
+
+############################################################
+# MPIDB
+
+MPIDB_DOWNLOAD_FILES="MPI-IMEX MPI-LIT"
+MPIDB_MIRROR='http://www.jcvi.org'
+
+MPIDB_RELEASE_URL="$MPIDB_MIRROR/mpidb/interaction.php?dbsource="
+MPIDB_DIR_NAME="MPIDB"
+
+############################################################
+# MPPI
+
+MPPI_DOWNLOAD_FILES="mppi.gz"
+MPPI_MIRROR='http://mips.gsf.de'
+
+MPPI_RELEASE_URL="$MPPI_MIRROR/proj/ppi/data/"
+MPPI_DIR_NAME="MPPI"
+
+############################################################
+# UniProt
+
+UNIPROT_DOWNLOAD_FILES="uniprot_sprot.dat.gz uniprot_trembl.dat.gz uniprot_sprot_varsplic.fasta.gz"
+UNIPROT_MIRROR='ftp://ftp.uniprot.org'
+#UNIPROT_MIRROR='ftp://ftp.ebi.ac.uk'
+
+UNIPROT_RELEASE='current_release'
+#UNIPROT_RELEASE='previous_releases/release-2011_05'
+
+UNIPROT_RELEASE_INFO="reldate.txt"
+UNIPROT_RELEASE_URL="$UNIPROT_MIRROR/pub/databases/uniprot/$UNIPROT_RELEASE/knowledgebase/complete/"
+UNIPROT_DIR_NAME="UniProt"

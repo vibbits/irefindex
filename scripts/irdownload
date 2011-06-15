@@ -1,0 +1,57 @@
+#!/bin/sh
+
+if [ -e "irdata-config" ]; then
+    . 'irdata-config'
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" == '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME [ --all | <source>... ]
+
+Download data from the different sources. These are configured to be the
+following when --all is specified:
+
+$ALLSOURCES
+EOF
+    exit 1
+fi
+
+SOURCES=$1
+
+if [ "$SOURCES" == '--all' ]; then
+    SOURCES=$ALLSOURCES
+elif [ ! "$SOURCES" ]; then
+    echo "$PROGNAME: No sources specified." 1>&2
+    exit 1
+fi
+
+# Download data.
+
+for SOURCE in $SOURCES; do
+    echo "$PROGNAME: Downloading $SOURCE..." 1>&2
+
+    eval RELEASE_URL='$'"$SOURCE"_RELEASE_URL
+    eval DOWNLOAD_FILES='$'"$SOURCE"_DOWNLOAD_FILES
+    eval SOURCEDIR='$'"$SOURCE"_DIR_NAME
+
+    DATADIR="$DATA/$SOURCEDIR"
+
+    if [ ! -e "$DATADIR" ]; then
+        mkdir "$DATADIR"
+    fi
+
+    for DOWNLOAD in $DOWNLOAD_FILES; do
+        echo "$PROGNAME: Downloading file: $DOWNLOAD" 1>&2
+        DOWNLOADED="$DATADIR/$DOWNLOAD"
+
+        if [ ! -e "$DOWNLOADED" ]; then
+            wget -O "$DOWNLOADED" "${RELEASE_URL}$DOWNLOAD"
+        fi
+
+        echo "$DOWNLOADED"
+    done
+done
