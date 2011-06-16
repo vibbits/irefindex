@@ -45,10 +45,10 @@ for SOURCE in $SOURCES; do
     fi
 
     for DOWNLOAD in $DOWNLOAD_FILES; do
-        echo "$PROGNAME: Downloading file: $DOWNLOAD" 1>&2
         DOWNLOADED="$DATADIR/$DOWNLOAD"
 
         if [ ! -e "$DOWNLOADED" ]; then
+            echo "$PROGNAME: Downloading file: $DOWNLOAD" 1>&2
             wget -O "$DOWNLOADED" "${RELEASE_URL}$DOWNLOAD"
         fi
 
