@@ -95,7 +95,7 @@ MPACT_DIR_NAME="MPACT"
 MPIDB_DOWNLOAD_FILES="MPI-IMEX MPI-LIT"
 MPIDB_MIRROR='http://www.jcvi.org'
 
-MPIDB_RELEASE_URL="$MPIDB_MIRROR/mpidb/interaction.php?dbsource="
+MPIDB_RELEASE_URL="$MPIDB_MIRROR/mpidb/download.php?dbsource="
 MPIDB_DIR_NAME="MPIDB"
 
 ############################################################
