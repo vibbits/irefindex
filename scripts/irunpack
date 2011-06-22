@@ -1,0 +1,47 @@
+#!/bin/sh
+
+if [ -e "irdata-config" ]; then
+    . 'irdata-config'
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" == '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME [ --all | <source>... | - ]
+
+Unpack data from the different sources. These are configured to be the
+following when --all is specified:
+
+$ALLSOURCES
+EOF
+    exit 1
+fi
+
+SOURCES=$*
+
+# Expand the sources if appropriate.
+
+if [ "$SOURCES" == '--all' ]; then
+    SOURCES=$ALLSOURCES
+elif [ ! "$SOURCES" ]; then
+    echo "$PROGNAME: No sources specified." 1>&2
+    exit 1
+fi
+
+# Unpack archives given in standard input.
+
+if [ "$SOURCES" == "-" ]; then
+    "$SCRIPTS/irunpack-archive" -
+
+# Unpack source-specified archives.
+
+else
+    for SOURCE in $SOURCES; do
+        for ARCHIVE in "$SOURCE/"*".zip" "$SOURCE/"*".tar.gz"; do
+            "$SCRIPTS/irunpack-archive" "$ARCHIVE"
+        done
+    done
+fi

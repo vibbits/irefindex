@@ -42,7 +42,11 @@ fi
 # followed by calculated definitions that should probably
 # not be changed.
 
-ALLSOURCES="BIND_TRANSLATION CORUM INNATEDB MATRIXDB MPACT MPIDB MPPI UNIPROT"
+# NOTE: To add: DIP HPRD INTACT
+XMLSOURCES="BIND_TRANSLATION CORUM INNATEDB MATRIXDB MPACT MPPI"
+TABSOURCES="MPIDB"
+OTHERSOURCES="UNIPROT"
+ALLSOURCES="$XMLSOURCES $TABSOURCES $OTHERSOURCES"
 
 ############################################################
 # BIND Translation
@@ -52,6 +56,7 @@ BIND_TRANSLATION_MIRROR='http://download.baderlab.org'
 
 BIND_TRANSLATION_RELEASE_URL="$BIND_TRANSLATION_MIRROR/BINDTranslation/release1_0/"
 BIND_TRANSLATION_DIR_NAME="BIND_Translation"
+BIND_TRANSLATION_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # CORUM
@@ -61,6 +66,25 @@ CORUM_MIRROR='http://mips.gsf.de'
 
 CORUM_RELEASE_URL="$CORUM_MIRROR/genre/export/sites/default/corum/"
 CORUM_DIR_NAME="CORUM"
+CORUM_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# DIP
+
+DIP_DIR_NAME="DIP"
+DIP_XML_FILE_PATTERN='*.mif25'
+
+############################################################
+# HPRD
+
+HPRD_DIR_NAME="HPRD"
+HPRD_XML_FILE_PATTERN='PSIMI_XML/*.xml'
+
+############################################################
+# IntAct
+
+INTACT_DIR_NAME="IntAct"
+INTACT_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # InnateDB
@@ -70,6 +94,7 @@ INNATEDB_MIRROR='http://www.innatedb.com'
 
 INNATEDB_RELEASE_URL="$INNATEDB_MIRROR/download/interactions/"
 INNATEDB_DIR_NAME="InnateDB"
+INNATEDB_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # MatrixDB
@@ -79,6 +104,7 @@ MATRIXDB_MIRROR='http://matrixdb.ibcp.fr'
 
 MATRIXDB_RELEASE_URL="$MATRIXDB_MIRROR/current/"
 MATRIXDB_DIR_NAME="MatrixDB"
+MATRIXDB_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # MPACT
@@ -88,6 +114,7 @@ MPACT_MIRROR='ftp://ftpmips.gsf.de'
 
 MPACT_RELEASE_URL="$MPACT_MIRROR/yeast/PPI/"
 MPACT_DIR_NAME="MPACT"
+MPACT_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # MPIDB
@@ -97,6 +124,7 @@ MPIDB_MIRROR='http://www.jcvi.org'
 
 MPIDB_RELEASE_URL="$MPIDB_MIRROR/mpidb/download.php?dbsource="
 MPIDB_DIR_NAME="MPIDB"
+# MPIDB provides no XML files.
 
 ############################################################
 # MPPI
@@ -106,6 +134,7 @@ MPPI_MIRROR='http://mips.gsf.de'
 
 MPPI_RELEASE_URL="$MPPI_MIRROR/proj/ppi/data/"
 MPPI_DIR_NAME="MPPI"
+MPPI_XML_FILE_PATTERN='mppi'
 
 ############################################################
 # UniProt
@@ -120,3 +149,4 @@ UNIPROT_RELEASE='current_release'
 UNIPROT_RELEASE_INFO="reldate.txt"
 UNIPROT_RELEASE_URL="$UNIPROT_MIRROR/pub/databases/uniprot/$UNIPROT_RELEASE/knowledgebase/complete/"
 UNIPROT_DIR_NAME="UniProt"
+# UniProt provides no XML files.
