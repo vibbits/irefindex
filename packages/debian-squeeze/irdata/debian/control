@@ -1,0 +1,15 @@
+Source: irdata
+Section: python
+Priority: optional
+Maintainer: Paul Boddie <paul.boddie@biotek.uio.no>
+Build-Depends: debhelper (>= 7.0.15), python-all-dev (>= 2.5.2-3), python-central (>= 0.6.8)
+XS-Python-Version: all
+Standards-Version: 3.7.2.1
+
+Package: irdata
+Architecture: all
+Depends: ${python:Depends}, bash | dash, coreutils, findutils, grep, gzip, libxml2-utils, tar, wget, xsltproc
+XB-Python-Version: ${python:Versions}
+Description: The irdata distribution
+ The irdata distribution provides data processing tools related to iRefIndex
+ database construction.
