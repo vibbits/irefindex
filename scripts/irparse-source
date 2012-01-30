@@ -1,0 +1,145 @@
+#!/bin/sh
+
+if [ -e "irdata-config" ]; then
+    . "$PWD/irdata-config"
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" = '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME [ --check ] [ --no-parse ] <source>
+
+Parse data from the specified source. The following sources are supported:
+
+$ALLSOURCES
+
+If the source is specified as - it is read from standard input.
+EOF
+    exit 1
+fi
+
+if [ "$1" = '--check' ]; then
+    CHECK=$1
+    shift 1
+fi
+
+if [ "$1" = '--no-parse' ]; then
+    NO_PARSE=$1
+    shift 1
+fi
+
+SOURCE=$1
+
+if [ "$SOURCE" = '-' ]; then
+    echo "$PROGNAME: Reading source name from standard input..." 1>&2
+    read -r SOURCE
+    echo "$PROGNAME: Using $SOURCE..." 1>&2
+fi
+
+eval SOURCEDIR='$'"$SOURCE"_DIR_NAME
+eval XMLFILEPATTERN='$'"$SOURCE"_XML_FILE_PATTERN
+eval OTHERFILEPATTERN='$'"$SOURCE"_OTHER_FILE_PATTERN
+FILEPATTERNS=${XMLFILEPATTERN:-$OTHERFILEPATTERN}
+eval PARSER='$'"$SOURCE"_PARSER
+
+# Check for improper source names which don't map to directories.
+
+if [ ! "$SOURCEDIR" ]; then
+    echo "$PROGNAME: $SOURCE is not a valid source name." 1>&2
+    exit 1
+fi
+
+# Check for absent file-matching patterns.
+
+if [ ! "$FILEPATTERNS" ]; then
+    echo "$PROGNAME: $SOURCE does not provide any files." 1>&2
+    exit 1
+fi
+
+DATADIR="$DATA/$SOURCEDIR"
+
+# Check for the source's data directory.
+
+if [ ! -e "$DATADIR" ]; then
+    echo "$PROGNAME: Source $SOURCE provides no data directory." 1>&2
+    exit 1
+fi
+
+OUTPUTDIR="$DATA/import/$SOURCEDIR"
+
+if [ ! -e "$OUTPUTDIR" ]; then
+    mkdir -p "$OUTPUTDIR"
+fi
+
+# Expand the patterns.
+
+HAVEDATA=
+
+# Prevent the patterns from being expanded in the current directory.
+
+set -f
+
+for FILEPATTERN in $FILEPATTERNS; do
+
+    # Now permit the expansion.
+
+    set +f
+
+    FILES="$DATADIR/$FILEPATTERN"
+    HAVEFILES=
+
+    for FILE in $FILES; do
+
+        # Check the pattern to see if it expanded.
+
+        if [ "$FILE" = "$FILES" ] && [ ! -e "$FILES" ]; then
+            break
+        fi
+
+        # Test for any XML file and run xmllint.
+        # NOTE: This relies on there either being XML files or other kinds of
+        # NOTE: files.
+
+        if [ ! -e "$FILE" ] || [ "$CHECK" ] && [ "$XMLFILEPATTERN" ] && ! xmllint "$FILE" > /dev/null 2>&1 ; then
+            echo "$PROGNAME: File $XMLFILE in source $SOURCE failed." 1>&2
+            exit 1
+        fi
+
+        HAVEFILES='yes'
+    done
+
+    # Make sure there are valid files.
+
+    if [ ! "$HAVEFILES" ]; then
+        continue
+    fi
+
+    if [ ! "$NO_PARSE" ]; then
+        if [ "$XMLFILEPATTERN" ]; then
+            if ! "$TOOLS/irdata_xml2tab.py" "$OUTPUTDIR" "$SOURCE" $FILES ; then
+                echo "$PROGNAME: XML processing for source $SOURCE failed." 1>&2
+                exit 1
+            fi
+        elif [ ! "$PARSER" ]; then
+            echo "$PROGNAME: No parser defined for source $SOURCE." 1>&2
+            exit 1
+        else
+            if ! "$TOOLS/$PARSER" "$OUTPUTDIR" $FILES ; then
+                echo "$PROGNAME: Data processing for source $SOURCE failed." 1>&2
+                exit 1
+            fi
+        fi
+    fi
+
+    HAVEDATA='yes'
+done
+
+if [ "$HAVEDATA" ]; then
+    echo $SOURCE
+else
+    echo "$PROGNAME: Source $SOURCE did not provide any data." 1>&2
+    exit 1
+fi

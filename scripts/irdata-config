@@ -1,0 +1,387 @@
+#!/bin/sh
+
+############################################################
+# General configuration settings for irdata.
+
+SYSPREFIX=                                  # system-wide installation root
+EMAIL=                                      # e-mail address for anonymous FTP logins
+DATABASE=irdata                             # database name
+DATA=${DATA:-}                              # user defined data directory location
+
+
+
+############################################################
+# Authentication information for certain data sources.
+
+DIP_USERNAME=                               # DIP download credentials
+DIP_PASSWORD=
+
+
+
+############################################################
+# Program and resource locations.
+
+PROGNAME=`basename "$0"`
+SCRIPTS=`dirname "$0"`
+
+# Fix the scripts directory if this file was read by one of the tools.
+
+if [ `basename "$SCRIPTS"` = 'tools' ]; then
+    SCRIPTS=`dirname "$SCRIPTS"`/scripts
+fi
+
+# Allow directories to be created.
+
+if [ "$1" = '--make-system-dirs' ]; then
+    MAKEDIRS="$1"
+    shift 1
+fi
+
+alias normpath="python -c 'import os, sys; print os.path.normpath(sys.argv[1])'"
+
+# Tools.
+
+if [ -e "$SCRIPTS/../tools" ]; then
+    TOOLS=`normpath "$SCRIPTS/../tools"`
+else
+    TOOLS="$SCRIPTS"
+fi
+
+# Search in a relative location (if running the software from the distribution),
+# or search in a system-wide location (if running the installed software).
+
+# Templates.
+
+SYSSQL="$SYSPREFIX/usr/share/irdata/sql"
+
+if [ -e "$SCRIPTS/../sql" ]; then
+    SQL=`normpath "$SCRIPTS/../sql"`
+elif [ -e "$SYSSQL" ]; then
+    SQL="$SYSSQL"
+else
+    echo "Cannot locate the irdata sql directory." 1>&2
+    exit 1
+fi
+
+# Data directory.
+
+SYSDATA="$SYSPREFIX/var/lib/irdata/data"
+
+if [[ "$DATA" && -e "$DATA" ]]; then
+    :
+elif [ -e "$SCRIPTS/../data" ]; then
+    DATA=`normpath "$SCRIPTS/../data"`
+elif [ -e "$SYSDATA" ]; then
+    DATA="$SYSDATA"
+elif [ "$MAKEDIRS" ]; then
+    mkdir -p "$SYSDATA"
+    DATA="$SYSDATA"
+else
+    echo "Cannot locate the irdata data directory." 1>&2
+    exit 1
+fi
+
+# Log file directory.
+
+SYSLOGS="$SYSPREFIX/var/log/irdata"
+
+if [ -e "$SCRIPTS/../logs" ]; then
+    LOGS=`normpath "$SCRIPTS/../logs"`
+elif [ -e "$SYSLOGS" ]; then
+    LOGS="$SYSLOGS"
+elif [ "$MAKEDIRS" ]; then
+    mkdir -p "$SYSLOGS"
+    LOGS="$SYSLOGS"
+else
+    LOGS=
+fi
+
+
+
+############################################################
+# Parallel processing (irparallel).
+
+PROCESSES=4                                 # number of process groups to use
+XARGS_I='-I'                                # get round annoying GNU xargs incompatibility
+
+
+
+############################################################
+# Source locations and details.
+#
+# Each section contains potentially editable definitions
+# followed by calculated definitions that should probably
+# not be changed.
+
+# NOTE: To add for acquisition by other means: OPHID
+
+XMLSOURCES="BIND_TRANSLATION BIOGRID CORUM DIP HPRD INNATEDB INTACT MATRIXDB MINT MPACT MPPI OPHID"
+TABSOURCES="MPIDB"
+OTHERSOURCES="FLY GENE GENPEPT IPI MMDB PDB REFSEQ SEGUID TAXONOMY UNIPROT YEAST"
+ALLSOURCES="$XMLSOURCES $TABSOURCES $OTHERSOURCES"
+
+############################################################
+# BIND Translation
+
+BIND_TRANSLATION_DOWNLOAD_FILES="BINDTranslation_v1_xml_AllSpecies.tar.gz"
+BIND_TRANSLATION_MIRROR='http://download.baderlab.org'
+
+BIND_TRANSLATION_RELEASE_URL="$BIND_TRANSLATION_MIRROR/BINDTranslation/release1_0/"
+BIND_TRANSLATION_DIR_NAME="BIND_Translation"
+BIND_TRANSLATION_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# BioGRID
+
+BIOGRID_DOWNLOAD_FILES="BIOGRID-ALL-3.1.81.psi25.zip"
+BIOGRID_MIRROR='http://thebiogrid.org'
+
+BIOGRID_RELEASE_URL="$BIOGRID_MIRROR/downloads/archives/Release%20Archive/BIOGRID-3.1.81/"
+BIOGRID_DIR_NAME="BioGRID"
+BIOGRID_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# CORUM
+
+CORUM_DOWNLOAD_FILES="allComplexes.psimi.zip"
+CORUM_MIRROR='http://mips.gsf.de'
+
+CORUM_RELEASE_URL="$CORUM_MIRROR/genre/export/sites/default/corum/"
+CORUM_DIR_NAME="CORUM"
+CORUM_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# DIP
+
+DIP_DOWNLOAD_FILES="dip20111027.mif25.gz"
+DIP_MIRROR="ftp://$DIP_USERNAME:$DIP_PASSWORD@dip.doe-mbi.ucla.edu"
+
+DIP_RELEASE_URL="$DIP_MIRROR/2011/mif25/"
+DIP_DIR_NAME="DIP"
+DIP_XML_FILE_PATTERN='*.mif25'
+
+############################################################
+# Entrez Gene
+
+GENE_DOWNLOAD_FILES="gene2refseq.gz gene_info.gz gene2go.gz gene_history.gz"
+GENE_MIRROR='ftp://ftp.ncbi.nlm.nih.gov'
+
+GENE_RELEASE_URL="$GENE_MIRROR/gene/DATA/"
+GENE_DIR_NAME="Entrez_Gene"
+GENE_OTHER_FILE_PATTERN='gene*'
+GENE_PARSER='irdata_parse_gene.sh'
+
+############################################################
+# GenPept
+
+GENPEPT_DOWNLOAD_FILES='gb*.fsa_aa.gz'
+GENPEPT_MIRROR='ftp://ftp.ncbi.nih.gov'
+
+GENPEPT_RELEASE_URL="$GENPEPT_MIRROR/ncbi-asn1/protein_fasta/"
+GENPEPT_DIR_NAME="GenPept"
+GENPEPT_OTHER_FILE_PATTERN='gb*'
+GENPEPT_PARSER='irdata_parse_genpept.sh'
+
+############################################################
+# HPRD
+
+HPRD_DOWNLOAD_FILES="HPRD_PSIMI_041310"
+HPRD_MIRROR='http://www.hprd.org'
+
+HPRD_RELEASE_URL="$HPRD_MIRROR/edownload/"
+HPRD_DIR_NAME="HPRD"
+HPRD_XML_FILE_PATTERN='PSIMI_XML/*.xml'
+
+############################################################
+# IntAct
+
+INTACT_DOWNLOAD_FILES="pmidMIF25.zip"
+INTACT_MIRROR='ftp://ftp.ebi.ac.uk'
+
+INTACT_RELEASE_URL="$INTACT_MIRROR/pub/databases/intact/current/psi25/"
+INTACT_DIR_NAME="IntAct"
+INTACT_XML_FILE_PATTERN='pmid/*/*.xml'
+
+############################################################
+# InnateDB
+
+INNATEDB_DOWNLOAD_FILES="innatedb_20110306.xml.gz"
+INNATEDB_MIRROR='http://www.innatedb.com'
+
+INNATEDB_RELEASE_URL="$INNATEDB_MIRROR/download/interactions/"
+INNATEDB_DIR_NAME="InnateDB"
+INNATEDB_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# IPI
+
+IPI_DOWNLOAD_FILES='*.fasta.gz'
+IPI_MIRROR='ftp://ftp.ebi.ac.uk'
+
+IPI_RELEASE_URL="$IPI_MIRROR/pub/databases/IPI/current/"
+IPI_DIR_NAME="IPI"
+IPI_OTHER_FILE_PATTERN='*.fasta'
+IPI_PARSER='irdata_parse_ipi.sh'
+
+############################################################
+# MatrixDB
+
+MATRIXDB_DOWNLOAD_FILES="MatrixDB_20100826.xml.zip"
+MATRIXDB_MIRROR='http://matrixdb.ibcp.fr'
+
+MATRIXDB_RELEASE_URL="$MATRIXDB_MIRROR/current/"
+MATRIXDB_DIR_NAME="MatrixDB"
+MATRIXDB_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# MINT
+
+MINT_DOWNLOAD_FILES='*.psi25.zip'
+MINT_MIRROR='ftp://mint.bio.uniroma2.it'
+
+MINT_RELEASE_URL="$MINT_MIRROR/pub/release/psi/current/psi25/pmid/"
+MINT_DIR_NAME="MINT"
+MINT_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# MMDB/PDB (for PDB taxonomy information)
+
+MMDB_DOWNLOAD_FILES="table"
+MMDB_MIRROR='ftp://ftp.ncbi.nih.gov'
+
+MMDB_RELEASE_URL="$MMDB_MIRROR/mmdb/pdbeast/"
+MMDB_DIR_NAME="MMDB"
+MMDB_OTHER_FILE_PATTERN='table'
+MMDB_PARSER='irdata_parse_mmdb.sh'
+
+############################################################
+# MPACT
+
+MPACT_DOWNLOAD_FILES="mpact-complete.psi25.xml.gz"
+MPACT_MIRROR='ftp://ftpmips.gsf.de'
+
+MPACT_RELEASE_URL="$MPACT_MIRROR/yeast/PPI/"
+MPACT_DIR_NAME="MPACT"
+MPACT_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# MPIDB
+
+MPIDB_DOWNLOAD_FILES="MPI-IMEX MPI-LIT"
+MPIDB_MIRROR='http://www.jcvi.org'
+
+MPIDB_RELEASE_URL="$MPIDB_MIRROR/mpidb/download.php?dbsource="
+MPIDB_DIR_NAME="MPIDB"
+MPIDB_OTHER_FILE_PATTERN='MPI-*'
+MPIDB_PARSER='irdata_parse_mpidb.py'
+MPIDB_IMPORT_TEMPLATE='import_mitab.sql'
+
+############################################################
+# MPPI (also known as MIPS)
+
+MPPI_DOWNLOAD_FILES="mppi.gz"
+MPPI_MIRROR='http://mips.gsf.de'
+
+MPPI_RELEASE_URL="$MPPI_MIRROR/proj/ppi/data/"
+MPPI_DIR_NAME="MPPI"
+MPPI_XML_FILE_PATTERN='mppi'
+
+############################################################
+# OPHID
+
+OPHID_DIR_NAME="OPHID"
+OPHID_XML_FILE_PATTERN='*.xml'
+
+############################################################
+# PDB
+
+PDB_DOWNLOAD_FILES="pdbaa.gz"
+PDB_MIRROR='ftp://ftp.ncbi.nih.gov'
+
+PDB_RELEASE_URL="$PDB_MIRROR/blast/db/FASTA/"
+PDB_DIR_NAME="PDB"
+PDB_OTHER_FILE_PATTERN='pdbaa*'
+PDB_PARSER='irdata_parse_pdb.sh'
+
+############################################################
+# RefSeq
+
+REFSEQ_DOWNLOAD_FILES='complete*.protein.gpff.gz'
+REFSEQ_MIRROR='ftp://ftp.ncbi.nih.gov/refseq/release/'
+
+REFSEQ_RELEASE_URL="$REFSEQ_MIRROR/complete/"
+REFSEQ_DIR_NAME="RefSeq"
+REFSEQ_OTHER_FILE_PATTERN='*.gpff* *.gnp'
+REFSEQ_PARSER='irdata_parse_refseq.sh'
+
+############################################################
+# SEGUID
+
+SEGUID_DOWNLOAD_FILES="seguidannotation"
+SEGUID_MIRROR='ftp://bioinformatics.anl.gov'
+
+SEGUID_RELEASE_URL="$SEGUID_MIRROR/seguid/"
+SEGUID_DIR_NAME="SEGUID"
+SEGUID_OTHER_FILE_PATTERN='seguidannotation'
+# NOTE: Need parser.
+
+############################################################
+# Entrez Taxonomy (not an interaction source)
+
+TAXONOMY_DOWNLOAD_FILES="taxdump.tar.gz"
+TAXONOMY_MIRROR='ftp://ftp.ncbi.nih.gov'
+
+TAXONOMY_RELEASE_URL="$TAXONOMY_MIRROR/pub/taxonomy/"
+TAXONOMY_DIR_NAME="Taxonomy"
+TAXONOMY_OTHER_FILE_PATTERN='names.dmp'
+TAXONOMY_PARSER='irdata_parse_taxonomy.sh'
+
+############################################################
+# UniProt
+
+UNIPROT_DOWNLOAD_FILES="uniprot_sprot.dat.gz uniprot_trembl.dat.gz uniprot_sprot_varsplic.fasta.gz reldate.txt"
+UNIPROT_MIRROR='ftp://ftp.uniprot.org'
+#UNIPROT_MIRROR='ftp://ftp.ebi.ac.uk'
+
+UNIPROT_RELEASE='current_release'
+#UNIPROT_RELEASE='previous_releases/release-2011_05'
+
+UNIPROT_RELEASE_URL="$UNIPROT_MIRROR/pub/databases/uniprot/$UNIPROT_RELEASE/knowledgebase/complete/"
+UNIPROT_DIR_NAME="UniProt"
+UNIPROT_OTHER_FILE_PATTERN='*.dat.gz *.dat *.fasta.gz *.fasta'
+UNIPROT_PARSER='irdata_parse_uniprot.sh'
+
+UNIPROT_SPLIT_INTERVAL=100000000
+
+############################################################
+# UniProt (Fly)
+
+FLY_DOWNLOAD_FILES="fly.txt"
+FLY_MIRROR='http://www.uniprot.org'
+
+FLY_RELEASE_URL="$FLY_MIRROR/docs/"
+FLY_DIR_NAME="fly"
+FLY_OTHER_FILE_PATTERN='*.txt'
+FLY_PARSER='irdata_parse_fly.sh'
+
+############################################################
+# UniProt (Yeast)
+
+YEAST_DOWNLOAD_FILES="yeast.txt"
+YEAST_MIRROR='http://www.uniprot.org'
+
+YEAST_RELEASE_URL="$YEAST_MIRROR/docs/"
+YEAST_DIR_NAME="yeast"
+YEAST_OTHER_FILE_PATTERN='*.txt'
+YEAST_PARSER='irdata_parse_fly.sh'
+
+
+
+############################################################
+# Entrez Utilities details
+
+EUTILS_URL='http://eutils.ncbi.nlm.nih.gov/entrez/eutils'
+EFETCH_URL="$EUTILS_URL/efetch.fcgi"
+
+EUTILS_TOOL='irdata'
+EUTILS_EMAIL="$EMAIL"
