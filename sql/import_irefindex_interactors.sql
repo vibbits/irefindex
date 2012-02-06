@@ -22,6 +22,9 @@ insert into xml_xref_all_interactors
         and property = 'interactor'
         and reftype in ('primaryRef', 'secondaryRef');
 
+-- Make some reports more efficient to generate.
+
+create index xml_xref_all_interactors_index on xml_xref_all_interactors (source);
 analyze xml_xref_all_interactors;
 
 -- Narrow the cross-references to those actually describing each interactor
@@ -228,6 +231,30 @@ create temporary table tmp_refseq_nucleotide as
 create index tmp_refseq_nucleotide_refvalue on tmp_refseq_nucleotide(refvalue);
 analyze tmp_refseq_nucleotide;
 
+create temporary table tmp_refseq_nucleotide_shortform as
+    select distinct X.dblabel, X.refvalue, 'refseq/nucleotide-shortform' as sequencelink,
+        P.taxid as reftaxid, P.sequence as refsequence, null as refdate
+    from xml_xref_interactors as X
+    inner join refseq_nucleotide_accessions as A
+        on X.refvalue = A.shortform
+    inner join refseq_nucleotides as N
+        on A.nucleotide = N.nucleotide
+    inner join refseq_proteins as P
+        on N.protein = P.accession
+
+    -- Exclude previous matches.
+
+    left outer join tmp_refseq as P2
+        on X.refvalue = P2.refvalue
+    left outer join tmp_refseq_nucleotide as P3
+        on X.refvalue = P3.refvalue
+    where X.dblabel = 'refseq'
+        and P2.refvalue is null
+        and P3.refvalue is null;
+
+create index tmp_refseq_nucleotide_shortform_refvalue on tmp_refseq_nucleotide_shortform(refvalue);
+analyze tmp_refseq_nucleotide_shortform;
+
 -- RefSeq accession matches via Entrez Gene.
 
 create temporary table tmp_refseq_gene as
@@ -245,9 +272,12 @@ create temporary table tmp_refseq_gene as
         on X.refvalue = P2.refvalue
     left outer join tmp_refseq_nucleotide as P3
         on X.refvalue = P3.refvalue
+    left outer join tmp_refseq_nucleotide_shortform as P4
+        on X.refvalue = P4.refvalue
     where X.dblabel = 'entrezgene'
         and P2.refvalue is null
-        and P3.refvalue is null;
+        and P3.refvalue is null
+        and P4.refvalue is null;
 
 -- Partition UniProt matches via FlyBase accessions.
 
@@ -435,15 +465,19 @@ create temporary table tmp_ipi_shortform as
     where X.dblabel = 'ipi'
         and P2.refvalue is null;
 
--- Create a mapping from accessions to reference sequences.
--- Combine the UniProt and RefSeq details with those from other sources.
--- Each source should provide distinct sets of accessions, although some may
--- provide multiple sequences for accessions.
+-- PDB accession|chain matches.
 
-insert into xml_xref_sequences
+create temporary table tmp_pdb as
+    select distinct X.dblabel, X.refvalue, 'pdb' as sequencelink,
+        cast(null as integer) as reftaxid, P.sequence as refsequence, null as refdate
+    from xml_xref_interactors as X
+    inner join pdb_proteins as P
+        on X.dblabel like 'pdb'
+        and X.refvalue = P.accession || '|' || P.chain;
 
-    -- PDB accession matches via MMDB.
+-- PDB accession matches via MMDB.
 
+create temporary table tmp_pdb_mmdb as
     select distinct X.dblabel, X.refvalue, 'pdb/mmdb' as sequencelink,
         M.taxid as reftaxid, P.sequence as refsequence, null as refdate
     from xml_xref_interactors as X
@@ -453,6 +487,25 @@ insert into xml_xref_sequences
     inner join pdb_proteins as P
         on M.accession = P.accession
         and M.chain = P.chain
+
+    -- Exclude previous matches.
+
+    left outer join tmp_pdb as P2
+        on P.accession || '|' || P.chain = P2.refvalue
+    where P2.refvalue is null;
+
+-- Create a mapping from accessions to reference sequences.
+-- Combine the UniProt and RefSeq details with those from other sources.
+-- Each source should provide distinct sets of accessions, although some may
+-- provide multiple sequences for accessions.
+
+insert into xml_xref_sequences
+
+    -- PDB matches.
+
+    select * from tmp_pdb
+    union all
+    select * from tmp_pdb_mmdb
     union all
 
     -- FlyBase matches.
@@ -485,6 +538,10 @@ insert into xml_xref_sequences
     -- RefSeq matches.
 
     select * from tmp_refseq
+    union all
+    select * from tmp_refseq_nucleotide
+    union all
+    select * from tmp_refseq_nucleotide_shortform
     union all
     select * from tmp_refseq_gene
     union all
