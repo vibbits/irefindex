@@ -1,0 +1,75 @@
+#!/bin/sh
+
+if [ -e "irdata-config" ]; then
+    . "$PWD/irdata-config"
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" = '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME [ --include-gzip-files ] [ --all | <source>... | - ]
+
+Unpack data from the different sources. If --include-gzip-files is specified,
+uncompress .gz files that do not appear to be archives.
+
+The sources are configured to be the following when --all is specified:
+
+$ALLSOURCES
+EOF
+    exit 1
+fi
+
+if [ "$1" = '--include-gzip-files' ]; then
+    INCLUDE_GZIP=$1
+    shift 1
+fi
+
+SOURCES=$*
+
+# Expand the sources if appropriate.
+
+if [ "$SOURCES" = '--all' ]; then
+    SOURCES=$ALLSOURCES
+elif [ ! "$SOURCES" ]; then
+    echo "$PROGNAME: No sources specified." 1>&2
+    exit 1
+fi
+
+# Unpack archives given in standard input.
+
+if [ "$SOURCES" = "-" ]; then
+    "$SCRIPTS/irunpack-archive" -
+
+# Unpack source-specified archives.
+
+else
+    ARCHIVETYPES=$("$SCRIPTS/irunpack-archive" --show-types)
+
+    for SOURCE in $SOURCES; do
+        eval SOURCEDIR='$'"$SOURCE"_DIR_NAME
+
+        DATADIR="$DATA/$SOURCEDIR"
+
+        for ARCHIVETYPE in $ARCHIVETYPES; do
+            if [[ "$ARCHIVETYPE" = 'gz' && ! "$INCLUDE_GZIP" ]]; then
+                continue
+            fi
+
+            PATTERN="$DATADIR/*.$ARCHIVETYPE"
+
+            # If the archive matches the pattern exactly, there was no expansion
+            # and no file actually matched.
+
+            for ARCHIVE in $PATTERN; do
+                if [ "$ARCHIVE" = "$PATTERN" ]; then
+                    :
+                else
+                    "$SCRIPTS/irunpack-archive" $INCLUDE_GZIP "$ARCHIVE"
+                fi
+            done
+        done
+    done
+fi
