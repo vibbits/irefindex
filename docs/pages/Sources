@@ -1,0 +1,201 @@
+## This file uses a syntax notation compatible with MoinMoin and the
+## ImprovedTableParser extension. It can be deployed in a MoinMoin Wiki or read
+## in a text editor.
+
+= Data Source Publishing, Formats and Issues =
+
+Although standard data formats exist for interaction data, there remain issues
+with their application to the data provided by interaction databases, either
+due to obvious non-compliance with the standards or due to ambiguity or a lack
+of clarity or specificity in such standards. As a result, software that must
+consume such data must be aware of issues that appear to defy common
+assumptions about XML documents and schema design practices.
+
+In addition, interaction data is published in many different ways. Although
+this software attempts to provide a way of downloading data regardless of how
+it has been made available, the level of support provided is necessarily
+limited for activities such as determining whether new releases of data are
+available and what their version or release labelling might be. Such
+activities would be better supported were the different publishers of source
+data able to standardise on common and reasonable technical mechanisms for
+making their data available.
+
+== Concepts and Relationships ==
+
+Interaction data is centred upon the following general concepts: interactions,
+interactors, participants and experiments. However, one may refer to an
+interaction as a general statement (proteins A and B are known to interact)
+without any contextual information, or as a specific observation (proteins A
+and B interact are observed to interact) where certain conditions exist. Thus,
+it becomes necessary to distinguish between two notions when referring to
+concepts:
+
+{{{#!table
+'''Concept''' || '''Observations'''
+              || '''Knowledge'''
+==
+Interaction   || Observed interactions (or interaction instances)
+              || General interactions (or interaction knowledge)
+==
+Interactor    || Observed interactors (or specific experiment details of an interactor)
+              || General interactors (or knowledge about the properties of a protein)
+}}}
+
+Particularly with interactions, it can be informative to consider a combination
+of an interaction with an experiment when considering interaction data sources
+and the interaction records that they provide.
+
+Due to the flexibility of the data representation and presumably the nature of
+collected information, some sources connect the fundamental concepts of
+interaction data in different ways:
+
+{{{#!table
+.. Experiments grouped by interaction (many experiments per interaction)
+|| !BioGrid, !IntAct, MINT, MPACT
+==
+.. Interactions grouped by experiment (many interactions per experiment)
+|| BIND Translation, CORUM, DIP, HPRD, MPI-IMEX, MPI-LIT, OPHID
+}}}
+
+== References and Locality ==
+
+Subject to various limitations, as described below, interaction data typically
+employs identifiers that can be used to refer to specific entities. Inspection
+of such data has led to the identification of the following hierarchy that can
+be used to unambiguously refer to a particular entity in the source data:
+
+  1. Data `source`
+  2. Specific `filename`
+  3. PSI-XML `entry` element
+  4. Entity type or `scope`
+  5. Identifier or `parentid`
+
+Within the context of a particular entity type - for example, an interactor -
+the hierarchy is simplified slightly as follows:
+
+  1. Data `source`
+  2. Specific `filename`
+  3. PSI-XML `entry` element
+  4. Interaction identifier or `interactorid`
+
+Although it is technically possible to ensure that unique identifiers are
+given to entities of their particular type in a particular source file, this
+is not typically done by the source databases for all entity types. Thus, it
+can be said that some identifiers have a particular "locality", meaning that
+they can only be assumed to be unique within a particular region of a file or
+within a certain scope.
+
+For example, interactors in an interaction may be given the identifiers 1, 2
+and 3, but the assignment of these identifiers to entities may only be valid
+within that interaction. Within another interaction, the identifiers 1, 2 and
+3 may refer to other entities. Fortunately, such chaotic numbering usually
+occurs only when the identifiers have no actual use and where the entities'
+involvement is ''implicit'', derived from the location of the elements
+describing them in the data file. Where the involvement of entities in
+relationships is ''explicit'', their identifiers typically have `entry`-level
+locality and can be regarded as meaningful.
+
+Data sources employing references to other elements, such as `experimentRef`
+referring to `experimentDescription`, generally provide explicit entities
+whose identifiers can be relied upon. The following table summarises those
+sources providing explicit references:
+
+{{{#!table
+'''Source'''   || '''Explicit'''
+==
+!BioGRID       || experiment, interactor
+==
+HPRD           || experiment, interactor
+==
+!IntAct        || experiment, interactor
+==
+MINT           || experiment, interactor
+==
+OPHID          || experiment
+}}}
+
+Thus, the following policies are used:
+
+{{{#!table
+'''Entity''' || '''Policy'''
+==
+Experiment   || Retain explicit identifiers;
+             .. assign unique identifiers for implicit experiments
+==
+Interaction  || Retain identifiers
+==
+Interactor   || Retain explicit interactor identifiers;
+             .. assign unique identifiers for implicit interactors
+==
+Participant  || Assign unique identifiers
+}}}
+
+The consequence of such policies is that identifying an interactor within the
+source data can be more involved using the identifier hierarchy described
+above if meaningful identifiers are not present in the source data for
+interactors. However, in conjunction with interaction information, the task of
+identification should be simplified somewhat because interaction identifiers
+should always be unique within any given `entry` element.
+
+== Parsing and Interpretation Issues for PSI-MI XML Sources ==
+
+Some BIND Translation files lack a suitable encoding declaration:
+
+{{{
+<?xml version="1.0" encoding="iso-8859-1"?>
+}}}
+
+Without such a declaration, a UTF-8 encoding is expected, but the 10090 and
+9606 taxonomy files actually employ byte values that apparently represent
+characters encoded using ISO-8859-1, and the resulting byte sequences are not
+valid UTF-8 content.
+
+Generally, identifier locality restrictions are not prominently specified or
+adhered to.
+
+  * For version 1.0, the `xs:ID` type is used for `id` attributes, but sources
+  like OPHID repeat values of such attributes.
+
+  * For version 2.5, the `xs:int` type is used for `id` attributes, and it is
+  noted that these refer to distinct entities throughout a file. However,
+  participant identifiers are effectively local and may not have any meaning
+  at all, and although experiment identifiers are supposedly local to an
+  "entry", MPACT has been shown to reuse such identifiers within the same
+  `entry` element (which is presumably the meaning of the term "entry" in the
+  specification).
+
+MIPS and OPHID use version 1.0 of the specification and need to provide values
+using different elements, although these elements correspond directly to
+elements in version 2.5.
+
+OPHID provides multiple entry elements in the same file, thus making things like
+experiment references local to a particular entry.
+
+OPHID refers to the same experiment more than once in some interactions.
+
+DIP and other sources use participant identifiers which are local to each
+interaction.
+
+InnateDB reuses participant identifiers even within the same interaction, and
+also reuses interactor identifiers within the same interaction, even when the
+interactors are different! Moreover, InnateDB maintains a separate interactor
+list but does not reference those interactors.
+
+HPRD occasionally misuses reference attributes such as in the following
+example (from `data/HPRD/PSIMI_XML/08855_psimi.xml`):
+
+{{{
+<secondaryRef db="uniprot" dbAc="MI:0486" id="Q0VAR9,Q96CW7"/>
+}}}
+
+== Parsing and Interpretation Issues for MITAB Sources ==
+
+MPIDB sources employ a MITAB variant which exposes experimental details in a
+non-standard way. This can result in interactions being assigned multiple
+interaction types, which is typically not done by XML-based sources even
+though the schema does permit it.
+
+InnateDB provides multiple uid values. Currently the "ensembl" value is
+ignored, but in future it could be used together with downloaded data from
+ensembl.org to identify interactors. UniProt and RefSeq information appears to
+be provided in the aliases fields.

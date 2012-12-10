@@ -1,0 +1,103 @@
+#!/bin/sh
+
+# Copyright (C) 2011, 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
+# Original author: Paul Boddie <paul.boddie@biotek.uio.no>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+if [ -e "irdata-config" ]; then
+    . "$PWD/irdata-config"
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" = '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME [ --include-gzip-files ] [ --all | <source>... | - ]
+
+Unpack data from the different sources. If --include-gzip-files is specified,
+uncompress .gz files that do not appear to be archives.
+
+The sources are configured to be the following when --all is specified:
+
+$ALLSOURCES
+
+Sources that are to be excluded are defined to be the following:
+
+$EXCLUDEDSOURCES
+EOF
+    exit 1
+fi
+
+if [ "$1" = '--include-gzip-files' ]; then
+    INCLUDE_GZIP=$1
+    shift 1
+fi
+
+SOURCES=$*
+
+# Expand the sources if appropriate.
+
+if [ "$SOURCES" = '--all' ]; then
+    SOURCES=$ALLSOURCES
+elif [ ! "$SOURCES" ]; then
+    echo "$PROGNAME: No sources specified." 1>&2
+    exit 1
+fi
+
+# Unpack archives given in standard input.
+
+if [ "$SOURCES" = "-" ]; then
+    "$SCRIPTS/irunpack-archive" -
+
+# Unpack source-specified archives.
+
+else
+    ARCHIVETYPES=$("$SCRIPTS/irunpack-archive" --show-types)
+
+    for SOURCE in $SOURCES; do
+
+        # Skip excluded sources.
+
+        if isin "$SOURCE" $EXCLUDEDSOURCES ; then
+            continue
+        fi
+
+        # Find out how and where to unpack the source data.
+
+        eval SOURCEDIR='$'"$SOURCE"_DIR_NAME
+
+        DATADIR="$DATA/$SOURCEDIR"
+
+        for ARCHIVETYPE in $ARCHIVETYPES; do
+            if [ "$ARCHIVETYPE" = 'gz' ] && [ ! "$INCLUDE_GZIP" ]; then
+                continue
+            fi
+
+            PATTERN="$DATADIR/*.$ARCHIVETYPE"
+
+            # If the archive matches the pattern exactly, there was no expansion
+            # and no file actually matched.
+
+            for ARCHIVE in $PATTERN; do
+                if [ "$ARCHIVE" = "$PATTERN" ]; then
+                    :
+                else
+                    "$SCRIPTS/irunpack-archive" $INCLUDE_GZIP "$ARCHIVE"
+                fi
+            done
+        done
+    done
+fi
