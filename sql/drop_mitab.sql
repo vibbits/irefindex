@@ -1,0 +1,10 @@
+drop table mitab_uid;
+drop table mitab_alternatives;
+drop table mitab_aliases;
+drop table mitab_method_names;
+drop table mitab_authors;
+drop table mitab_pubmed;
+drop table mitab_interaction_type_names;
+drop table mitab_sources;
+drop table mitab_interaction_identifiers;
+drop table mitab_confidence;
