@@ -1,0 +1,89 @@
+#!/bin/sh
+
+# Copyright (C) 2011 Ian Donaldson <ian.donaldson@biotek.uio.no>
+# Original author: Paul Boddie <paul.boddie@biotek.uio.no>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+if [ -e "irdata-config" ]; then
+    . "$PWD/irdata-config"
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" = '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME --show-types | ( [ --include-gzip-files ] <archive filename>... )
+
+This scripts accepts archive filenames and unpacks each archive into the
+directory in which it currently resides. If the list of archive files is
+specified as - then the script tries to read archive filenames from standard
+input until an end-of-file condition occurs.
+
+If --include-gzip-files is specified, uncompress .gz files that do not appear to
+be archives.
+EOF
+    exit 1
+fi
+
+if [ ! "$*" ]; then
+    echo "$PROGNAME: Archive filenames or - must be specified." 1>&2
+    echo "$PROGNAME: The --show-types option will show supported archive types." 1>&2
+    exit 1
+fi
+
+ARCHIVETYPES="zip tar.gz gz"
+
+if [ "$1" = '--show-types' ]; then
+    echo $ARCHIVETYPES
+    exit 0
+fi
+
+if [ "$1" = '--include-gzip-files' ]; then
+    INCLUDE_GZIP=$1
+    shift 1
+fi
+
+while [ "$*" ]; do
+    ARCHIVE=$1
+
+    if [ "$ARCHIVE" = "-" ]; then
+        echo "$PROGNAME: Reading archive filename from standard input..." 1>&2
+        read -r ARCHIVE || exit 0
+    else
+        shift 1
+    fi
+
+    if [ ! -e "$ARCHIVE" ]; then
+        echo "$PROGNAME: Archive file $ARCHIVE does not exist." 1>&2
+        exit 1
+    fi
+
+    # Get the archive extension.
+
+    ARCHIVEPATH=`dirname "$ARCHIVE"`
+    ARCHIVENAME=`basename "$ARCHIVE"`
+
+    # Process the most common archive types.
+    # This should correspond to the ARCHIVETYPES list above.
+
+    if [ "${ARCHIVENAME##*.}" = "zip" ]; then
+        unzip -n "$ARCHIVE" -d "$ARCHIVEPATH"
+    elif [ "${ARCHIVENAME#*.}" = "tar.gz" ]; then
+        tar zxkf "$ARCHIVE" -C "$ARCHIVEPATH"
+    elif [ "$INCLUDE_GZIP" ] && [ "${ARCHIVENAME##*.}" = "gz" ]; then
+        gunzip "$ARCHIVE"
+    fi
+done

@@ -1,0 +1,111 @@
+#!/bin/sh
+
+# Copyright (C) 2012, 2013 Ian Donaldson <ian.donaldson@biotek.uio.no>
+# Copyright (C) 2013 Paul Boddie <paul@boddie.org.uk>
+# Original author: Paul Boddie <paul.boddie@biotek.uio.no>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+if [ -e "irdata-config" ]; then
+    . "$PWD/irdata-config"
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" = '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME --check | --download | --import | --all
+
+Obtain missing data by exporting identifiers that do not correspond to sequence
+information and using the list of identifiers to retrieve available records in
+an activity separate from the original download activities.
+EOF
+    exit 1
+fi
+
+if [ "$1" = '--all' ] ; then
+    CHECK=$1
+    DOWNLOAD=$1
+    IMPORT=$1
+    shift 1
+fi
+
+if [ "$1" = '--check' ] ; then
+    CHECK=$1
+    shift 1
+fi
+
+if [ "$1" = '--download' ] ; then
+    DOWNLOAD=$1
+    shift 1
+fi
+
+if [ "$1" = '--import' ] ; then
+    IMPORT=$1
+    shift 1
+fi
+
+if [ ! "$CHECK" ] && [ ! "$DOWNLOAD" ] && [ ! "$IMPORT" ]; then
+    echo "$PROGNAME: Need to specify an operation or --all." 1>&2
+    exit 1
+fi
+
+DATADIR="$DATA/import/RefSeq.unknown"
+
+if [ ! -e "$DATADIR" ] ; then
+    mkdir "$DATADIR"
+fi
+
+if [ "$CHECK" ] ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_unknown_refseq.sql" "$DATADIR" $PSQL_OPTIONS ; then
+        echo "$PROGNAME: Could not export RefSeq identifiers not providing sequences." 1>&2
+        exit 1
+    fi
+
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_unknown_gi.sql" "$DATADIR" $PSQL_OPTIONS ; then
+        echo "$PROGNAME: Could not export GenBank identifiers not providing sequences." 1>&2
+        exit 1
+    fi
+
+    # Combine the unknown identifiers.
+
+    cat "$DATADIR/unknown_refseq" "$DATADIR/unknown_gi" > "$DATADIR/unknown_all"
+    RESULT="$DATADIR/unknown_all"
+fi
+
+if [ "$DOWNLOAD" ] ; then
+    if ! "$TOOLS/irdata_fetch_refseq.sh" "$DATADIR" "$DATADIR/unknown_all" ; then
+        echo "$PROGNAME: No RefSeq sequence records downloaded." 1>&2
+        exit 1
+    fi
+
+    RESULT="$DATADIR/unknown_all.result"
+fi
+
+if [ "$IMPORT" ] ; then
+    if [ ! -e "$DATADIR/refseq_proteins.txt.seq" ] || [ ! -e "$DATADIR/refseq_identifiers.txt" ]; then
+        echo "$PROGNAME: The required RefSeq downloads are not available. Try running this program with the --download option." 1>&2
+        exit 1
+    fi
+
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_unknown_refseq.sql" "$DATADIR" $PSQL_OPTIONS ; then
+        echo "$PROGNAME: Could not import missing sequences." 1>&2
+        exit 1
+    fi
+
+    RESULT=
+fi
+
+echo $RESULT
