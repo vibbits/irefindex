@@ -50,7 +50,7 @@ for FILENAME in $FILENAMES; do
     # Parse the FASTA files.
 
     if [ "$FILETYPE" = 'fasta' ] || [ "$FILETYPE" = 'fasta.gz' ]; then
-        if ! "$TOOLS/irdata_parse_fasta.py" "$DATADIR" 'sp,acc,id' 'id,acc,date,taxid,mw' "$FILENAME" ; then
+        if ! "$TOOLS/irdata_parse_fasta.py" 'UNIPROT' "$DATADIR" 'sp,acc,id' 'id,acc,date,taxid,mw' "$FILENAME" ; then
             echo "$PROGNAME: FASTA parsing of $FILENAME failed." 1>&2
             exit 1
         fi
@@ -76,7 +76,7 @@ for FILENAME in $FILENAMES; do
             "$SCRIPTS/irunpack-archive" --include-gzip-files "$FILENAME"
             FILENAME=$UNPACKED_FILENAME
         fi
-
+        
         # Remove the extension from the filename.
 
         BASENAME=`basename "$FILENAME"`
@@ -84,6 +84,7 @@ for FILENAME in $FILENAMES; do
 
         # Split the data file into pieces by first finding the offsets in the
         # filename.
+        echo $FILENAME
 
           "$TOOLS/irdata_split.py" -1 "$UNIPROT_SPLIT_INTERVAL" "$FILENAME" '//' \
         | "$SCRIPTS/irparallel" "echo {} | \"$SCRIPTS/irslice\" \"$FILENAME\" - | \"$TOOLS/irdata_parse_uniprot.py\" \"$DATADIR\" - \"${LEAFNAME}_%s-{}.txt\""

@@ -33,7 +33,7 @@ class Parser:
 
     NULL = r"\N"
 
-    def __init__(self, f, f_main, identifier_types, output_identifier_types):
+    def __init__(self, source, f, f_main, identifier_types, output_identifier_types):
 
         """
         Initialise the parser with the given input file object 'f', an output
@@ -42,7 +42,7 @@ class Parser:
         including types that are not provided in the data and will therefore be
         null in the output).
         """
-
+        self.source = source
         self.f = f
         self.f_main = f_main
         self.identifier_types = identifier_types
@@ -64,12 +64,26 @@ class Parser:
 
         for header_record in line.rstrip("\n").lstrip(">").split("\x01"):
             identifiers = {}
-
+            
             # Record data is separated from descriptions by white-space.
-            # Values are separated by pipe/bar characters.
+            
+            # depending on source e.g. Uniprot different iterables 
+            if self.source in ["PDB"]:
+                # Values are separated by space character and chain is split by _
+                header_elements = header_record.split(" ")[0].split("_")
+            elif self.source in ["UNIPROT", "IPI", "GENPEPT"]:
+                # Values are separated by pipe/bar characters.
+                header_elements = header_record.split("|")  
+            else:
+                raise ValueError, "Source type is not known. Parser has to be adapted."
+                
+            # Record data is separated from descriptions by white-space.
 
-            for identifier_type, field in map(None, self.identifier_types, header_record.split("|")):
-                identifiers[identifier_type] = field
+            for identifier_type, field in map(None, self.identifier_types, header_elements):
+                if field is not None:
+                    identifiers[identifier_type] = field
+                else:
+                    identifiers[identifier_type] = ''
 
             records.append(identifiers)
 
@@ -130,13 +144,14 @@ if __name__ == "__main__":
     progname = get_progname()
 
     try:
-        i = 1
-        data_directory = sys.argv[i]
-        identifier_types = sys.argv[i+1].split(",")
-        output_identifier_types = sys.argv[i+2].split(",")
-        filenames = sys.argv[i+3:]
+        i = 1 
+        source = sys.argv[i]
+        data_directory = sys.argv[i+1]
+        identifier_types = sys.argv[i+2].split(",")
+        output_identifier_types = sys.argv[i+3].split(",")
+        filenames = sys.argv[i+4:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <output data directory> <identifier types> <output identifier types> <data file>..." % progname
+        print >>sys.stderr, "Usage: %s <source> <output data directory> <identifier types> <output identifier types> <data file>..." % progname
         sys.exit(1)
 
     filename = None # used for exceptions
@@ -155,7 +170,7 @@ if __name__ == "__main__":
 
             f_out = open(join(data_directory, "%s_proteins.txt" % basename), "w")
             try:
-                parser = Parser(opener(filename), f_out, identifier_types, output_identifier_types)
+                parser = Parser(source, opener(filename), f_out, identifier_types, output_identifier_types)
                 try:
                     parser.parse()
                 finally:

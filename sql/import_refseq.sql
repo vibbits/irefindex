@@ -20,8 +20,8 @@ begin;
 
 create temporary table tmp_refseq_proteins (
     accession varchar,
-    version varchar,
-    gi integer not null,
+    version varchar not null,
+--    gi integer not null,
     taxid integer,
     actualsequence varchar not null,
     "sequence" varchar not null,
@@ -47,7 +47,7 @@ insert into refseq_proteins
         case when position('.' in version) <> 0 then
             cast(substring(version from position('.' in version) + 1) as integer)
         else null end as vnumber,
-        gi, taxid, "sequence", length, false as missing
+        taxid, "sequence", length, false as missing
     from tmp_refseq_proteins;
 
 insert into refseq_sequences

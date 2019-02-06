@@ -457,14 +457,13 @@ if __name__ == "__main__":
 
     try:
         # Redefine the corresponding multivalued fields according to the mode.
-
         if not source.startswith("MPI"):
             corresponding_fields = ()
             all_fields = standard_fields
             term_regexps = [standard_term_regexp]
         else:
             term_regexps = [mpidb_term_regexp, standard_term_regexp]
-
+        
         writer = iRefIndexWriter(source, directory)
 
         parser = Parser(writer)

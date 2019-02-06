@@ -126,7 +126,7 @@ class Parser:
         "See: http://web.expasy.org/docs/userman.html#OX_line"
 
         code, rest = line
-        key, value = rest.rstrip(";").split("=")
+        key, value = rest.rstrip(";").split(" ")[0].split("=")
         if key == "NCBI_TaxID":
             return value
         else:
@@ -319,6 +319,7 @@ if __name__ == "__main__":
             f = opener(filename)
 
         parser = Parser(f, open(mainfile, "w"), open(accessionsfile, "w"), open(identifiersfile, "w"), open(genenamesfile, "w"))
+        print >>sys.stderr, "here"
         try:
             parser.parse()
         finally:

@@ -17,15 +17,15 @@
 -- with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 create table refseq_proteins (
-    accession varchar,
-    version varchar,
+    accession varchar not null,
+    version varchar not null,
     vnumber integer,
-    gi integer not null,
+--    gi integer not null,
     taxid integer,
     "sequence" varchar not null,
     length integer not null,
     missing boolean not null default false, -- indicates whether the protein was initially missing
-    primary key(gi)
+    primary key(accession)
 );
 
 create table refseq_sequences (

@@ -23,7 +23,7 @@ begin;
 create temporary table tmp_pdb_proteins (
     accession varchar not null,
     chain varchar not null,
-    gi integer not null,
+--    gi integer not null,
     actualsequence varchar not null,
     "sequence" varchar not null,
     length integer not null,
@@ -36,7 +36,7 @@ create index tmp_pdb_proteins_sequence on tmp_pdb_proteins(sequence);
 analyze tmp_pdb_proteins;
 
 insert into pdb_proteins
-    select accession, chain, gi, "sequence", length
+    select accession, chain, "sequence", length
     from tmp_pdb_proteins;
 
 insert into pdb_sequences

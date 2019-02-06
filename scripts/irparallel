@@ -52,4 +52,6 @@ fi
 
 # The pipeline.
 
+echo $COMMAND
+
 xargs -P $PROCESSES $XARGS_I'{}' sh -c "$COMMAND"
