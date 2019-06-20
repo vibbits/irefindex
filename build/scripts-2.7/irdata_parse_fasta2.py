@@ -82,28 +82,28 @@ class Parser:
                 # >ERL63622.1 hypothetical protein L248_2681 [Lactobacillus shenzhenensis LY-73]
                 #TO DO:If there is no organism known, the line and sequence will be skipped
                 #
-                bracketmatch = re.search(r'^(.+\.[0-9])\s(.+)\(\[(.+)\]$', header_record)
+                bracketmatch = re.search(r'^(.+)\.([0-9])\s(.+)\(\[(.+)\]$', header_record)
                 if bracketmatch:
-                    bracketmatch = re.split(r'^(.+\.[0-9])\s(.+)\(\[(.+)\]$', header_record)
-                    if len(bracketmatch) == 5:
+                    bracketmatch = re.split(r'^(.+)\.([0-9])\s(.+)\(\[(.+)]$', header_record)
+                    if len(bracketmatch) == 6:
                         header_elements = bracketmatch[1:-1]
                     else:
-                        raise ValueError, "Header %s is not formatted as accession description [organism]  and should be corrected." % (header_record)
-                match = re.search(r'^(.+\.[0-9])\s(.+)\s\[(.+)\]$', header_record)
+                        raise ValueError, "Header %s is not formatted as accession description [organism] and should be corrected." % (header_record)
+                match = re.search(r'^(.+)\.([0-9])\s(.+)\s\[(.+)\]$', header_record)
+                print >>sys.stderr, "match: %s", match 
                 if match:
-                    match = re.split(r'^(.+\.[0-9])\s(.+)\s\[(.+)\]$', header_record)
-                    if len(match) == 5:
+                    match = re.split(r'^(.+)\.([0-9])\s(.+)\s\[(.+)\]$', header_record)
+                    if len(match) == 6:
                         header_elements = match[1:-1]
                     else:
-                        raise ValueError, "Header %s is not formatted as accession description [organism]  and should be corrected." % (header_record)
-                #print >> sys.stderr, "brmatch: %s" % (bracketmatch)
-                #print >> sys.stderr, "match: %s" % (match)
-                # Note: raise will stop the run!
-                #patent = re.search(r'^(.+)\.([0-9])\s(.+)[0-9]$', header_record)
-                if bracketmatch is None and match is None:
-                    header_elements = None 
-                    print >>sys.stderr, "Header %s is not formatted correctly (no organism)  and should be corrected" % (header_record)
+                        raise ValueError, "Header %s is not formatted as accession description [organism] and should be corrected." % (header_record)
                 
+                # Note: raise will stop the run!
+                patent = re.search(r'^(.+)\.([0-9])\s(.+)[0-9]$', header_record)
+                if patent:
+                    header_elements = None 
+                    print >>sys.stderr, "Header %s is not formatted correctly (no organism) and should be corrected" % (header_record)
+
 
                 # Values are formatted >ACCESSION.VERSION text with spaces([organism]
                 # Values are formatted >ACCESSION.VERSION very long text with spaces
@@ -117,8 +117,9 @@ class Parser:
                 raise ValueError, "Source type is not known. Parser has to be adapted."
 
             # Record data is separated from descriptions by white-space.
-            if header_elements is not None:
+            if header_elements is not None: 
                 for identifier_type, field in map(None, self.identifier_types, header_elements):
+                    print >>sys.stderr, "field %s" % (field)
                     if field is not None:
                         identifiers[identifier_type] = field
                     else:
@@ -146,7 +147,7 @@ class Parser:
             for identifier_type in self.output_identifier_types:
                 converted_record.append(identifiers.get(identifier_type, self.NULL))
             converted_records.append(converted_record)
-            #print >>sys.stderr, "Parsing identifier %s" % (converted_record)
+            print >>sys.stderr, "Parsing identifier %s" % (converted_record)
 
         return converted_records
 

@@ -44,15 +44,13 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
 fi
 
   "$SCRIPTS/argument-per-line" $FILENAMES \
-| "$SCRIPTS/irparallel" "\"$TOOLS/irdata_parse_fasta.py\" \"$DATADIR\" 'gi,ginr,db,acc,organism' 'acc,db,ginr,organism' {}"
+| "$SCRIPTS/irparallel" "\"$TOOLS/irdata_parse_fasta.py\" 'GENPEPT' \"$DATADIR\" 'acc,name,organism' 'acc,name,organism' {}"
 
-# Concatenate the output data, isolating the organism name from the organism
-# column.
+# Concatenate the output data
 # Tab character used in the sed command.
-TAB=`printf '\t'`
+#TAB=`printf '\t'`
 
   cat "$DATADIR"/*_proteins.txt \
-| sed -e "s/\(.*\)${TAB}\(.*\)${TAB}\(.*\)${TAB}.*\[\(.*\)\]${TAB}\(.*\)/\\1${TAB}\\2${TAB}\\3${TAB}\\4${TAB}\\5/" \
 > "$DATADIR/genpept_proteins.txt"
 
 "$TOOLS/irdata_process_signatures.sh" "$DATADIR" --append --append-length

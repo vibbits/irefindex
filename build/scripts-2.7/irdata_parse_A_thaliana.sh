@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (C) 2011 Ian Donaldson <ian.donaldson@biotek.uio.no>
+# Copyright (C) 2011, 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
 #
 # This program is free software; you can redistribute it and/or modify it under
@@ -23,14 +23,13 @@ else
     . 'irdata-config'
 fi
 
-OUTFILE='gene2refseq.txt'
-
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
 Usage: $PROGNAME <output data directory> <filename>
 
-Process the gene2refseq file (typically gene2refseq.gz), producing data suitable
-for iRefIndex in a file called $OUTFILE in the output data directory.
+Process the UniProt FlyBase or Yeast file (typically fly.txt or yeast.txt),
+producing data suitable for iRefIndex in a file with the same name in the output
+data directory.
 EOF
     exit 1
 fi
@@ -39,25 +38,23 @@ DATADIR=$1
 FILENAME=$2
 
 if [ ! "$DATADIR" ] || [ ! "$FILENAME" ]; then
-    echo "$PROGNAME: A data directory and an input filename must be specified." 1>&2
+    echo "$PROGNAME: A data directory and an input filename or - must be specified." 1>&2
     exit 1
 fi
 
-FILETYPE=${FILENAME##*.}
+OUTFILE=`basename "$FILENAME"`
+FILETYPE=${OUTFILE%%.*}
 
-if [ "$FILETYPE" = "gz" ]; then
-    READER='gunzip -c "$FILENAME"'
-else
-    READER='cat "$FILENAME"'
-fi
+# Find the last table header marker.
+#this is taken from fly but not necessart since there is not comment, it is just header
+#followed by data
+#START=`grep -ne '^__' "$FILENAME" | tail -n 1 | cut -d ':' -f 1`
 
-# Uncompress, remove the header, extract the taxid, geneid and protein accession
-# version. Then filter out records where information is missing. Finally, remove
-# duplicates.
+# Find the footer.
 
-  eval "$READER" \
-| tail -n +2 \
-| cut -f 1,2,6 \
-| grep -v -e '-' \
-| sort -uT /data/tmp \
+#END=`grep -ne '^----' "$FILENAME" | tail -n 2 | head -n 1 | cut -d ':' -f 1`
+
+# cat the file and present it to the parser.
+  cat "$FILENAME" \
+| "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
 > "$DATADIR/$OUTFILE"

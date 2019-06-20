@@ -42,4 +42,5 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
     exit 1
 fi
 
-"$TOOLS/irdata_parse_mitab.py" 'INNATEDB' "$DATADIR" $FILENAMES
+
+"$TOOLS/irdata_parse_mitab.py" 'APID' "$DATADIR" $FILENAMES

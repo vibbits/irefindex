@@ -41,5 +41,22 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
     echo "$PROGNAME: A data directory and input filenames must be specified." 1>&2
     exit 1
 fi
+echo "$FILENAMES" 1>&2
 
-"$TOOLS/irdata_parse_mpidb.py" 'MATRIXDB' "$DATADIR" $FILENAMES
+
+#preprocess input files to remove non protein-protein interaction records
+#save a copy of the original
+for THISFILE in $FILENAMES; do
+    ORIGINAL="$THISFILE".original
+    awk 'BEGIN {FS="\t";}{if ($21 == "psi-mi:\"MI:0326\"(protein)"  && $22 == "psi-mi:\"MI:0326\"(protein)") print $0;}' < "$THISFILE" > tmp
+    #catch errors - $? means return value of last function
+    if [ $? != 0 ]; then
+        echo "$PROGNAME: pre-processing of $THISFILE failed." 1>&2
+        exit 1
+    fi
+    mv $THISFILE $ORIGINAL
+    mv tmp $THISFILE
+    
+done
+
+"$TOOLS/irdata_parse_mitab.py" 'MATRIXDB' "$DATADIR" $FILENAMES
