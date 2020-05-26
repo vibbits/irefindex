@@ -17,7 +17,7 @@
 
 begin;
 
-\copy athaliana_accessions from '<directory>/Arabidopsis_thaliana.TAIR10.43.uniprot.tsv'
+\copy athaliana_accessions from '<directory>/Arabidopsis_thaliana.TAIR10.46.uniprot.tsv'
 
 analyze athaliana_accessions;
 

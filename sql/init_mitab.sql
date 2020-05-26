@@ -86,7 +86,7 @@ create table mitab_pubmed (
     filename varchar not null,
     line integer not null,
     interaction varchar not null,
-    pmid integer not null,
+    pmid varchar not null,
     entry integer not null,
     primary key(source, filename, line, entry)
 );

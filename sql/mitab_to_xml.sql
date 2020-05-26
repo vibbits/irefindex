@@ -102,7 +102,14 @@ insert into xml_xref
         'bibref' as property,
         'primaryRef' as reftype,
         cast(pmid as varchar) as refvalue,
-        'pubmed' as dblabel, 'MI:0446' as dbcode
+	case when pmid similar to '[0-9]+' then 'pubmed' 
+	     when pmid similar to '\d+.\d+/[a-zA-Z0-9\.\:]+' then 'DOI'
+             else NULL
+        end as dblabel,
+        case when pmid similar to '[0-9]+' then 'MI:0445'
+             when pmid similar to '\d+.\d+/[a-zA-Z0-9\.\:]+' then 'MI:0574'
+             else NULL
+        end as dbcode
     from mitab_pubmed
     union all
 

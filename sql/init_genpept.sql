@@ -1,13 +1,12 @@
 -- A simple schema purely for completing interactor data.
 
 create table genpept_proteins (
-    accession varchar not null,
+    version varchar not null,
     db varchar not null,
-    gi integer not null,
-    taxid integer,
+	taxid integer,
     "sequence" varchar not null,
     length integer not null,
-    primary key(accession, db)
+    primary key(version, db)
 );
 
 create table genpept_sequences (
@@ -17,7 +16,7 @@ create table genpept_sequences (
 );
 
 create table genpept_accessions (
-    accession varchar not null,
+    version varchar not null,
     shortform varchar not null,
-    primary key(accession)
+    primary key(version)
 );

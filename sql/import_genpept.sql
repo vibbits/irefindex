@@ -18,9 +18,8 @@
 begin;
 
 create temporary table tmp_genpept_proteins (
-    accession varchar not null,
+    version varchar not null,
     db varchar not null,
-    gi integer not null,
     organism varchar not null,
     actualsequence varchar not null,
     "sequence" varchar not null,
@@ -33,13 +32,13 @@ create index tmp_genpept_proteins_sequence on tmp_genpept_proteins(sequence);
 analyze tmp_genpept_proteins;
 
 insert into genpept_proteins
-    select accession, db, gi, case when taxids = 1 then taxid else null end, "sequence", length
+    select version, db, case when taxids = 1 then taxid else null end, "sequence", length
     from (
-        select accession, db, gi, "sequence", length, count(distinct taxid) as taxids, min(taxid) as taxid
+        select version, db, "sequence", length, count(distinct taxid) as taxids, min(taxid) as taxid
         from tmp_genpept_proteins
         left outer join taxonomy_names
             on organism = name
-        group by accession, db, gi, "sequence"
+        group by version, db, "sequence", length
         ) as X;
 
 insert into genpept_sequences
@@ -47,13 +46,13 @@ insert into genpept_sequences
     from tmp_genpept_proteins;
 
 create index genpept_proteins_sequence on genpept_proteins(sequence);
-create index genpept_proteins_gi on genpept_proteins(gi);
+create index genpept_proteins_gi on genpept_proteins(version);
 analyze genpept_proteins;
 
 insert into genpept_accessions
-    select accession, substring(accession from 1 for position('.' in accession) - 1)
+    select version, substring(version from 1 for position('.' in version) - 1)
     from genpept_proteins
-    group by accession;
+    group by version;
 
 create index genpept_accessions_shortform on genpept_accessions(shortform);
 analyze genpept_accessions;
