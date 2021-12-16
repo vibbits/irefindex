@@ -34,7 +34,7 @@ if __name__ == "__main__":
     try:
         filenames = sys.argv[1:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <data file>..." % progname
+        print("Usage: %s <data file>..." % progname, file=sys.stderr)
         sys.exit(1)
 
     have_exceptions = False
@@ -43,9 +43,9 @@ if __name__ == "__main__":
     for filename in filenames:
         try:
             parser.parse(filename)
-        except SAXException, exc:
-            print >>sys.stderr, "%s: Parsing failed: %s" % (progname, exc)
-            print filename
+        except SAXException as exc:
+            print("%s: Parsing failed: %s" % (progname, exc), file=sys.stderr)
+            print(filename)
             have_exceptions = True
 
     sys.exit(have_exceptions and 1 or 0)

@@ -25,7 +25,7 @@ import os, tempfile
 import subprocess
 
 def substitute(s, defs):
-    for name, value in defs.items():
+    for name, value in list(defs.items()):
         s = s.replace("<%s>" % name, value)
     return s
 
@@ -50,10 +50,10 @@ if __name__ == "__main__":
     progname = get_progname()
 
     if len(sys.argv) < 3:
-        print >>sys.stderr, "Usage: %s ( <database> | --output-command )" \
+        print("Usage: %s ( <database> | --output-command )" \
             " <template> [ <data_directory> ]" \
             " [ --psql-options ... ]" \
-            " [ --defs ( <name> <value> ) ... ]" % progname
+            " [ --defs ( <name> <value> ) ... ]" % progname, file=sys.stderr)
         sys.exit(1)
 
     database_name = sys.argv[1]
@@ -93,7 +93,7 @@ if __name__ == "__main__":
         cmd = f.read()
         cmd = substitute(cmd, defs)
         if output_command:
-            print cmd
+            print(cmd)
         else:
             execute_command(cmd, database_name, psql_options)
     finally:

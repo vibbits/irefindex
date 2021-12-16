@@ -118,7 +118,7 @@ class Parser:
 
         "Parse the given 'line', appending output to the writer."
 
-        data = dict(zip(all_fields, line.strip().split("\t")))
+        data = dict(list(zip(all_fields, line.strip().split("\t"))))
 
         # Convert all list values into lists.
 
@@ -134,12 +134,12 @@ class Parser:
         # Fix aliases.
 
         for key in ("aliasA", "aliasB"):
-            data[key] = map(fix_alias, data[key])
+            data[key] = list(map(fix_alias, data[key]))
 
         # Fix controlled vocabulary fields.
 
         for key in ("method", "interactionType", "sourcedb"):
-            data[key] = map(fix_vocabulary_term, data[key])
+            data[key] = list(map(fix_vocabulary_term, data[key]))
 
         # Detect multi-line interactions.
         # Keep the "last line position" in a dictionary for each interaction
@@ -174,7 +174,7 @@ class Writer:
         self.output_line = 1
 
     def write_line(self, out, values):
-        print >>out, "\t".join(map(str, values))
+        print("\t".join(map(str, values)), file=out)
 
     def get_experiment_data(self, data):
 
@@ -211,7 +211,7 @@ class Writer:
             if length is None:
                 length = len(values)
             elif length != len(values):
-                raise ValueError, "Field %s has %d values but preceding fields have %d values." % (key, len(values), length)
+                raise ValueError("Field %s has %d values but preceding fields have %d values." % (key, len(values), length))
 
             fields.append(values)
 
@@ -260,7 +260,7 @@ class MITABWriter(Writer):
             os.mkdir(self.directory)
 
         self.out = open(self.get_filename(), "w")
-        print >>self.out, "#" + "\t".join(standard_fields)
+        print("#" + "\t".join(standard_fields), file=self.out)
 
     def append(self, data):
 
@@ -291,7 +291,7 @@ class iRefIndexWriter(Writer):
         self.files = {}
 
     def close(self):
-        for f in self.files.values():
+        for f in list(self.files.values()):
             f.close()
         self.files = {}
 
@@ -400,7 +400,7 @@ def fix_vocabulary_term(s):
         match = regexp.match(s)
         if match:
             return "%s(%s)" % (match.group("term"), match.group("description"))
-    raise ValueError, "Term %r is not well-formed." % s
+    raise ValueError("Term %r is not well-formed." % s)
 
 def fix_alias(s):
     #this is a hack for MPI sources that incorrectly label aliases as from
@@ -421,7 +421,7 @@ def split_vocabulary_term(s):
         match = regexp.match(s)
         if match:
             return (match.group("term"), match.group("description"))
-    raise ValueError, "Term %r is not well-formed." % s
+    raise ValueError("Term %r is not well-formed." % s)
 
 def split_uid(s):
     '''given the string "a:b|c:d" return the tuple (c,d) or (-,-) for the string "-"'''
@@ -439,7 +439,7 @@ def split_taxid(s):
     if match:
         return (match.group("taxid"), match.group("description"))
     else:
-        raise ValueError, "Taxonomy %r is not well-formed." % s
+        raise ValueError("Taxonomy %r is not well-formed." % s)
 
 if __name__ == "__main__":
     from irdata.cmd import get_progname
@@ -452,7 +452,7 @@ if __name__ == "__main__":
         directory = sys.argv[2]
         filenames = sys.argv[3:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <source> <output data directory> <filename>..." % progname
+        print("Usage: %s <source> <output data directory> <filename>..." % progname, file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -475,8 +475,8 @@ if __name__ == "__main__":
         finally:
             parser.close() # closes the writer
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed with exception: %s" % (progname, exc)
+    except Exception as exc:
+        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

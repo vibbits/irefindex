@@ -130,7 +130,7 @@ class PSIParser(EmptyElementParser):
         #print >>sys.stderr, "Scoping "
 
         for part in self.current_path[-1::-1]:
-            if part in self.scopes.values():
+            if part in list(self.scopes.values()):
                 scopes.append(part)
 
                 # Stop collecting scopes if n have been found.
@@ -174,10 +174,10 @@ class PSIParser(EmptyElementParser):
         that are usable for subsequent processing.
         """
 
-        if self.scopes.has_key(name):
+        if name in self.scopes:
             name = self.scopes[name]
 
-            if self.identifiers.has_key(name):
+            if name in self.identifiers:
                 context = self.get_scopes(1)[0]
 
                 # Handle PSI MI XML 1.0 identifiers which are absent.
@@ -190,7 +190,7 @@ class PSIParser(EmptyElementParser):
                 # relationship to participants is implicit, since these might be
                 # reused within interactions (seen in InnateDB).
 
-                if not attrs.has_key("id") or self.is_implicit(name, context):
+                if "id" not in attrs or self.is_implicit(name, context):
                     attrs = dict(attrs)
                     attrs["id"] = str(self.identifiers[name])
                     self.identifiers[name] += 1
@@ -229,7 +229,7 @@ class PSIParser(EmptyElementParser):
         # -> experimentDescription (element), experimentList (parent),
         #    entry (property), None (section)
         
-        element, parent, property, section = map(lambda x, y: x or y, self.current_path[-1:-5:-1], [None] * 4)
+        element, parent, property, section = list(map(lambda x, y: x or y, self.current_path[-1:-5:-1], [None] * 4))
 
         # Get the element's attributes.
 
@@ -262,7 +262,7 @@ class PSIParser(EmptyElementParser):
         # Implicit mappings applying only within an interaction scope.
 
         elif element == "experimentDescription":
-            if self.path_to_attrs.has_key("interaction"):
+            if "interaction" in self.path_to_attrs:
                 self.writer.append((element, entry, attrs["id"], self.path_to_attrs["interaction"]["id"]))
 
         # Interactor organisms.
@@ -381,9 +381,9 @@ class PSIWriter(Writer):
         # Each record is prefixed with the source and filename.
 
         data = (self.source, self.filename) + data[1:]
-        data = map(tab_to_space, data)
-        data = map(bulkstr, data)
-        print >>self.files[file], "\t".join(data)
+        data = list(map(tab_to_space, data))
+        data = list(map(bulkstr, data))
+        print("\t".join(data), file=self.files[file])
 
 if __name__ == "__main__":
     from irdata.cmd import get_progname
@@ -397,7 +397,7 @@ if __name__ == "__main__":
         source = sys.argv[i+1]
         filenames = sys.argv[i+2:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <data directory> <data source name> <data file>..." % progname
+        print("Usage: %s <data directory> <data source name> <data file>..." % progname, file=sys.stderr)
         sys.exit(1)
 
     writer = PSIWriter(data_directory, source)
@@ -408,8 +408,8 @@ if __name__ == "__main__":
         try:
             for filename in filenames:
                 parser.parse(filename)
-        except Exception, exc:
-            print >>sys.stderr, "%s: Parsing failed with exception: %s" % (progname, exc)
+        except Exception as exc:
+            print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
             sys.exit(1)
     finally:
         writer.close()

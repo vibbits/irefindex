@@ -30,7 +30,7 @@ def parse_line(line):
         raise EOFError
     code, space, rest = line[:2], line[2:5], line[5:]
     if code != "//" and space != "   ":
-        raise ValueError, "Line was not of the form 'code   data': %r" % line
+        raise ValueError("Line was not of the form 'code   data': %r" % line)
     return code, rest.rstrip("\n")
 
 class Parser:
@@ -261,19 +261,19 @@ class Parser:
 
         # Write PubMed references.
 
-        if record.has_key("RX"):
+        if "RX" in record:
             for pos, pmid in enumerate(record["RX"]):
                 self.f_identifiers.write("%s\tPubMed\t%s\t%s\n" % (record["ID"], pmid, pos))
 
         # Write cross-references.
 
-        if record.has_key("DR"):
+        if "DR" in record:
             for type, identifier in record["DR"]:
                 self.f_identifiers.write("%s\t%s\t%s\t0\n" % (record["ID"], type, identifier))
 
         # Write gene names.
 
-        if record.has_key("GN"):
+        if "GN" in record:
             for pos, name in enumerate(record["GN"]):
                 self.f_gene_names.write("%s\t%s\t%s\n" % (record["ID"], name, pos))
 
@@ -293,7 +293,7 @@ if __name__ == "__main__":
         else:
             format = None
     except IndexError:
-        print >>sys.stderr, "Usage: %s <output data directory> <data file> [ <format> ]" % progname
+        print("Usage: %s <output data directory> <data file> [ <format> ]" % progname, file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -309,10 +309,10 @@ if __name__ == "__main__":
         genenamesfile = join(data_directory, format % "gene_names")
 
         if filename == "-":
-            print >>sys.stderr, "%s: Parsing standard input" % progname
+            print("%s: Parsing standard input" % progname, file=sys.stderr)
             f = sys.stdin
         else:
-            print >>sys.stderr, "%s: Parsing %s" % (progname, leafname)
+            print("%s: Parsing %s" % (progname, leafname), file=sys.stderr)
             if ext.endswith("gz"):
                 opener = gzip.open
             else:
@@ -327,8 +327,8 @@ if __name__ == "__main__":
             if filename != "-":
                 f.close()
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc)
+    except Exception as exc:
+        print("%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

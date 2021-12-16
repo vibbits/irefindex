@@ -31,8 +31,8 @@ if __name__ == "__main__":
     try:
         infile, outfile = sys.argv[1:3]
     except ValueError:
-        print >>sys.stderr, """\
-Usage: %s <sequences file> <signatures file> [ --append ] [ --append-length ] [ --legacy ]""" % split(sys.argv[0])[-1]
+        print("""\
+Usage: %s <sequences file> <signatures file> [ --append ] [ --append-length ] [ --legacy ]""" % split(sys.argv[0])[-1], file=sys.stderr)
         sys.exit(1)
 
     append = "--append" in sys.argv

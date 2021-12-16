@@ -239,16 +239,16 @@ class Parser:
 
         "Parse the given 'line', appending output to the writer."
 
-        data = dict(zip(all_fields, line.strip().split("\t")))
+        data = dict(list(zip(all_fields, line.strip().split("\t"))))
         
-        print >>sys.stderr, "line: %s" % line
+        print("line: %s" % line, file=sys.stderr)
         # Convert all pipe-delimited list values into lists.
         for key in list_fields:
             data[key] = pipe_2_list(data[key], return_na = True)
         
-        print >>sys.stderr, "data: %s" % data
-        print >>sys.stderr, "typeA: %s" % data["typeA"] 
-        print >>sys.stderr, "typeB: %s" % data["typeB"] 
+        print("data: %s" % data, file=sys.stderr)
+        print("typeA: %s" % data["typeA"], file=sys.stderr) 
+        print("typeB: %s" % data["typeB"], file=sys.stderr) 
         # Check that line is suitable for parsing otherwise skip to next line
         # Omit non protein-protein interactions and other records where A or B or taxid are ill-defined
         if data["uidA"] == "-" or data["uidB"] == "-":
@@ -263,14 +263,14 @@ class Parser:
         
         # Fix aliases.
         for key in ("aliasA", "aliasB"):
-            data[key] = map(fix_alias, data[key])
+            data[key] = list(map(fix_alias, data[key]))
 
         # Fix controlled vocabulary fields.
         for key in ("method", "interactionType", "sourcedb"):
-            print >>sys.stderr, "key: %s" % key 
-            print >>sys.stderr, "data: %s" % data[key] 
-            data[key] = map(fix_vocabulary_term, data[key])
-            print >>sys.stderr, "data full: %s" % data 
+            print("key: %s" % key, file=sys.stderr) 
+            print("data: %s" % data[key], file=sys.stderr) 
+            data[key] = list(map(fix_vocabulary_term, data[key]))
+            print("data full: %s" % data, file=sys.stderr) 
         '''
         Detect multi-line interactions representing protein complexes.
         Distinct interaction records are distinguished based on there being
@@ -318,7 +318,7 @@ class Writer:
         self.output_line = 1
 
     def write_line(self, out, values):
-        print >>out, "\t".join(map(str, values))
+        print("\t".join(map(str, values)), file=out)
 
     def get_experiment_data(self, data):
 
@@ -367,7 +367,7 @@ class Writer:
             if length is None:
                 length = len(values)
             elif length != len(values):
-                raise ValueError, "Field %s has %d values but preceding fields have %d values." % (key, len(values), length)
+                raise ValueError("Field %s has %d values but preceding fields have %d values." % (key, len(values), length))
 
             fields.append(values)
 
@@ -419,7 +419,7 @@ class MITABWriter(Writer):
             os.mkdir(self.directory)
 
         self.out = open(self.get_filename(), "w")
-        print >>self.out, "#" + "\t".join(mitab25_fields)
+        print("#" + "\t".join(mitab25_fields), file=self.out)
 
     def append(self, data):
 
@@ -450,7 +450,7 @@ class iRefIndexWriter(Writer):
         self.files = {}
 
     def close(self):
-        for f in self.files.values():
+        for f in list(self.files.values()):
             f.close()
         self.files = {}
 
@@ -537,7 +537,7 @@ class iRefIndexWriter(Writer):
                             self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
                        
                         else:
-                            print >> sys.stderr, " %s is not a pubmedID or DOI: citation suppressed" % (value)
+                            print(" %s is not a pubmedID or DOI: citation suppressed" % (value), file=sys.stderr)
                             #value = '-'
                             #self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
                     if (prefix.lower()  == "doi"):
@@ -615,7 +615,7 @@ def fix_vocabulary_term(s):
 
         if match:
             return "%s(%s)" % (match.group("term"), match.group("description"))
-    raise ValueError, "Term %r is not well-formed.  Fail in fix_vocabulary_term." % s
+    raise ValueError("Term %r is not well-formed.  Fail in fix_vocabulary_term." % s)
 
 def fix_alias(s):
     '''
@@ -643,7 +643,7 @@ def split_vocabulary_term(s):
         match = regexp.match(s)
         if match:
             return (match.group("term"), match.group("description"))
-    raise ValueError, "Term %r is not well-formed. Fail in split_vocabulary_term." % s
+    raise ValueError("Term %r is not well-formed. Fail in split_vocabulary_term." % s)
 
 def get_one_uid(s):
     '''
@@ -673,7 +673,7 @@ def split_taxid(s):
         description = match.group("description") or "NA" #allow missing description
         return (taxid, description)
     else:
-        raise ValueError, "Taxonomy %r is not well-formed." % s
+        raise ValueError("Taxonomy %r is not well-formed." % s)
 
 def detect_file_format(filenames):
     '''
@@ -743,7 +743,7 @@ if __name__ == "__main__":
         directory = sys.argv[2]
         filenames = sys.argv[3:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <source> <output data directory> <filename>..." % progname
+        print("Usage: %s <source> <output data directory> <filename>..." % progname, file=sys.stderr)
         sys.exit(1)
 
     try:
@@ -769,8 +769,8 @@ if __name__ == "__main__":
         finally:
             parser.close() # closes the writer
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed with exception: %s" % (progname, exc)
+    except Exception as exc:
+        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

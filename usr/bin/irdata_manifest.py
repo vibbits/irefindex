@@ -75,27 +75,27 @@ if __name__ == "__main__":
     progname = get_progname()
 
     if len(sys.argv) < 2:
-        print >>sys.stderr, "Usage: %s <url>" % progname
+        print("Usage: %s <url>" % progname, file=sys.stderr)
         sys.exit(1)
 
     url = sys.argv[1]
 
     try:
         d = libxml2dom.parseURI(url, html=True)
-        print >>sys.stdout,"%s" % d
-        print >>sys.stdout, "test1"
-        print >>sys.stderr, "test2"
+        print("%s" % d, file=sys.stdout)
+        print("test1", file=sys.stdout)
+        print("test2", file=sys.stderr)
 
         for line in sys.stdin.readlines():
             name, filter_list, path = line.strip().split("\t")
             value = d.xpath(path)
             for filter in filter_list.split(","):
                 filter = filters[filter]
-                value = filter(value)
-            print >>sys.stdout, "%s\t test3   %s" % (name, value)
+                value = list(filter(value))
+            print("%s\t test3   %s" % (name, value), file=sys.stdout)
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Manifest retrieval failed with exception: %s" % (progname, exc)
+    except Exception as exc:
+        print("%s: Manifest retrieval failed with exception: %s" % (progname, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

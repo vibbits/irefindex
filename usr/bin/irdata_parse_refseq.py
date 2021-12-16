@@ -188,15 +188,15 @@ class Parser:
             pass
 
     def write_record(self, record):
-        if record.has_key("LOCUS"):
+        if "LOCUS" in record:
 
             # Handle missing fields in old eUtils records.
             for key in self.optional:
-                if not record.has_key(key):
+                if key not in record:
                     record[key] = r"\N"
 
             self.f_main.write("%(ACCESSION)s\t%(VERSION)s\t%(TAXID)s\t%(SEQUENCE)s\n" % record)
-            if record.has_key("PUBMED"):
+            if "PUBMED" in record:
                 for pos, pmid in enumerate(record["PUBMED"]):
                     self.f_identifiers.write("%s\tPubMed\t%s\t%s\n" % (record["ACCESSION"], pmid, pos))
 
@@ -212,7 +212,7 @@ if __name__ == "__main__":
         data_directory = sys.argv[i]
         filenames = sys.argv[i+1:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <output data directory> <data file>..." % progname
+        print("Usage: %s <output data directory> <data file>..." % progname, file=sys.stderr)
         sys.exit(1)
 
     filename = None # used for exceptions
@@ -221,7 +221,7 @@ if __name__ == "__main__":
         for filename in filenames:
             leafname = split(filename)[-1]
             basename, ext = splitext(leafname)
-            print >>sys.stderr, "%s: Parsing %s" % (progname, leafname)
+            print("%s: Parsing %s" % (progname, leafname), file=sys.stderr)
 
             if ext.endswith("gz"):
                 opener = gzip.open
@@ -236,8 +236,8 @@ if __name__ == "__main__":
             finally:
                 parser.close()
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc)
+    except Exception as exc:
+        print("%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

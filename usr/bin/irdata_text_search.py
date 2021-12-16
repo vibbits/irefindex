@@ -35,7 +35,7 @@ def get_index(f):
     "Return an index stored in the given file 'f'."
 
     index = []
-    for line in f.xreadlines():
+    for line in f:
         line = line.strip()
         if line:
             term, offset = line.split("\t")
@@ -60,14 +60,14 @@ if __name__ == "__main__":
         matches = syntax.get_args(sys.argv[1:])
         args = matches[0]
     except IndexError:
-        print >>sys.stderr, "Syntax:"
-        print >>sys.stderr, syntax_description
+        print("Syntax:", file=sys.stderr)
+        print(syntax_description, file=sys.stderr)
         sys.exit(1)
     else:
-        if args.has_key("help"):
-            print >>sys.stderr, __doc__
-            print >>sys.stderr, "Syntax:"
-            print >>sys.stderr, syntax_description
+        if "help" in args:
+            print(__doc__, file=sys.stderr)
+            print("Syntax:", file=sys.stderr)
+            print(syntax_description, file=sys.stderr)
             sys.exit(1)
 
     # Get the index.
@@ -82,14 +82,14 @@ if __name__ == "__main__":
 
     # Get the field to be treated as the indexed term.
 
-    if args.has_key("index"):
+    if "index" in args:
         field = index_for_int(args["index"])
     else:
         field = 0
 
     # Get the field separator.
 
-    if args.has_key("separator"):
+    if "separator" in args:
         separator = args["separator"]
     else:
         separator = "\t"
