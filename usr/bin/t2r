@@ -1,0 +1,5 @@
+#!/bin/awk -f
+#t2r - tab to rows - convert a tab separated file to
+#one row per field
+BEGIN{FS="\t";OFS="\n";ORS="\n\n*********************\n\n";}
+{$1=$1;print}

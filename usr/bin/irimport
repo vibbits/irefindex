@@ -1,0 +1,98 @@
+#!/bin/sh
+
+# Copyright (C) 2011, 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
+# Original author: Paul Boddie <paul.boddie@biotek.uio.no>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 3 of the License, or (at your option) any later
+# version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+if [ -e "irdata-config" ]; then
+    . "$PWD/irdata-config"
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+if [ "$1" = '--help' ]; then
+    cat 1>&2 <<EOF
+Usage: $PROGNAME [ --check ] ( --all | --xml | --mitab | <source>... )
+
+Import data from the different sources into the configured database. The sources
+are configured to be the following when --all is specified:
+
+$ALLSOURCES
+
+If --xml is specified, only the following XML-based sources will be imported:
+
+$XMLSOURCES
+
+If --mitab is specified, only the following XML-based sources will be imported:
+
+$TABSOURCES
+
+Sources that are to be excluded are defined to be the following:
+
+$EXCLUDEDSOURCES
+
+If --check is specified, the database will be inspected for imported sources.
+EOF
+    exit 1
+fi
+
+if [ "$1" = '--check' ]; then
+    CHECK=$1
+    shift 1
+else
+    CHECK=
+fi
+
+SOURCES=$*
+
+if [ "$SOURCES" = '--all' ]; then
+    SOURCES=$ALLSOURCES
+elif [ "$SOURCES" = '--xml' ]; then
+    SOURCES=$XMLSOURCES
+elif [ "$SOURCES" = '--mitab' ]; then
+    SOURCES=$TABSOURCES
+elif [ ! "$SOURCES" ]; then
+    echo "$PROGNAME: No sources specified." 1>&2
+    exit 1
+fi
+
+if [ "$CHECK" ]; then
+    "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_sources.sql" "$DATA" $PSQL_OPTIONS
+    IMPORTEDSOURCES=`cat "$DATA/imported_sources"`
+fi
+
+for SOURCE in $SOURCES ; do
+
+    # Skip excluded sources.
+
+    if ! isin "$SOURCE" $EXCLUDEDSOURCES ; then
+
+        # Either check the source.
+
+        if [ "$CHECK" ]; then
+            if ! isin "$SOURCE" $IMPORTEDSOURCES ; then
+                echo "$PROGNAME: Source $SOURCE not present in the database." 1>&2
+            else
+                echo "$SOURCE"
+            fi
+
+        # Or import the source.
+
+        else
+            "$SCRIPTS/irimport-source" "$SOURCE"
+        fi
+    fi
+done
