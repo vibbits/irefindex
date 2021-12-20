@@ -45,19 +45,19 @@ def main():
         matches = syntax.get_args(sys.argv[1:])
         args = matches[0]
     except IndexError:
-        print >>sys.stderr, "Syntax:"
-        print >>sys.stderr, syntax_description
+        print("Syntax:", file=sys.stderr)
+        print(syntax_description, file=sys.stderr)
         sys.exit(1)
     else:
-        if args.has_key("help"):
-            print >>sys.stderr, __doc__
-            print >>sys.stderr, "Syntax:"
-            print >>sys.stderr, syntax_description
+        if "help" in args:
+            print(__doc__, file=sys.stderr)
+            print("Syntax:", file=sys.stderr)
+            print(syntax_description, file=sys.stderr)
             sys.exit(1)
 
-    fields = map(index_for_int, args["fields"].split(","))
+    fields = list(map(index_for_int, args["fields"].split(",")))
 
-    if args.has_key("filename"):
+    if "filename" in args:
         filename = filename_or_stream = args["filename"]
     else:
         filename_or_stream = reread(sys.stdin)
@@ -78,8 +78,8 @@ def main():
 
                 writer.append(details)
 
-        except IOError, exc:
-            print >>sys.stderr, "%s: %s" % (get_progname(), exc)
+        except IOError as exc:
+            print("%s: %s" % (get_progname(), exc), file=sys.stderr)
 
     finally:
         reader.close()

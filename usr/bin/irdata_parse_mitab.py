@@ -239,7 +239,7 @@ class Parser:
 
         "Parse the given 'line', appending output to the writer."
 
-        data = dict(zip(all_fields, line.strip().split("\t")))
+        data = dict(list(zip(all_fields, line.strip().split("\t"))))
         
         #print >>sys.stderr, "line: %s" % line
         # Convert all pipe-delimited list values into lists.
@@ -263,14 +263,14 @@ class Parser:
 		return
         # Fix aliases.
         for key in ("aliasA", "aliasB"):
-            data[key] = map(fix_alias, data[key])
+            data[key] = list(map(fix_alias, data[key]))
 
         # Fix controlled vocabulary fields.
         for key in ("method", "interactionType", "sourcedb"):
             #print >>sys.stderr, "key: %s" % key 
             #print >>sys.stderr, "data: %s" % data[key] 
-            data[key] = map(fix_vocabulary_term, data[key])
-            print >>sys.stderr, "data full: %s" % data 
+            data[key] = list(map(fix_vocabulary_term, data[key]))
+            print("data full: %s" % data, file=sys.stderr) 
         '''
         Detect multi-line interactions representing protein complexes.
         Distinct interaction records are distinguished based on there being
@@ -318,7 +318,7 @@ class Writer:
         self.output_line = 1
 
     def write_line(self, out, values):
-        print >>out, "\t".join(map(str, values))
+        print("\t".join(map(str, values)), file=out)
 
     def get_experiment_data(self, data):
 
@@ -367,7 +367,7 @@ class Writer:
             if length is None:
                 length = len(values)
             elif length != len(values):
-                raise ValueError, "Field %s has %d values but preceding fields have %d values." % (key, len(values), length)
+                raise ValueError("Field %s has %d values but preceding fields have %d values." % (key, len(values), length))
 
             fields.append(values)
 
@@ -419,7 +419,7 @@ class MITABWriter(Writer):
             os.mkdir(self.directory)
 
         self.out = open(self.get_filename(), "w")
-        print >>self.out, "#" + "\t".join(mitab25_fields)
+        print("#" + "\t".join(mitab25_fields), file=self.out)
 
     def append(self, data):
 
@@ -450,7 +450,7 @@ class iRefIndexWriter(Writer):
         self.files = {}
 
     def close(self):
-        for f in self.files.values():
+        for f in list(self.files.values()):
             f.close()
         self.files = {}
 
@@ -526,7 +526,7 @@ class iRefIndexWriter(Writer):
             for key in ("pmids",):
                 for entry, s in enumerate(data[key]):
                     prefix, value = colon_2_tuple(s)
-                    print >> sys.stderr, " %s %s" % (prefix, value)
+                    print(" %s %s" % (prefix, value), file=sys.stderr)
                     if prefix == "pubmed":
                         ##INNATEDB fix, space after some pubmedID
                         if " " in value:
@@ -542,7 +542,7 @@ class iRefIndexWriter(Writer):
                             self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
                        
                         else:
-                            print >> sys.stderr, " %s is not a pubmedID or DOI: citation suppressed" % (value)
+                            print(" %s is not a pubmedID or DOI: citation suppressed" % (value), file=sys.stderr)
                             #value = '-'
                             #self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
                     if (prefix.lower()  == "doi"):
@@ -620,7 +620,7 @@ def fix_vocabulary_term(s):
 
         if match:
             return "%s(%s)" % (match.group("term"), match.group("description"))
-    raise ValueError, "Term %r is not well-formed.  Fail in fix_vocabulary_term." % s
+    raise ValueError("Term %r is not well-formed.  Fail in fix_vocabulary_term." % s)
 
 def fix_alias(s):
     '''
@@ -648,7 +648,7 @@ def split_vocabulary_term(s):
         match = regexp.match(s)
         if match:
             return (match.group("term"), match.group("description"))
-    raise ValueError, "Term %r is not well-formed. Fail in split_vocabulary_term." % s
+    raise ValueError("Term %r is not well-formed. Fail in split_vocabulary_term." % s)
 
 def get_one_uid(s):
     '''
@@ -678,7 +678,7 @@ def split_taxid(s):
         description = match.group("description") or "NA" #allow missing description
         return (taxid, description)
     else:
-        raise ValueError, "Taxonomy %r is not well-formed." % s
+        raise ValueError("Taxonomy %r is not well-formed." % s)
 
 def detect_file_format(filenames):
     '''
@@ -706,7 +706,7 @@ def detect_file_format(filenames):
             return("mitab25")
         if len(data) == len(mitab26_fields):
             return("mitab26")
-	print len(data)
+	print(len(data))
         if len(data) == len(mitab27_fields):
             return("mitab27")
         if len(data) == len(irefindex_fields):
@@ -749,13 +749,13 @@ if __name__ == "__main__":
         directory = sys.argv[2]
         filenames = sys.argv[3:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <source> <output data directory> <filename>..." % progname
+        print("Usage: %s <source> <output data directory> <filename>..." % progname, file=sys.stderr)
         sys.exit(1)
 
     try:
         # set up based on type of file to be parsed.
         file_format = detect_file_format(filenames)
-	print >>sys.stderr, "file format: %s" % file_format
+	print("file format: %s" % file_format, file=sys.stderr)
         if file_format == "unknown":
             sys.exit(1)
         all_fields = get_all_fields(file_format)
@@ -776,8 +776,8 @@ if __name__ == "__main__":
         finally:
             parser.close() # closes the writer
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed with exception: %s" % (progname, exc)
+    except Exception as exc:
+        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

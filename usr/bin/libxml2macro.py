@@ -168,7 +168,7 @@ def process_getattr(node, prefix, parent, index=None):
                 compiler.ast.Name("Node_%s" % node.attrname),
                 [node.expr]
                 )
-            for key, value in parent.__dict__.items():
+            for key, value in list(parent.__dict__.items()):
                 # Detect lists.
                 if hasattr(value, "__len__") and node in value:
                     index = value.index(node)
@@ -249,7 +249,7 @@ def process_file(filename):
 if __name__ == "__main__":
     import sys
     if len(sys.argv) < 2:
-        print "libxml2macro.py <module-filename>"
+        print("libxml2macro.py <module-filename>")
         sys.exit(1)
     process_file(sys.argv[1])
 

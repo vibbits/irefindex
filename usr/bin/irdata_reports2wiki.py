@@ -53,7 +53,7 @@ def file_to_wiki(pathname, filename, wikitype, separator, blank_value, use_headi
                 ))
 
         first_line = 1
-        for line in f.xreadlines():
+        for line in f:
 
             if not first_line:
                 if wikitype == "MediaWiki":
@@ -137,7 +137,7 @@ if __name__ == "__main__":
         else:
             format = "MediaWiki"
     except IndexError:
-        print >>sys.stderr, "Usage: %s <data directory> <output file> [ <format> ]" % progname
+        print("Usage: %s <data directory> <output file> [ <format> ]" % progname, file=sys.stderr)
         sys.exit(1)
 
     leafname = split(filename)[-1]

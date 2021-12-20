@@ -51,11 +51,11 @@ if __name__ == "__main__":
         else:
             record_terminator = ""
     except (IndexError, ValueError):
-        print >>sys.stderr, """\
+        print("""\
 Usage: %s [ -1 ] <interval> <input filename> [ <record terminator> ]
 
 Example: %s 10000 uniprot_sprot.dat '//'
-    """ % (progname, progname)
+    """ % (progname, progname), file=sys.stderr)
         sys.exit(1)
 
     leafname = split(infile)[-1]
@@ -95,7 +95,7 @@ Example: %s 10000 uniprot_sprot.dat '//'
                 # no length.
 
                 if f_in.readline():
-                    print one_based and (start + 1) or start
+                    print(one_based and (start + 1) or start)
 
                 break
 
@@ -109,14 +109,14 @@ Example: %s 10000 uniprot_sprot.dat '//'
                 # no length.
 
                 if not line:
-                    print one_based and (start + 1) or start
+                    print(one_based and (start + 1) or start)
                     break
 
             # With a record terminator found, indicate the start of the fragment
             # and the length of the fragment.
 
             else:
-                print one_based and (start + 1) or start, pos - start
+                print(one_based and (start + 1) or start, pos - start)
 
             start = pos
             pos += interval

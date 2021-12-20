@@ -1,3 +1,0 @@
-UPDATE xml_xref_experiment_methods
-SET refvaluepsi = 'psi-mi:"' || refvalue || '"'
-WHERE length(refvalue) = 7;

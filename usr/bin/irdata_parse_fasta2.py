@@ -23,11 +23,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import re
-
-try:
-    set
-except NameError:
-    from sets import Set as set
+from itertools import zip_longest
 
 class Parser:
 
@@ -88,21 +84,21 @@ class Parser:
                     if len(bracketmatch) == 6:
                         header_elements = bracketmatch[1:-1]
                     else:
-                        raise ValueError, "Header %s is not formatted as accession description [organism] and should be corrected." % (header_record)
+                        raise ValueError("Header %s is not formatted as accession description [organism] and should be corrected." % (header_record))
                 match = re.search(r'^(.+)\.([0-9])\s(.+)\s\[(.+)\]$', header_record)
-                print >>sys.stderr, "match: %s", match 
+                print("match: %s", match, file=sys.stderr) 
                 if match:
                     match = re.split(r'^(.+)\.([0-9])\s(.+)\s\[(.+)\]$', header_record)
                     if len(match) == 6:
                         header_elements = match[1:-1]
                     else:
-                        raise ValueError, "Header %s is not formatted as accession description [organism] and should be corrected." % (header_record)
+                        raise ValueError("Header %s is not formatted as accession description [organism] and should be corrected." % (header_record))
                 
                 # Note: raise will stop the run!
                 patent = re.search(r'^(.+)\.([0-9])\s(.+)[0-9]$', header_record)
                 if patent:
                     header_elements = None 
-                    print >>sys.stderr, "Header %s is not formatted correctly (no organism) and should be corrected" % (header_record)
+                    print("Header %s is not formatted correctly (no organism) and should be corrected" % (header_record), file=sys.stderr)
 
 
                 # Values are formatted >ACCESSION.VERSION text with spaces([organism]
@@ -114,12 +110,12 @@ class Parser:
                 #else:
                 #    raise ValueError, "Header %s is not formatted as expect and should be corrected." % (header_record) 
             else:
-                raise ValueError, "Source type is not known. Parser has to be adapted."
+                raise ValueError("Source type is not known. Parser has to be adapted.")
 
             # Record data is separated from descriptions by white-space.
             if header_elements is not None: 
-                for identifier_type, field in map(None, self.identifier_types, header_elements):
-                    print >>sys.stderr, "field %s" % (field)
+                for identifier_type, field in list(zip_longest(self.identifier_types, header_elements)):
+                    print("field %s" % (field), file=sys.stderr)
                     if field is not None:
                         identifiers[identifier_type] = field
                     else:
@@ -140,14 +136,14 @@ class Parser:
             for identifier_type in self.identifier_types:
                 if identifier_type not in self.output_identifier_types:
                     if identifiers.get(identifier_type) != identifier_type:
-                        raise ValueError, "Identifier type %r was given as %r at line %d." % (identifier_type, identifiers.get(identifier_type), self.lineno + 1)
+                        raise ValueError("Identifier type %r was given as %r at line %d." % (identifier_type, identifiers.get(identifier_type), self.lineno + 1))
 
             # Produce a record from the output identifiers.
 
             for identifier_type in self.output_identifier_types:
                 converted_record.append(identifiers.get(identifier_type, self.NULL))
             converted_records.append(converted_record)
-            print >>sys.stderr, "Parsing identifier %s" % (converted_record)
+            print("Parsing identifier %s" % (converted_record), file=sys.stderr)
 
         return converted_records
 
@@ -193,7 +189,7 @@ if __name__ == "__main__":
         output_identifier_types = sys.argv[i+3].split(",")
         filenames = sys.argv[i+4:]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <source> <output data directory> <identifier types> <output identifier types> <data file>..." % progname
+        print("Usage: %s <source> <output data directory> <identifier types> <output identifier types> <data file>..." % progname, file=sys.stderr)
         sys.exit(1)
 
     filename = None # used for exceptions
@@ -202,7 +198,7 @@ if __name__ == "__main__":
         for filename in filenames:
             leafname = split(filename)[-1]
             basename, ext = splitext(leafname)
-            print >>sys.stderr, "%s: Parsing %s" % (progname, leafname)
+            print("%s: Parsing %s" % (progname, leafname), file=sys.stderr)
 
             if ext.endswith("gz"):
                 opener = gzip.open
@@ -220,8 +216,8 @@ if __name__ == "__main__":
             finally:
                 f_out.close()
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc)
+    except Exception as exc:
+        print("%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

@@ -74,14 +74,14 @@ def main():
         matches = syntax.get_args(sys.argv[1:])
         args = matches[0]
     except IndexError:
-        print >>sys.stderr, "Syntax:"
-        print >>sys.stderr, syntax_description
+        print("Syntax:", file=sys.stderr)
+        print(syntax_description, file=sys.stderr)
         sys.exit(1)
     else:
-        if args.has_key("help"):
-            print >>sys.stderr, __doc__
-            print >>sys.stderr, "Syntax:"
-            print >>sys.stderr, syntax_description
+        if "help" in args:
+            print(__doc__, file=sys.stderr)
+            print("Syntax:", file=sys.stderr)
+            print(syntax_description, file=sys.stderr)
             sys.exit(1)
 
     start_field = index_for_int(args.get("start-field", 1))
@@ -92,7 +92,7 @@ def main():
 
     sequence_start = int_or_none(args.get("sequence-start"))
 
-    if args.has_key("filename"):
+    if "filename" in args:
         filename_or_stream = args["filename"]
     else:
         filename_or_stream = reread(sys.stdin)
@@ -121,8 +121,8 @@ def main():
                         values = [field]
                     writer.append(preceding + values + following)
 
-        except IOError, exc:
-            print >>sys.stderr, "%s: %s" % (progname, exc)
+        except IOError as exc:
+            print("%s: %s" % (progname, exc), file=sys.stderr)
 
     finally:
         writer.close()

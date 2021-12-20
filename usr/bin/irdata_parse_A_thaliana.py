@@ -49,10 +49,10 @@ class Parser:
         try:
             i = 0
             while 1:
-                region = regions.next()
+                region = next(regions)
                 j = i + len(region)
                 columns.append((i, j))
-                region = regions.next()
+                region = next(regions)
                 i = j + len(region)
                 boundaries.append((j, i))
         except StopIteration:
@@ -105,7 +105,7 @@ class Parser:
     def parse(self):
         values = None
 
-        for self.lineno, line in enumerate(self.f.xreadlines()):
+        for self.lineno, line in enumerate(self.f):
             line = line.rstrip("\n")
 
             # Get the column dimensions.
@@ -137,14 +137,14 @@ if __name__ == "__main__":
         filetype = sys.argv[1]
         discard_ill_formed = "--discard-ill-formed" in sys.argv
     except IndexError:
-        print >>sys.stderr, "Usage: %s ( ATHALIANA ) [ --discard-ill-formed ]" % progname
+        print("Usage: %s ( ATHALIANA ) [ --discard-ill-formed ]" % progname, file=sys.stderr)
         sys.exit(1)
 
     try:
         parser = Parser(sys.stdin, sys.stdout, sys.stderr, filetype, discard_ill_formed, progname)
         parser.parse()
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed with exception: %s" % (progname, exc)
+    except Exception as exc:
+        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

@@ -51,12 +51,12 @@ def parse(infile, outfile):
         elif state == "ID":
             if line.startswith("name: "):
                 output = [id, line[6:], 'preferred', "\\N"]
-                print >>outfile, "\t".join(output)
+                print("\t".join(output), file=outfile)
             else:
                 match = synonym_pattern.match(line)
                 if match:
                     output = [id, match.group(1), 'synonym', match.group(2) or "\\N"]
-                    print >>outfile, "\t".join(output)
+                    print("\t".join(output), file=outfile)
 
         elif not line.strip():
             state = None
@@ -75,17 +75,17 @@ if __name__ == "__main__":
         data_directory = sys.argv[i]
         filename = sys.argv[i+1]
     except IndexError:
-        print >>sys.stderr, "Usage: %s <output data directory> <data file>" % progname
+        print("Usage: %s <output data directory> <data file>" % progname, file=sys.stderr)
         sys.exit(1)
 
     try:
         leafname = split(filename)[-1]
 
         if filename == "-":
-            print >>sys.stderr, "%s: Parsing standard input" % progname
+            print("%s: Parsing standard input" % progname, file=sys.stderr)
             f = sys.stdin
         else:
-            print >>sys.stderr, "%s: Parsing %s" % (progname, leafname)
+            print("%s: Parsing %s" % (progname, leafname), file=sys.stderr)
             f = open(filename)
 
         f_out = open(join(data_directory, "terms"), "w")
@@ -97,8 +97,8 @@ if __name__ == "__main__":
                 f.close()
             f_out.close()
 
-    except Exception, exc:
-        print >>sys.stderr, "%s: Parsing failed with exception: %s" % (progname, exc)
+    except Exception as exc:
+        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

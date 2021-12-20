@@ -32,16 +32,16 @@ if __name__ == "__main__":
     try:
         infile, outfile = sys.argv[1:6]
     except ValueError:
-        print >>sys.stderr, "Usage: %s <input filename> <output filename>" % progname
+        print("Usage: %s <input filename> <output filename>" % progname, file=sys.stderr)
         sys.exit(1)
 
     f_in = open(infile)
     f_out = open(outfile, "wb")
     try:
         pairs = []
-        for line in f_in.xreadlines():
+        for line in f_in:
             line = line.rstrip()
-            pairs.append(map(int, line.split("\t")))
+            pairs.append(list(map(int, line.split("\t"))))
         dump_pairs(pairs, f_out)
     finally:
         f_out.close()
