@@ -25,10 +25,12 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 import re
 from itertools import zip_longest
 
+
 class Parser:
 
     "A parser for FASTA format text files."
     import re
+
     NULL = r"\N"
 
     def __init__(self, source, f, f_main, identifier_types, output_identifier_types):
@@ -76,50 +78,65 @@ class Parser:
             elif self.source in ["GENPEPT"]:
                 # Values are formatted >ACCESSION.VERSION text with spaces [organism]
                 # >ERL63622.1 hypothetical protein L248_2681 [Lactobacillus shenzhenensis LY-73]
-                #TO DO:If there is no organism known, the line and sequence will be skipped
+                # TO DO:If there is no organism known, the line and sequence will be skipped
                 #
-                bracketmatch = re.search(r'^(.+)\.([0-9])\s(.+)\(\[(.+)\]$', header_record)
+                bracketmatch = re.search(
+                    r"^(.+)\.([0-9])\s(.+)\(\[(.+)\]$", header_record
+                )
                 if bracketmatch:
-                    bracketmatch = re.split(r'^(.+)\.([0-9])\s(.+)\(\[(.+)]$', header_record)
+                    bracketmatch = re.split(
+                        r"^(.+)\.([0-9])\s(.+)\(\[(.+)]$", header_record
+                    )
                     if len(bracketmatch) == 6:
                         header_elements = bracketmatch[1:-1]
                     else:
-                        raise ValueError("Header %s is not formatted as accession description [organism] and should be corrected." % (header_record))
-                match = re.search(r'^(.+)\.([0-9])\s(.+)\s\[(.+)\]$', header_record)
-                print("match: %s", match, file=sys.stderr) 
+                        raise ValueError(
+                            "Header %s is not formatted as accession description [organism] and should be corrected."
+                            % (header_record)
+                        )
+                match = re.search(r"^(.+)\.([0-9])\s(.+)\s\[(.+)\]$", header_record)
+                print("match: %s", match, file=sys.stderr)
                 if match:
-                    match = re.split(r'^(.+)\.([0-9])\s(.+)\s\[(.+)\]$', header_record)
+                    match = re.split(r"^(.+)\.([0-9])\s(.+)\s\[(.+)\]$", header_record)
                     if len(match) == 6:
                         header_elements = match[1:-1]
                     else:
-                        raise ValueError("Header %s is not formatted as accession description [organism] and should be corrected." % (header_record))
-                
-                # Note: raise will stop the run!
-                patent = re.search(r'^(.+)\.([0-9])\s(.+)[0-9]$', header_record)
-                if patent:
-                    header_elements = None 
-                    print("Header %s is not formatted correctly (no organism) and should be corrected" % (header_record), file=sys.stderr)
+                        raise ValueError(
+                            "Header %s is not formatted as accession description [organism] and should be corrected."
+                            % (header_record)
+                        )
 
+                # Note: raise will stop the run!
+                patent = re.search(r"^(.+)\.([0-9])\s(.+)[0-9]$", header_record)
+                if patent:
+                    header_elements = None
+                    print(
+                        "Header %s is not formatted correctly (no organism) and should be corrected"
+                        % (header_record),
+                        file=sys.stderr,
+                    )
 
                 # Values are formatted >ACCESSION.VERSION text with spaces([organism]
                 # Values are formatted >ACCESSION.VERSION very long text with spaces
-                # only get the description without organism 
-                #if (False and  match or matchall):
+                # only get the description without organism
+                # if (False and  match or matchall):
                 #    matchall = re.split(r'^(.+)\.([0-9])\s(.+)$', header_record)
                 #    header_elements = matchall[-1]
-                #else:
-                #    raise ValueError, "Header %s is not formatted as expect and should be corrected." % (header_record) 
+                # else:
+                #    raise ValueError, "Header %s is not formatted as expect and should be corrected." % (header_record)
             else:
                 raise ValueError("Source type is not known. Parser has to be adapted.")
 
             # Record data is separated from descriptions by white-space.
-            if header_elements is not None: 
-                for identifier_type, field in list(zip_longest(self.identifier_types, header_elements)):
+            if header_elements is not None:
+                for identifier_type, field in list(
+                    zip_longest(self.identifier_types, header_elements)
+                ):
                     print("field %s" % (field), file=sys.stderr)
                     if field is not None:
                         identifiers[identifier_type] = field
                     else:
-                        identifiers[identifier_type] = ''
+                        identifiers[identifier_type] = ""
 
                 records.append(identifiers)
 
@@ -136,7 +153,14 @@ class Parser:
             for identifier_type in self.identifier_types:
                 if identifier_type not in self.output_identifier_types:
                     if identifiers.get(identifier_type) != identifier_type:
-                        raise ValueError("Identifier type %r was given as %r at line %d." % (identifier_type, identifiers.get(identifier_type), self.lineno + 1))
+                        raise ValueError(
+                            "Identifier type %r was given as %r at line %d."
+                            % (
+                                identifier_type,
+                                identifiers.get(identifier_type),
+                                self.lineno + 1,
+                            )
+                        )
 
             # Produce a record from the output identifiers.
 
@@ -174,25 +198,29 @@ class Parser:
     def write_record(self, record):
         self.f_main.write("\t".join(record) + "\n")
 
-if __name__ == "__main__":
-    from irdata.cmd import get_progname
-    from os.path import extsep, join, split, splitext
-    import sys, gzip
 
-    progname = get_progname()
+if __name__ == "__main__":
+    from os.path import extsep, join, split, splitext
+    import os, sys, gzip
+
+    progname = os.path.basename(sys.argv[0])
 
     try:
         i = 1
         source = sys.argv[i]
-        data_directory = sys.argv[i+1]
-        identifier_types = sys.argv[i+2].split(",")
-        output_identifier_types = sys.argv[i+3].split(",")
-        filenames = sys.argv[i+4:]
+        data_directory = sys.argv[i + 1]
+        identifier_types = sys.argv[i + 2].split(",")
+        output_identifier_types = sys.argv[i + 3].split(",")
+        filenames = sys.argv[i + 4 :]
     except IndexError:
-        print("Usage: %s <source> <output data directory> <identifier types> <output identifier types> <data file>..." % progname, file=sys.stderr)
+        print(
+            "Usage: %s <source> <output data directory> <identifier types> <output identifier types> <data file>..."
+            % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    filename = None # used for exceptions
+    filename = None  # used for exceptions
 
     try:
         for filename in filenames:
@@ -202,13 +230,19 @@ if __name__ == "__main__":
 
             if ext.endswith("gz"):
                 opener = gzip.open
-                basename, ext = splitext(basename) # remove any remaining extension
+                basename, ext = splitext(basename)  # remove any remaining extension
             else:
                 opener = open
 
             f_out = open(join(data_directory, "%s_proteins.txt" % basename), "w")
             try:
-                parser = Parser(source, opener(filename), f_out, identifier_types, output_identifier_types)
+                parser = Parser(
+                    source,
+                    opener(filename),
+                    f_out,
+                    identifier_types,
+                    output_identifier_types,
+                )
                 try:
                     parser.parse()
                 finally:
@@ -217,7 +251,11 @@ if __name__ == "__main__":
                 f_out.close()
 
     except Exception as exc:
-        print("%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed for file %s with exception: %s"
+            % (progname, filename, exc),
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

@@ -35,27 +35,30 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     from os.path import split, splitext
-    import sys, gzip
+    import os, sys, gzip
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     try:
         one_based = sys.argv[1] == "-1"
         i = one_based and 2 or 1
-        interval, infile = sys.argv[i:i+2]
+        interval, infile = sys.argv[i : i + 2]
         interval = int(interval)
-        if len(sys.argv) >= i+3:
-            record_terminator = sys.argv[i+2]
+        if len(sys.argv) >= i + 3:
+            record_terminator = sys.argv[i + 2]
         else:
             record_terminator = ""
     except (IndexError, ValueError):
-        print("""\
+        print(
+            """\
 Usage: %s [ -1 ] <interval> <input filename> [ <record terminator> ]
 
 Example: %s 10000 uniprot_sprot.dat '//'
-    """ % (progname, progname), file=sys.stderr)
+    """
+            % (progname, progname),
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     leafname = split(infile)[-1]

@@ -23,6 +23,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 class Parser:
 
     "A parser for UniProt A thaliana format text files."
@@ -62,7 +63,7 @@ class Parser:
         self.boundaries = boundaries
 
     def split_line(self, line):
-        #return [line[start:end].strip() for (start, end) in regions]
+        # return [line[start:end].strip() for (start, end) in regions]
         return self.column_pattern.split(line)
 
     def get_specified(self, values):
@@ -75,14 +76,14 @@ class Parser:
         values = self.split_line(line)
 
         specified = self.get_specified(values)
-        
+
         # If the boundaries between cells contain text, the end of the table may
         # have been reached.
-        
-        #boundaries = self.split_line(line, self.boundaries)
-        #overflows = self.get_specified(boundaries)
-        
-        #if overflows:
+
+        # boundaries = self.split_line(line, self.boundaries)
+        # overflows = self.get_specified(boundaries)
+
+        # if overflows:
         #    self.write_log("SERIOUS", "Table cell overflow occurred.")
         #    if self.discard_ill_formed:
         #        return None, self.NO_RECORD
@@ -91,7 +92,7 @@ class Parser:
             return None, self.NO_RECORD
 
         # Handle compound columns in ENSEMBL Plants.
-        
+
         if self.filetype == "Arabidopsis_thaliana":
             if values[4] == "Uniprot/SWISSPROT":
                 values = values[2:4]
@@ -109,42 +110,52 @@ class Parser:
             line = line.rstrip("\n")
 
             # Get the column dimensions.
-            
+
             # not needed since we split based on tab
-            #if not self.columns:
+            # if not self.columns:
             #    if line.startswith("gene_stable_id"):
             #        self.init_columns(line)
             # With column dimensions, get values and the status of each record
             # as new lines are read.
 
-            #else:
+            # else:
             values, status = self.get_values(line, values)
 
     def write_record(self, record):
         self.f_out.write("\t".join(record) + "\n")
 
     def write_log(self, level, message):
-        self.f_log.write("%s (%s): %d: %s: %s\n" % (self.progname, self.filetype, self.lineno, level, message))
+        self.f_log.write(
+            "%s (%s): %d: %s: %s\n"
+            % (self.progname, self.filetype, self.lineno, level, message)
+        )
+
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     from os.path import split
-    import sys
+    import os, sys
 
-    progname = get_progname()
-    
+    progname = os.path.basename(sys.argv[0])
+
     try:
         filetype = sys.argv[1]
         discard_ill_formed = "--discard-ill-formed" in sys.argv
     except IndexError:
-        print("Usage: %s ( ATHALIANA ) [ --discard-ill-formed ]" % progname, file=sys.stderr)
+        print(
+            "Usage: %s ( ATHALIANA ) [ --discard-ill-formed ]" % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     try:
-        parser = Parser(sys.stdin, sys.stdout, sys.stderr, filetype, discard_ill_formed, progname)
+        parser = Parser(
+            sys.stdin, sys.stdout, sys.stderr, filetype, discard_ill_formed, progname
+        )
         parser.parse()
     except Exception as exc:
-        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

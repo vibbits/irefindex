@@ -23,15 +23,18 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     import sys, os, codecs
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     try:
         infile, outfile, inencoding, outencoding, failencoding = sys.argv[1:6]
     except ValueError:
-        print("Usage: %s <input filename> <output filename> <input encoding> <output encoding> <failure encoding>" % progname, file=sys.stderr)
+        print(
+            "Usage: %s <input filename> <output filename> <input encoding> <output encoding> <failure encoding>"
+            % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     f_in = open(infile)

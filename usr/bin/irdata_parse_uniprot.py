@@ -25,6 +25,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 def parse_line(line):
     if not line:
         raise EOFError
@@ -32,6 +33,7 @@ def parse_line(line):
     if code != "//" and space != "   ":
         raise ValueError("Line was not of the form 'code   data': %r" % line)
     return code, rest.rstrip("\n")
+
 
 class Parser:
 
@@ -43,7 +45,22 @@ class Parser:
     gene_name_regexp = re.compile(r"Name=(.+?);")
 
     months = {}
-    for i, name in enumerate(("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC")):
+    for i, name in enumerate(
+        (
+            "JAN",
+            "FEB",
+            "MAR",
+            "APR",
+            "MAY",
+            "JUN",
+            "JUL",
+            "AUG",
+            "SEP",
+            "OCT",
+            "NOV",
+            "DEC",
+        )
+    ):
         months[name] = i + 1
 
     def __init__(self, f, f_main, f_accessions, f_identifiers, f_gene_names):
@@ -102,7 +119,7 @@ class Parser:
         "See: http://web.expasy.org/docs/userman.html#DT_line"
 
         code, rest = line
-        creation = self._get_date(rest) # creation date
+        creation = self._get_date(rest)  # creation date
         sequence = None
         code, rest = self.next_line()
         while code == "DT":
@@ -128,8 +145,8 @@ class Parser:
         code, rest = line
         key, value = rest.rstrip(";").split(" ")[0].split("=")
         if key == "NCBI_TaxID":
-            #taxid = value.split(" ") #separate possible extra annotation
-            return value 
+            # taxid = value.split(" ") #separate possible extra annotation
+            return value
         else:
             return None
 
@@ -223,15 +240,15 @@ class Parser:
             return None
 
     handlers = {
-        "ID" : parse_identifier,
-        "AC" : parse_accessions,
-        "DT" : parse_dates,
-        "OX" : parse_taxonomy,
-        "SQ" : parse_sequence,
-        "RX" : parse_pubmed,
-        "DR" : parse_identifiers,
-        "GN" : parse_gene_names,
-        }
+        "ID": parse_identifier,
+        "AC": parse_accessions,
+        "DT": parse_dates,
+        "OX": parse_taxonomy,
+        "SQ": parse_sequence,
+        "RX": parse_pubmed,
+        "DR": parse_identifiers,
+        "GN": parse_gene_names,
+    }
 
     def parse(self):
         record = {}
@@ -263,13 +280,17 @@ class Parser:
 
         if "RX" in record:
             for pos, pmid in enumerate(record["RX"]):
-                self.f_identifiers.write("%s\tPubMed\t%s\t%s\n" % (record["ID"], pmid, pos))
+                self.f_identifiers.write(
+                    "%s\tPubMed\t%s\t%s\n" % (record["ID"], pmid, pos)
+                )
 
         # Write cross-references.
 
         if "DR" in record:
             for type, identifier in record["DR"]:
-                self.f_identifiers.write("%s\t%s\t%s\t0\n" % (record["ID"], type, identifier))
+                self.f_identifiers.write(
+                    "%s\t%s\t%s\t0\n" % (record["ID"], type, identifier)
+                )
 
         # Write gene names.
 
@@ -277,23 +298,26 @@ class Parser:
             for pos, name in enumerate(record["GN"]):
                 self.f_gene_names.write("%s\t%s\t%s\n" % (record["ID"], name, pos))
 
-if __name__ == "__main__":
-    from irdata.cmd import get_progname
-    from os.path import extsep, join, split, splitext
-    import sys, gzip, re
 
-    progname = get_progname()
+if __name__ == "__main__":
+    from os.path import extsep, join, split, splitext
+    import os, sys, gzip, re
+
+    progname = os.path.basename(sys.argv[0])
 
     try:
         i = 1
         data_directory = sys.argv[i]
-        filename = sys.argv[i+1]
-        if len(sys.argv) > i+2:
-            format = sys.argv[i+2]
+        filename = sys.argv[i + 1]
+        if len(sys.argv) > i + 2:
+            format = sys.argv[i + 2]
         else:
             format = None
     except IndexError:
-        print("Usage: %s <output data directory> <data file> [ <format> ]" % progname, file=sys.stderr)
+        print(
+            "Usage: %s <output data directory> <data file> [ <format> ]" % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     try:
@@ -319,7 +343,13 @@ if __name__ == "__main__":
                 opener = open
             f = opener(filename)
 
-        parser = Parser(f, open(mainfile, "w"), open(accessionsfile, "w"), open(identifiersfile, "w"), open(genenamesfile, "w"))
+        parser = Parser(
+            f,
+            open(mainfile, "w"),
+            open(accessionsfile, "w"),
+            open(identifiersfile, "w"),
+            open(genenamesfile, "w"),
+        )
         try:
             parser.parse()
         finally:
@@ -328,7 +358,11 @@ if __name__ == "__main__":
                 f.close()
 
     except Exception as exc:
-        print("%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed for file %s with exception: %s"
+            % (progname, filename, exc),
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

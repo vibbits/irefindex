@@ -21,9 +21,8 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from irdata.cmd import get_progname
 from irdata.data import RawImportFileReader, RawImportFile, reread, rewrite
-import sys, cmdsyntax
+import os, sys, cmdsyntax
 
 syntax_description = """
     --help |
@@ -34,8 +33,9 @@ syntax_description = """
 
 # Main program.
 
+
 def main():
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
 
@@ -87,6 +87,7 @@ def main():
 
     finally:
         reader.close()
+
 
 if __name__ == "__main__":
     try:

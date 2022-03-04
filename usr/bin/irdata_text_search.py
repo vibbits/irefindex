@@ -27,8 +27,8 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from irdata.data import rewrite, index_for_int
-from irdata.cmd import get_progname
-import sys, cmdsyntax, bisect
+import os, sys, cmdsyntax, bisect
+
 
 def get_index(f):
 
@@ -43,6 +43,7 @@ def get_index(f):
 
     return index
 
+
 syntax_description = """
     --help |
     (
@@ -51,7 +52,7 @@ syntax_description = """
     """
 
 if __name__ == "__main__":
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
 

@@ -26,10 +26,11 @@ from irdata.xmldata import Parser
 from xml.sax import SAXException
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
+    import os
     import sys
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
+    print(progname)
 
     try:
         filenames = sys.argv[1:]

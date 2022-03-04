@@ -23,7 +23,17 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from os.path import join
 
-def file_to_wiki(pathname, filename, wikitype, separator, blank_value, use_headings, column_types, out):
+
+def file_to_wiki(
+    pathname,
+    filename,
+    wikitype,
+    separator,
+    blank_value,
+    use_headings,
+    column_types,
+    out,
+):
 
     """
     Convert the file residing at the 'pathname', having the given 'filename', to
@@ -43,14 +53,20 @@ def file_to_wiki(pathname, filename, wikitype, separator, blank_value, use_headi
         if wikitype == "MediaWiki":
             out.write('{| cellspacing="0" cellpadding="5"\n')
         elif wikitype == "MoinMoinImproved":
-            out.write("{{{#!table%s\n" % (
-                use_headings and column_types and "%s%s%s" % (
-                    (" name=%s" % filename),
-                    use_headings and " headers=1" or "",
-                    column_types and (" columntypes='%s'" % column_types) or ""
+            out.write(
+                "{{{#!table%s\n"
+                % (
+                    use_headings
+                    and column_types
+                    and "%s%s%s"
+                    % (
+                        (" name=%s" % filename),
+                        use_headings and " headers=1" or "",
+                        column_types and (" columntypes='%s'" % column_types) or "",
                     )
                     or ""
-                ))
+                )
+            )
 
         first_line = 1
         for line in f:
@@ -69,7 +85,9 @@ def file_to_wiki(pathname, filename, wikitype, separator, blank_value, use_headi
                     extra_before = """align="center" style="background:#f0f0f0;"|'''"""
                     extra_after = """'''"""
                 elif wikitype.startswith("MoinMoin"):
-                    extra_before = """<style="text-align: center; background:#f0f0f0;"> '''"""
+                    extra_before = (
+                        """<style="text-align: center; background:#f0f0f0;"> '''"""
+                    )
                     extra_after = """'''"""
 
             first_column = 1
@@ -108,36 +126,58 @@ def file_to_wiki(pathname, filename, wikitype, separator, blank_value, use_headi
     finally:
         f.close()
 
+
 def files_to_wiki(file_descriptions, data_directory, category, wikitype, out):
-    for title, filename, separator, blank_value, use_headings, column_types in file_descriptions:
+    for (
+        title,
+        filename,
+        separator,
+        blank_value,
+        use_headings,
+        column_types,
+    ) in file_descriptions:
         out.write("== %s ==\n" % title)
         out.write("\n")
-        file_to_wiki(join(data_directory, filename), filename, wikitype, separator, blank_value, use_headings, column_types, out)
+        file_to_wiki(
+            join(data_directory, filename),
+            filename,
+            wikitype,
+            separator,
+            blank_value,
+            use_headings,
+            column_types,
+            out,
+        )
         out.write("\n")
 
     if wikitype == "MediaWiki":
         out.write("[[Category:%s]]\n" % category)
     elif wikitype.startswith("MoinMoin"):
         out.write("----\n")
-        out.write("Category%s\n" % category.capitalize()) # NOTE: Have to conform with MoinMoin category name restrictions.
+        out.write(
+            "Category%s\n" % category.capitalize()
+        )  # NOTE: Have to conform with MoinMoin category name restrictions.
+
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     from os.path import split
-    import sys
+    import os, sys
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     try:
         i = 1
         data_directory = sys.argv[i]
-        filename = sys.argv[i+1]
-        if len(sys.argv) > i+2:
-            format = sys.argv[i+2]
+        filename = sys.argv[i + 1]
+        if len(sys.argv) > i + 2:
+            format = sys.argv[i + 2]
         else:
             format = "MediaWiki"
     except IndexError:
-        print("Usage: %s <data directory> <output file> [ <format> ]" % progname, file=sys.stderr)
+        print(
+            "Usage: %s <data directory> <output file> [ <format> ]" % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     leafname = split(filename)[-1]
@@ -149,15 +189,50 @@ if __name__ == "__main__":
 
     file_descriptions = [
         # Title                                                         File                                    Separator   Blank   Headings    Column types
-        ("Data source information",                                     "irefindex_manifest_final",             "\t",       "\\N",  True,       "0,1"),
-        ("Interactions available from major taxonomies",                "rigids_by_originaltaxid_top",          "\t",       "",     True,       "0n,2nd"),
-        ("Interactions available from major taxonomies (corrected)",    "rigids_by_taxid_top",                  "\t",       "",     True,       "0n,2nd"),
-        ("Interactions",                                                "rigids_shared_as_grid",                ",",        "-",    False,      None),
-        ("Interactors",                                                 "rogids_shared_as_grid",                ",",        "-",    False,      None),
-        ("Summary of mapping interaction records to RIGs (Table 5)",    "interaction_coverage_by_source",       "\t",       "",     True,       "1nd,2nd,3nd,4nd,5nd,6nd"),
-        ("Assignment of protein interactors to ROGs (Table 3)",         "rogid_coverage_by_source",             "\t",       "",     True,       "1nd,2nd,3nd,4nd,5nd,6nd,7nd,8nd"),
-        ("ROG summary",                                                 "rogids_by_score_and_source_as_grid",   ",",        "-",    True,       None),
-        ]
+        (
+            "Data source information",
+            "irefindex_manifest_final",
+            "\t",
+            "\\N",
+            True,
+            "0,1",
+        ),
+        (
+            "Interactions available from major taxonomies",
+            "rigids_by_originaltaxid_top",
+            "\t",
+            "",
+            True,
+            "0n,2nd",
+        ),
+        (
+            "Interactions available from major taxonomies (corrected)",
+            "rigids_by_taxid_top",
+            "\t",
+            "",
+            True,
+            "0n,2nd",
+        ),
+        ("Interactions", "rigids_shared_as_grid", ",", "-", False, None),
+        ("Interactors", "rogids_shared_as_grid", ",", "-", False, None),
+        (
+            "Summary of mapping interaction records to RIGs (Table 5)",
+            "interaction_coverage_by_source",
+            "\t",
+            "",
+            True,
+            "1nd,2nd,3nd,4nd,5nd,6nd",
+        ),
+        (
+            "Assignment of protein interactors to ROGs (Table 3)",
+            "rogid_coverage_by_source",
+            "\t",
+            "",
+            True,
+            "1nd,2nd,3nd,4nd,5nd,6nd,7nd,8nd",
+        ),
+        ("ROG summary", "rogids_by_score_and_source_as_grid", ",", "-", True, None),
+    ]
 
     try:
         files_to_wiki(file_descriptions, data_directory, "iRefIndex", format, out)
