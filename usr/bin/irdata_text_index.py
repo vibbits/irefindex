@@ -25,9 +25,8 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from irdata.data import RawImportFile, rewrite, index_for_int
-from irdata.cmd import get_progname
 from os.path import split, splitext
-import sys, cmdsyntax, gzip
+import os, sys, cmdsyntax, gzip
 
 syntax_description = """
     --help |
@@ -37,7 +36,7 @@ syntax_description = """
     """
 
 if __name__ == "__main__":
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
 

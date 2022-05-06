@@ -24,7 +24,7 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-#default settings
+# default settings
 
 from os.path import extsep, join, split, splitext
 import os
@@ -32,40 +32,46 @@ import re
 import gzip
 
 standard_fields = (
-    "uidA", "uidB",
-    "altA", "altB",
-    "aliasA", "aliasB",
+    "uidA",
+    "uidB",
+    "altA",
+    "altB",
+    "aliasA",
+    "aliasB",
     "method",
     "authors",
     "pmids",
-    "taxA", "taxB",
+    "taxA",
+    "taxB",
     "interactionType",
     "sourcedb",
     "interactionIdentifiers",
-    "confidence"
-    )
+    "confidence",
+)
 
-mpidb_fields = standard_fields + (
-    "evidence",
-    "interaction"
-    )
+mpidb_fields = standard_fields + ("evidence", "interaction")
 
 all_fields = mpidb_fields
 
 corresponding_fields = (
-    "method", "authors", "pmids", "interactionType", "sourcedb",
-    "interactionIdentifiers", "confidence"
-    )
+    "method",
+    "authors",
+    "pmids",
+    "interactionType",
+    "sourcedb",
+    "interactionIdentifiers",
+    "confidence",
+)
 
-non_corresponding_fields = (
-    "altA", "altB", "aliasA", "aliasB"
-    )
+non_corresponding_fields = ("altA", "altB", "aliasA", "aliasB")
 
 list_fields = non_corresponding_fields + corresponding_fields
 
-mpidb_term_regexp       = re.compile(r'(?P<prefix>.*?)"(?P<term>.*?)"\((?P<description>.*?)\)')
-standard_term_regexp    = re.compile(r'(?P<term>.*?)\((?P<description>.*?)\)')
-taxid_regexp            = re.compile(r'taxid:(?P<taxid>[^(]+)(\((?P<description>.*?)\))?')
+mpidb_term_regexp = re.compile(
+    r'(?P<prefix>.*?)"(?P<term>.*?)"\((?P<description>.*?)\)'
+)
+standard_term_regexp = re.compile(r"(?P<term>.*?)\((?P<description>.*?)\)")
+taxid_regexp = re.compile(r"taxid:(?P<taxid>[^(]+)(\((?P<description>.*?)\))?")
 
 
 class Parser:
@@ -159,6 +165,7 @@ class Parser:
 
         self.writer.append(data)
 
+
 class Writer:
 
     "Support for writing to files."
@@ -188,8 +195,7 @@ class Writer:
 
         A|1 B|2 C|3
         """
-        
-        
+
         # Where no correspondences are being recorded, return the data as the
         # only experiment entry, and with only a single additional entry
         # indicating a unique output line number.
@@ -211,7 +217,10 @@ class Writer:
             if length is None:
                 length = len(values)
             elif length != len(values):
-                raise ValueError("Field %s has %d values but preceding fields have %d values." % (key, len(values), length))
+                raise ValueError(
+                    "Field %s has %d values but preceding fields have %d values."
+                    % (key, len(values), length)
+                )
 
             fields.append(values)
 
@@ -223,7 +232,7 @@ class Writer:
 
             # Each value will be on its own in the list of values for the field.
 
-            new_data = {"line" : self.output_line}
+            new_data = {"line": self.output_line}
             for key, value in zip(corresponding_fields, values):
                 new_data[key] = [value]
 
@@ -233,6 +242,7 @@ class Writer:
             self.output_line += 1
 
         return experiment_data
+
 
 class MITABWriter(Writer):
 
@@ -247,7 +257,7 @@ class MITABWriter(Writer):
             self.out = None
 
     def get_filename(self):
-        #imd - inspect this later - hard-coded 
+        # imd - inspect this later - hard-coded
         return join(self.directory, "mpidb_mitab.txt")
 
     def start(self, filename):
@@ -278,14 +288,22 @@ class MITABWriter(Writer):
 
             self.write_line(self.out, [new_data[key] for key in standard_fields])
 
+
 class iRefIndexWriter(Writer):
 
     "A writer for iRefIndex-compatible data."
 
     filenames = (
-        "uid", "alias", # collecting more than one column each
-        "alternatives", "method", "authors", "pmids", "interactionType", "sourcedb", "interactionIdentifiers"
-        )
+        "uid",
+        "alias",  # collecting more than one column each
+        "alternatives",
+        "method",
+        "authors",
+        "pmids",
+        "interactionType",
+        "sourcedb",
+        "interactionIdentifiers",
+    )
 
     def init(self):
         self.files = {}
@@ -319,7 +337,6 @@ class iRefIndexWriter(Writer):
 
     def append(self, data):
 
-
         "Write iRefIndex-compatible output from the 'data'."
 
         # Interactor-specific records.
@@ -330,13 +347,23 @@ class iRefIndexWriter(Writer):
         # Only write the principal interactor of multi-line interactions once.
 
         if positionA == 0:
-            self.write_line(self.files["uid"], (self.source, self.filename, get_interaction(data), positionA) + split_uid(data["uidA"]) + (split_taxid(data["taxA"])[0],))
-        self.write_line(self.files["uid"], (self.source, self.filename, get_interaction(data), positionB) + split_uid(data["uidB"]) + (split_taxid(data["taxB"])[0],))
+            self.write_line(
+                self.files["uid"],
+                (self.source, self.filename, get_interaction(data), positionA)
+                + split_uid(data["uidA"])
+                + (split_taxid(data["taxA"])[0],),
+            )
+        self.write_line(
+            self.files["uid"],
+            (self.source, self.filename, get_interaction(data), positionB)
+            + split_uid(data["uidB"])
+            + (split_taxid(data["taxB"])[0],),
+        )
 
         for filename, fields in (
             ("alternatives", ("altA", "altB")),
-            ("alias", ("aliasA", "aliasB"))
-            ):
+            ("alias", ("aliasA", "aliasB")),
+        ):
             for position, key in enumerate(fields):
                 for entry, s in enumerate(data[key]):
                     if not s:
@@ -346,7 +373,18 @@ class iRefIndexWriter(Writer):
                     # Only write the details of the principal interactor once.
 
                     if position != 0 or positionA == 0:
-                        self.write_line(self.files[filename], (self.source, self.filename, get_interaction(data), positionA + position, prefix, value, entry))
+                        self.write_line(
+                            self.files[filename],
+                            (
+                                self.source,
+                                self.filename,
+                                get_interaction(data),
+                                positionA + position,
+                                prefix,
+                                value,
+                                entry,
+                            ),
+                        )
 
         # Experiment-specific records.
 
@@ -357,64 +395,114 @@ class iRefIndexWriter(Writer):
         for data in list_data:
             for key in ("authors",):
                 for entry, s in enumerate(data[key]):
-                    self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction(data), s, entry))
+                    self.write_line(
+                        self.files[key],
+                        (
+                            self.source,
+                            self.filename,
+                            data["line"],
+                            get_interaction(data),
+                            s,
+                            entry,
+                        ),
+                    )
 
             for key in ("method", "interactionType", "sourcedb"):
                 for entry, s in enumerate(data[key]):
                     term, description = split_vocabulary_term(s)
-                    self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction(data), term, description, entry))
+                    self.write_line(
+                        self.files[key],
+                        (
+                            self.source,
+                            self.filename,
+                            data["line"],
+                            get_interaction(data),
+                            term,
+                            description,
+                            entry,
+                        ),
+                    )
 
             for key in ("pmids",):
                 for entry, s in enumerate(data[key]):
                     prefix, value = split_value(s)
                     if prefix == "pubmed":
-                        self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction(data), value, entry))
+                        self.write_line(
+                            self.files[key],
+                            (
+                                self.source,
+                                self.filename,
+                                data["line"],
+                                get_interaction(data),
+                                value,
+                                entry,
+                            ),
+                        )
 
             for key in ("interactionIdentifiers",):
                 for entry, s in enumerate(data[key]):
                     prefix, value = split_value(s)
-                    self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction(data), prefix, value, entry))
+                    self.write_line(
+                        self.files[key],
+                        (
+                            self.source,
+                            self.filename,
+                            data["line"],
+                            get_interaction(data),
+                            prefix,
+                            value,
+                            entry,
+                        ),
+                    )
+
 
 def get_interaction(data):
     return data.get("interaction") or split_value(data["interactionIdentifiers"][0])[-1]
 
+
 # Value processing.
 
+
 def get_list(s, preserve_length):
-    '''for a string "a|b|-|d" return the list [a,b,"",d] or [a,b,d]''' 
+    """for a string "a|b|-|d" return the list [a,b,"",d] or [a,b,d]"""
     l = s.split("|")
     if preserve_length:
         return [(i != "-" and i or "") for i in l]
     else:
         return [i for i in l if i != "-"]
 
+
 def get_string(l):
-    '''for the list [a,b,c] return the string "a|b|c" or "-" for empty list'''
+    """for the list [a,b,c] return the string "a|b|c" or "-" for empty list"""
     if not l:
         return "-"
     else:
         return "|".join(l)
 
+
 def fix_vocabulary_term(s):
-    for regexp in term_regexps: #term_regexps is not iterable
+    for regexp in term_regexps:  # term_regexps is not iterable
         match = regexp.match(s)
         if match:
             return "%s(%s)" % (match.group("term"), match.group("description"))
     raise ValueError("Term %r is not well-formed." % s)
 
+
 def fix_alias(s):
-    #this is a hack for MPI sources that incorrectly label aliases as from
-    #uniprotkb when they are in fact entrezgene/locuslink gene names
+    # this is a hack for MPI sources that incorrectly label aliases as from
+    # uniprotkb when they are in fact entrezgene/locuslink gene names
     if source.startswith("MPI") and s.startswith("uniprotkb:"):
         prefix, symbol = s.split(":")[:2]
         return "entrezgene/locuslink:" + symbol
     else:
         return s
 
+
 def split_value(s):
-    '''for the string "a:b" return the tuple (a,b)'''
+    """for the string "a:b" return the tuple (a,b)"""
     parts = s.split(":", 1)
     return tuple(parts)
+
 
 def split_vocabulary_term(s):
     for regexp in term_regexps:
@@ -423,16 +511,18 @@ def split_vocabulary_term(s):
             return (match.group("term"), match.group("description"))
     raise ValueError("Term %r is not well-formed." % s)
 
+
 def split_uid(s):
     '''given the string "a:b|c:d" return the tuple (c,d) or (-,-) for the string "-"'''
     uids = get_list(s, False)
     if uids:
-        if source.startswith("INNATE"): # NOTE: Hack for InnateDB MITAB.
+        if source.startswith("INNATE"):  # NOTE: Hack for InnateDB MITAB.
             return split_value(uids[-1])
         else:
-            return split_value(uids[0]) 
+            return split_value(uids[0])
     else:
-        return ('-','-')
+        return ("-", "-")
+
 
 def split_taxid(s):
     match = taxid_regexp.match(s)
@@ -441,18 +531,21 @@ def split_taxid(s):
     else:
         raise ValueError("Taxonomy %r is not well-formed." % s)
 
-if __name__ == "__main__":
-    from irdata.cmd import get_progname
-    import sys
 
-    progname = get_progname()
+if __name__ == "__main__":
+    import os, sys
+
+    progname = os.path.basename(sys.argv[0])
 
     try:
         source = sys.argv[1]
         directory = sys.argv[2]
         filenames = sys.argv[3:]
     except IndexError:
-        print("Usage: %s <source> <output data directory> <filename>..." % progname, file=sys.stderr)
+        print(
+            "Usage: %s <source> <output data directory> <filename>..." % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     try:
@@ -473,10 +566,12 @@ if __name__ == "__main__":
             for filename in filenames:
                 parser.parse(filename)
         finally:
-            parser.close() # closes the writer
+            parser.close()  # closes the writer
 
     except Exception as exc:
-        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

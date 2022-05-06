@@ -45,10 +45,16 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from irdata.cmd import get_progname
-from irdata.data import RawImportFileReader, RawImportFile, reread, rewrite, \
-    index_for_int, int_or_none, partition
-import sys, cmdsyntax
+from irdata.data import (
+    RawImportFileReader,
+    RawImportFile,
+    reread,
+    rewrite,
+    index_for_int,
+    int_or_none,
+    partition,
+)
+import os, sys, cmdsyntax
 
 syntax_description = """
     --help |
@@ -64,8 +70,9 @@ syntax_description = """
 
 # Main program.
 
+
 def main():
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
 
@@ -85,7 +92,9 @@ def main():
             sys.exit(1)
 
     start_field = index_for_int(args.get("start-field", 1))
-    end_field = int_or_none(args.get("end-field", None)) # treat 1-index as 0-index plus one
+    end_field = int_or_none(
+        args.get("end-field", None)
+    )  # treat 1-index as 0-index plus one
 
     delimiter = args.get("delimiter", "\t")
     delimiter_within_fields = args.get("delimiter-within-fields", "\t")
@@ -106,7 +115,9 @@ def main():
 
                 # Process the data.
 
-                preceding, fields, following = partition(details, start_field, end_field)
+                preceding, fields, following = partition(
+                    details, start_field, end_field
+                )
 
                 if delimiter_within_fields != delimiter:
                     split_fields = []
@@ -127,6 +138,7 @@ def main():
     finally:
         writer.close()
         reader.close()
+
 
 if __name__ == "__main__":
     try:

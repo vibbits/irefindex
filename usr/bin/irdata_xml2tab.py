@@ -65,6 +65,7 @@ from irdata.signatures import make_signature, normalise_sequence
 from irdata.xmldata import *
 import os
 
+
 class PSIParser(EmptyElementParser):
 
     """
@@ -78,30 +79,44 @@ class PSIParser(EmptyElementParser):
 
     attribute_names = {
         # references    : property, reftype, id, dblabel, dbcode, reftypelabel, reftypecode
-        "primaryRef"    : ("property", "element", "id", "db", "dbAc", "refType", "refTypeAc"), # also secondary and version
-        "secondaryRef"  : ("property", "element", "id", "db", "dbAc", "refType", "refTypeAc"),
+        "primaryRef": (
+            "property",
+            "element",
+            "id",
+            "db",
+            "dbAc",
+            "refType",
+            "refTypeAc",
+        ),  # also secondary and version
+        "secondaryRef": (
+            "property",
+            "element",
+            "id",
+            "db",
+            "dbAc",
+            "refType",
+            "refTypeAc",
+        ),
         # names         : property, nametype, label, code, value
-        "shortLabel"    : ("property", "element", None, None, "content"),
-        "fullName"      : ("property", "element", None, None, "content"),
-        "alias"         : ("property", "element", "type", "typeAc", "content"),
+        "shortLabel": ("property", "element", None, None, "content"),
+        "fullName": ("property", "element", None, None, "content"),
+        "alias": ("property", "element", "type", "typeAc", "content"),
         # organisms     : taxid
-        "hostOrganism"  : ("ncbiTaxId",)
-        }
+        "hostOrganism": ("ncbiTaxId",),
+    }
 
     # Elements defining scopes/entities.
 
     scopes = {
-        "entry"                 : "entry",
-        "interaction"           : "interaction",
-        "interactor"            : "interactor",
-        "participant"           : "participant",
-        "experimentDescription" : "experimentDescription",
-
+        "entry": "entry",
+        "interaction": "interaction",
+        "interactor": "interactor",
+        "participant": "participant",
+        "experimentDescription": "experimentDescription",
         # PSI MI XML version 1.0 element mappings.
-
-        "proteinInteractor"     : "interactor",
-        "proteinParticipant"    : "participant",
-        }
+        "proteinInteractor": "interactor",
+        "proteinParticipant": "participant",
+    }
 
     def __init__(self, writer):
         EmptyElementParser.__init__(self)
@@ -112,12 +127,12 @@ class PSIParser(EmptyElementParser):
         # For transient identifiers.
 
         self.identifiers = {
-            "entry"                 : 0,
-            "interaction"           : 0,
-            "interactor"            : 0,
-            "participant"           : 0,
-            "experimentDescription" : 0
-            }
+            "entry": 0,
+            "interaction": 0,
+            "interactor": 0,
+            "participant": 0,
+            "experimentDescription": 0,
+        }
 
     def get_scopes(self, n=None):
 
@@ -127,7 +142,7 @@ class PSIParser(EmptyElementParser):
 
         # Go through the path from the deepest element name to the root, looking
         # for scope names.
-        #print >>sys.stderr, "Scoping "
+        # print >>sys.stderr, "Scoping "
 
         for part in self.current_path[-1::-1]:
             if part in list(self.scopes.values()):
@@ -153,9 +168,13 @@ class PSIParser(EmptyElementParser):
         (not externally referenced) element, given the 'context' element name.
         """
 
-        return name == "participant" or \
-            name == "interactor" and context == "participant" or \
-            name == "experimentDescription" and context == "interaction"
+        return (
+            name == "participant"
+            or name == "interactor"
+            and context == "participant"
+            or name == "experimentDescription"
+            and context == "interaction"
+        )
 
     def characters(self, content):
 
@@ -228,8 +247,10 @@ class PSIParser(EmptyElementParser):
         # entry/experimentList/experimentDescription
         # -> experimentDescription (element), experimentList (parent),
         #    entry (property), None (section)
-        
-        element, parent, property, section = list(map(lambda x, y: x or y, self.current_path[-1:-5:-1], [None] * 4))
+
+        element, parent, property, section = list(
+            map(lambda x, y: x or y, self.current_path[-1:-5:-1], [None] * 4)
+        )
 
         # Get the element's attributes.
 
@@ -244,33 +265,76 @@ class PSIParser(EmptyElementParser):
 
         if element == "experimentRef":
             if parent == "experimentList":
-                self.writer.append((element, entry, content or attrs["ref"], self.path_to_attrs["interaction"]["id"]))
+                self.writer.append(
+                    (
+                        element,
+                        entry,
+                        content or attrs["ref"],
+                        self.path_to_attrs["interaction"]["id"],
+                    )
+                )
 
         # And mappings from interactors to participants to interactions.
         # The "ref" attribute is from PSI MI XML 1.0.
 
         elif element == "interactorRef":
             if parent == "participant":
-                self.writer.append((element, entry, content or attrs["ref"], "explicit", self.path_to_attrs["participant"]["id"], self.path_to_attrs["interaction"]["id"]))
+                self.writer.append(
+                    (
+                        element,
+                        entry,
+                        content or attrs["ref"],
+                        "explicit",
+                        self.path_to_attrs["participant"]["id"],
+                        self.path_to_attrs["interaction"]["id"],
+                    )
+                )
 
         # Implicit interactor-to-participant mappings (applying only within participant elements).
 
         elif element == "interactor":
             if parent == "participant":
-                self.writer.append((element, entry, attrs["id"], "implicit", self.path_to_attrs["participant"]["id"], self.path_to_attrs["interaction"]["id"]))
+                self.writer.append(
+                    (
+                        element,
+                        entry,
+                        attrs["id"],
+                        "implicit",
+                        self.path_to_attrs["participant"]["id"],
+                        self.path_to_attrs["interaction"]["id"],
+                    )
+                )
 
         # Implicit mappings applying only within an interaction scope.
 
         elif element == "experimentDescription":
             if "interaction" in self.path_to_attrs:
-                self.writer.append((element, entry, attrs["id"], self.path_to_attrs["interaction"]["id"]))
+                self.writer.append(
+                    (
+                        element,
+                        entry,
+                        attrs["id"],
+                        self.path_to_attrs["interaction"]["id"],
+                    )
+                )
 
         # Interactor organisms.
 
         elif element == "organism":
             if parent == "interactor":
-                implicit = self.is_implicit(parent, property) and "implicit" or "explicit"
-                self.writer.append((element, entry, parent, self.path_to_attrs["interactor"]["id"], implicit, attrs["ncbiTaxId"]))
+                implicit = (
+                    self.is_implicit(parent, property) and "implicit" or "explicit"
+                )
+                self.writer.append(
+                    (
+                        element,
+                        entry,
+                        parent,
+                        self.path_to_attrs["interactor"]["id"],
+                        implicit,
+                        attrs["ncbiTaxId"],
+                    )
+                )
 
         # Sequence data.
         # Use the "legacy" mode to upper-case and strip white-space from interactors.
@@ -278,8 +342,20 @@ class PSIParser(EmptyElementParser):
 
         elif element == "sequence":
             if parent == "interactor":
-                implicit = self.is_implicit(parent, property) and "implicit" or "explicit"
-                self.writer.append((element, entry, parent, self.path_to_attrs["interactor"]["id"], implicit, normalise_sequence(content), make_signature(content, legacy=1)))
+                implicit = (
+                    self.is_implicit(parent, property) and "implicit" or "explicit"
+                )
+                self.writer.append(
+                    (
+                        element,
+                        entry,
+                        parent,
+                        self.path_to_attrs["interactor"]["id"],
+                        implicit,
+                        normalise_sequence(content),
+                        make_signature(content, legacy=1),
+                    )
+                )
 
         # Get other data. This is of the form...
         # section/property/parent/element
@@ -297,8 +373,12 @@ class PSIParser(EmptyElementParser):
             # Such occurrences do not define entities and are therefore not of
             # interest.
 
-            if property == "interactor" and section not in ("participant", "interactorList") or \
-                property == "participant" and section != "participantList":
+            if (
+                property == "interactor"
+                and section not in ("participant", "interactorList")
+                or property == "participant"
+                and section != "participantList"
+            ):
                 return
 
             # Insist on a scope.
@@ -335,34 +415,41 @@ class PSIParser(EmptyElementParser):
 
             # The parent indicates the data type and is only used to select the output file.
 
-            self.writer.append((parent, entry, scope, self.path_to_attrs[scope]["id"], implicit) + tuple(values))
+            self.writer.append(
+                (parent, entry, scope, self.path_to_attrs[scope]["id"], implicit)
+                + tuple(values)
+            )
 
     def parse(self, filename):
         self.reset()
         self.writer.start(filename)
         EmptyElementParser.parse(self, filename)
 
+
 class PSIWriter(Writer):
 
     "A simple writer of tabular data."
 
     filenames = (
-        "experiment", "interactor",     # mappings
-        "names", "xref", "organisms",   # properties
-        "sequences"                     # properties
-        )
+        "experiment",
+        "interactor",  # mappings
+        "names",
+        "xref",
+        "organisms",  # properties
+        "sequences",  # properties
+    )
 
     data_type_files = {
-        "experimentRef"         : "experiment",
-        "experimentDescription" : "experiment",
-        "interactorRef"         : "interactor",
-        "interactor"            : "interactor",
-        "hostOrganismList"      : "organisms",
-        "organism"              : "organisms",
-        "sequence"              : "sequences",
-        "names"                 : "names",
-        "xref"                  : "xref",
-        }
+        "experimentRef": "experiment",
+        "experimentDescription": "experiment",
+        "interactorRef": "interactor",
+        "interactor": "interactor",
+        "hostOrganismList": "organisms",
+        "organism": "organisms",
+        "sequence": "sequences",
+        "names": "names",
+        "xref": "xref",
+    }
 
     def __init__(self, directory, source):
         Writer.__init__(self, directory)
@@ -385,19 +472,22 @@ class PSIWriter(Writer):
         data = list(map(bulkstr, data))
         print("\t".join(data), file=self.files[file])
 
+
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     import sys
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     try:
         i = 1
         data_directory = sys.argv[i]
-        source = sys.argv[i+1]
-        filenames = sys.argv[i+2:]
+        source = sys.argv[i + 1]
+        filenames = sys.argv[i + 2 :]
     except IndexError:
-        print("Usage: %s <data directory> <data source name> <data file>..." % progname, file=sys.stderr)
+        print(
+            "Usage: %s <data directory> <data source name> <data file>..." % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     writer = PSIWriter(data_directory, source)
@@ -409,7 +499,10 @@ if __name__ == "__main__":
             for filename in filenames:
                 parser.parse(filename)
         except Exception as exc:
-            print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
+            print(
+                "%s: Parsing failed with exception: %s" % (progname, exc),
+                file=sys.stderr,
+            )
             sys.exit(1)
     finally:
         writer.close()

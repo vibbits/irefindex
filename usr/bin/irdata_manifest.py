@@ -23,11 +23,13 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import libxml2dom
 
+
 def to_string(nodes):
 
     "Join all text descendants of the first of the given 'nodes'."
 
     return " ".join([n.nodeValue for n in nodes[0].xpath(".//text()")]).strip()
+
 
 def first_word(value, sep=None):
 
@@ -35,11 +37,13 @@ def first_word(value, sep=None):
 
     return value.strip().split(sep)[0]
 
+
 def last_word(value, sep=None):
 
     "Extract the last word from the given 'value'."
 
     return value.strip().split(sep)[-1]
+
 
 def first_line(value):
 
@@ -47,11 +51,13 @@ def first_line(value):
 
     return first_word(value, "\n")
 
+
 def identity(value):
 
     "Return the presented 'value'."
 
     return value
+
 
 def strip_brackets(value):
 
@@ -59,20 +65,20 @@ def strip_brackets(value):
 
     return value.strip("()")
 
+
 filters = {
-    "to_string" : to_string,
-    "first_word" : first_word,
-    "last_word" : last_word,
-    "first_line" : first_line,
-    "identity" : identity,
-    "strip_brackets" : strip_brackets,
-    }
+    "to_string": to_string,
+    "first_word": first_word,
+    "last_word": last_word,
+    "first_line": first_line,
+    "identity": identity,
+    "strip_brackets": strip_brackets,
+}
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
-    import sys, os
+    import os, sys
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     if len(sys.argv) < 2:
         print("Usage: %s <url>" % progname, file=sys.stderr)
@@ -95,7 +101,10 @@ if __name__ == "__main__":
             print("%s\t test3   %s" % (name, value), file=sys.stdout)
 
     except Exception as exc:
-        print("%s: Manifest retrieval failed with exception: %s" % (progname, exc), file=sys.stderr)
+        print(
+            "%s: Manifest retrieval failed with exception: %s" % (progname, exc),
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

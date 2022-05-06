@@ -28,6 +28,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 def parse_line(line):
     if not line:
         raise EOFError
@@ -50,6 +51,7 @@ def parse_line(line):
         return code, rest.rstrip("\n")
     else:
         return None, None
+
 
 class Parser:
 
@@ -95,7 +97,7 @@ class Parser:
 
         # Filter out DNA. This is useful if having to deal with eUtils.
 
-        if not ' DNA ' in rest:
+        if not " DNA " in rest:
             record["LOCUS"] = rest.split()[0]
 
     def parse_accession(self, line, record):
@@ -104,7 +106,9 @@ class Parser:
         # Handle missing accessions in old eUtils records.
 
         if rest:
-            record[code] = rest.split()[0] # ignore trailing accessions (presumably expired)
+            record[code] = rest.split()[
+                0
+            ]  # ignore trailing accessions (presumably expired)
 
     def parse_dbsource(self, line, record):
         code, rest = line
@@ -155,22 +159,23 @@ class Parser:
         if len(version_plus_gi) > 1:
             version, gi = version_plus_gi[:2]
             record["VERSION"] = version
-            if ':' in gi:
-                record["GI"] = gi.split(":")[1] # strip "GI:" from the identifier
+            if ":" in gi:
+                record["GI"] = gi.split(":")[1]  # strip "GI:" from the identifier
         else:
             version = version_plus_gi[0]
         # in the current refseq files no GI in line VERSION
-        #record["GI"] = gi.split(":")[1] # strip "GI:" from the identifier
-        record["VERSION"]= version
+        # record["GI"] = gi.split(":")[1] # strip "GI:" from the identifier
+        record["VERSION"] = version
+
     handlers = {
-        "LOCUS"     : parse_locus,
-        "ACCESSION" : parse_accession,
-        "DBSOURCE"  : parse_dbsource,
-        "FEATURES"  : parse_features,
-        "ORIGIN"    : parse_origin,
-        "REFERENCE" : parse_reference,
-        "VERSION"   : parse_version,
-        }
+        "LOCUS": parse_locus,
+        "ACCESSION": parse_accession,
+        "DBSOURCE": parse_dbsource,
+        "FEATURES": parse_features,
+        "ORIGIN": parse_origin,
+        "REFERENCE": parse_reference,
+        "VERSION": parse_version,
+    }
 
     def parse(self):
         record = {}
@@ -195,27 +200,34 @@ class Parser:
                 if key not in record:
                     record[key] = r"\N"
 
-            self.f_main.write("%(ACCESSION)s\t%(VERSION)s\t%(TAXID)s\t%(SEQUENCE)s\n" % record)
+            self.f_main.write(
+                "%(ACCESSION)s\t%(VERSION)s\t%(TAXID)s\t%(SEQUENCE)s\n" % record
+            )
             if "PUBMED" in record:
                 for pos, pmid in enumerate(record["PUBMED"]):
-                    self.f_identifiers.write("%s\tPubMed\t%s\t%s\n" % (record["ACCESSION"], pmid, pos))
+                    self.f_identifiers.write(
+                        "%s\tPubMed\t%s\t%s\n" % (record["ACCESSION"], pmid, pos)
+                    )
+
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     from os.path import extsep, join, split, splitext
-    import sys, gzip
+    import os, sys, gzip
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     try:
         i = 1
         data_directory = sys.argv[i]
-        filenames = sys.argv[i+1:]
+        filenames = sys.argv[i + 1 :]
     except IndexError:
-        print("Usage: %s <output data directory> <data file>..." % progname, file=sys.stderr)
+        print(
+            "Usage: %s <output data directory> <data file>..." % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    filename = None # used for exceptions
+    filename = None  # used for exceptions
 
     try:
         for filename in filenames:
@@ -237,7 +249,11 @@ if __name__ == "__main__":
                 parser.close()
 
     except Exception as exc:
-        print("%s: Parsing failed for file %s with exception: %s" % (progname, filename, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed for file %s with exception: %s"
+            % (progname, filename, exc),
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

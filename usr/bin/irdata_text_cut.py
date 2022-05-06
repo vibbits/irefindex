@@ -22,9 +22,14 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from irdata.data import RawImportFileReader, RawImportFile, reread, rewrite, index_for_int
-from irdata.cmd import get_progname
-import sys, cmdsyntax
+from irdata.data import (
+    RawImportFileReader,
+    RawImportFile,
+    reread,
+    rewrite,
+    index_for_int,
+)
+import os, sys, cmdsyntax
 
 syntax_description = """
     --help |
@@ -36,7 +41,9 @@ syntax_description = """
 
 # Main program.
 
+
 def main():
+    progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
 
@@ -79,10 +86,11 @@ def main():
                 writer.append(details)
 
         except IOError as exc:
-            print("%s: %s" % (get_progname(), exc), file=sys.stderr)
+            print("%s: %s" % (progname, exc), file=sys.stderr)
 
     finally:
         reader.close()
+
 
 if __name__ == "__main__":
     try:

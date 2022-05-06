@@ -23,6 +23,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
+
 class Parser:
 
     "A parser for UniProt FlyBase and Yeast format text files."
@@ -115,7 +116,7 @@ class Parser:
             else:
                 for value in continuation[0].split("; "):
                     self.write_record([value] + continuation[1:])
-                    break # after the first name, since the others may not be gene names
+                    break  # after the first name, since the others may not be gene names
                 return None, self.END
 
         else:
@@ -143,27 +144,37 @@ class Parser:
         self.f_out.write("\t".join(record) + "\n")
 
     def write_log(self, level, message):
-        self.f_log.write("%s (%s): %d: %s: %s\n" % (self.progname, self.filetype, self.lineno, level, message))
+        self.f_log.write(
+            "%s (%s): %d: %s: %s\n"
+            % (self.progname, self.filetype, self.lineno, level, message)
+        )
+
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     from os.path import split
-    import sys
+    import os, sys
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     try:
         filetype = sys.argv[1]
         discard_ill_formed = "--discard-ill-formed" in sys.argv
     except IndexError:
-        print("Usage: %s ( fly | yeast ) [ --discard-ill-formed ]" % progname, file=sys.stderr)
+        print(
+            "Usage: %s ( fly | yeast ) [ --discard-ill-formed ]" % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     try:
-        parser = Parser(sys.stdin, sys.stdout, sys.stderr, filetype, discard_ill_formed, progname)
+        parser = Parser(
+            sys.stdin, sys.stdout, sys.stderr, filetype, discard_ill_formed, progname
+        )
         parser.parse()
     except Exception as exc:
-        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

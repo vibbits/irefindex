@@ -23,16 +23,17 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 if __name__ == "__main__":
-    from irdata.cmd import get_progname
     from irdata.java import dump_pairs
-    import sys
+    import os, sys
 
-    progname = get_progname()
+    progname = os.path.basename(sys.argv[0])
 
     try:
         infile, outfile = sys.argv[1:6]
     except ValueError:
-        print("Usage: %s <input filename> <output filename>" % progname, file=sys.stderr)
+        print(
+            "Usage: %s <input filename> <output filename>" % progname, file=sys.stderr
+        )
         sys.exit(1)
 
     f_in = open(infile)
