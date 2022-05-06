@@ -69,13 +69,13 @@ if [ "$SUGGESTED" ]; then
     fi
     echo
 
-    PYTHONVERSION=`python -c 'import sys; print ".".join(map(str, sys.version_info[:2]))'`
+    PYTHONVERSION=`python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))'`
 
     if [ "$SYSPREFIX" ]; then
         echo "export PATH=$SYSPREFIX/usr/bin"${PATH:+':$PATH'}
         echo "export PYTHONPATH=$SYSPREFIX/usr/lib/python$PYTHONVERSION/site-packages:$SYSPREFIX/usr/lib64/python$PYTHONVERSION/site-packages"${PYTHONPATH:+':$PYTHONPATH'}
     else
-        echo "export PATH=`abspath $SCRIPTS`:`abspath $TOOLS`"${PATH:+':$PATH'}
+        echo "export PATH=`realpath $SCRIPTS`:`realpath $TOOLS`"${PATH:+':$PATH'}
         echo "export PYTHONPATH=`pwd`/irdata"${PYTHONPATH:+':$PYTHONPATH'}
     fi
 
