@@ -77,30 +77,6 @@ class Parser:
             if values[4] == "Uniprot/SWISSPROT":
                 self.write_record(values)
             return None, self.END
-
-        # Handle compound values in Yeast.
-
-        #    elif self.filetype == "yeast":
-
-        # Fix the 3D column.
-
-        # values[6] = values[6] and "true" or "false"
-
-        # Now combine the values with any open record.
-
-        # if continuation:
-        #    continuation[0] += " " + values[0]
-        # else:
-        #    continuation = values
-
-        #    if continuation[0].endswith(";"):
-        #        return continuation, self.CONTINUE
-        #    else:
-        #        for value in continuation[0].split("; "):
-        #            self.write_record([value] + continuation[1:])
-        #            break # after the first name, since the others may not be gene names
-        #        return None, self.END
-
         else:
             return None, self.END
 

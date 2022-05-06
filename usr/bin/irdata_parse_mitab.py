@@ -51,8 +51,8 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-#for debugging - copy this line to the desired breakpoint
-#import pdb; pdb.set_trace()
+# for debugging - copy this line to the desired breakpoint
+# import pdb; pdb.set_trace()
 
 ###################
 # Global variables
@@ -63,121 +63,132 @@ import os
 import re
 import gzip
 
-#list fields specific to each file format type
+# list fields specific to each file format type
 mitab25 = (
-    #==> applies to MITAB 2.5, 2.6 and 2.7
-    "uidA",                     #1.  ID(s) interactor A
-    "uidB",                     #2.  ID(s) interactor B
-    "altA",                     #3.  Alt. ID(s) interactor A
-    "altB",                     #4.  Alt. ID(s) interactor B
-    "aliasA",                   #5.  Alias(es) interactor A
-    "aliasB",                   #6.  Alias(es) interactor B
-    "method",                   #7.  Interaction detection method(s)
-    "authors",                  #8.  Publication 1st author(s)
-    "pmids",                    #9.  Publication Identifier(s)
-    "taxA",                     #10. Taxid interactor A
-    "taxB",                     #11. Taxid interactor B
-    "interactionType",          #12. Interaction type(s)
-    "sourcedb",                 #13. Source database(s)
-    "interactionIdentifiers",   #14. Interaction identifier(s)
-    "confidence"                #15. Confidence value(s)
-    )
+    # ==> applies to MITAB 2.5, 2.6 and 2.7
+    "uidA",  # 1.  ID(s) interactor A
+    "uidB",  # 2.  ID(s) interactor B
+    "altA",  # 3.  Alt. ID(s) interactor A
+    "altB",  # 4.  Alt. ID(s) interactor B
+    "aliasA",  # 5.  Alias(es) interactor A
+    "aliasB",  # 6.  Alias(es) interactor B
+    "method",  # 7.  Interaction detection method(s)
+    "authors",  # 8.  Publication 1st author(s)
+    "pmids",  # 9.  Publication Identifier(s)
+    "taxA",  # 10. Taxid interactor A
+    "taxB",  # 11. Taxid interactor B
+    "interactionType",  # 12. Interaction type(s)
+    "sourcedb",  # 13. Source database(s)
+    "interactionIdentifiers",  # 14. Interaction identifier(s)
+    "confidence",  # 15. Confidence value(s)
+)
 
 
 mitab26 = (
-    #==> only in MITAB 2.6 and 2.7
-    "expansion",                #16. Expansion method(s)
-    "bioRoleA",                 #17. Biological role(s) interactor A
-    "bioRoleB",                 #18. Biological role(s) interactor B
-    "expRoleA",                 #19. Experimental role(s) interactor A
-    "expRoleB",                 #20. Experimental role(s) interactor B
-    "typeA",                    #21. Type(s) interactor A
-    "typeB",                    #22. Type(s) interactor B
-    "xrefA",                    #23. Xref(s) interactor A
-    "xrefB",                    #24. Xref(s) interactor B
-    "xrefInt",                  #25. Interaction Xref(s)
-    "annotA",                   #26. Annotation(s) interactor A
-    "annotB",                   #27. Annotation(s) interactor B
-    "annotInt",                 #28. Interaction annotation(s)
-    "hostOrg",                  #29. Host organism(s)
-    "intParam",                 #30. Interaction parameter(s)
-    "created",                  #31. Creation date
-    "updated",                  #32. Update date
-    "checksumA",                #33. Checksum(s) interactor A
-    "checksumB",                #34. Checksum(s) interactor B
-    "checksumInt",              #35. Interaction Checksum(s)
-    "negative"                  #36. Negative
-    )
+    # ==> only in MITAB 2.6 and 2.7
+    "expansion",  # 16. Expansion method(s)
+    "bioRoleA",  # 17. Biological role(s) interactor A
+    "bioRoleB",  # 18. Biological role(s) interactor B
+    "expRoleA",  # 19. Experimental role(s) interactor A
+    "expRoleB",  # 20. Experimental role(s) interactor B
+    "typeA",  # 21. Type(s) interactor A
+    "typeB",  # 22. Type(s) interactor B
+    "xrefA",  # 23. Xref(s) interactor A
+    "xrefB",  # 24. Xref(s) interactor B
+    "xrefInt",  # 25. Interaction Xref(s)
+    "annotA",  # 26. Annotation(s) interactor A
+    "annotB",  # 27. Annotation(s) interactor B
+    "annotInt",  # 28. Interaction annotation(s)
+    "hostOrg",  # 29. Host organism(s)
+    "intParam",  # 30. Interaction parameter(s)
+    "created",  # 31. Creation date
+    "updated",  # 32. Update date
+    "checksumA",  # 33. Checksum(s) interactor A
+    "checksumB",  # 34. Checksum(s) interactor B
+    "checksumInt",  # 35. Interaction Checksum(s)
+    "negative",  # 36. Negative
+)
 
 
 mitab27 = (
-    #==>only in MITAB 2.7
-    "featA",                    #37. Feature(s) interactor A
-    "featB",                    #38. Feature(s) interactor B
-    "stoichA",                  #39. Stoichiometry(s) interactor A
-    "stoichB",                  #40. Stoichiometry(s) interactor B
-    "idMethA",                  #41. Identification method participant A
-    "idMethB"                   #42. Identification method participant B
-    )
+    # ==>only in MITAB 2.7
+    "featA",  # 37. Feature(s) interactor A
+    "featB",  # 38. Feature(s) interactor B
+    "stoichA",  # 39. Stoichiometry(s) interactor A
+    "stoichB",  # 40. Stoichiometry(s) interactor B
+    "idMethA",  # 41. Identification method participant A
+    "idMethB",  # 42. Identification method participant B
+)
 
 
 ireff = (
-    #==only in iRefIndex MITAB as of release 13
-    "origA",                    #37. Original Reference A
-    "origB",                    #38. Original Refere3nce B
-    "finalA",                   #39. Final Reference A
-    "finalB",                   #40. Final Reference B
-    "mapA",                     #41. Mapping Score A
-    "mapB",                     #42. Mapping Score B
-    "irogidA",                  #43. irogida
-    "irogidB",                  #44. irogidb
-    "irigid",                   #45. irigid
-    "crogidA",                  #46. crogida
-    "crogidB",                  #47. crogidb
-    "crigidB",                  #48. crigid
-    "icrogidA",                 #49. icrogida
-    "icrogidB",                 #50. icrogidb
-    "icrigid",                  #51. icrigid
-    "imexid",                   #52. imexid
-    "edgetype"                  #53. edgetype
-    )
+    # ==only in iRefIndex MITAB as of release 13
+    "origA",  # 37. Original Reference A
+    "origB",  # 38. Original Refere3nce B
+    "finalA",  # 39. Final Reference A
+    "finalB",  # 40. Final Reference B
+    "mapA",  # 41. Mapping Score A
+    "mapB",  # 42. Mapping Score B
+    "irogidA",  # 43. irogida
+    "irogidB",  # 44. irogidb
+    "irigid",  # 45. irigid
+    "crogidA",  # 46. crogida
+    "crogidB",  # 47. crogidb
+    "crigidB",  # 48. crigid
+    "icrogidA",  # 49. icrogida
+    "icrogidB",  # 50. icrogidb
+    "icrigid",  # 51. icrigid
+    "imexid",  # 52. imexid
+    "edgetype",  # 53. edgetype
+)
 
-#define fields for each file format type
+# define fields for each file format type
 mitab25_fields = mitab25
 mitab26_fields = mitab25 + mitab26
 mitab27_fields = mitab25 + mitab26 + mitab27
-irefindex_fields =    mitab25 + mitab26 + ireff
+irefindex_fields = mitab25 + mitab26 + ireff
 
 
-#custom mpidb file format - from mpidb ftp site
-custom_mpidb_fields = mitab25_fields + (
-    "evidence",
-    "interaction"
-    )
+# custom mpidb file format - from mpidb ftp site
+custom_mpidb_fields = mitab25_fields + ("evidence", "interaction")
 
-#the defaults below can be changed in main
+# the defaults below can be changed in main
 file_format = "mitab25"
 all_fields = mitab25_fields
 
-#see get_experiment_data for an explanation
+# see get_experiment_data for an explanation
 corresponding_fields = ()
 
-#fields that have pipe-separated lists in mitab
-#AND that will be processed
-list_fields = ("altA", "altB", "aliasA", "aliasB", "method", "authors", "pmids",
-    "interactionType", "sourcedb", "interactionIdentifiers", "confidence")
+# fields that have pipe-separated lists in mitab
+# AND that will be processed
+list_fields = (
+    "altA",
+    "altB",
+    "aliasA",
+    "aliasB",
+    "method",
+    "authors",
+    "pmids",
+    "interactionType",
+    "sourcedb",
+    "interactionIdentifiers",
+    "confidence",
+)
 
-mpidb_term_regexp       = re.compile(r'(?P<prefix>.*?)"(?P<term>.*?)"\((?P<description>.*?)\)')
-standard_term_regexp    = re.compile(r'(?P<term>.*?)\((?P<description>.*?)\)')
-taxid_regexp            = re.compile(r'taxid:(?P<taxid>[^(]+)(\((?P<description>.*?)\))?')
+mpidb_term_regexp = re.compile(
+    r'(?P<prefix>.*?)"(?P<term>.*?)"\((?P<description>.*?)\)'
+)
+standard_term_regexp = re.compile(r"(?P<term>.*?)\((?P<description>.*?)\)")
+taxid_regexp = re.compile(r"taxid:(?P<taxid>[^(]+)(\((?P<description>.*?)\))?")
 
-mpidb_taxid_regexp      = re.compile(r'taxid:(?P<taxid>[^(]+)')
-uniprotkb_protein_regexp  = re.compile(r'uniprotkb:\"(.+|.+)\"')
+mpidb_taxid_regexp = re.compile(r"taxid:(?P<taxid>[^(]+)")
+uniprotkb_protein_regexp = re.compile(r"uniprotkb:\"(.+|.+)\"")
 term_regexps = [standard_term_regexp]
 
 ##################
 # Classes
 ##################
+
 
 class Parser:
 
@@ -186,11 +197,10 @@ class Parser:
     def __init__(self, writer):
         self.writer = writer
         self.file_line_no = 0
-        #keep track of multi-line interction records
+        # keep track of multi-line interction records
         self.int_line_no = 0
         self.last_int_line_no = {}
-        #self.last_interaction = None
-
+        # self.last_interaction = None
 
     def close(self):
         if self.writer is not None:
@@ -218,15 +228,15 @@ class Parser:
 
             line = f.readline()
             if file_format == "custom_mpidb":
-                line = f.readline() #the first line is an uncommented header
+                line = f.readline()  # the first line is an uncommented header
 
             while line:
-                #skip over comment lines
+                # skip over comment lines
                 if line.startswith("#"):
                     line = f.readline()
                     self.file_line_no += 1
                     continue
-                #parse all other lines
+                # parse all other lines
 
                 self.parse_line(line)
                 line = f.readline()
@@ -241,37 +251,36 @@ class Parser:
 
         data = dict(list(zip(all_fields, line.strip().split("\t"))))
 
-        #print >>sys.stderr, "line: %s" % line
+        # print >>sys.stderr, "line: %s" % line
         # Convert all pipe-delimited list values into lists.
         for key in list_fields:
-            data[key] = pipe_2_list(data[key], return_na = True)
-
-
-
-
+            data[key] = pipe_2_list(data[key], return_na=True)
 
         # Check that line is suitable for parsing otherwise skip to next line
         # Omit non protein-protein interactions and other records where A or B or taxid are ill-defined
         if data["uidA"] == "-" or data["uidB"] == "-":
             return
-        if data["taxA"] == "taxid:-" or  data["taxB"] == "taxid:-":
+        if data["taxA"] == "taxid:-" or data["taxB"] == "taxid:-":
             return
-        if data["taxA"] == "-" or  data["taxB"] == "-":
+        if data["taxA"] == "-" or data["taxB"] == "-":
             return
         if file_format == "mitab26" or file_format == "mitab27":
-            if data["typeA"] != 'psi-mi:"MI:0326"(protein)' or  data["typeB"] != 'psi-mi:"MI:0326"(protein)':
-		return
+            if (
+                data["typeA"] != 'psi-mi:"MI:0326"(protein)'
+                or data["typeB"] != 'psi-mi:"MI:0326"(protein)'
+            ):
+                return
         # Fix aliases.
         for key in ("aliasA", "aliasB"):
             data[key] = list(map(fix_alias, data[key]))
 
         # Fix controlled vocabulary fields.
         for key in ("method", "interactionType", "sourcedb"):
-            #print >>sys.stderr, "key: %s" % key
-            #print >>sys.stderr, "data: %s" % data[key]
+            # print >>sys.stderr, "key: %s" % key
+            # print >>sys.stderr, "data: %s" % data[key]
             data[key] = list(map(fix_vocabulary_term, data[key]))
-            print("data full: %s" % data, file=sys.stderr)
-        '''
+            print("data full:{} ".format(data), file=sys.stderr)
+        """
         Detect multi-line interactions representing protein complexes.
         Distinct interaction records are distinguished based on there being
         a unique interaction record identifier present (see get_interaction_id).
@@ -288,7 +297,7 @@ class Parser:
         interaction record is added to the current data line being processed as data["int_line_number"]
         "last_int_line_no" counts the number of times that an interaction identifier
         has been seen so far during the parse of this MITAB file.
-        '''
+        """
         data["file_line_no"] = self.file_line_no
         interaction_id = get_interaction_id(data)
 
@@ -299,9 +308,9 @@ class Parser:
 
         data["int_line_no"] = self.last_int_line_no[interaction_id]
 
-
-        #finally write the data out to a series of text, tab-delimited tables
+        # finally write the data out to a series of text, tab-delimited tables
         self.writer.append(data)
+
 
 class Writer:
 
@@ -345,7 +354,6 @@ class Writer:
         and probably does notapply to MPIDB psicquic files
         """
 
-
         # Where no correspondences are being recorded, return the data as the
         # only experiment entry, and with only a single additional entry
         # indicating a unique output line number.
@@ -367,7 +375,10 @@ class Writer:
             if length is None:
                 length = len(values)
             elif length != len(values):
-                raise ValueError("Field %s has %d values but preceding fields have %d values." % (key, len(values), length))
+                raise ValueError(
+                    "Field %s has %d values but preceding fields have %d values."
+                    % (key, len(values), length)
+                )
 
             fields.append(values)
 
@@ -379,7 +390,7 @@ class Writer:
 
             # Each value will be on its own in the list of values for the field.
 
-            new_data = {"line" : self.output_line}
+            new_data = {"line": self.output_line}
             for key, value in zip(corresponding_fields, values):
                 new_data[key] = [value]
 
@@ -390,12 +401,13 @@ class Writer:
 
         return experiment_data
 
+
 class MITABWriter(Writer):
 
-    '''
+    """
     A standard MITAB format file writer.
     Presently not used
-    '''
+    """
 
     def init(self):
         self.out = None
@@ -406,7 +418,7 @@ class MITABWriter(Writer):
             self.out = None
 
     def get_filename(self):
-        #imd - inspect this later - hard-coded
+        # imd - inspect this later - hard-coded
         return join(self.directory, "mpidb_mitab.txt")
 
     def start(self, filename):
@@ -437,14 +449,22 @@ class MITABWriter(Writer):
 
             self.write_line(self.out, [new_data[key] for key in mitab25_fields])
 
+
 class iRefIndexWriter(Writer):
 
     "A writer for iRefIndex-compatible data."
 
     filenames = (
-        "uid", "alias", # collecting more than one column each
-        "alternatives", "method", "authors", "pmids", "interactionType", "sourcedb", "interactionIdentifiers"
-        )
+        "uid",
+        "alias",  # collecting more than one column each
+        "alternatives",
+        "method",
+        "authors",
+        "pmids",
+        "interactionType",
+        "sourcedb",
+        "interactionIdentifiers",
+    )
 
     def init(self):
         self.files = {}
@@ -478,7 +498,6 @@ class iRefIndexWriter(Writer):
 
     def append(self, data):
 
-
         "Write iRefIndex-compatible output from the 'data'."
 
         # Interactor-specific records.
@@ -489,13 +508,23 @@ class iRefIndexWriter(Writer):
         # Only write the principal interactor of multi-line interactions once.
 
         if positionA == 0:
-            self.write_line(self.files["uid"], (self.source, self.filename, get_interaction_id(data), positionA) + get_one_uid(data["uidA"]) + (split_taxid(data["taxA"])[0],))
-        self.write_line(self.files["uid"], (self.source, self.filename, get_interaction_id(data), positionB) + get_one_uid(data["uidB"]) + (split_taxid(data["taxB"])[0],))
+            self.write_line(
+                self.files["uid"],
+                (self.source, self.filename, get_interaction_id(data), positionA)
+                + get_one_uid(data["uidA"])
+                + (split_taxid(data["taxA"])[0],),
+            )
+        self.write_line(
+            self.files["uid"],
+            (self.source, self.filename, get_interaction_id(data), positionB)
+            + get_one_uid(data["uidB"])
+            + (split_taxid(data["taxB"])[0],),
+        )
 
         for filename, fields in (
             ("alternatives", ("altA", "altB")),
-            ("alias", ("aliasA", "aliasB"))
-            ):
+            ("alias", ("aliasA", "aliasB")),
+        ):
             for position, key in enumerate(fields):
                 for entry, s in enumerate(data[key]):
                     if not s:
@@ -505,7 +534,18 @@ class iRefIndexWriter(Writer):
                     # Only write the details of the principal interactor once.
 
                     if position != 0 or positionA == 0:
-                        self.write_line(self.files[filename], (self.source, self.filename, get_interaction_id(data), positionA + position, prefix, value, entry))
+                        self.write_line(
+                            self.files[filename],
+                            (
+                                self.source,
+                                self.filename,
+                                get_interaction_id(data),
+                                positionA + position,
+                                prefix,
+                                value,
+                                entry,
+                            ),
+                        )
 
         # Experiment-specific records.
 
@@ -516,12 +556,33 @@ class iRefIndexWriter(Writer):
         for data in list_data:
             for key in ("authors",):
                 for entry, s in enumerate(data[key]):
-                    self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), s, entry))
+                    self.write_line(
+                        self.files[key],
+                        (
+                            self.source,
+                            self.filename,
+                            data["line"],
+                            get_interaction_id(data),
+                            s,
+                            entry,
+                        ),
+                    )
 
             for key in ("method", "interactionType", "sourcedb"):
                 for entry, s in enumerate(data[key]):
                     term, description = split_vocabulary_term(s)
-                    self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), term, description, entry))
+                    self.write_line(
+                        self.files[key],
+                        (
+                            self.source,
+                            self.filename,
+                            data["line"],
+                            get_interaction_id(data),
+                            term,
+                            description,
+                            entry,
+                        ),
+                    )
 
             for key in ("pmids",):
                 for entry, s in enumerate(data[key]):
@@ -534,48 +595,96 @@ class iRefIndexWriter(Writer):
 
                         if value.isdigit():
 
-                            self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
+                            self.write_line(
+                                self.files[key],
+                                (
+                                    self.source,
+                                    self.filename,
+                                    data["line"],
+                                    get_interaction_id(data),
+                                    value,
+                                    entry,
+                                ),
+                            )
                         elif "doi" in value:
                             ##fixing issues with VIRUSHOST example pubmed:https(//doi.org/...)
                             value = value.rstrip(")")
                             value = value.lstrip("https(//doi.org/")
-                            self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
+                            self.write_line(
+                                self.files[key],
+                                (
+                                    self.source,
+                                    self.filename,
+                                    data["line"],
+                                    get_interaction_id(data),
+                                    value,
+                                    entry,
+                                ),
+                            )
 
                         else:
-                            print(" %s is not a pubmedID or DOI: citation suppressed" % (value), file=sys.stderr)
-                            #value = '-'
-                            #self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
-                    if (prefix.lower()  == "doi"):
-                        self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
+                            print(
+                                " %s is not a pubmedID or DOI: citation suppressed"
+                                % (value),
+                                file=sys.stderr,
+                            )
+                            # value = '-'
+                            # self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), value, entry))
+                    if prefix.lower() == "doi":
+                        self.write_line(
+                            self.files[key],
+                            (
+                                self.source,
+                                self.filename,
+                                data["line"],
+                                get_interaction_id(data),
+                                value,
+                                entry,
+                            ),
+                        )
 
             for key in ("interactionIdentifiers",):
                 for entry, s in enumerate(data[key]):
                     prefix, value = colon_2_tuple(s)
-                    self.write_line(self.files[key], (self.source, self.filename, data["line"], get_interaction_id(data), prefix, value, entry))
-
-
+                    self.write_line(
+                        self.files[key],
+                        (
+                            self.source,
+                            self.filename,
+                            data["line"],
+                            get_interaction_id(data),
+                            prefix,
+                            value,
+                            entry,
+                        ),
+                    )
 
 
 ##################
 # Global functions
 ##################
 
+
 def get_interaction_id(data):
-    int_id = data.get("interaction") or colon_2_tuple(data["interactionIdentifiers"][0])[-1]
+    int_id = (
+        data.get("interaction") or colon_2_tuple(data["interactionIdentifiers"][0])[-1]
+    )
     if int_id == "-" or int_id == "" or int_id == " ":
         int_id = data["file_line_no"]
     return int_id
 
+
 # Value processing.
 
+
 def pipe_2_list(s, return_na):
-    '''
+    """
     converts a pipe-delimited list of strings to a list
     the string "-" is used to denote NA (not available) data in mitab files
     for a string "a|b|-|d" return the list [a,b,"-",d] or only [a,b,d] if return_na is false
     apply fix for uniprot entries with pipe symbol in name
-    '''
-    match =uniprotkb_protein_regexp.search(s)
+    """
+    match = uniprotkb_protein_regexp.search(s)
     if match:
         s = fix_pipe_in_string(s)
     l = s.split("|")
@@ -584,19 +693,21 @@ def pipe_2_list(s, return_na):
     else:
         return [i for i in l if i != "-"]
 
+
 def list_2_pipe(l):
-    '''for the list [a,b,c] return the string "a|b|c" or "-" for empty list'''
+    """for the list [a,b,c] return the string "a|b|c" or "-" for empty list"""
     if not l:
         return "-"
     else:
         return "|".join(l)
 
+
 def fix_pipe_in_string(s):
-    '''
+    """
     this is a fix for a QUICKGO entry where a pipe symbol is used in the name of the protein
     it originates from UNIPROT Q8VZ68
     obviously, it could also happen anywhere else
-    '''
+    """
     for regexp in [uniprotkb_protein_regexp]:
         match = regexp.search(s)
         if match:
@@ -604,17 +715,18 @@ def fix_pipe_in_string(s):
             proteins = []
 
             for item in range(len(temp_proteins)):
-                if ':' in temp_proteins[item]:
+                if ":" in temp_proteins[item]:
                     proteins.append(temp_proteins[item])
                 else:
-                    proteins[item-1] = temp_proteins[item-1] + temp_proteins[item]
+                    proteins[item - 1] = temp_proteins[item - 1] + temp_proteins[item]
 
             return "|".join(proteins)
 
+
 def fix_vocabulary_term(s):
-    '''
+    """
     this is a historical fix for MPIDB and is not required for MPIDB retrieved using psicquic
-    '''
+    """
     for regexp in term_regexps:
         match = regexp.match(s)
 
@@ -622,26 +734,29 @@ def fix_vocabulary_term(s):
             return "%s(%s)" % (match.group("term"), match.group("description"))
     raise ValueError("Term %r is not well-formed.  Fail in fix_vocabulary_term." % s)
 
+
 def fix_alias(s):
-    '''
+    """
     this is a historical fix for MPI sources that incorrectly label aliases as from
     uniprotkb when they are in fact entrezgene/locuslink gene names
-    '''
+    """
     if file_format == "custom_mpidb" and s.startswith("uniprotkb:"):
         prefix, symbol = s.split(":")[:2]
         return "entrezgene/locuslink:" + symbol
     else:
         return s
 
+
 def colon_2_tuple(s):
-    '''
+    """
     for the string "a:b" return the tuple (a,b)
     interpret null or - value of s as -:-
-    '''
+    """
     if s == " " or s == "" or s == "-":
         s = "-:-"
     parts = s.split(":", 1)
     return tuple(parts)
+
 
 def split_vocabulary_term(s):
     for regexp in term_regexps:
@@ -650,42 +765,45 @@ def split_vocabulary_term(s):
             return (match.group("term"), match.group("description"))
     raise ValueError("Term %r is not well-formed. Fail in split_vocabulary_term." % s)
 
+
 def get_one_uid(s):
-    '''
+    """
     given a uid for an interactor in the form of
     a string "a:b" or "a:b|c:d" return just the last tuple (c,d) for InnateDB
     or just the first tuple for all other databases
     if - is encountered in the original file (i.e. an NA) then return the tuple
     ("-", "-")
-    '''
-    uids = pipe_2_list(s, return_na = False)
+    """
+    uids = pipe_2_list(s, return_na=False)
     if uids:
-        if source.startswith("INNATE"): # NOTE: Hack for InnateDB MITAB.
+        if source.startswith("INNATE"):  # NOTE: Hack for InnateDB MITAB.
             return colon_2_tuple(uids[-1])
         else:
             return colon_2_tuple(uids[0])
     else:
-        return ('-','-')
+        return ("-", "-")
+
 
 def split_taxid(s):
-    '''
+    """
     given the string 'taxid:1234("some cool organism")'
     return the tuple taxid=1234 and description="some cool organism"
-    '''
+    """
     match = taxid_regexp.match(s)
     if match:
         taxid = match.group("taxid")
-        description = match.group("description") or "NA" #allow missing description
+        description = match.group("description") or "NA"  # allow missing description
         return (taxid, description)
     else:
         raise ValueError("Taxonomy %r is not well-formed." % s)
 
+
 def detect_file_format(filenames):
-    '''
+    """
     open and inspect the first of the files to be parsed
     based on the number of columns, a filetype is returned
     one of: mitab25, mitab26, mitab27, irefindex, unknown
-    '''
+    """
     filename = filenames[0]
     leafname = split(filename)[-1]
     basename, ext = splitext(leafname)
@@ -698,32 +816,33 @@ def detect_file_format(filenames):
 
     try:
         line = f.readline()
-        #skip over comment lines
+        # skip over comment lines
         if line.startswith("#"):
             line = f.readline()
         data = line.strip().split("\t")
         if len(data) == len(mitab25_fields):
-            return("mitab25")
+            return "mitab25"
         if len(data) == len(mitab26_fields):
-            return("mitab26")
-	print(len(data))
+            return "mitab26"
+        print(len(data))
         if len(data) == len(mitab27_fields):
-            return("mitab27")
+            return "mitab27"
         if len(data) == len(irefindex_fields):
-            return("irefindex")
+            return "irefindex"
         if len(data) == len(custom_mpidb_fields):
-            return ("custom_mpidb")
+            return "custom_mpidb"
         else:
-            return("unknown")
+            return "unknown"
 
     finally:
         f.close()
 
+
 def get_all_fields(file_format):
-    '''
+    """
     return the list of fields for the parser to retrieve from each line
     of the mitab file based on the file format
-    '''
+    """
     if file_format == "mitab25" or file_format == "custom_mpidb":
         return mitab25_fields
     elif file_format == "mitab26":
@@ -748,35 +867,46 @@ if __name__ == "__main__":
         directory = sys.argv[2]
         filenames = sys.argv[3:]
     except IndexError:
-        print("Usage: %s <source> <output data directory> <filename>..." % progname, file=sys.stderr)
+        print(
+            "Usage: %s <source> <output data directory> <filename>..." % progname,
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     try:
         # set up based on type of file to be parsed.
         file_format = detect_file_format(filenames)
-	print("file format: %s" % file_format, file=sys.stderr)
+        print("file format: %s" % file_format, file=sys.stderr)
         if file_format == "unknown":
             sys.exit(1)
         all_fields = get_all_fields(file_format)
-        #change global defaults in the case that MPIDB custom file is being parsed
+        # change global defaults in the case that MPIDB custom file is being parsed
         if file_format == "custom_mpidb":
             corresponding_fields = (
-            "method", "authors", "pmids", "interactionType", "sourcedb",
-            "interactionIdentifiers", "confidence")
+                "method",
+                "authors",
+                "pmids",
+                "interactionType",
+                "sourcedb",
+                "interactionIdentifiers",
+                "confidence",
+            )
             all_fields = custom_mpidb_fields
             term_regexps = [mpidb_term_regexp, standard_term_regexp]
 
-        #prepare parser and try parsing
+        # prepare parser and try parsing
         writer = iRefIndexWriter(source, directory)
         parser = Parser(writer)
         try:
             for filename in filenames:
                 parser.parse(filename)
         finally:
-            parser.close() # closes the writer
+            parser.close()  # closes the writer
 
     except Exception as exc:
-        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4
