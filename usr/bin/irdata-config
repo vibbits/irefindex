@@ -483,7 +483,7 @@ MPIDB_IMPORT_TEMPLATE='import_mitab.sql'
 ############################################################
 # MPPI (also known as MIPS)
 # download not available - link changed - contact Helmholtz
-# OK 
+# OK
 MPPI_DOWNLOAD_FILES="mppi.gz"
 #MPPI_MIRROR='http://mips.gsf.de'
 MPPI_MIRROR='file://'
@@ -551,7 +551,7 @@ REACTOME_IMPORT_TEMPLATE='import_mitab.sql'
 #irdata_parse_reactome.sh /storage/data/REACTOME /storage/data/REACTOME/reactome_psicquic.txt
 
 ############################################################
-# QUICKGO 
+# QUICKGO
 # only works with curl -k
 QUICKGO_MIRROR='http://www.ebi.ac.uk'
 QUICKGO_RELEASE_URL="$QUICKGO_MIRROR/QuickGO/psicquic/webservices/current/search/query/*?format=tab27"
@@ -598,7 +598,7 @@ SPIKE_IMPORT_TEMPLATE='import_mitab.sql'
 
 ############################################################
 # SEGUID
-# NOT OK 
+# NOT OK
 SEGUID_DOWNLOAD_FILES="seguidannotation"
 SEGUID_MIRROR='ftp://bioinformatics.anl.gov'
 
@@ -719,7 +719,6 @@ EUTILS_TOOL='irdata'
 EUTILS_EMAIL="$EMAIL"
 
 
-
 ############################################################
 # Parallel processing (irparallel).
 # (Only PROCESSES may need changing. The XARGS settings may
@@ -766,17 +765,12 @@ isin() {
     fi
 }
 
-
-
 ############################################################
 # Program and resource locations.
 
-alias abspath="python -c 'import os, sys; print os.path.abspath(sys.argv[1])'"
-alias normpath="python -c 'import os, sys; print os.path.normpath(sys.argv[1])'"
-
 PROGNAME=`basename "$0"`
 SCRIPTS=`dirname "$0"`
-SCRIPTS=`normpath "$SCRIPTS"`
+SCRIPTS=`realpath "$SCRIPTS"`
 
 # Fix the scripts directory if this file was read by one of the tools.
 # Or if this file does not reside with the other scripts.
@@ -798,7 +792,7 @@ fi
 # Tools.
 
 if [ -e "$SCRIPTS/../tools" ]; then
-    TOOLS=`normpath "$SCRIPTS/../tools"`
+    TOOLS=`realpath "$SCRIPTS/../tools"`
 else
     TOOLS="$SCRIPTS"
 fi
@@ -811,7 +805,7 @@ fi
 SYSSQL="$SYSPREFIX/usr/share/irdata/sql"
 
 if [ -e "$SCRIPTS/../sql" ]; then
-    SQL=`normpath "$SCRIPTS/../sql"`
+    SQL=`realpath "$SCRIPTS/../sql"`
 elif [ -e "$SYSSQL" ]; then
     SQL="$SYSSQL"
 elif [ ! "$INSPECTONLY" ]; then
@@ -822,7 +816,7 @@ fi
 SYSREPORTS="$SYSPREFIX/usr/share/irdata/reports"
 
 if [ -e "$SCRIPTS/../reports" ]; then
-    REPORTS=`normpath "$SCRIPTS/../reports"`
+    REPORTS=`realpath "$SCRIPTS/../reports"`
 elif [ -e "$SYSREPORTS" ]; then
     REPORTS="$SYSREPORTS"
 elif [ ! "$INSPECTONLY" ]; then
@@ -833,7 +827,7 @@ fi
 SYSMANIFESTS="$SYSPREFIX/usr/share/irdata/manifests"
 
 if [ -e "$SCRIPTS/../manifests" ]; then
-    MANIFESTS=`normpath "$SCRIPTS/../manifests"`
+    MANIFESTS=`realpath "$SCRIPTS/../manifests"`
 elif [ -e "$SYSMANIFESTS" ]; then
     MANIFESTS="$SYSMANIFESTS"
 elif [ ! "$INSPECTONLY" ]; then
@@ -844,7 +838,7 @@ fi
 SYSRESOURCES="$SYSPREFIX/usr/share/irdata/resources"
 
 if [ -e "$SCRIPTS/../resources" ]; then
-    RESOURCES=`normpath "$SCRIPTS/../resources"`
+    RESOURCES=`realpath "$SCRIPTS/../resources"`
 elif [ -e "$SYSRESOURCES" ]; then
     RESOURCES="$SYSRESOURCES"
 elif [ ! "$INSPECTONLY" ]; then
@@ -859,7 +853,7 @@ SYSDATA="$SYSPREFIX/var/lib/irdata/data"
 if [ "$DATA" ] && [ -e "$DATA" ]; then
     :
 elif [ -e "$SCRIPTS/../data" ]; then
-    DATA=`normpath "$SCRIPTS/../data"`
+    DATA=`realpath "$SCRIPTS/../data"`
 elif [ ! "$SYSPREFIX" ]; then
     DATA=data
 else
@@ -876,7 +870,7 @@ fi
 SYSLOGS="$SYSPREFIX/var/log/irdata"
 
 if [ -e "$SCRIPTS/../logs" ]; then
-    LOGS=`normpath "$SCRIPTS/../logs"`
+    LOGS=`realpath "$SCRIPTS/../logs"`
 elif [ ! "$SYSPREFIX" ]; then
     LOGS=logs
 else
