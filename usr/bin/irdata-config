@@ -1,49 +1,45 @@
 #!/bin/sh
 
 ############################################################
-# General configuration settings for irdata.
-# (SYSPREFIX and EMAIL are most likely to need changing.)
-
-SYSPREFIX=/home/irefindex                                  # system-wide installation root
-EMAIL=alexander.botzki@vib.be               # e-mail address for anonymous FTP logins
-DATABASE=irdata18b                          # database name
-DATA=/dataext/irdata18                         # user defined data directory location
-WIKIFORMAT=MediaWiki                        # format for generated Wiki pages
-WGET_WAIT=5                                 # time to wait between wget requests
-WGET_ATTEMPTS=5                             # number of attempts to make using wget
-PSQL_OPTIONS="--psql-options -p 5432"       # "--psql-options <psql connection options>"
-
-
-
-############################################################
 # Output and publication options.
 # (RELEASE is most likely to need changing.)
 
-RELEASE=18.0                              # iRefIndex release identifier
+RELEASE_MAJOR="19"
+RELEASE_MINOR="0"
+RELEASE="${RELEASE_MAJOR}.${RELEASE_MINOR}" # iRefIndex release identifier
+
+############################################################
+# General configuration settings for irdata.
+# (SYSPREFIX and EMAIL are most likely to need changing.)
+
+SYSPREFIX="/home/irefindex"                 # system-wide installation root
+EMAIL="alexander.botzki@vib.be"             # e-mail address for anonymous FTP logins
+DATABASE="irdata${RELEASE_MAJOR}"           # database name
+DATA="/dataext/irdata${RELEASE_MAJOR}"      # user defined data directory location
+WIKIFORMAT="MediaWiki"                      # format for generated Wiki pages
+WGET_WAIT="5"                               # time to wait between wget requests
+WGET_ATTEMPTS="5"                           # number of attempts to make using wget
+PSQL_OPTIONS=""                             # "--psql-options <psql connection options>"
 
 # Information provided with the iRefScape data.
 # This features the FTP download site for iRefIndex data
 # (once uploaded), the path within the site to the data
 # files, and the credentials involved in accessing the site.
 
-IREFINDEX_RELEASE_SITE='irefindex.org/download'
+IREFINDEX_RELEASE_SITE="irefindex.org/download"
 IREFINDEX_RELEASE_PATH="/irefindex/Cytoscape/plugin/archive/release_$RELEASE"
-IREFINDEX_RELEASE_USER=anonymous
-IREFINDEX_RELEASE_PASSWORD=
-IREFINDEX_PROPRIETARY_DATA=FALSE
-
-
+IREFINDEX_RELEASE_USER="anonymous"
+IREFINDEX_RELEASE_PASSWORD=""
+IREFINDEX_PROPRIETARY_DATA="FALSE"
 
 ############################################################
 # Authentication information for certain data sources.
 # (These settings must be changed if DIP is used.)
 
-DIP_USERNAME=albot             # DIP download credentials
-DIP_PASSWORD=Dd8AIwsbwib
+DIP_USERNAME="albot"                        # DIP download credentials
+DIP_PASSWORD="Dd8AIwsbwib"
 #this username pass only seems to work with http version of gz file
 #ftp did not work as of build 12
-
-
 
 ############################################################
 # Sources available to the system.
@@ -60,7 +56,6 @@ DIP_PASSWORD=Dd8AIwsbwib
 # If available, review the BIND_MIRROR, BIND_RELEASE_URL,
 # OPHID_MIRROR and OPHID_RELEASE_URL settings below.
 
-##FOR 16A added APID
 XMLSOURCES="BIND_TRANSLATION BIOGRID CORUM HPRD INTACT INTCOMPLEX MPACT MPPI"
 TABSOURCES="MINT MPIDB IMEX INNATEDB MATRIXDB REACTOME VIRUSHOST UNIPROTPP HPIDB HURI BHF_UCL MBINFO MOLCON QUICKGO BAR SPIKE DIP"
 OTHERSOURCES="PSI_MI TAXONOMY BIND DIG FLY GENE GENPEPT IPI MMDB PDB REFSEQ UNIPROT YEAST ATHALIANA"
@@ -74,7 +69,6 @@ OTHERSOURCES="PSI_MI TAXONOMY BIND DIG FLY GENE GENPEPT IPI MMDB PDB REFSEQ UNIP
 # Use the form of the sources given in the above lists,
 # putting a space between each source identifier.
 
-##for 16A deleted here MINT SPIKE
 EXCLUDEDSOURCES="APID MOLCON OPHID SIQUID"
 
 ############################################################
@@ -718,7 +712,6 @@ EFETCH_URL="$EUTILS_URL/efetch.fcgi"
 EUTILS_TOOL='irdata'
 EUTILS_EMAIL="$EMAIL"
 
-
 ############################################################
 # Parallel processing (irparallel).
 # (Only PROCESSES may need changing. The XARGS settings may
@@ -729,25 +722,16 @@ PROCESSES=4                                 # number of process groups to use
 XARGS_I='-I'                                # get round annoying GNU xargs incompatibility
 XARGS_L='-L'                                # get round annoying GNU xargs incompatibility
 
-
-
-
-
-
 ############################################################
 # The portion below is mostly configuration logic and rarely
 # needs to be changed. If you have changed the settings in
 # the upper sections of this file, you should now be done
 # with your configuration activity.
 
-
-
 ############################################################
 # The combined sources list.
 
 ALLSOURCES="$XMLSOURCES $TABSOURCES $OTHERSOURCES"
-
-
 
 ############################################################
 # Utility function.
@@ -881,8 +865,6 @@ if [ ! -e "$LOGS" ] && [ ! "$INSPECTONLY" ]; then
     echo "Cannot locate the irdata logs directory." 1>&2
     exit 1
 fi
-
-
 
 ############################################################
 # Locations for internal use only.
