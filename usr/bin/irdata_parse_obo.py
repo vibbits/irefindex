@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Extract term information from the PSI-MI ontology file, producing a file with

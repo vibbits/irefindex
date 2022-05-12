@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 A tool which checks XML files for well-formedness. Names of files that are not

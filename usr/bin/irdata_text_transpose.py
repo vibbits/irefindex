@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Transpose input lines, writing fields from each line to separate output lines.

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Open and parse MITAB files and write to tables in preparation for import into

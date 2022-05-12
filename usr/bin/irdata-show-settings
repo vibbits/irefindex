@@ -69,7 +69,7 @@ if [ "$SUGGESTED" ]; then
     fi
     echo
 
-    PYTHONVERSION=`python -c 'import sys; print(".".join(map(str, sys.version_info[:2])))'`
+    PYTHONVERSION=`python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))'`
 
     if [ "$SYSPREFIX" ]; then
         echo "export PATH=$SYSPREFIX/usr/bin"${PATH:+':$PATH'}

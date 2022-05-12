@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Cut columns from a file in order of the specified symbolic field names read
