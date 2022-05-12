@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 A tool which reads PSI MI XML files and produces tabular data.

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Convert MPIDB MITAB files to standard MITAB format or to iRefIndex-compatible

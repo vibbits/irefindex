@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Recode the contents of a file, writing a new file with a different encoding to

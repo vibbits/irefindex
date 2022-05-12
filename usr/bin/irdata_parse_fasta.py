@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Parse FASTA format text files, writing protein flat files to the output data

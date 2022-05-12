@@ -1,9 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import compiler
 import marshal, imp, os, stat, struct
 
 # Originally from Analysis/Writers/Python.
+
 
 def write_module(module, source_filename, target_filename, syntax_check=1):
 
@@ -22,16 +23,19 @@ def write_module(module, source_filename, target_filename, syntax_check=1):
     marshal.dump(generator.getCode(), f)
     f.close()
 
+
 def get_header(filename):
 
     "Taken from compiler.pycodegen. Prepare the compiled module header."
 
     MAGIC = imp.get_magic()
     mtime = os.stat(filename)[stat.ST_MTIME]
-    mtime = struct.pack('<i', mtime)
+    mtime = struct.pack("<i", mtime)
     return MAGIC + mtime
 
+
 # Processing functions.
+
 
 def process_nodes(root_node, prefix=None):
 
@@ -57,6 +61,7 @@ def process_nodes(root_node, prefix=None):
         else:
             process_nodes(node, prefix)
 
+
 def process_import(node, parent):
 
     """
@@ -74,6 +79,7 @@ def process_import(node, parent):
             return alias
 
     return None
+
 
 def process_callfunc(node, prefix):
 
@@ -103,6 +109,7 @@ def process_callfunc(node, prefix):
     else:
         process_callfunc_args(node, prefix)
 
+
 def process_callfunc_args(node, prefix, start_index=0):
 
     """
@@ -115,6 +122,7 @@ def process_callfunc_args(node, prefix, start_index=0):
         arg = node.args[index]
         if isinstance(arg, compiler.ast.Getattr):
             process_getattr(arg, prefix, node, index=index)
+
 
 def process_getattr(node, prefix, parent, index=None):
 
@@ -137,8 +145,11 @@ def process_getattr(node, prefix, parent, index=None):
     # (obj.node).attr plus (obj.node).attr.attr
     # Note that the deep cases are dealt with first using a recursive call.
 
-    if getattr_has_prefix(node, prefix) or \
-        isinstance(node.expr, compiler.ast.Getattr) and propagated_prefix(process_getattr(node.expr, prefix, node)):
+    if (
+        getattr_has_prefix(node, prefix)
+        or isinstance(node.expr, compiler.ast.Getattr)
+        and propagated_prefix(process_getattr(node.expr, prefix, node))
+    ):
 
         # Replace CallFunc plus Getattr occurrences:
         # node.attr(args) -> Node_attr(node, args)
@@ -154,9 +165,8 @@ def process_getattr(node, prefix, parent, index=None):
 
             else:
                 replacement = compiler.ast.CallFunc(
-                    compiler.ast.Name("Node_%s" % node.attrname),
-                    [node.expr]
-                    )
+                    compiler.ast.Name("Node_%s" % node.attrname), [node.expr]
+                )
                 parent.args[index] = replacement
 
         # Replace plain Getattr nodes:
@@ -165,9 +175,8 @@ def process_getattr(node, prefix, parent, index=None):
 
         else:
             replacement = compiler.ast.CallFunc(
-                compiler.ast.Name("Node_%s" % node.attrname),
-                [node.expr]
-                )
+                compiler.ast.Name("Node_%s" % node.attrname), [node.expr]
+            )
             for key, value in list(parent.__dict__.items()):
                 # Detect lists.
                 if hasattr(value, "__len__") and node in value:
@@ -184,6 +193,7 @@ def process_getattr(node, prefix, parent, index=None):
         process_nodes(node, prefix)
         return None
 
+
 def propagated_prefix(attrname):
 
     """
@@ -192,6 +202,7 @@ def propagated_prefix(attrname):
     """
 
     return attrname in ("ownerElement", "ownerDocument")
+
 
 def getattr_has_prefix(node, prefix):
 
@@ -209,10 +220,13 @@ def getattr_has_prefix(node, prefix):
     # Check the attribute name of child expressions:
     # (obj.node).attr
 
-    elif isinstance(node.expr, compiler.ast.Getattr) and node.expr.attrname.startswith(prefix):
+    elif isinstance(node.expr, compiler.ast.Getattr) and node.expr.attrname.startswith(
+        prefix
+    ):
         return 1
     else:
         return 0
+
 
 def include_import(module):
 
@@ -221,6 +235,7 @@ def include_import(module):
     """
 
     module.node.nodes.insert(0, compiler.ast.From("libxml2dom.macrolib", [("*", None)]))
+
 
 def process_file(filename):
 
@@ -246,8 +261,10 @@ def process_file(filename):
     write_module(module, filename, os.path.splitext(filename)[0] + ".pyc")
     return module
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) < 2:
         print("libxml2macro.py <module-filename>")
         sys.exit(1)

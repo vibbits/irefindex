@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Parse the table embedded in the UniProt FlyBase and Yeast text files.

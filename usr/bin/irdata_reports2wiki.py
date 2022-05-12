@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Convert tab-separated files (such as report logs) into a Wiki page.

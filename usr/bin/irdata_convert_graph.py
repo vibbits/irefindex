@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 """
 Convert the iRefScape graph edge data to a Java serialised object
