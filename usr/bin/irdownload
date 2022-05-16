@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2011, 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -158,12 +158,12 @@ for SOURCE in $SOURCES; do
                     # For patterns, if files do not exist, the variables will also be the same.
                     # For patterns, if files do exist, the variables will be different.
 
-                    # This is strange - DOWNLOADED will always be a list of one thing so 
+                    # This is strange - DOWNLOADED will always be a list of one thing so
                     # this for loop will only be used once and the first condition :
-                    # "$DOWNLOADEDFILE" = "$DOWNLOADED" 
+                    # "$DOWNLOADEDFILE" = "$DOWNLOADED"
                     # will always be true
                     # looks like cruft to me - the for loop could be removed and just test if $DOWNLOADED exists
-                    # and for clarity - this whole $CHECK_ONLY block could be moved outside of this 
+                    # and for clarity - this whole $CHECK_ONLY block could be moved outside of this
                     # for DOWNLOAD in $DOWNLOAD_FILES;  loop
 
                     if [ "$DOWNLOADEDFILE" = "$DOWNLOADED" ] && [ ! -e "$DOWNLOADEDFILE" ]; then

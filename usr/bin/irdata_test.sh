@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2011-2013 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Ian Donaldson<ian.oslo@gmail.com>
@@ -58,11 +58,11 @@ if [ ! "$MITABPATH1" ] || [ ! "$MITABPATH2" ]; then
     exit 1
 fi
 
-if [ ! -e "$MITABPATH1" ] 
+if [ ! -e "$MITABPATH1" ]
 then
     echo "$PROGNAME: $MITABPATH1 does not exist." 1>&2
     exit 1
-elif [ ! -e "$MITABPATH2" ] 
+elif [ ! -e "$MITABPATH2" ]
 then
     echo "$PROGNAME: $MITABPATH2 does not exist." 1>&2
     exit 1
@@ -82,7 +82,7 @@ INFILES=("$MITABPATH1 $MITABPATH2")
 #time check
 ########
 source timer.sh
-echo -n "$PROGNAME STARTING "; date 
+echo -n "$PROGNAME STARTING "; date
 t=$(timer)
 
 
@@ -117,7 +117,7 @@ done
 
 
 #################
-echo "examining two files for number of bind distinct record ids, lines describing bind complexes, irigids for binary ints and complexes" 
+echo "examining two files for number of bind distinct record ids, lines describing bind complexes, irigids for binary ints and complexes"
 ################
 
 #:<<'SKIPTHIS'
@@ -133,7 +133,7 @@ for THISFILE in $INFILES; do
     echo "distinct irigids (column 45) for all bind records involving a ppi"
     cut -f 13,14,21,22,45 $THISFILE | grep 'MI:0462(bind)'|grep 'MI:0326.*MI:0326'|cut -f 5|sort -u|wc -l
     echo
-    echo "distinct irigids (column 45) for all bind records involving a complex" 
+    echo "distinct irigids (column 45) for all bind records involving a complex"
     cut -f 13,14,21,22,45 $THISFILE | grep 'MI:0462(bind)'|grep 'MI:0315'|cut -f 5|sort -u|wc -l
     echo
 done
@@ -158,12 +158,12 @@ function process()
             IDCOL=2;;
         mint )
             GREPDB='MI:0471(mint)'
-            IDCOL=2;;            
+            IDCOL=2;;
         * )
             GREPDB='NOTFOUND'
             IDCOL=1;;
     esac
-                  
+
     #select db records that describe protein-protein ints and retrieve the db ids for these int records, sorted and unique
     cut -f 13,14,21,22 "$MITABPATH1" | grep -i $GREPDB | grep 'MI:0326.*MI:0326' | cut -f 2 | cut -f $IDCOL -d '|' | sort -u > file.1.$DB
     cut -f 13,14,21,22 "$MITABPATH2" | grep -i $GREPDB | grep 'MI:0326.*MI:0326' | cut -f 2 | cut -f $IDCOL -d '|' | sort -u > file.2.$DB
@@ -172,7 +172,7 @@ function process()
 
     #create separate files of record identifiers for records that are missing, new or common to the two releases
     #missing
-    
+
     OUTFILE="$DB-records-missing-from-file-2"
     comm -23 file.1.$DB file.2.$DB > $OUTFILE
     echo -n "$OUTFILE :" ; wc -l $OUTFILE
@@ -233,7 +233,7 @@ function process()
             k=${#THISRECORD[@]}
             while [ $i -lt $j ]; do
                 if [ "${THISRECORD1[$i]}" != "${THISRECORD2[$i]}" ]; then ISDIFF="DIFFCOL-$i" ; else ISDIFF=" "; fi
-                printf "%25s \t %-.50s \t %-.50s \t %-.10s\n" "${COLNAMES1[$i]}" "${THISRECORD1[$i]}" "${THISRECORD2[$i]}" "$ISDIFF" >> common.records.$DB 
+                printf "%25s \t %-.50s \t %-.50s \t %-.10s\n" "${COLNAMES1[$i]}" "${THISRECORD1[$i]}" "${THISRECORD2[$i]}" "$ISDIFF" >> common.records.$DB
                 ((i++))
             done
             echo >> common.records.$DB
@@ -256,7 +256,7 @@ done
 ########
 #time check
 ########
-echo -n "$PROGNAME ENDING "; date 
+echo -n "$PROGNAME ENDING "; date
 printf 'ELAPSED TIME: %s\n' $(timer $t)
 
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -85,7 +85,7 @@ fi
 
       if [ "$URL" ]; then
           echo "url"
-	  echo "$SOURCE" 1>&2    
+	  echo "$SOURCE" 1>&2
           source=$(echo $SOURCE | tr '[:upper:]' '[:lower:]')
           DETAILS="$MANIFESTS/irdata_manifest_$source.txt"
 

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2015 Ian Donaldson <ian@donaldsonresearch.com>
 #
@@ -40,7 +40,7 @@ for FILENAME in *.mitab*.txt; do
 head -n 1 $FILENAME > public_mitab/$FILENAME
 for PUBLIC_SOURCE in $PUBLIC_SOURCES; do
     echo -e "\n processing $PUBLIC_SOURCE for $FILENAME"
-    awk -v public_source=$PUBLIC_SOURCE 'BEGIN {FS="\t"; OFS="\t"}{if($13==public_source) print $0}' < $FILENAME >> public_mitab/$FILENAME 
+    awk -v public_source=$PUBLIC_SOURCE 'BEGIN {FS="\t"; OFS="\t"}{if($13==public_source) print $0}' < $FILENAME >> public_mitab/$FILENAME
 done
 done
 

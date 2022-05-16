@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -36,7 +36,7 @@ EOF
 fi
 
 DATADIR=$1
-FILENAME=$2
+FILENAbaME=$2
 
 if [ ! "$DATADIR" ] || [ ! "$FILENAME" ]; then
     echo "$PROGNAME: A data directory and an input filename or - must be specified." 1>&2

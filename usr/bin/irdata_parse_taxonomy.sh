@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2011 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -48,10 +48,10 @@ fi
 TAB=`printf '\t'`
 
 sed "s/${TAB}|${TAB}/${TAB}/g;s/${TAB}|$//;" "$FILENAME" > "$DATADIR/tmp1.txt"
-  
-# In mny cases, column 3 is NULL 
+
+# In mny cases, column 3 is NULL
 # In many cases, there may be two or more rows that have identical values
-# for columns 1, 2 and 4 and only one row will have a non-NULL value in 
+# for columns 1, 2 and 4 and only one row will have a non-NULL value in
 # column 3.
 # This causes a problem for the import stage which enforces a unique compound key
 # for the taxonomy_names table composed of columns 1,2 and 3.

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2011, 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -55,7 +55,7 @@ echo "$FILETYPE"
 #END=`grep -ne '^----' "$FILENAME" | tail -n 2 | head -n 1 | cut -d ':' -f 1`
 
 # cat the file and present it to the parser.
-echo "$DATADIR/$OUTFILE" 1>&2 
+echo "$DATADIR/$OUTFILE" 1>&2
   cat "$FILENAME" \
 | "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
 > "$DATADIR/$OUTFILE"
