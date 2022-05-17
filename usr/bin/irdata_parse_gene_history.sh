@@ -36,7 +36,7 @@ EOF
 fi
 
 DATADIR=$1
-FILENAbaME=$2
+FILENAME=$2
 
 if [ ! "$DATADIR" ] || [ ! "$FILENAME" ]; then
     echo "$PROGNAME: A data directory and an input filename or - must be specified." 1>&2
