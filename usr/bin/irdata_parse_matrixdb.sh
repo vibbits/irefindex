@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -49,7 +49,7 @@ echo "$FILENAMES" 1>&2
 for THISFILE in $FILENAMES; do
     ORIGINAL="$THISFILE".original
     #awk 'BEGIN {FS="\t";}{if ($21 == "psi-mi:\"MI:0326\"(protein)"  && $22 == "psi-mi:\"MI:0326\"(protein)") print ;}' < "$THISFILE" > tmp
-    awk 'BEGIN {FS="\t";}{OFS="\t";}{if ($1 !~ /chebi:/ && $2 !~ /chebi:/){$21 = "psi-mi:\"MI:0326\"(protein)"; $22 = "psi-mi:\"MI:0326\"(protein)";print $0;}}' < "$THISFILE" > tmp 
+    awk 'BEGIN {FS="\t";}{OFS="\t";}{if ($1 !~ /chebi:/ && $2 !~ /chebi:/){$21 = "psi-mi:\"MI:0326\"(protein)"; $22 = "psi-mi:\"MI:0326\"(protein)";print $0;}}' < "$THISFILE" > tmp
     #catch errors - $? means return value of last function
     if [ $? != 0 ]; then
         echo "$PROGNAME: pre-processing of $THISFILE failed." 1>&2
@@ -57,7 +57,7 @@ for THISFILE in $FILENAMES; do
     fi
     mv $THISFILE $ORIGINAL
     mv tmp $THISFILE
-    
+
 done
 
 "$TOOLS/irdata_parse_mitab.py" 'MATRIXDB' "$DATADIR" $FILENAMES

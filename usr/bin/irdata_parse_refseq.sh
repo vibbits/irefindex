@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2011, 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Copyright (C) 2013 Paul Boddie <paul@boddie.org.uk>
@@ -55,7 +55,7 @@ fi
 | "$SCRIPTS/irparallel" "\"$TOOLS/irdata_parse_refseq.py\" \"$DATADIR\" {}"
 
 # Concatenate the output data.
-echo "$DATADIR cat step" 1>&2 
+echo "$DATADIR cat step" 1>&2
 cat "$DATADIR"/*_proteins > "$DATADIR/refseq_proteins.txt"
 cat "$DATADIR"/*_identifiers > "$DATADIR/refseq_identifiers.txt"
 

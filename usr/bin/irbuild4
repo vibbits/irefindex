@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -244,7 +244,7 @@ fi
 # Preparation of output resources.
 
 if [ "$BUILD" ]; then
-   # done in separate script 
+   # done in separate script
     # Make convenient representations for other entity types.
 
    # if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_interactions.sql" $PSQL_OPTIONS ; then
@@ -279,5 +279,5 @@ if [ "$MAKE_OUTPUT" ]; then
 
     # Make output files.
 
-    "$SCRIPTS/iroutput" --mitab --mapping 
+    "$SCRIPTS/iroutput" --mitab --mapping
 fi

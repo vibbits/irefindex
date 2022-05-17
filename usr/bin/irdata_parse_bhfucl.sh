@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>
@@ -54,7 +54,7 @@ for THISFILE in $FILENAMES; do
         exit 1
     fi
     mv $THISFILE $ORIGINAL
-    mv tmp $THISFILE  
+    mv tmp $THISFILE
 done
 
 "$TOOLS/irdata_parse_mitab.py" 'BHF_UCL' "$DATADIR" $FILENAMES

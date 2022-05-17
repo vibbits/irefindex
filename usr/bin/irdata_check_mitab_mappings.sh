@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2015 Ian Donaldson <ian@donaldsonresearch.com>
 #
@@ -64,7 +64,7 @@ for SCORE in $ALL_SCORES; do
 done
 
 #selecting a random line from a file using mapfile
-#mapfile -s 42 -n 3 < All.mitab.04-07-2015.txt 
+#mapfile -s 42 -n 3 < All.mitab.04-07-2015.txt
 #printf '%s' "${MAPFILE[2]}"
 #or
 #echo "${MAPFILE[2]}"

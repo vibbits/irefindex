@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2011, 2012 Ian Donaldson <ian.donaldson@biotek.uio.no>
 # Original author: Paul Boddie <paul.boddie@biotek.uio.no>

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Parsing of BIND flat-file data.
 # See: http://bond.unleashedinformatics.com/downloads/data/BIND/data/bindflatfiles/bindindex/README

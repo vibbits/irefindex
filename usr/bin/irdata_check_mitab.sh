@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2015 Ian Donaldson <ian@donaldsonresearch.com>
 #
@@ -24,9 +24,9 @@ fi
 
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
-Usage: $PROGNAME path_to_mitab_file 
+Usage: $PROGNAME path_to_mitab_file
 
-Check the morphology of a mitab file. Each column is examined in succession. The head and tail are shown and 
+Check the morphology of a mitab file. Each column is examined in succession. The head and tail are shown and
 a selected list of the 20 or 30 most commonly occurring values for that field (or the types of values for that field)
 is displayed along with the counts for the number of times observed.  The output is meant to be human inspected for
 anomolies.
@@ -63,81 +63,81 @@ do
     echo -e "examining column $i\n"
     cut -f $i $MITAB_FILE | head
     echo -e '\ntail\n'
-    tail $MITAB_FILE | cut -f $i 
-    #examine counts of different entry types for various fields 
-    #the code below is fairly repetitive intentionally to leave placeholders for 
+    tail $MITAB_FILE | cut -f $i
+    #examine counts of different entry types for various fields
+    #the code below is fairly repetitive intentionally to leave placeholders for
     #adding new methods to examine column contents
     #
     #uids
     if [ "$i" -eq 1 -o "$i" -eq 2 ]; then
         echo -e '\ncount\tentry type'
         cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr
-    fi        
+    fi
     #alternate names
     if [ "$i" -eq 3 -o "$i" -eq 4 ]; then
-        echo -e '\ncount\tentry type - for first entry only' 
+        echo -e '\ncount\tentry type - for first entry only'
         cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr
     fi
     #examine counts of different entry types for aliases
     if [ "$i" -eq 5 -o "$i" -eq 6 ]; then
-        echo -e '\ncount\tentry type - for first entry only' 
+        echo -e '\ncount\tentry type - for first entry only'
         cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr
     fi
     #examine counts of different entry types for methods
     if [ "$i" -eq 7 ]; then
-        echo -e '\ncount\tvalue type - all method entry types shown' 
+        echo -e '\ncount\tvalue type - all method entry types shown'
         cut -f $i $MITAB_FILE | sort | uniq -c | sort -nr
     fi
     #examine counts of different entry types for authors
     if [ "$i" -eq 8 ]; then
-        echo -e '\ncount\tvalue type - top 30 only' 
+        echo -e '\ncount\tvalue type - top 30 only'
         cut -f $i $MITAB_FILE | sort | uniq -c | sort -nr | head -n 30
     fi
     #examine counts of different entry types for pmids
     if [ "$i" -eq 9 ]; then
-        echo -e '\ncount\tentry type' 
-        cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr 
-        echo -e '\ncount\tentry type - top 30 only' 
+        echo -e '\ncount\tentry type'
+        cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr
+        echo -e '\ncount\tentry type - top 30 only'
         cut -f $i $MITAB_FILE | cut -f 2 -d ':' | sort | uniq -c | sort -nr | head -n 30
     fi
     #examine counts of different entry types for taxons
     if [ "$i" -eq 10 -o "$i" -eq 11 ]; then
-        echo -e '\ncount\tentry type' 
-        cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr 
-        echo -e '\ncount\tentry type - top 30 only' 
+        echo -e '\ncount\tentry type'
+        cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr
+        echo -e '\ncount\tentry type - top 30 only'
         cut -f $i $MITAB_FILE | cut -f 2 -d ':' | sort | uniq -c | sort -nr | head -n 30
     fi
     #examine counts of different entry types for interaction types
     if [ "$i" -eq 12 ]; then
-        echo -e '\ncount\tvalue type - all interaction-type entry types shown' 
+        echo -e '\ncount\tvalue type - all interaction-type entry types shown'
         cut -f $i $MITAB_FILE | sort | uniq -c | sort -nr
     fi
     #examine counts of different entry types for source database
     if [ "$i" -eq 13 ]; then
-        echo -e '\ncount\tvalue type - all source database entry types shown' 
+        echo -e '\ncount\tvalue type - all source database entry types shown'
         cut -f $i $MITAB_FILE | sort | uniq -c | sort -nr
     fi
     #examine counts of different entry types for interaction identifiers
     if [ "$i" -eq 14 ]; then
-        echo -e '\ncount\tentry type - only for first entry in pipe-delimited list' 
+        echo -e '\ncount\tentry type - only for first entry in pipe-delimited list'
         cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr
-        echo -e '\ncount\texpansion type - third entry in pipe-delimited list' 
-        cut -f $i $MITAB_FILE | cut -f 3 -d '|' | sort | uniq -c | sort -nr    
+        echo -e '\ncount\texpansion type - third entry in pipe-delimited list'
+        cut -f $i $MITAB_FILE | cut -f 3 -d '|' | sort | uniq -c | sort -nr
     fi
     #examine counts of different entry types for confidence
     if [ "$i" -eq 15 ]; then
-        echo -e '\ncount\tlpr score type - second entry in pipe-delimited list - top 20 only' 
+        echo -e '\ncount\tlpr score type - second entry in pipe-delimited list - top 20 only'
         cut -f $i $MITAB_FILE | cut -f 2 -d '|' | sort | uniq -c | sort -nr | head -n 20
-        echo -e '\ncount\tnp score type - third entry in pipe-delimited list - top 20 only' 
+        echo -e '\ncount\tnp score type - third entry in pipe-delimited list - top 20 only'
         cut -f $i $MITAB_FILE | cut -f 3 -d '|' | sort | uniq -c | sort -nr | head -n 20
     fi
     #examine counts of different entry types for expansion
     if [ "$i" -eq 16 ]; then
-        echo -e '\ncount\texpansion type - all types shown' 
+        echo -e '\ncount\texpansion type - all types shown'
         cut -f $i $MITAB_FILE | sort | uniq -c | sort -nr
     fi
-    #examine counts of different entry types for 
-    #biological role A and B, 
+    #examine counts of different entry types for
+    #biological role A and B,
     #experimental role A and B,
     #interactor type A and B
     #xrefs A, B and I
@@ -147,13 +147,13 @@ do
     #creation date
     #update date
     if [ "$i" -gt 16 -a "$i" -lt 33 ]; then
-        echo -e '\ncount\tvalue type - top 20 only' 
+        echo -e '\ncount\tvalue type - top 20 only'
         cut -f $i $MITAB_FILE | sort | uniq -c | sort -nr | head -n 20
     fi
     #checksum A, B and I
     #negative
     if [ "$i" -gt 32 -a "$i" -lt 37 ]; then
-        echo -e '\ncount\tentry type' 
+        echo -e '\ncount\tentry type'
         cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr | head -n 20
     fi
     #original reference A and B
@@ -169,9 +169,9 @@ do
     #edgetype
     #numParticipants
     if [ "$i" -gt 36 -a "$i" -lt 55 ]; then
-        echo -e '\ncount\tvalue type or entry type - top 20 only' 
+        echo -e '\ncount\tvalue type or entry type - top 20 only'
         cut -f $i $MITAB_FILE | cut -f 1 -d ':' | sort | uniq -c | sort -nr | head -n 20
-    fi    
+    fi
 
 
 

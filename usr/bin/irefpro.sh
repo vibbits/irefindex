@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Copyright (C) 2015 Ian Donaldson <ian@donaldsonresearch.com>
 # Original author: Ian Donaldson <ian@donaldsonresearch.com>
@@ -17,7 +17,7 @@ MITAB_ORGANISM_OUTPUT="$DATA/{}.mitab.$DATESTAMP.txt"
 
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
-Usage: $PROGNAME 
+Usage: $PROGNAME
 
 Generate iRefPro tables and export tables as text.  There are no options.
 
