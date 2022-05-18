@@ -24,47 +24,35 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from irdata.data import RawImportFile, rewrite, index_for_int
-from os.path import split, splitext
-import os, sys, cmdsyntax, gzip
+import argparse
+import gzip
+import os
+import sys
+from irdata import data
 
-syntax_description = """
-    --help |
-    (
-      <interval> [ <filename> | - ] [ -f <field> ] [ -d <separator> ]
-    )
-    """
 
 if __name__ == "__main__":
     progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
+    argparser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    argparser.add_argument("-f", metavar="field-index", type=int)
+    argparser.add_argument("-d", metavar="separator", default="\t")
+    argparser.add_argument("interval", help="positive number", type=int)
+    argparser.add_argument("filename", help="name of a file or '-'")
 
-    syntax = cmdsyntax.Syntax(syntax_description)
-    try:
-        matches = syntax.get_args(sys.argv[1:])
-        args = matches[0]
-    except IndexError:
-        print("Syntax:", file=sys.stderr)
-        print(syntax_description, file=sys.stderr)
-        sys.exit(1)
-    else:
-        if "help" in args:
-            print(__doc__, file=sys.stderr)
-            print("Syntax:", file=sys.stderr)
-            print(syntax_description, file=sys.stderr)
-            sys.exit(1)
+    args = argparser.parse_args()
 
     # Get the interval.
-
-    interval = int(args["interval"])
+    interval = args.interval
 
     # Get the input stream.
-
-    if "filename" in args:
-        infile = args["filename"]
-        leafname = split(infile)[-1]
-        basename, ext = splitext(leafname)
+    if args.filename != "-":
+        infile = args.filename
+        leafname = os.path.split(infile)[-1]
+        basename, ext = os.path.splitext(leafname)
         if ext.endswith("gz"):
             opener = gzip.open
         else:
@@ -74,18 +62,9 @@ if __name__ == "__main__":
         f_in = sys.stdin
 
     # Get the field to be treated as the indexed term.
-
-    if "index" in args:
-        field = index_for_int(args["index"])
-    else:
-        field = 0
-
+    field = data.index_for_int(args.f) if args.f is not None else 0
     # Get the field separator.
-
-    if "separator" in args:
-        separator = args["separator"]
-    else:
-        separator = "\t"
+    separator = args.d  # separator
 
     try:
         pos = 0
@@ -94,7 +73,7 @@ if __name__ == "__main__":
         current_value_start = None
         last_value = None
 
-        writer = RawImportFile(rewrite(sys.stdout))
+        writer = data.RawImportFile(data.rewrite(sys.stdout))
 
         while 1:
             line = f_in.readline()

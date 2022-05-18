@@ -20,16 +20,11 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+import argparse
+import os
+import sys
+from irdata import data
 
-from irdata.data import RawImportFileReader, RawImportFile, reread, rewrite
-import os, sys, cmdsyntax
-
-syntax_description = """
-    --help |
-    -n <fields>
-    -p <padding>
-    [ <filename> | - ]
-    """
 
 # Main program.
 
@@ -38,38 +33,25 @@ def main():
     progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
+    argparser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    argparser.add_argument("-n", metavar="fields", required=True, type=int)
+    argparser.add_argument("-p", metavar="padding", required=True)
+    argparser.add_argument("filename", help="name of a file or '-'")
 
-    syntax = cmdsyntax.Syntax(syntax_description)
-    try:
-        matches = syntax.get_args(sys.argv[1:])
-        args = matches[0]
-    except IndexError:
-        print("Syntax:", file=sys.stderr)
-        print(syntax_description, file=sys.stderr)
-        sys.exit(1)
+    args = argparser.parse_args()
+
+    fields = args.n  # fields
+    padding = args.p  # padding
+
+    if args.filename != "-":
+        filename_or_stream = args.filename
     else:
-        if "help" in args:
-            print(__doc__, file=sys.stderr)
-            print("Syntax:", file=sys.stderr)
-            print(syntax_description, file=sys.stderr)
-            sys.exit(1)
+        filename_or_stream = data.reread(sys.stdin)
 
-    try:
-        fields = int(args["fields"])
-    except ValueError:
-        print("%s: Need a number of fields/columns." % progname, file=sys.stderr)
-        sys.exit(1)
-
-    padding = args["padding"]
-
-    if "filename" in args:
-        filename = filename_or_stream = args["filename"]
-    else:
-        filename_or_stream = reread(sys.stdin)
-        filename = None
-
-    reader = RawImportFileReader(filename_or_stream)
-    writer = RawImportFile(rewrite(sys.stdout))
+    reader = data.RawImportFileReader(filename_or_stream)
+    writer = data.RawImportFile(data.rewrite(sys.stdout))
 
     try:
         try:
