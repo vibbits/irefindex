@@ -45,28 +45,10 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from irdata.data import (
-    RawImportFileReader,
-    RawImportFile,
-    reread,
-    rewrite,
-    index_for_int,
-    int_or_none,
-    partition,
-)
-import os, sys, cmdsyntax
-
-syntax_description = """
-    --help |
-    (
-      [ -f <start-field> ]
-      [ -t <end-field> ]
-      [ -d <delimiter> ]
-      [ -w <delimiter-within-fields> ]
-      [ -s <sequence-start> ]
-      ( <filename> | - )
-    )
-    """
+import argparse
+import os
+import sys
+from irdata import data
 
 # Main program.
 
@@ -75,39 +57,42 @@ def main():
     progname = os.path.basename(sys.argv[0])
 
     # Get the command line options.
+    argparser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    argparser.add_argument(
+        "-f", dest="start_field", metavar="start-field", type=int, default=1
+    )
+    argparser.add_argument("-t", dest="end_field", metavar="end-field", type=int)
+    argparser.add_argument("-d", dest="delimiter", metavar="delimiter", default="\t")
+    argparser.add_argument(
+        "-w",
+        dest="delimiter_within_fields",
+        metavar="delimiter-within-fields",
+        default="\t",
+    )
+    argparser.add_argument(
+        "-s", dest="sequence_start", metavar="sequence-start", type=int
+    )
+    argparser.add_argument(
+        "filename", help="name of a file, or '-' [default]", default="-", nargs="?"
+    )
+    args = argparser.parse_args()
 
-    syntax = cmdsyntax.Syntax(syntax_description)
-    try:
-        matches = syntax.get_args(sys.argv[1:])
-        args = matches[0]
-    except IndexError:
-        print("Syntax:", file=sys.stderr)
-        print(syntax_description, file=sys.stderr)
-        sys.exit(1)
+    # treat 1-index as 0-index plus one
+    start_field = data.index_for_int(args.start_field)
+    end_field = data.int_or_none(args.end_field)
+    delimiter = args.delimiter
+    delimiter_within_fields = args.delimiter_within_fields
+    sequence_start = data.int_or_none(args.sequence_start)
+
+    if args.filename != "-":
+        filename_or_stream = args.filename
     else:
-        if "help" in args:
-            print(__doc__, file=sys.stderr)
-            print("Syntax:", file=sys.stderr)
-            print(syntax_description, file=sys.stderr)
-            sys.exit(1)
+        filename_or_stream = data.reread(sys.stdin)
 
-    start_field = index_for_int(args.get("start-field", 1))
-    end_field = int_or_none(
-        args.get("end-field", None)
-    )  # treat 1-index as 0-index plus one
-
-    delimiter = args.get("delimiter", "\t")
-    delimiter_within_fields = args.get("delimiter-within-fields", "\t")
-
-    sequence_start = int_or_none(args.get("sequence-start"))
-
-    if "filename" in args:
-        filename_or_stream = args["filename"]
-    else:
-        filename_or_stream = reread(sys.stdin)
-
-    reader = RawImportFileReader(filename_or_stream, delimiter=delimiter)
-    writer = RawImportFile(rewrite(sys.stdout))
+    reader = data.RawImportFileReader(filename_or_stream, delimiter=delimiter)
+    writer = data.RawImportFile(data.rewrite(sys.stdout))
 
     try:
         try:
@@ -115,7 +100,7 @@ def main():
 
                 # Process the data.
 
-                preceding, fields, following = partition(
+                preceding, fields, following = data.partition(
                     details, start_field, end_field
                 )
 
