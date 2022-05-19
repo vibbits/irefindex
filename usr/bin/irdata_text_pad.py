@@ -36,14 +36,17 @@ def main():
     argparser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    argparser.add_argument("-n", metavar="fields", required=True, type=int)
-    argparser.add_argument("-p", metavar="padding", required=True)
-    argparser.add_argument("filename", help="name of a file or '-'")
-
+    argparser.add_argument(
+        "-n", dest="fields", metavar="fields", required=True, type=int
+    )
+    argparser.add_argument("-p", dest="padding", metavar="padding", required=True)
+    argparser.add_argument(
+        "filename", help="name of a file, or '-' [default]", default="-", nargs="?"
+    )
     args = argparser.parse_args()
 
-    fields = args.n  # fields
-    padding = args.p  # padding
+    fields = args.fields
+    padding = args.padding
 
     if args.filename != "-":
         filename_or_stream = args.filename

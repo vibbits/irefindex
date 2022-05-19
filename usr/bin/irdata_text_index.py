@@ -38,11 +38,12 @@ if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    argparser.add_argument("-f", metavar="field-index", type=int)
-    argparser.add_argument("-d", metavar="separator", default="\t")
+    argparser.add_argument("-f", dest="field_index", metavar="field-index", type=int)
+    argparser.add_argument("-d", dest="separator", metavar="separator", default="\t")
     argparser.add_argument("interval", help="positive number", type=int)
-    argparser.add_argument("filename", help="name of a file or '-'")
-
+    argparser.add_argument(
+        "filename", help="name of a file, or '-' [default]", default="-", nargs="?"
+    )
     args = argparser.parse_args()
 
     # Get the interval.
@@ -62,9 +63,9 @@ if __name__ == "__main__":
         f_in = sys.stdin
 
     # Get the field to be treated as the indexed term.
-    field = data.index_for_int(args.f) if args.f is not None else 0
+    field = 0 if args.field_index is None else data.index_for_int(args.field_index)
     # Get the field separator.
-    separator = args.d  # separator
+    separator = args.separator
 
     try:
         pos = 0

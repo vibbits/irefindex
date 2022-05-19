@@ -60,21 +60,31 @@ def main():
     argparser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    argparser.add_argument("-f", metavar="start-field", type=int, default=1)
-    argparser.add_argument("-t", metavar="end-field", type=int)
-    argparser.add_argument("-d", metavar="delimiter", default="\t")
-    argparser.add_argument("-w", metavar="delimiter-within-fields", default="\t")
-    argparser.add_argument("-s", metavar="sequence-start", type=int)
-    argparser.add_argument("filename", help="name of a file or '-'")
-
+    argparser.add_argument(
+        "-f", dest="start_field", metavar="start-field", type=int, default=1
+    )
+    argparser.add_argument("-t", dest="end_field", metavar="end-field", type=int)
+    argparser.add_argument("-d", dest="delimiter", metavar="delimiter", default="\t")
+    argparser.add_argument(
+        "-w",
+        dest="delimiter_within_fields",
+        metavar="delimiter-within-fields",
+        default="\t",
+    )
+    argparser.add_argument(
+        "-s", dest="sequence_start", metavar="sequence-start", type=int
+    )
+    argparser.add_argument(
+        "filename", help="name of a file, or '-' [default]", default="-", nargs="?"
+    )
     args = argparser.parse_args()
 
     # treat 1-index as 0-index plus one
-    start_field = data.index_for_int(args.f)  # start-field
-    end_field = data.int_or_none(args.t)  # end-field
-    delimiter = args.d  # delimiter
-    delimiter_within_fields = args.w  # delimiter-within-fields
-    sequence_start = data.int_or_none(args.s)  # sequence-start
+    start_field = data.index_for_int(args.start_field)
+    end_field = data.int_or_none(args.end_field)
+    delimiter = args.delimiter
+    delimiter_within_fields = args.delimiter_within_fields
+    sequence_start = data.int_or_none(args.sequence_start)
 
     if args.filename != "-":
         filename_or_stream = args.filename
