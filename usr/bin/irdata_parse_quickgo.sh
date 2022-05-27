@@ -42,11 +42,7 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
     exit 1
 fi
 
-#it is assumed that all records in the reactome file refer to protein-protein interactions
-#it is not possible to check for these (as done in the below commented code) because reactome
-#does not follow regular mitab conventions and interactor type is not provided
-#should this change in future, the following code could be uncommented
-#
+
 #preprocess input files to remove non protein-protein interaction records
 #save a copy of the original
 for THISFILE in $FILENAMES; do

@@ -192,16 +192,25 @@ for SOURCE in $SOURCES; do
                         continue
                     fi
 
+                # Download from GCS storage -- requires the Google Gloud SDK
+                elif [ "${URL#gs://}" != "$URL" ]; then # if the URL begins with gs://
+
+                    if ! gsutil -m cp -r "$URL" "$DATADIR" ; then
+                        echo "$PROGNAME: Did not copy file from GCS bucket: $DOWNLOAD" 1>&2
+                        FAILED_FILES=$(($FAILED_FILES+1))
+                        continue
+                    fi
+
                 # if web services are to be used...save the results to a file named as specified under XX_DOWNLOAD_FILES in irdata-config
                 elif [ "$USE_WEBSERVICES" ]; then
-                    if ! curl "$RELEASE_URL" -o "$DATADIR/$DOWNLOAD"; then
+                    if ! curl "$CURL_OPT" "$RELEASE_URL" -o "$DATADIR/$DOWNLOAD"; then
                         echo "$PROGNAME: Did not retrieve web-services file: $DOWNLOAD" 1>&2
                         FAILED_FILES=$(($FAILED_FILES+1))
                         continue
                     fi
 
                 # otherwisew, all other URLs are treated as simple file retrieval using wget.
-                elif [ ! "$USE_WEBSERVICES" ]; then
+                else
                     if ! wget --timestamping --retr-symlinks -w "$WGET_WAIT" -N -P "$DATADIR" "$URL" ; then
                         echo "$PROGNAME: Did not download file: $DOWNLOAD" 1>&2
                         FAILED_FILES=$(($FAILED_FILES+1))

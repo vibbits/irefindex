@@ -74,7 +74,7 @@ if __name__ == "__main__":
         current_value_start = None
         last_value = None
 
-        writer = data.RawImportFile(data.rewrite(sys.stdout))
+        writer = data.RawImportFile(sys.stdout)
 
         while 1:
             line = f_in.readline()

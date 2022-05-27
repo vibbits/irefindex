@@ -60,13 +60,14 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from irdata.data import *
-from irdata.signatures import make_signature, normalise_sequence
-from irdata.xmldata import *
 import os
+import sys
+from irdata import data as irdt
+from irdata import signatures as irsig
+from irdata import xmldata as irxml
 
 
-class PSIParser(EmptyElementParser):
+class PSIParser(irxml.EmptyElementParser):
 
     """
     A class which records the properties and relationships in PSI MI XML files.
@@ -119,7 +120,7 @@ class PSIParser(EmptyElementParser):
     }
 
     def __init__(self, writer):
-        EmptyElementParser.__init__(self)
+        super(PSIParser, self).__init__()
         self.writer = writer
 
     def reset(self):
@@ -180,7 +181,7 @@ class PSIParser(EmptyElementParser):
 
         "Handle character 'content' by stripping white-space from the ends."
 
-        EmptyElementParser.characters(self, content.strip())
+        irxml.EmptyElementParser.characters(self, content.strip())
 
     def startElement(self, name, attrs):
 
@@ -218,13 +219,13 @@ class PSIParser(EmptyElementParser):
         # This normalises the element names so that they can be treated like
         # PSI MI XML 2.5 elements.
 
-        EmptyElementParser.startElement(self, name, attrs)
+        irxml.EmptyElementParser.startElement(self, name, attrs)
 
     def endElement(self, name):
 
         "End the element using a scope as a logical name in place of 'name'."
 
-        EmptyElementParser.endElement(self, self.scopes.get(name, name))
+        irxml.EmptyElementParser.endElement(self, self.scopes.get(name, name))
 
     def handleElement(self, content):
 
@@ -248,9 +249,10 @@ class PSIParser(EmptyElementParser):
         # -> experimentDescription (element), experimentList (parent),
         #    entry (property), None (section)
 
-        element, parent, property, section = list(
-            map(lambda x, y: x or y, self.current_path[-1:-5:-1], [None] * 4)
-        )
+        element, parent, property, section = [
+            self.current_path[j] if j >= 0 else None
+            for j in [len(self.current_path) - i for i in range(1, 5)]
+        ]
 
         # Get the element's attributes.
 
@@ -352,8 +354,8 @@ class PSIParser(EmptyElementParser):
                         parent,
                         self.path_to_attrs["interactor"]["id"],
                         implicit,
-                        normalise_sequence(content),
-                        make_signature(content, legacy=1),
+                        irsig.normalise_sequence(content),
+                        irsig.make_signature(content, legacy=1),
                     )
                 )
 
@@ -423,10 +425,10 @@ class PSIParser(EmptyElementParser):
     def parse(self, filename):
         self.reset()
         self.writer.start(filename)
-        EmptyElementParser.parse(self, filename)
+        irxml.EmptyElementParser.parse(self, filename)
 
 
-class PSIWriter(Writer):
+class PSIWriter(irdt.Writer):
 
     "A simple writer of tabular data."
 
@@ -452,7 +454,7 @@ class PSIWriter(Writer):
     }
 
     def __init__(self, directory, source):
-        Writer.__init__(self, directory)
+        super(PSIWriter, self).__init__(directory, PSIWriter.filenames)
         self.source = source
 
     def append(self, data):
@@ -468,8 +470,8 @@ class PSIWriter(Writer):
         # Each record is prefixed with the source and filename.
 
         data = (self.source, self.filename) + data[1:]
-        data = list(map(tab_to_space, data))
-        data = list(map(bulkstr, data))
+        data = list(map(irdt.tab_to_space, data))
+        data = list(map(irdt.bulkstr, data))
         print("\t".join(data), file=self.files[file])
 
 

@@ -49,7 +49,7 @@ TAB=`printf '\t'`
 
 sed "s/${TAB}|${TAB}/${TAB}/g;s/${TAB}|$//;" "$FILENAME" > "$DATADIR/tmp1.txt"
 
-# In mny cases, column 3 is NULL
+# In many cases, column 3 is NULL
 # In many cases, there may be two or more rows that have identical values
 # for columns 1, 2 and 4 and only one row will have a non-NULL value in
 # column 3.
@@ -68,5 +68,6 @@ echo "$PROGNAME: Lines in original $OUTFILE." 1>&2
 #wc -l $DATADIR/tmp2.txt
 echo "$PROGNAME: Lines in final $OUTFILE." 1>&2
 #wc -l $DATADIR/$OUTFILE
+rm -f $DATADIR/tmp1.txt $DATADIR/tmp2.txt
 
 exit $?

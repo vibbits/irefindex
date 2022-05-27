@@ -35,8 +35,9 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 if __name__ == "__main__":
-    from os.path import split, splitext
-    import os, sys, gzip
+    import gzip
+    import os
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 
@@ -61,8 +62,8 @@ Example: %s 10000 uniprot_sprot.dat '//'
         )
         sys.exit(1)
 
-    leafname = split(infile)[-1]
-    basename, ext = splitext(leafname)
+    leafname = os.path.split(infile)[-1]
+    basename, ext = os.path.splitext(leafname)
 
     if infile == "-":
         f_in = sys.stdin
@@ -71,7 +72,7 @@ Example: %s 10000 uniprot_sprot.dat '//'
             opener = gzip.open
         else:
             opener = open
-        f_in = opener(infile)
+        f_in = opener(infile, mode="rt")
 
     try:
         # The start of the file is always a viable starting point.

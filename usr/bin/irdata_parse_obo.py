@@ -6,7 +6,7 @@ the following structure:
 
 <identifier> <name> (preferred|synonym) <qualifier>
 
-The qualifier may be given as an encoded null value ("\N") for synonyms and is
+The qualifier may be given as an encoded null value ("\\N") for synonyms and is
 always null for preferred names.
 
 --------
@@ -32,6 +32,7 @@ import re
 #                              synonym: "name"  EXACT qualifier   []
 synonym_pattern = re.compile(r'synonym: "(.*?)" EXACT (?:(.*?) )?\[\]')
 
+
 def parse(infile, outfile):
     state = None
     id = None
@@ -39,7 +40,7 @@ def parse(infile, outfile):
     line = infile.readline()
 
     while line:
-        line = line.rstrip('\r\n')
+        line = line.rstrip("\r\n")
 
         if line.startswith("[Term]"):
             state = "TERM"
@@ -50,12 +51,12 @@ def parse(infile, outfile):
 
         elif state == "ID":
             if line.startswith("name: "):
-                output = [id, line[6:], 'preferred', "\\N"]
+                output = [id, line[6:], "preferred", "\\N"]
                 print("\t".join(output), file=outfile)
             else:
                 match = synonym_pattern.match(line)
                 if match:
-                    output = [id, match.group(1), 'synonym', match.group(2) or "\\N"]
+                    output = [id, match.group(1), "synonym", match.group(2) or "\\N"]
                     print("\t".join(output), file=outfile)
 
         elif not line.strip():
@@ -63,22 +64,25 @@ def parse(infile, outfile):
 
         line = infile.readline()
 
+
 if __name__ == "__main__":
-    from os.path import join, split
-    import os, sys
+    import os
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 
     try:
         i = 1
         data_directory = sys.argv[i]
-        filename = sys.argv[i+1]
+        filename = sys.argv[i + 1]
     except IndexError:
-        print("Usage: %s <output data directory> <data file>" % progname, file=sys.stderr)
+        print(
+            "Usage: %s <output data directory> <data file>" % progname, file=sys.stderr
+        )
         sys.exit(1)
 
     try:
-        leafname = split(filename)[-1]
+        leafname = os.path.split(filename)[-1]
 
         if filename == "-":
             print("%s: Parsing standard input" % progname, file=sys.stderr)
@@ -87,7 +91,7 @@ if __name__ == "__main__":
             print("%s: Parsing %s" % (progname, leafname), file=sys.stderr)
             f = open(filename)
 
-        f_out = open(join(data_directory, "terms"), "w")
+        f_out = open(os.path.join(data_directory, "terms"), "w")
 
         try:
             parse(f, f_out)
@@ -97,7 +101,9 @@ if __name__ == "__main__":
             f_out.close()
 
     except Exception as exc:
-        print("%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr)
+        print(
+            "%s: Parsing failed with exception: %s" % (progname, exc), file=sys.stderr
+        )
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4

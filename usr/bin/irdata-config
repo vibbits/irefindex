@@ -17,6 +17,7 @@ EMAIL="alexander.botzki@vib.be"             # e-mail address for anonymous FTP l
 DATABASE="irdata${RELEASE_MAJOR}"           # database name
 DATA="/dataext/irdata${RELEASE_MAJOR}"      # user defined data directory location
 WIKIFORMAT="MediaWiki"                      # format for generated Wiki pages
+CURL_OPT="-L"                               # Follow HTTP redirects
 WGET_WAIT="5"                               # time to wait between wget requests
 WGET_ATTEMPTS="5"                           # number of attempts to make using wget
 PSQL_OPTIONS=""                             # "--psql-options <psql connection options>"
@@ -31,15 +32,6 @@ IREFINDEX_RELEASE_PATH="/irefindex/Cytoscape/plugin/archive/release_$RELEASE"
 IREFINDEX_RELEASE_USER="anonymous"
 IREFINDEX_RELEASE_PASSWORD=""
 IREFINDEX_PROPRIETARY_DATA="FALSE"
-
-############################################################
-# Authentication information for certain data sources.
-# (These settings must be changed if DIP is used.)
-
-DIP_USERNAME="albot"                        # DIP download credentials
-DIP_PASSWORD="Dd8AIwsbwib"
-#this username pass only seems to work with http version of gz file
-#ftp did not work as of build 12
 
 ############################################################
 # Sources available to the system.
@@ -59,7 +51,6 @@ DIP_PASSWORD="Dd8AIwsbwib"
 XMLSOURCES="BIND_TRANSLATION BIOGRID CORUM HPRD INTACT INTCOMPLEX MPACT MPPI"
 TABSOURCES="MINT MPIDB IMEX INNATEDB MATRIXDB REACTOME VIRUSHOST UNIPROTPP HPIDB HURI BHF_UCL MBINFO MOLCON QUICKGO BAR SPIKE DIP"
 OTHERSOURCES="PSI_MI TAXONOMY BIND DIG FLY GENE GENPEPT IPI MMDB PDB REFSEQ UNIPROT YEAST ATHALIANA"
-# NOTE: To be completed and added below for parsing: SEGUID
 
 ############################################################
 # Excluded sources are those not to be downloaded, parsed,
@@ -69,7 +60,7 @@ OTHERSOURCES="PSI_MI TAXONOMY BIND DIG FLY GENE GENPEPT IPI MMDB PDB REFSEQ UNIP
 # Use the form of the sources given in the above lists,
 # putting a space between each source identifier.
 
-EXCLUDEDSOURCES="APID MOLCON OPHID SIQUID"
+EXCLUDEDSOURCES="APID MOLCON OPHID SEGUID"
 
 ############################################################
 # Source locations and details.
@@ -98,7 +89,6 @@ EXCLUDEDSOURCES="APID MOLCON OPHID SIQUID"
 
 ############################################################
 # APID
-#still in my(sam) folder, needs to be put in correct format
 # NOT OK
 APID_DOWNLOAD_SCRIPT="APID_fetch.sh"
 APID_MIRROR='http://cicblade.dep.usal.es'
@@ -111,20 +101,19 @@ APID_PARSER='irdata_parse_apid.sh'
 APID_IMPORT_TEMPLATE='import_mitab.sql'
 
 ############################################################
-#A_Thaliana
+# A_Thaliana
 # OK
-ATHALIANA_MIRROR='ftp://ftp.ensemblgenomes.org'
+ATHALIANA_MIRROR='http://ftp.ensemblgenomes.org'
 ATHALIANA_RELEASE_URL="$ATHALIANA_MIRROR/pub/plants/release-46/tsv/arabidopsis_thaliana/"
-ATHALIANA_DOWNLOAD_FILES='Arabidopsis_thaliana.TAIR*.uniprot.tsv.gz'
+ATHALIANA_DOWNLOAD_FILES='Arabidopsis_thaliana.TAIR10.46.uniprot.tsv.gz'
 
 ATHALIANA_DIR_NAME="ATHALIANA"
-ATHALIANA_OTHER_FILE_PATTERN='*.tsv'
+ATHALIANA_OTHER_FILE_PATTERN='*.tsv.gz'
 ATHALIANA_PARSER='irdata_parse_A_thaliana.sh'
 ATHALIANA_SCHEMA='athaliana'
 
 ############################################################
-#BAR
-# 2.5
+# BAR
 # OK
 BAR_MIRROR='http://bar.utoronto.ca:9090'
 BAR_RELEASE_URL="$BAR_MIRROR/psicquic/webservices/current/search/query/*"
@@ -137,7 +126,7 @@ BAR_PARSER='irdata_parse_bar.sh'
 BAR_IMPORT_TEMPLATE='import_mitab.sql'
 
 ############################################################
-#BHF_UCL
+# BHF_UCL
 # OK
 BHF_UCL_MIRROR='http://www.ebi.ac.uk'
 BHF_UCL_RELEASE_URL="$BHF_UCL_MIRROR/Tools/webservices/psicquic/bhf-ucl/webservices/current/search/query/*?format=tab27"
@@ -149,20 +138,16 @@ BHF_UCL_OTHER_FILE_PATTERN='*.txt'
 BHF_UCL_PARSER='irdata_parse_bhfucl.sh'
 BHF_UCL_IMPORT_TEMPLATE='import_mitab.sql'
 
-#source url for psicquic data
-#http://www.ebi.ac.uk/Tools/webservices/psicquic/bhf-ucl/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload BHF_UCL
-#irdata_parse_bhfucl.sh /storage/data/BHF_UCL /storage/data/BHF_UCL/bhfucl_psicquic.txt
-
 ############################################################
 # BIND
 # do we have this file
 # OK
 BIND_DOWNLOAD_FILES='20060525*.txt'
-BIND_MIRROR='file://'
+# BIND_MIRROR='file://'
+# BIND_RELEASE_URL="$BIND_MIRROR/home/irefindex/data/ian/bond.unleashedinformatics.com/downloads/data/BIND/data/bindflatfiles/bindindex/"
+BIND_MIRROR='gs://vib-training-data'
 
-BIND_RELEASE_URL="$BIND_MIRROR/home/irefindex/data/ian/bond.unleashedinformatics.com/downloads/data/BIND/data/bindflatfiles/bindindex/"
+BIND_RELEASE_URL="$BIND_MIRROR/BIND/"
 BIND_DIR_NAME="BIND"
 BIND_OTHER_FILE_PATTERN='*.txt'
 BIND_PARSER='irdata_parse_bind.sh'
@@ -174,18 +159,16 @@ BIND_SCHEMA='bind'
 BIND_TRANSLATION_VERSION='v1'
 BIND_TRANSLATION_DOWNLOAD_FILES="BINDTranslation_${BIND_TRANSLATION_VERSION}_xml_AllSpecies.tar.gz"
 BIND_TRANSLATION_MIRROR='http://download.baderlab.org'
-#BIND_TRANSLATION_MIRROR='file://'
 
 BIND_TRANSLATION_RELEASE_URL="$BIND_TRANSLATION_MIRROR/BINDTranslation/release1_0/"
-#BIND_TRANSLATION_RELEASE_URL="$BIND_TRANSLATION_MIRROR/storage/localdata/BIND_Translation/"
 BIND_TRANSLATION_DIR_NAME="BIND_Translation"
 BIND_TRANSLATION_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # BioGRID
 # OK
-BIOGRID_VERSION='3.5.187'
-#BIOGRID_VERSION='3.2.101'
+BIOGRID_VERSION='4.4.209'
+# BIOGRID_VERSION='3.5.187'
 BIOGRID_DOWNLOAD_FILES="BIOGRID-ALL-$BIOGRID_VERSION.psi25.zip"
 BIOGRID_MIRROR='https://downloads.thebiogrid.org'
 
@@ -200,7 +183,7 @@ BIOGRID_XML_FILE_PATTERN='*.xml'
 #CORUM_DOWNLOAD_FILES="allComplexes.psimi.zip"
 CORUM_DOWNLOAD_FILES="allComplexes.xml.zip"
 #CORUM_MIRROR='http://mips.gsf.de'
-CORUM_MIRROR='http://mips.helmholtz-muenchen.de/corum'
+CORUM_MIRROR='https://mips.helmholtz-muenchen.de/corum'
 
 CORUM_RELEASE_URL="$CORUM_MIRROR/download/"
 #CORUM_RELEASE_URL="$CORUM_MIRROR/genre/export/sites/default/corum/"
@@ -212,10 +195,12 @@ CORUM_XML_FILE_PATTERN='*.xml'
 # do we have this file?
 # OK
 DIG_DOWNLOAD_FILES='morbidmap14062010.txt'
-#DIG_DOWNLOAD_FILES='22112010morbidmap.txt'
-DIG_MIRROR='file://'
+# DIG_DOWNLOAD_FILES='22112010morbidmap.txt'
+# DIG_MIRROR='file://'
+# DIG_RELEASE_URL="$DIG_MIRROR/home/irefindex/data/ian/dig/"
+DIG_MIRROR='gs://vib-training-data'
+DIG_RELEASE_URL="$DIG_MIRROR/DIG/"
 
-DIG_RELEASE_URL="$DIG_MIRROR/home/irefindex/data/ian/dig/"
 DIG_DIR_NAME="DIG"
 DIG_OTHER_FILE_PATTERN='morbidmap*.txt'
 DIG_PARSER='irdata_parse_dig.sh'
@@ -235,11 +220,17 @@ DIP_OTHER_FILE_PATTERN='*.txt'
 DIP_PARSER='irdata_parse_dip.sh'
 DIP_IMPORT_TEMPLATE='import_mitab.sql'
 
+#this username pass only seems to work with http version of gz file
+#ftp did not work as of build 12
+DIP_USERNAME="albot"                        # DIP download credentials
+DIP_PASSWORD="Dd8AIwsbwib"
+# https://dip.doe-mbi.ucla.edu/dip/File.cgi?FN=2017/mif25/dip20170205.mif25.gz
+
 ############################################################
 # Entrez Gene
 # OK
 GENE_DOWNLOAD_FILES="gene2refseq.gz gene_info.gz gene2go.gz gene_history.gz"
-GENE_MIRROR='ftp://ftp.ncbi.nlm.nih.gov'
+GENE_MIRROR='http://ftp.ncbi.nlm.nih.gov'
 
 GENE_RELEASE_URL="$GENE_MIRROR/gene/DATA/"
 GENE_DIR_NAME="Entrez_Gene"
@@ -272,22 +263,15 @@ HPIDB_OTHER_FILE_PATTERN='*.txt'
 HPIDB_PARSER='irdata_parse_hpidb.sh'
 HPIDB_IMPORT_TEMPLATE='import_mitab.sql'
 
-#source url for psicquic data
-#http://www.ebi.ac.uk/Tools/webservices/psicquic/hpidb/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload HPIDB
-#irdata_parse_hpidb.sh /storage/data/HPIDB /storage/data/HPIDB/hpidb_psicquic.txt
-
 ############################################################
 # HPRD
-# Do we have this file
 # OK
-
 HPRD_DOWNLOAD_FILES="HPRD_PSIMI_041310.tar.gz"
-HPRD_MIRROR='file://'
+HPRD_MIRROR='gs://vib-training-data'
+HPRD_RELEASE_URL="$HPRD_MIRROR/HPRD/"
 
 #HPRD_RELEASE_URL="$HPRD_MIRROR/RELEASE9/"
-HPRD_RELEASE_URL="$HPRD_MIRROR/home/irefindex/data/ian/"
+#HPRD_RELEASE_URL="$HPRD_MIRROR/home/irefindex/data/ian/"
 HPRD_DIR_NAME="HPRD"
 HPRD_XML_FILE_PATTERN='PSIMI_XML/*.xml'
 
@@ -317,11 +301,6 @@ IMEX_OTHER_FILE_PATTERN='*.txt'
 IMEX_PARSER='irdata_parse_imex.sh'
 IMEX_IMPORT_TEMPLATE='import_mitab.sql'
 
-#source url for psicquic data#http://www.ebi.ac.uk/Tools/webservices/psicquic/i2d/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload I2D_IMEX
-#irdata_parse_i2dimex.sh /storage/data/I2D_IMEX /storage/data/I2D_IMEX/i2dimex_psicquic.txt
-
 ############################################################
 # IntAct
 # OK
@@ -344,14 +323,13 @@ INTCOMPLEX_XML_FILE_PATTERN='pmid/*/*.xml *.xml'
 
 ############################################################
 # InnateDB
-# filename needs to be changed to "inneatedb_all.mitab.gz" when downloading
 # OK
-INNATEDB_DOWNLOAD_FILES="innatedb_psicquic.txt"
+INNATEDB_DOWNLOAD_FILES="innatedb_all.mitab.gz"
 INNATEDB_MIRROR='http://www.innatedb.com'
 
 INNATEDB_RELEASE_URL="$INNATEDB_MIRROR/download/interactions/"
 INNATEDB_DIR_NAME="INNATEDB"
-INNATEDB_OTHER_FILE_PATTERN='*.txt'
+INNATEDB_OTHER_FILE_PATTERN='innatedb_all.mitab.gz'
 
 INNATEDB_PARSER='irdata_parse_innatedb.sh'
 INNATEDB_IMPORT_TEMPLATE='import_mitab.sql'
@@ -397,15 +375,8 @@ MBINFO_OTHER_FILE_PATTERN='*.txt'
 MBINFO_PARSER='irdata_parse_mbinfo.sh'
 MBINFO_IMPORT_TEMPLATE='import_mitab.sql'
 
-#source url for psicquic data
-#http://www.ebi.ac.uk/Tools/webservices/psicquic/mbinfo/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload MBINFO
-#irdata_parse_mbinfo.sh /storage/data/MBINFO /storage/data/MBINFO/mbinfo_psicquic.txt
-
 ############################################################
 # MINT
-# has to be reworked - http://mint.bio.uniroma2.it/download.html
 # OK
 MINT_MIRROR='http://www.ebi.ac.uk'
 MINT_RELEASE_URL="$MINT_MIRROR/Tools/webservices/psicquic/mint/webservices/current/search/query/*?format=tab27"
@@ -430,12 +401,6 @@ MOLCON_OTHER_FILE_PATTERN='molcon_psicquic.txt'
 MOLCON_PARSER='irdata_parse_molcon.sh'
 MOLCON_IMPORT_TEMPLATE='import_mitab.sql'
 
-#source url for psicquic data
-#http://www.ebi.ac.uk/Tools/webservices/psicquic/mbinfo/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload MOLCON
-#irdata_parse_molcon.sh /storage/data/MOLCON /storage/data/MOLCON/molcon_psicquic.txt
-
 ############################################################
 # MMDB/PDB (for PDB taxonomy information)
 # OK
@@ -450,14 +415,13 @@ MMDB_SCHEMA='mmdb'
 
 ############################################################
 # MPACT
-# obsolete ? where is the file
 # OK
 MPACT_DOWNLOAD_FILES="mpact-complete.psi25.xml.gz"
 #MPACT_MIRROR='ftp://ftpmips.gsf.de'
-MPACT_MIRROR='file://'
+MPACT_MIRROR='gs://vib-training-data'
 
 #MPACT_RELEASE_URL="$MPACT_MIRROR/yeast/PPI/"
-MPACT_RELEASE_URL="$MPACT_MIRROR/home/irefindex/data/ian/mpact/"
+MPACT_RELEASE_URL="$MPACT_MIRROR/MPACT/"
 MPACT_DIR_NAME="MPACT"
 MPACT_XML_FILE_PATTERN='*.xml *.xml.gz'
 
@@ -480,10 +444,10 @@ MPIDB_IMPORT_TEMPLATE='import_mitab.sql'
 # OK
 MPPI_DOWNLOAD_FILES="mppi.gz"
 #MPPI_MIRROR='http://mips.gsf.de'
-MPPI_MIRROR='file://'
+MPPI_MIRROR='gs://vib-training-data'
 
 #MPPI_RELEASE_URL="$MPPI_MIRROR/proj/ppi/data/"
-MPPI_RELEASE_URL="$MPPI_MIRROR/home/irefindex/data/ian/mppi/"
+MPPI_RELEASE_URL="$MPPI_MIRROR/MPPI/"
 MPPI_DIR_NAME="MPPI"
 MPPI_XML_FILE_PATTERN='mppi mppi.gz'
 
@@ -511,7 +475,7 @@ PDB_PARSER='irdata_parse_pdb.sh'
 PDB_SCHEMA='pdb'
 
 ############################################################
-# PSI-MI
+# PSI_MI
 # OK
 PSI_MI_DOWNLOAD_FILES="psi-mi.obo"
 PSI_MI_MIRROR='https://raw.githubusercontent.com/'
@@ -524,10 +488,9 @@ PSI_MI_SCHEMA='psicv'
 
 ############################################################
 # REACTOME
-# 2.5
 # OK
 REACTOME_MIRROR='http://www.ebi.ac.uk'
-REACTOME_RELEASE_URL="$REACTOME_MIRROR/Tools/webservices/psicquic/reactome/webservices/current/search/query/*?format=tab27"
+REACTOME_RELEASE_URL="$REACTOME_MIRROR/Tools/webservices/psicquic/reactome/webservices/current/search/query/*"
 REACTOME_USE_WEBSERVICES="TRUE"
 REACTOME_DOWNLOAD_FILES="reactome_psicquic.txt"
 
@@ -536,17 +499,9 @@ REACTOME_OTHER_FILE_PATTERN='reactome_psicquic.txt'
 REACTOME_PARSER='irdata_parse_reactome.sh'
 REACTOME_IMPORT_TEMPLATE='import_mitab.sql'
 
-#source url for psicquic data
-#ocassionally check to see if tab 27 format is supported yet
-#http://www.ebi.ac.uk/Tools/webservices/psicquic/reactome/webservices/current/search/query/*
-#http://www.ebi.ac.uk/Tools/webservices/psicquic/reactome/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload REACTOME
-#irdata_parse_reactome.sh /storage/data/REACTOME /storage/data/REACTOME/reactome_psicquic.txt
-
 ############################################################
 # QUICKGO
-# only works with curl -k
+# OK
 QUICKGO_MIRROR='http://www.ebi.ac.uk'
 QUICKGO_RELEASE_URL="$QUICKGO_MIRROR/QuickGO/psicquic/webservices/current/search/query/*?format=tab27"
 QUICKGO_USE_WEBSERVICES="TRUE"
@@ -576,19 +531,15 @@ SPIKE_MIRROR='http://spike.cs.tau.ac.il'
 SPIKE_RELEASE_URL="$SPIKE_MIRROR/psicquic-ws/webservices/current/search/query/*"
 SPIKE_USE_WEBSERVICES="TRUE"
 SPIKE_DOWNLOAD_FILES="spike_psicquic.txt"
+#SPIKE_MIRROR='http://www.cs.tau.ac.il/'
+#SPIKE_RELEASE_URL="$SPIKE_MIRROR/~spike/download/"
+#SPIKE_DOWNLOAD_FILES="LatestSpikeDB.xml.zip"
 
 SPIKE_DIR_NAME="SPIKE"
 SPIKE_OTHER_FILE_PATTERN='spike_psicquic.txt'
 SPIKE_PARSER='irdata_parse_spike.sh'
 SPIKE_IMPORT_TEMPLATE='import_mitab.sql'
 #SPIKE_XML_FILE_PATTERN='*.xml'
-
-#source url for psicquic data - occassionally check to see if tab27 is supported yet
-#http://spike.cs.tau.ac.il/psicquic-ws/webservices/current/search/query/*
-#http://spike.cs.tau.ac.il/psicquic-ws/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload SPIKE
-#irdata_parse_spike.sh /storage/data/SPIKE /storage/data/SPIKE/spike_psicquic.txt
 
 ############################################################
 # SEGUID
@@ -625,7 +576,8 @@ UNIPROT_RELEASE='current_release'
 
 UNIPROT_RELEASE_URL="$UNIPROT_MIRROR/pub/databases/uniprot/$UNIPROT_RELEASE/knowledgebase/complete/"
 UNIPROT_DIR_NAME="UniProt"
-UNIPROT_OTHER_FILE_PATTERN='*.dat *.fasta.gz *.fasta'
+## UNIPROT_OTHER_FILE_PATTERN='*.dat *.fasta.gz *.fasta'
+UNIPROT_OTHER_FILE_PATTERN='*.dat.gz *.fasta.gz'
 UNIPROT_PARSER='irdata_parse_uniprot.sh'
 UNIPROT_SCHEMA='uniprot'
 
@@ -677,12 +629,6 @@ UNIPROTPP_OTHER_FILE_PATTERN='uniprotpp_psicquic.txt'
 UNIPROTPP_PARSER='irdata_parse_uniprotpp.sh'
 UNIPROTPP_IMPORT_TEMPLATE='import_mitab.sql'
 
-#source url for psicquic data -
-#http://www.ebi.ac.uk/Tools/webservices/psicquic/uniprot/webservices/current/search/query/*?format=tab27
-#testing
-#irdownload UNIPROTPP
-#irdata_parse_uniprotpp.sh /storage/data/UNIPROTPP /storage/data/UNIPROTPP/uniprotpp_psicquic.txt
-#
 ############################################################
 # VIRUSHOST
 # OK
@@ -695,12 +641,6 @@ VIRUSHOST_DIR_NAME="VIRUSHOST"
 VIRUSHOST_OTHER_FILE_PATTERN='*.txt'
 VIRUSHOST_PARSER='irdata_parse_virushost.sh'
 VIRUSHOST_IMPORT_TEMPLATE='import_mitab.sql'
-
-#source url for psicquic data
-#http://virhostnet.prabi.fr:9090/psicquic/webservices/current/search/query/*
-#testing
-#irdownload VIRUSHOST
-#irdata_parse_virushost.sh /storage/data/VIRUSHOST /storage/data/VIRUSHOST/virushost_psicquic.txt
 
 ############################################################
 # Entrez Utilities details

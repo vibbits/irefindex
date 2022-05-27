@@ -59,5 +59,5 @@ fi
 | tail -n +2 \
 | cut -f 1,2,6 \
 | grep -v -e '-' \
-| sort -uT /data/tmp \
+| sort -u \
 > "$DATADIR/$OUTFILE"

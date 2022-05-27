@@ -50,8 +50,8 @@ fi
 # Tab character used in the sed command.
 #TAB=`printf '\t'`
 
-  cat "$DATADIR"/*_proteins.txt \
-> "$DATADIR/genpept_proteins.txt"
+rm -f "$DATADIR/genpept_proteins.txt"
+cat "$DATADIR"/*_proteins.txt > "$DATADIR/genpept_proteins.txt"
 
 "$TOOLS/irdata_process_signatures.sh" "$DATADIR" --append --append-length
 exit $?

@@ -43,18 +43,11 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
 fi
 
 
-#it is assumed that all records in the virushost file refer to protein-protein interactions
-#it is not possible to check for these (as done in the below commented code) because virushost
-#does not follow regular mitab conventions and interactor type is not provided
-#should this change in future, the following code could be uncommented
-#
 #preprocess input files to remove non protein-protein interaction records
 #save a copy of the original
 for THISFILE in $FILENAMES; do
     ORIGINAL="$THISFILE".original
-    #awk 'BEGIN {FS="\t";}{if ($21 == "psi-mi:\"MI:0326\"(protein)"  && $22 == "psi-mi:\"MI:0326\"(protein)") print $0;}' < "$THISFILE" > tmp
     awk 'BEGIN {FS="\t";}{if ($12 != "psi-mi:\"MI:1110\"(predicted interaction)"  && $12 != "-") print $0;}' < "$THISFILE" > tmp
-
     #catch errors - $? means return value of last function
     if [ $? != 0 ]; then
         echo "$PROGNAME: pre-processing of $THISFILE failed." 1>&2
