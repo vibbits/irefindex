@@ -568,19 +568,13 @@ TAXONOMY_SCHEMA='taxonomy'
 # OK
 UNIPROT_DOWNLOAD_FILES="uniprot_sprot.dat.gz uniprot_trembl.dat.gz uniprot_sprot_varsplic.fasta.gz reldate.txt"
 UNIPROT_MIRROR='ftp://ftp.uniprot.org'
-#UNIPROT_MIRROR='ftp://ftp.ebi.ac.uk'
-
 UNIPROT_RELEASE='current_release'
-#UNIPROT_RELEASE='previous_releases/release-2011_05'
 
 UNIPROT_RELEASE_URL="$UNIPROT_MIRROR/pub/databases/uniprot/$UNIPROT_RELEASE/knowledgebase/complete/"
 UNIPROT_DIR_NAME="UniProt"
-## UNIPROT_OTHER_FILE_PATTERN='*.dat *.fasta.gz *.fasta'
-UNIPROT_OTHER_FILE_PATTERN='*.dat.gz *.fasta.gz'
+UNIPROT_OTHER_FILE_PATTERN='*.dat.gz *.dat *.fasta.gz *.fasta'
 UNIPROT_PARSER='irdata_parse_uniprot.sh'
 UNIPROT_SCHEMA='uniprot'
-
-UNIPROT_SPLIT_INTERVAL=100000000
 
 UNIPROT_MANIFEST_PARSER='irdata_manifest_uniprot.sh'
 UNIPROT_MANIFEST_FILE='reldate.txt'

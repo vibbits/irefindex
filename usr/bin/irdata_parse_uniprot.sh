@@ -59,38 +59,16 @@ for FILENAME in $FILENAMES; do
 
     elif [ "$FILETYPE" = 'dat' ] || [ "$FILETYPE" = 'dat.gz' ]; then
 
-        # Unpack any gzip archives since the slicing of these files is not
-        # efficient if done repeatedly.
-
-        ## Leave file compressed
-        # if [ "$FILETYPE" = 'dat.gz' ]; then
-        #     UNPACKED_FILENAME=${FILENAME%.gz}
-
-        #     # Unpack the archive again even if an uncompressed file is present.
-
-        #     if [ -e "$UNPACKED_FILENAME" ] && [ -e "$FILENAME" ]; then
-        #         echo "$PROGNAME: Removing existing $UNPACKED_FILENAME..." 1>&2
-        #         rm "$UNPACKED_FILENAME"
-        #     fi
-
-        #     echo "$PROGNAME: Unpacking $FILENAME..." 1>&2
-        #     "$SCRIPTS/irunpack-archive" --include-gzip-files "$FILENAME"
-        #     FILENAME=$UNPACKED_FILENAME
-        # fi
-
         # Remove the extension from the filename.
-
         BASENAME=`basename "$FILENAME"`
         LEAFNAME=${BASENAME%%.*}
 
-        # Split the data file into pieces by first finding the offsets in the
-        # filename.
-
-        "$TOOLS/irdata_split.py" -1 "$UNIPROT_SPLIT_INTERVAL" "$FILENAME" '//' \
-        | "$SCRIPTS/irparallel" "echo {} | \"$SCRIPTS/irslice\" \"$FILENAME\" - | \"$TOOLS/irdata_parse_uniprot.py\" \"$DATADIR\" - \"${LEAFNAME}_%s-{}.txt\""
+        # Split the data file into $PROCESS pieces.
+        # Pass each process its rank (0-based) and the total number of processes.
+        seq 0 $((PROCESSES - 1)) \
+        | "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py $FILENAME {} $PROCESSES | $TOOLS/irdata_parse_uniprot.py $DATADIR - ${LEAFNAME}_%s-{}.txt"
 
         # Merge the pieces.
-
         echo "$PROGNAME: Merging data files for $LEAFNAME..." 1>&2
 
         for TYPE in "accessions" "gene_names" "identifiers" "proteins" ; do
