@@ -89,10 +89,10 @@ def main():
     if args.filename != "-":
         filename_or_stream = args.filename
     else:
-        filename_or_stream = data.reread(sys.stdin)
+        filename_or_stream = sys.stdin
 
     reader = data.RawImportFileReader(filename_or_stream, delimiter=delimiter)
-    writer = data.RawImportFile(data.rewrite(sys.stdout))
+    writer = data.RawImportFile(sys.stdout)
 
     try:
         try:

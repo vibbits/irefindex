@@ -42,7 +42,7 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAME" ]; then
     exit 1
 fi
 
-OUTFILE=`basename "$FILENAME"`
+OUTFILE=`basename -s .gz "$FILENAME"`
 FILETYPE=${OUTFILE%%.*}
 echo "$FILETYPE"
 # Find the last table header marker.
@@ -56,6 +56,6 @@ echo "$FILETYPE"
 
 # cat the file and present it to the parser.
 echo "$DATADIR/$OUTFILE" 1>&2
-  cat "$FILENAME" \
+zcat "$FILENAME" \
 | "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
 > "$DATADIR/$OUTFILE"

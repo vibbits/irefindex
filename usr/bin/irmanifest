@@ -57,6 +57,13 @@ else
     SOURCES=$*
 fi
 
+# Return the file(s) modification date (UTC)
+function irfiletime {
+    for file in $*; do
+        TZ=UTC stat -c '%y' $file | sed 's/\..*//'
+    done
+}
+
 # Loop over the sources and collect manifest information in a file.
 
   for SOURCE in $SOURCES ; do
@@ -84,23 +91,19 @@ fi
       echo "$URL" 1>&2
 
       if [ "$URL" ]; then
-          echo "url"
-	  echo "$SOURCE" 1>&2
+          echo "$SOURCE" 1>&2
           source=$(echo $SOURCE | tr '[:upper:]' '[:lower:]')
           DETAILS="$MANIFESTS/irdata_manifest_$source.txt"
 
-            "$TOOLS/irdata_manifest.py" "$URL" < "$DETAILS" \
-          | sed -e "s/\(.*\)/$SOURCE\t\\1/"
+          "$TOOLS/irdata_manifest.py" "$URL" < "$DETAILS" \
+            | sed -e "s/\(.*\)/$SOURCE\t\\1/"
 
       # If a source uses a manifest parser, use that to obtain information.
-
       elif [ "$PARSER" ]; then
-            echo "parser"
-            "$PARSER" "$DATADIR/$FILE" \
-          | sed -e "s/\(.*\)/$SOURCE\t\\1/"
+          "$SCRIPTS/$PARSER" "$DATADIR/$FILE" \
+            | sed -e "s/\(.*\)/$SOURCE\t\\1/"
 
       # Otherwise, extract basic timestamp information from the downloads.
-
       elif [ "$DOWNLOAD_FILES" ]; then
 
           # Expand the download files.
@@ -112,22 +115,17 @@ fi
           done
 
           # Get the earliest timestamp.
-
-            "$SCRIPTS/irfiletime" $DOWNLOAD_PATHS \
-          | sort \
-          | head -n 1 \
-          | sed -e "s/\(.*\)/$SOURCE\tDATE\t\\1/"
-
+          MTIME=$(irfiletime $DOWNLOAD_PATHS | sort | head -n 1)
+          echo -e "${SOURCE}\tDATE\t${MTIME}"
       fi
 
       # Add the non-manifest information.
-
       if [ "$RELEASE_URL" ]; then
           echo "R_URL" 1>&2
-          printf "%s\t%s\t%s\n" "$SOURCE" 'RELEASE_URL' "$RELEASE_URL"
+          echo -e "${SOURCE}\tRELEASE_URL\t${RELEASE_URL}"
       fi
       if [ "$DOWNLOAD_FILES" ]; then
-          printf "%s\t%s\t%s\n" "$SOURCE" 'DOWNLOAD_FILES' "$DOWNLOAD_FILES"
+          echo -e "${SOURCE}\tDOWNLOAD_FILES\t${DOWNLOAD_FILES}"
       fi
 
   done \

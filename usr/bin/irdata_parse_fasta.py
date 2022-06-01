@@ -29,7 +29,6 @@ from itertools import zip_longest
 class Parser:
 
     "A parser for FASTA format text files."
-    import re
 
     NULL = r"\N"
 
@@ -200,8 +199,9 @@ class Parser:
 
 
 if __name__ == "__main__":
-    from os.path import extsep, join, split, splitext
-    import os, sys, gzip
+    import gzip
+    import os
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 
@@ -224,21 +224,25 @@ if __name__ == "__main__":
 
     try:
         for filename in filenames:
-            leafname = split(filename)[-1]
-            basename, ext = splitext(leafname)
+            leafname = os.path.split(filename)[-1]
+            basename, ext = os.path.splitext(leafname)
             print("%s: Parsing %s" % (progname, leafname), file=sys.stderr)
 
             if ext.endswith("gz"):
                 opener = gzip.open
-                basename, ext = splitext(basename)  # remove any remaining extension
+                basename, ext = os.path.splitext(
+                    basename
+                )  # remove any remaining extension
             else:
                 opener = open
 
-            f_out = open(join(data_directory, "%s_proteins.txt" % basename), "w")
+            f_out = open(
+                os.path.join(data_directory, "%s_proteins.txt" % basename), "w"
+            )
             try:
                 parser = Parser(
                     source,
-                    opener(filename),
+                    opener(filename, mode="rt"),
                     f_out,
                     identifier_types,
                     output_identifier_types,

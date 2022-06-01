@@ -57,8 +57,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 ###################
 # Global variables
 ###################
-
-from os.path import extsep, join, split, splitext
 import os
 import re
 import gzip
@@ -200,7 +198,6 @@ class Parser:
         # keep track of multi-line interction records
         self.int_line_no = 0
         self.last_int_line_no = {}
-        # self.last_interaction = None
 
     def close(self):
         if self.writer is not None:
@@ -213,8 +210,8 @@ class Parser:
         Parse the file with the given 'filename', writing to the output stream.
         """
 
-        leafname = split(filename)[-1]
-        basename, ext = splitext(leafname)
+        leafname = os.path.split(filename)[-1]
+        _, ext = os.path.splitext(leafname)
 
         if ext.endswith("gz"):
             opener = gzip.open
@@ -285,7 +282,7 @@ class Parser:
         Distinct interaction records are distinguished based on there being
         a unique interaction record identifier present (see get_interaction_id).
         Some databases lack these in which case get_interaction_id will provide
-        the line number in the mitab file being parsed as a surrogate record indetifier.
+        the line number in the mitab file being parsed as a surrogate record identifier.
         In this later case, it is assumed that each line in the mitab file represents a separate record
         - multi-line interactions will not be possible for these databases.
 
@@ -320,7 +317,7 @@ class Writer:
         self.input_source = source
         self.directory = directory
         self.filename = None
-        self.init()
+        self.output_line = 0
 
     def start(self, filename):
         self.filename = filename
@@ -333,7 +330,7 @@ class Writer:
 
         """
         Observe correspondences between multivalued fields in 'data'.
-        At present this is only implelmented for the MPIDB source.
+        At present this is only implemented for the MPIDB source.
 
         For example...the following three tab-delimited fields occurs in one mitab line
         about an interaction between A and B
@@ -376,8 +373,7 @@ class Writer:
                 length = len(values)
             elif length != len(values):
                 raise ValueError(
-                    "Field %s has %d values but preceding fields have %d values."
-                    % (key, len(values), length)
+                    f"Field {key} has {len(values)} values but preceding fields have {length} values."
                 )
 
             fields.append(values)
@@ -402,54 +398,6 @@ class Writer:
         return experiment_data
 
 
-class MITABWriter(Writer):
-
-    """
-    A standard MITAB format file writer.
-    Presently not used
-    """
-
-    def init(self):
-        self.out = None
-
-    def close(self):
-        if self.out is not None:
-            self.out.close()
-            self.out = None
-
-    def get_filename(self):
-        # imd - inspect this later - hard-coded
-        return join(self.directory, "mpidb_mitab.txt")
-
-    def start(self, filename):
-        Writer.start(self, filename)
-
-        if self.out is not None:
-            return
-
-        if not os.path.exists(self.directory):
-            os.mkdir(self.directory)
-
-        self.out = open(self.get_filename(), "w")
-        print("#" + "\t".join(mitab25_fields), file=self.out)
-
-    def append(self, data):
-
-        "Write tidied MITAB from the given 'data'."
-
-        for exp_data in self.get_experiment_data(data):
-            new_data = {}
-            new_data.update(data)
-            new_data.update(exp_data)
-
-            # Convert values back into strings.
-
-            for key in list_fields:
-                new_data[key] = list_2_pipe(new_data[key])
-
-            self.write_line(self.out, [new_data[key] for key in mitab25_fields])
-
-
 class iRefIndexWriter(Writer):
 
     "A writer for iRefIndex-compatible data."
@@ -466,8 +414,10 @@ class iRefIndexWriter(Writer):
         "interactionIdentifiers",
     )
 
-    def init(self):
+    def __init__(self, source, directory):
+        super(iRefIndexWriter, self).__init__(source, directory)
         self.files = {}
+        self.source = ""
 
     def close(self):
         for f in list(self.files.values()):
@@ -475,7 +425,7 @@ class iRefIndexWriter(Writer):
         self.files = {}
 
     def get_filename(self, key):
-        return join(self.directory, "mitab_%s%stxt" % (key, extsep))
+        return os.path.join(self.directory, "mitab_%s%stxt" % (key, os.path.extsep))
 
     def start(self, filename):
         Writer.start(self, filename)
@@ -483,7 +433,7 @@ class iRefIndexWriter(Writer):
         # Use the filename for specific MPIDB sources.
 
         if file_format == "custom_mpidb":
-            self.source = split(filename)[-1]
+            self.source = os.path.split(filename)[-1]
         else:
             self.source = self.input_source
 
@@ -741,7 +691,7 @@ def fix_alias(s):
     uniprotkb when they are in fact entrezgene/locuslink gene names
     """
     if file_format == "custom_mpidb" and s.startswith("uniprotkb:"):
-        prefix, symbol = s.split(":")[:2]
+        _, symbol = s.split(":")[:2]
         return "entrezgene/locuslink:" + symbol
     else:
         return s
@@ -805,8 +755,8 @@ def detect_file_format(filenames):
     one of: mitab25, mitab26, mitab27, irefindex, unknown
     """
     filename = filenames[0]
-    leafname = split(filename)[-1]
-    basename, ext = splitext(leafname)
+    leafname = os.path.split(filename)[-1]
+    _, ext = os.path.splitext(leafname)
 
     if ext.endswith("gz"):
         opener = gzip.open
@@ -824,7 +774,6 @@ def detect_file_format(filenames):
             return "mitab25"
         if len(data) == len(mitab26_fields):
             return "mitab26"
-        print(len(data))
         if len(data) == len(mitab27_fields):
             return "mitab27"
         if len(data) == len(irefindex_fields):
@@ -858,7 +807,7 @@ def get_all_fields(file_format):
 ###########
 
 if __name__ == "__main__":
-    import os, sys
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 

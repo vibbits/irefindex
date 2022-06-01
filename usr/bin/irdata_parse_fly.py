@@ -40,6 +40,7 @@ class Parser:
         self.discard_ill_formed = discard_ill_formed
         self.progname = progname
         self.columns = None
+        self.boundaries = None
         self.lineno = None
 
     def init_columns(self, line):
@@ -138,7 +139,7 @@ class Parser:
             # as new lines are read.
 
             else:
-                values, status = self.get_values(line, values)
+                values, _ = self.get_values(line, values)
 
     def write_record(self, record):
         self.f_out.write("\t".join(record) + "\n")
@@ -151,8 +152,8 @@ class Parser:
 
 
 if __name__ == "__main__":
-    from os.path import split
-    import os, sys
+    import os
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 

@@ -25,8 +25,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 # default settings
-
-from os.path import extsep, join, split, splitext
 import os
 import re
 import gzip
@@ -95,8 +93,8 @@ class Parser:
         Parse the file with the given 'filename', writing to the output stream.
         """
 
-        leafname = split(filename)[-1]
-        basename, ext = splitext(leafname)
+        leafname = os.path.split(filename)[-1]
+        _, ext = os.path.splitext(leafname)
 
         if ext.endswith("gz"):
             opener = gzip.open
@@ -138,12 +136,10 @@ class Parser:
             return
 
         # Fix aliases.
-
         for key in ("aliasA", "aliasB"):
             data[key] = list(map(fix_alias, data[key]))
 
         # Fix controlled vocabulary fields.
-
         for key in ("method", "interactionType", "sourcedb"):
             data[key] = list(map(fix_vocabulary_term, data[key]))
 
@@ -174,7 +170,7 @@ class Writer:
         self.input_source = source
         self.directory = directory
         self.filename = None
-        self.init()
+        self.output_line = 0
 
     def start(self, filename):
         self.filename = filename
@@ -218,8 +214,7 @@ class Writer:
                 length = len(values)
             elif length != len(values):
                 raise ValueError(
-                    "Field %s has %d values but preceding fields have %d values."
-                    % (key, len(values), length)
+                    f"Field {key} has {len(values)} values but preceding fields have {length} values."
                 )
 
             fields.append(values)
@@ -248,7 +243,8 @@ class MITABWriter(Writer):
 
     "A standard MITAB format file writer."
 
-    def init(self):
+    def __init__(self, source, directory):
+        super(MITABWriter, self).__init__(source, directory)
         self.out = None
 
     def close(self):
@@ -258,7 +254,7 @@ class MITABWriter(Writer):
 
     def get_filename(self):
         # imd - inspect this later - hard-coded
-        return join(self.directory, "mpidb_mitab.txt")
+        return os.path.join(self.directory, "mpidb_mitab.txt")
 
     def start(self, filename):
         Writer.start(self, filename)
@@ -305,8 +301,10 @@ class iRefIndexWriter(Writer):
         "interactionIdentifiers",
     )
 
-    def init(self):
+    def __init__(self, source, directory):
+        super(iRefIndexWriter, self).__init__(source, directory)
         self.files = {}
+        self.source = ""
 
     def close(self):
         for f in list(self.files.values()):
@@ -314,7 +312,7 @@ class iRefIndexWriter(Writer):
         self.files = {}
 
     def get_filename(self, key):
-        return join(self.directory, "mitab_%s%stxt" % (key, extsep))
+        return os.path.join(self.directory, "mitab_%s%stxt" % (key, os.path.extsep))
 
     def start(self, filename):
         Writer.start(self, filename)
@@ -322,7 +320,7 @@ class iRefIndexWriter(Writer):
         # Use the filename for specific MPIDB sources.
 
         if self.input_source == "MPIDB":
-            self.source = split(filename)[-1]
+            self.source = os.path.split(filename)[-1]
         else:
             self.source = self.input_source
 
@@ -492,7 +490,7 @@ def fix_alias(s):
     # this is a hack for MPI sources that incorrectly label aliases as from
     # uniprotkb when they are in fact entrezgene/locuslink gene names
     if source.startswith("MPI") and s.startswith("uniprotkb:"):
-        prefix, symbol = s.split(":")[:2]
+        _, symbol = s.split(":")[:2]
         return "entrezgene/locuslink:" + symbol
     else:
         return s
@@ -533,7 +531,7 @@ def split_taxid(s):
 
 
 if __name__ == "__main__":
-    import os, sys
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 
@@ -559,9 +557,7 @@ if __name__ == "__main__":
             term_regexps = [mpidb_term_regexp, standard_term_regexp]
 
         writer = iRefIndexWriter(source, directory)
-
         parser = Parser(writer)
-
         try:
             for filename in filenames:
                 parser.parse(filename)

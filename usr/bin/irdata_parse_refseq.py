@@ -211,8 +211,9 @@ class Parser:
 
 
 if __name__ == "__main__":
-    from os.path import extsep, join, split, splitext
-    import os, sys, gzip
+    import gzip
+    import os
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 
@@ -231,8 +232,8 @@ if __name__ == "__main__":
 
     try:
         for filename in filenames:
-            leafname = split(filename)[-1]
-            basename, ext = splitext(leafname)
+            leafname = os.path.split(filename)[-1]
+            basename, ext = os.path.splitext(leafname)
             print("%s: Parsing %s" % (progname, leafname), file=sys.stderr)
 
             if ext.endswith("gz"):
@@ -240,9 +241,11 @@ if __name__ == "__main__":
             else:
                 opener = open
 
-            f_main = open(join(data_directory, basename + "_proteins"), "w")
-            f_identifiers = open(join(data_directory, basename + "_identifiers"), "w")
-            parser = Parser(opener(filename), f_main, f_identifiers)
+            f_main = open(os.path.join(data_directory, basename + "_proteins"), "w")
+            f_identifiers = open(
+                os.path.join(data_directory, basename + "_identifiers"), "w"
+            )
+            parser = Parser(opener(filename, mode="rt"), f_main, f_identifiers)
             try:
                 parser.parse()
             finally:

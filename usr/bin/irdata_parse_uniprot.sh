@@ -62,30 +62,31 @@ for FILENAME in $FILENAMES; do
         # Unpack any gzip archives since the slicing of these files is not
         # efficient if done repeatedly.
 
-        if [ "$FILETYPE" = 'dat.gz' ]; then
-            UNPACKED_FILENAME=${FILENAME%.gz}
+        ## Leave file compressed
+        # if [ "$FILETYPE" = 'dat.gz' ]; then
+        #     UNPACKED_FILENAME=${FILENAME%.gz}
 
-            # Unpack the archive again even if an uncompressed file is present.
+        #     # Unpack the archive again even if an uncompressed file is present.
 
-            if [ -e "$UNPACKED_FILENAME" ] && [ -e "$FILENAME" ]; then
-                echo "$PROGNAME: Removing existing $UNPACKED_FILENAME..." 1>&2
-                rm "$UNPACKED_FILENAME"
-            fi
+        #     if [ -e "$UNPACKED_FILENAME" ] && [ -e "$FILENAME" ]; then
+        #         echo "$PROGNAME: Removing existing $UNPACKED_FILENAME..." 1>&2
+        #         rm "$UNPACKED_FILENAME"
+        #     fi
 
-            echo "$PROGNAME: Unpacking $FILENAME..." 1>&2
-            "$SCRIPTS/irunpack-archive" --include-gzip-files "$FILENAME"
-            FILENAME=$UNPACKED_FILENAME
-        fi
+        #     echo "$PROGNAME: Unpacking $FILENAME..." 1>&2
+        #     "$SCRIPTS/irunpack-archive" --include-gzip-files "$FILENAME"
+        #     FILENAME=$UNPACKED_FILENAME
+        # fi
 
         # Remove the extension from the filename.
 
         BASENAME=`basename "$FILENAME"`
-        LEAFNAME=${BASENAME%.dat}
+        LEAFNAME=${BASENAME%%.*}
 
         # Split the data file into pieces by first finding the offsets in the
         # filename.
 
-          "$TOOLS/irdata_split.py" -1 "$UNIPROT_SPLIT_INTERVAL" "$FILENAME" '//' \
+        "$TOOLS/irdata_split.py" -1 "$UNIPROT_SPLIT_INTERVAL" "$FILENAME" '//' \
         | "$SCRIPTS/irparallel" "echo {} | \"$SCRIPTS/irslice\" \"$FILENAME\" - | \"$TOOLS/irdata_parse_uniprot.py\" \"$DATADIR\" - \"${LEAFNAME}_%s-{}.txt\""
 
         # Merge the pieces.

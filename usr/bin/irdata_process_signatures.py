@@ -21,11 +21,10 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from irdata.signatures import *
+from irdata import signatures as irsig
 
 if __name__ == "__main__":
-    from os.path import extsep, split
-    from os import rename
+    import os
     import sys
 
     try:
@@ -34,7 +33,7 @@ if __name__ == "__main__":
         print(
             """\
 Usage: %s <sequences file> <signatures file> [ --append ] [ --append-length ] [ --legacy ]"""
-            % split(sys.argv[0])[-1],
+            % os.path.split(sys.argv[0])[-1],
             file=sys.stderr,
         )
         sys.exit(1)
@@ -46,7 +45,7 @@ Usage: %s <sequences file> <signatures file> [ --append ] [ --append-length ] [ 
     f = open(infile)
     out = open(outfile, "w")
     try:
-        process_file(f, out, -1, ",", append, append_length, legacy)
+        irsig.process_file(f, out, -1, ",", append, append_length, legacy)
     finally:
         out.close()
         f.close()

@@ -54,6 +54,11 @@ if [ ! -e "$FILENAME" ]; then
     exit 1
 fi
 
+CAT="cat"
+if [[ "$FILENAME" =~ \.gz$ ]]; then
+        CAT="zcat"
+fi
+
 shift 1
 
 if [ "$1" = '--lines' ]; then
@@ -83,5 +88,6 @@ else
     SLICER="tee"
 fi
 
-  tail $SLICEOPTS +"$START" "$FILENAME" \
+"$CAT" "$FILENAME" \
+| tail $SLICEOPTS +"$START" \
 | eval "$SLICER"

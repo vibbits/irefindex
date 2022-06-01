@@ -109,8 +109,8 @@ class Parser:
 
 
 if __name__ == "__main__":
-    from os.path import split
-    import os, sys
+    import os
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 
