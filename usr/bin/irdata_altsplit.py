@@ -20,21 +20,36 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import gzip
+import pathlib
 import re
+import typing
 
 
-def swiss_prot_entry(textstream, delimiter="^//$"):
+def swiss_prot_entry(
+    textstream: typing.TextIO, delimiter: typing.Pattern[str] = re.compile(r"^//$")
+) -> typing.Generator[str, None, None]:
+    """
+    Returns the next record from <textstream> as a string.
+    SwissProt/UniProt format: https://www.uniprot.org/docs/userman.htm
+    """
     lines = list()
-    separator = re.compile(delimiter)
 
     for line in textstream:
         lines.append(line)
-        if separator.match(line):
+        if delimiter.match(line):
             yield "".join(lines)
             lines.clear()
 
 
-def split_file(filename, rank, total):
+def split_file(filename: pathlib.Path, rank: int, total: int) -> None:
+    """
+    Splits file with <filename> in individual records.
+    If the file is compressed, it id assumed to have extension .gz.
+
+    Records having index % <total> == <rank> are written to stdout, other
+    records are simply discarded. For instance, if <total> is 4
+    and <rank> is 0, only records #0, #4, #8, #12... are written out.
+    """
     opener = gzip.open if filename.endswith(".gz") else open
     with opener(filename, "rt") as stream:
         for n, entry in enumerate(swiss_prot_entry(stream)):
