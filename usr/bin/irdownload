@@ -192,7 +192,7 @@ for SOURCE in $SOURCES; do
                         continue
                     fi
 
-                # Download from GCS storage -- requires the Google Gloud SDK
+                # Download from GCS storage -- requires the Google Cloud SDK
                 elif [ "${URL#gs://}" != "$URL" ]; then # if the URL begins with gs://
 
                     if ! gsutil -m cp -r "$URL" "$DATADIR" ; then
