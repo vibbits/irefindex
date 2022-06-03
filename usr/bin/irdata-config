@@ -48,9 +48,9 @@ IREFINDEX_PROPRIETARY_DATA="FALSE"
 # If available, review the BIND_MIRROR, BIND_RELEASE_URL,
 # OPHID_MIRROR and OPHID_RELEASE_URL settings below.
 
-XMLSOURCES="BIND_TRANSLATION BIOGRID CORUM HPRD INTACT INTCOMPLEX MPACT MPPI"
-TABSOURCES="MINT MPIDB IMEX INNATEDB MATRIXDB REACTOME VIRUSHOST UNIPROTPP HPIDB HURI BHF_UCL MBINFO MOLCON QUICKGO BAR SPIKE DIP"
-OTHERSOURCES="PSI_MI TAXONOMY BIND DIG FLY GENE GENPEPT IPI MMDB PDB REFSEQ UNIPROT YEAST ATHALIANA"
+XMLSOURCES="BIND_TRANSLATION BIOGRID CORUM DIP HPRD INTACT INTCOMPLEX MPACT MPPI"
+TABSOURCES="BAR BHF_UCL HPIDB HURI IMEX INNATEDB MATRIXDB MBINFO MINT MPIDB QUICKGO REACTOME UNIPROTPP VIRUSHOST"
+OTHERSOURCES="PSI_MI TAXONOMY ATHALIANA BIND DIG FLY GENE GENPEPT IPI MMDB PDB REFSEQ UNIPROT YEAST"
 
 ############################################################
 # Excluded sources are those not to be downloaded, parsed,
@@ -103,8 +103,7 @@ APID_IMPORT_TEMPLATE='import_mitab.sql'
 ############################################################
 # A_Thaliana
 # OK
-# ATHALIANA_RELEASE="53"  # previous release 46
-ATHALIANA_RELEASE="46"
+ATHALIANA_RELEASE="53"  # previous release 46
 ATHALIANA_MIRROR='http://ftp.ensemblgenomes.org'
 ATHALIANA_RELEASE_URL="${ATHALIANA_MIRROR}/pub/plants/release-${ATHALIANA_RELEASE}/tsv/arabidopsis_thaliana/"
 ATHALIANA_DOWNLOAD_FILES="Arabidopsis_thaliana.TAIR10.${ATHALIANA_RELEASE}.uniprot.tsv.gz"
@@ -113,7 +112,7 @@ ATHALIANA_DIR_NAME="ATHALIANA"
 ATHALIANA_OTHER_FILE_PATTERN='*.tsv.gz'
 ATHALIANA_PARSER='irdata_parse_A_thaliana.sh'
 ATHALIANA_SCHEMA='athaliana'
-# ATHALIANA_DEFS="release ${ATHALIANA_RELEASE}"
+ATHALIANA_DEFS="release ${ATHALIANA_RELEASE}"
 
 ############################################################
 # BAR
@@ -210,23 +209,20 @@ DIG_SCHEMA='dig'
 
 ############################################################
 # DIP
-# Only works with curl -k
 # OK
-DIP_MIRROR='https://imex.mbi.ucla.edu'
-DIP_RELEASE_URL="$DIP_MIRROR/xpsq-dip-all/service/rest/current/search/query/*?maxResults=104,965"
-DIP_DOWNLOAD_FILES="dip_psicquic.txt"
-DIP_USE_WEBSERVICES="true"
-
 DIP_DIR_NAME="DIP"
-DIP_OTHER_FILE_PATTERN='*.txt'
-DIP_PARSER='irdata_parse_dip.sh'
-DIP_IMPORT_TEMPLATE='import_mitab.sql'
 
-#this username pass only seems to work with http version of gz file
-#ftp did not work as of build 12
-DIP_USERNAME="albot"                        # DIP download credentials
-DIP_PASSWORD="Dd8AIwsbwib"
-# https://dip.doe-mbi.ucla.edu/dip/File.cgi?FN=2017/mif25/dip20170205.mif25.gz
+## Original download
+# DIP_MIRROR="https://dip.doe-mbi.ucla.edu/"
+# DIP_RELEASE_URL="$DIP_MIRROR/dip/File.cgi?FN=2017/mif25/"
+# DIP_USERNAME="albot"                        # DIP download credentials
+# DIP_PASSWORD="Dd8AIwsbwib"
+
+DIP_MIRROR="gs://vib-training-data"
+DIP_RELEASE_URL="$DIP_MIRROR/DIP/"
+DIP_DOWNLOAD_FILES="dip20170205.mif25.gz"
+
+DIP_XML_FILE_PATTERN='*.mif25.gz'
 
 ############################################################
 # Entrez Gene
@@ -528,20 +524,13 @@ REFSEQ_SCHEMA='refseq'
 
 ############################################################
 # SPIKE
-# OK
-SPIKE_MIRROR='http://spike.cs.tau.ac.il'
-SPIKE_RELEASE_URL="$SPIKE_MIRROR/psicquic-ws/webservices/current/search/query/*"
-SPIKE_USE_WEBSERVICES="TRUE"
-SPIKE_DOWNLOAD_FILES="spike_psicquic.txt"
-#SPIKE_MIRROR='http://www.cs.tau.ac.il/'
-#SPIKE_RELEASE_URL="$SPIKE_MIRROR/~spike/download/"
-#SPIKE_DOWNLOAD_FILES="LatestSpikeDB.xml.zip"
+# NOK
 
-SPIKE_DIR_NAME="SPIKE"
-SPIKE_OTHER_FILE_PATTERN='spike_psicquic.txt'
-SPIKE_PARSER='irdata_parse_spike.sh'
-SPIKE_IMPORT_TEMPLATE='import_mitab.sql'
-#SPIKE_XML_FILE_PATTERN='*.xml'
+# SPIKE_DIR_NAME="SPIKE"
+# SPIKE_MIRROR='http://www.cs.tau.ac.il'
+# SPIKE_RELEASE_URL="$SPIKE_MIRROR/~spike/download/"
+# SPIKE_DOWNLOAD_FILES="LatestSpikeDB.xml.zip"
+# SPIKE_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # SEGUID
