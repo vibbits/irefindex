@@ -75,6 +75,7 @@ function irfiletime {
       fi
 
       eval URL='$'"$SOURCE"_MANIFEST_URL
+      eval INC='$'"$SOURCE"_MANIFEST_INC
       eval PARSER='$'"$SOURCE"_MANIFEST_PARSER
       eval FILE='$'"$SOURCE"_MANIFEST_FILE
 
@@ -87,47 +88,50 @@ function irfiletime {
       DATADIR="$DATA/$SOURCEDIR"
 
       # If a source provides a URL, extract manifest information from the resource.
-      echo "$URL $PARSER $FILE $DOWNLOAD_FILES $SOURCEDIR $RELEASE_URL $DATADIR" 1>&2
+      echo "$URL $INC $PARSER $FILE $DOWNLOAD_FILES $SOURCEDIR $RELEASE_URL $DATADIR" 1>&2
       echo "$URL" 1>&2
 
-      if [ "$URL" ]; then
-          echo "$SOURCE" 1>&2
-          source=$(echo $SOURCE | tr '[:upper:]' '[:lower:]')
-          DETAILS="$MANIFESTS/irdata_manifest_$source.txt"
+      if [ "$INC" ]; then
+          cat "$MANIFESTS/$INC"
+      else
+        if [ "$URL" ]; then
+            echo "$SOURCE" 1>&2
+            source=$(echo $SOURCE | tr '[:upper:]' '[:lower:]')
+            DETAILS="$MANIFESTS/irdata_manifest_$source.txt"
 
-          "$TOOLS/irdata_manifest.py" "$URL" < "$DETAILS" \
-            | sed -e "s/\(.*\)/$SOURCE\t\\1/"
+            "$TOOLS/irdata_manifest.py" "$URL" < "$DETAILS" \
+              | sed -e "s/\(.*\)/$SOURCE\t\\1/"
 
-      # If a source uses a manifest parser, use that to obtain information.
-      elif [ "$PARSER" ]; then
-          "$SCRIPTS/$PARSER" "$DATADIR/$FILE" \
-            | sed -e "s/\(.*\)/$SOURCE\t\\1/"
+        # If a source uses a manifest parser, use that to obtain information.
+        elif [ "$PARSER" ]; then
+            "$SCRIPTS/$PARSER" "$DATADIR/$FILE" \
+              | sed -e "s/\(.*\)/$SOURCE\t\\1/"
 
-      # Otherwise, extract basic timestamp information from the downloads.
-      elif [ "$DOWNLOAD_FILES" ]; then
+        # Otherwise, extract basic timestamp information from the downloads.
+        elif [ "$DOWNLOAD_FILES" ]; then
 
-          # Expand the download files.
+            # Expand the download files.
 
-          DOWNLOAD_PATHS=
+            DOWNLOAD_PATHS=
 
-          for DOWNLOAD in $DOWNLOAD_FILES ; do
-              DOWNLOAD_PATHS="${DOWNLOAD_PATHS}${DOWNLOAD_PATHS:+ }"$DATADIR/$DOWNLOAD
-          done
+            for DOWNLOAD in $DOWNLOAD_FILES ; do
+                DOWNLOAD_PATHS="${DOWNLOAD_PATHS}${DOWNLOAD_PATHS:+ }"$DATADIR/$DOWNLOAD
+            done
 
-          # Get the earliest timestamp.
-          MTIME=$(irfiletime $DOWNLOAD_PATHS | sort | head -n 1)
-          echo -e "${SOURCE}\tDATE\t${MTIME}"
+            # Get the earliest timestamp.
+            MTIME=$(irfiletime $DOWNLOAD_PATHS | sort | head -n 1)
+            echo -e "${SOURCE}\tDATE\t${MTIME}"
+        fi
+
+        # Add the non-manifest information.
+        if [ "$RELEASE_URL" ]; then
+            echo "R_URL" 1>&2
+            echo -e "${SOURCE}\tRELEASE_URL\t${RELEASE_URL}"
+        fi
+        if [ "$DOWNLOAD_FILES" ]; then
+            echo -e "${SOURCE}\tDOWNLOAD_FILES\t${DOWNLOAD_FILES}"
+        fi
       fi
-
-      # Add the non-manifest information.
-      if [ "$RELEASE_URL" ]; then
-          echo "R_URL" 1>&2
-          echo -e "${SOURCE}\tRELEASE_URL\t${RELEASE_URL}"
-      fi
-      if [ "$DOWNLOAD_FILES" ]; then
-          echo -e "${SOURCE}\tDOWNLOAD_FILES\t${DOWNLOAD_FILES}"
-      fi
-
   done \
 >> "$MANIFEST_OUTPUT"
 
