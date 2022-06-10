@@ -364,7 +364,7 @@ MATRIXDB_IMPORT_TEMPLATE='import_mitab.sql'
 # MBINFO
 # OK
 MBINFO_MIRROR='http://www.ebi.ac.uk'
-MBINFO_RELEASE_URL="$MBINFO_MIRROR/Tools/webservices/psicquic/mbinfo/webservices/current/search/query/*"
+MBINFO_RELEASE_URL="$MBINFO_MIRROR/Tools/webservices/psicquic/mbinfo/webservices/current/search/query/*?format=tab27"
 MBINFO_USE_WEBSERVICES="TRUE"
 MBINFO_DOWNLOAD_FILES="mbinfo_psicquic.txt"
 

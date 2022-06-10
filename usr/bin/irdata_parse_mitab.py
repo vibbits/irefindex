@@ -276,7 +276,7 @@ class Parser:
             # print >>sys.stderr, "key: %s" % key
             # print >>sys.stderr, "data: %s" % data[key]
             data[key] = list(map(fix_vocabulary_term, data[key]))
-            print("data full:{} ".format(data), file=sys.stderr)
+            # print("data full:{} ".format(data), file=sys.stderr)
         """
         Detect multi-line interactions representing protein complexes.
         Distinct interaction records are distinguished based on there being
@@ -537,7 +537,7 @@ class iRefIndexWriter(Writer):
             for key in ("pmids",):
                 for entry, s in enumerate(data[key]):
                     prefix, value = colon_2_tuple(s)
-                    print(" %s %s" % (prefix, value), file=sys.stderr)
+                    # print(" %s %s" % (prefix, value), file=sys.stderr)
                     if prefix == "pubmed":
                         ##INNATEDB fix, space after some pubmedID
                         if " " in value:
