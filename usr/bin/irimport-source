@@ -83,7 +83,10 @@ else
     schema=${SCHEMA:-$source}
     TEMPLATE=${TEMPLATE:-"import_$schema.sql"}
 
-    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/$TEMPLATE" "$IMPORTDATADIR" $PSQL_OPTIONS ; then
+    eval DEFS='$'"$SOURCE"_DEFS
+    [[ -n ${DEFS} ]] && DEFS="--defs ${DEFS}"
+
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/$TEMPLATE" "$IMPORTDATADIR" $PSQL_OPTIONS $DEFS; then
         echo "$PROGNAME: Import failed for data files from $SOURCE." 1>&2
         exit 1
     fi
