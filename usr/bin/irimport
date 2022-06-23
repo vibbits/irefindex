@@ -64,6 +64,8 @@ elif [ "$SOURCES" = '--xml' ]; then
     SOURCES=$XMLSOURCES
 elif [ "$SOURCES" = '--mitab' ]; then
     SOURCES=$TABSOURCES
+elif [ "$SOURCES" = '--other' ]; then
+    SOURCES=$OTHERSOURCES
 elif [ ! "$SOURCES" ]; then
     echo "$PROGNAME: No sources specified." 1>&2
     exit 1
