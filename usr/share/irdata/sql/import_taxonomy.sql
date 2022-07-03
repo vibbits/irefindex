@@ -28,5 +28,6 @@ UPDATE taxonomy_names SET name='Influenza A virus A/Aichi/2/1968/H3N2' WHERE nam
 --UPDATE taxonomy_names SET name='' WHERE name=''
 
 analyze taxonomy_names;
+-- refresh materialized view taxonomy_scientific_names;
 
 commit;

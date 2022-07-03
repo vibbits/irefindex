@@ -7,3 +7,10 @@ create table taxonomy_names (
     nameclass varchar not null,
     primary key(taxid, name, nameclass)
 );
+
+create materialized view taxonomy_scientific_names as (
+  select name, taxid from taxonomy_names
+  where nameclass = 'scientific name'
+);
+
+create unique index taxonomy_scientific_names_index on taxonomy_scientific_names(name);
