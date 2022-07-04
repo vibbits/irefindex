@@ -142,7 +142,6 @@ BHF_UCL_IMPORT_TEMPLATE='import_mitab.sql'
 
 ############################################################
 # BIND
-# do we have this file
 # OK
 BIND_DOWNLOAD_FILES='20060525*.txt'
 # BIND_MIRROR='file://'
@@ -154,6 +153,7 @@ BIND_DIR_NAME="BIND"
 BIND_OTHER_FILE_PATTERN='*.txt'
 BIND_PARSER='irdata_parse_bind.sh'
 BIND_SCHEMA='bind'
+BIND_MANIFEST_INC='bind-manifest.tsv'
 
 ############################################################
 # BIND Translation
@@ -193,7 +193,6 @@ CORUM_XML_FILE_PATTERN='*.xml'
 
 ############################################################
 # DIG
-# do we have this file?
 # OK
 DIG_DOWNLOAD_FILES='morbidmap14062010.txt'
 # DIG_DOWNLOAD_FILES='22112010morbidmap.txt'
@@ -206,6 +205,7 @@ DIG_DIR_NAME="DIG"
 DIG_OTHER_FILE_PATTERN='morbidmap*.txt'
 DIG_PARSER='irdata_parse_dig.sh'
 DIG_SCHEMA='dig'
+DIG_MANIFEST_INC='dig-manifest.tsv'
 
 ############################################################
 # DIP
@@ -223,6 +223,7 @@ DIP_RELEASE_URL="$DIP_MIRROR/DIP/"
 DIP_DOWNLOAD_FILES="dip20170205.mif25.gz"
 
 DIP_XML_FILE_PATTERN='*.mif25.gz'
+DIP_MANIFEST_INC='dip-manifest.tsv'
 
 ############################################################
 # Entrez Gene
@@ -272,6 +273,7 @@ HPRD_RELEASE_URL="$HPRD_MIRROR/HPRD/"
 #HPRD_RELEASE_URL="$HPRD_MIRROR/home/irefindex/data/ian/"
 HPRD_DIR_NAME="HPRD"
 HPRD_XML_FILE_PATTERN='PSIMI_XML/*.xml'
+HPRD_MANIFEST_INC='hprd-manifest.tsv'
 
 ############################################################
 # HURI
@@ -364,7 +366,7 @@ MATRIXDB_IMPORT_TEMPLATE='import_mitab.sql'
 # MBINFO
 # OK
 MBINFO_MIRROR='http://www.ebi.ac.uk'
-MBINFO_RELEASE_URL="$MBINFO_MIRROR/Tools/webservices/psicquic/mbinfo/webservices/current/search/query/*"
+MBINFO_RELEASE_URL="$MBINFO_MIRROR/Tools/webservices/psicquic/mbinfo/webservices/current/search/query/*?format=tab27"
 MBINFO_USE_WEBSERVICES="TRUE"
 MBINFO_DOWNLOAD_FILES="mbinfo_psicquic.txt"
 
@@ -416,12 +418,13 @@ MMDB_SCHEMA='mmdb'
 # OK
 MPACT_DOWNLOAD_FILES="mpact-complete.psi25.xml.gz"
 #MPACT_MIRROR='ftp://ftpmips.gsf.de'
+#MPACT_RELEASE_URL="$MPACT_MIRROR/yeast/PPI/"
 MPACT_MIRROR='gs://vib-training-data'
 
-#MPACT_RELEASE_URL="$MPACT_MIRROR/yeast/PPI/"
 MPACT_RELEASE_URL="$MPACT_MIRROR/MPACT/"
 MPACT_DIR_NAME="MPACT"
 MPACT_XML_FILE_PATTERN='*.xml *.xml.gz'
+MPACT_MANIFEST_INC='mpact-manifest.tsv'
 
 ############################################################
 # MPIDB
@@ -438,16 +441,16 @@ MPIDB_IMPORT_TEMPLATE='import_mitab.sql'
 
 ############################################################
 # MPPI (also known as MIPS)
-# download not available - link changed - contact Helmholtz
 # OK
 MPPI_DOWNLOAD_FILES="mppi.gz"
 #MPPI_MIRROR='http://mips.gsf.de'
+#MPPI_RELEASE_URL="$MPPI_MIRROR/proj/ppi/data/"
 MPPI_MIRROR='gs://vib-training-data'
 
-#MPPI_RELEASE_URL="$MPPI_MIRROR/proj/ppi/data/"
 MPPI_RELEASE_URL="$MPPI_MIRROR/MPPI/"
 MPPI_DIR_NAME="MPPI"
 MPPI_XML_FILE_PATTERN='mppi mppi.gz'
+MPPI_MANIFEST_INC='mppi-manifest.tsv'
 
 ############################################################
 # OPHID
