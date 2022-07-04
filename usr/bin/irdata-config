@@ -36,6 +36,11 @@ IREFINDEX_PROPRIETARY_DATA="FALSE"
 ############################################################
 # Sources available to the system.
 #
+# Since BIND and GenPept use PSI-MI and Taxonomy data in
+# import, the latter are listed before the former in the
+# other sources list. Otherwise, these lists have been kept
+# in an alphabetical order.
+#
 # The BIND and OPHID data is not publicly available. If not
 # available locally, these sources can be added to the
 # EXCLUDEDSOURCES list below.
@@ -45,7 +50,7 @@ IREFINDEX_PROPRIETARY_DATA="FALSE"
 
 XMLSOURCES="BIND_TRANSLATION BIOGRID CORUM DIP HPRD INTACT INTCOMPLEX MPACT MPPI"
 TABSOURCES="BAR BHF_UCL HPIDB HURI IMEX INNATEDB MATRIXDB MBINFO MINT MPIDB QUICKGO REACTOME UNIPROTPP VIRUSHOST"
-OTHERSOURCES="ATHALIANA BIND DIG FLY GENE GENPEPT IPI MMDB PDB PSI_MI REFSEQ TAXONOMY UNIPROT YEAST"
+OTHERSOURCES="PSI_MI TAXONOMY ATHALIANA BIND DIG FLY GENE GENPEPT IPI MMDB PDB REFSEQ UNIPROT YEAST"
 
 ############################################################
 # Excluded sources are those not to be downloaded, parsed,
