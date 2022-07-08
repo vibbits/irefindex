@@ -221,17 +221,24 @@ insert into irefindex_sequences
     where M.accession is null;
 
 create index irefindex_sequences_index on irefindex_sequences(dblabel, refvalue);
+create index irefindex_rogid_index on irefindex_sequences (refsequence, reftaxid);
 analyze irefindex_sequences;
 
 
 -- ROG identifiers for all sequences having a taxonomy identifier.
 
 insert into irefindex_sequence_rogids
-    select distinct refsequence || reftaxid as rogid
-    from irefindex_sequences
-    where reftaxid is not null;
+    select refsequence || reftaxid as rogid
+    from (
+        select distinct refsequence, reftaxid
+            from irefindex_sequences
+            where reftaxid is not null
+    ) as R;
 
 analyze irefindex_sequence_rogids;
+
+drop index irefindex_rogid_index;
+
 --till here no errors
 -- Actual sequences for all known sequences.
 
