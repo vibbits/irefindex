@@ -21,8 +21,9 @@ You should have received a copy of the GNU General Public License along
 with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-import os, tempfile
+import os
 import subprocess
+import tempfile
 
 
 def substitute(s, defs):
@@ -42,7 +43,15 @@ def execute_command(cmd, database_name, psql_options=None):
         if subprocess.call(
             ["psql"]
             + (psql_options or [])
-            + ["-v", "ON_ERROR_STOP=true", "-f", cmd_filename, database_name]
+            + [
+                "-v",
+                "ON_ERROR_STOP=true",
+                "-v",
+                "ECHO=queries",
+                "-f",
+                cmd_filename,
+                database_name,
+            ]
         ):
             sys.exit(1)
     finally:
@@ -50,7 +59,7 @@ def execute_command(cmd, database_name, psql_options=None):
 
 
 if __name__ == "__main__":
-    import sys, os
+    import sys
 
     progname = os.path.basename(sys.argv[0])
 
