@@ -595,7 +595,7 @@ FLY_MANIFEST_FILE='fly.txt'
 YEAST_DOWNLOAD_FILES="yeast.txt"
 YEAST_MIRROR='ftp://ftp.uniprot.org'
 
-YEAST_RELEASE_URL="$YEAST_MIRROR//pub/databases/uniprot/current_release/knowledgebase/complete/docs/"
+YEAST_RELEASE_URL="$YEAST_MIRROR/pub/databases/uniprot/current_release/knowledgebase/complete/docs/"
 YEAST_DIR_NAME="yeast"
 YEAST_OTHER_FILE_PATTERN='*.txt'
 YEAST_PARSER='irdata_parse_fly.sh'
