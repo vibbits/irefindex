@@ -578,9 +578,9 @@ UNIPROT_MANIFEST_FILE='reldate.txt'
 # UniProt (Fly)
 # OK
 FLY_DOWNLOAD_FILES="fly.txt"
-FLY_MIRROR='http://www.uniprot.org'
+FLY_MIRROR='ftp://ftp.uniprot.org'
 
-FLY_RELEASE_URL="$FLY_MIRROR/docs/"
+FLY_RELEASE_URL="$FLY_MIRROR/pub/databases/uniprot/current_release/knowledgebase/complete/docs/"
 FLY_DIR_NAME="fly"
 FLY_OTHER_FILE_PATTERN='*.txt'
 FLY_PARSER='irdata_parse_fly.sh'
@@ -593,9 +593,9 @@ FLY_MANIFEST_FILE='fly.txt'
 # UniProt (Yeast)
 # OK
 YEAST_DOWNLOAD_FILES="yeast.txt"
-YEAST_MIRROR='http://www.uniprot.org'
+YEAST_MIRROR='ftp://ftp.uniprot.org'
 
-YEAST_RELEASE_URL="$YEAST_MIRROR/docs/"
+YEAST_RELEASE_URL="$YEAST_MIRROR/pub/databases/uniprot/current_release/knowledgebase/complete/docs/"
 YEAST_DIR_NAME="yeast"
 YEAST_OTHER_FILE_PATTERN='*.txt'
 YEAST_PARSER='irdata_parse_fly.sh'
