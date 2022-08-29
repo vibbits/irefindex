@@ -17,9 +17,6 @@
 
 begin;
 
--- DO NOT COMMIT
-
-
 -- Several workarounds are required before adding constraints.
 
 -- Remove useless records.
@@ -31,13 +28,13 @@ delete from xml_xref where refvalue is null;
 
 analyze xml_experiments;
 
--- alter table xml_interactors add primary key (source, filename, entry, interactionid, interactorid, participantid);
+alter table xml_interactors add primary key (source, filename, entry, interactionid, interactorid, participantid);
 analyze xml_interactors;
 
--- alter table xml_names alter column name set not null;
+alter table xml_names alter column name set not null;
 analyze xml_names;
 
--- alter table xml_xref alter column refvalue set not null;
+alter table xml_xref alter column refvalue set not null;
 analyze xml_xref;
 
 analyze xml_organisms;
