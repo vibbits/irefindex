@@ -126,7 +126,6 @@ insert into uniprot_sequences
         on A.sequence = B.sequence
     where B.sequence is null;
 
-create index uniprot_proteins_uniprotid on uniprot_proteins(uniprotid);
 analyze uniprot_proteins;
 
 analyze uniprot_sequences;
