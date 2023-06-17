@@ -1,0 +1,5 @@
+#
+# Setup python dev environment for module `irdata`.
+# In the long run, this module should be installable using pip
+#
+export PYTHONPATH="/stuff/luc/BIT11-stage/howest-vib-code/irdata"

@@ -1,0 +1,7 @@
+---
+plugin: google.cloud.gcp_compute
+projects:
+  - irefindex
+auth_kind: serviceaccount
+service_account_file: ../secrets/gce-robot.json
+hostnames: name
