@@ -1,0 +1,17 @@
+;bind;bind_translation;intact;dip;mint;corum;imex;intcomplex;mbinfo;matrixdb;bhf_ucl;bar;uniprotpp;hpidb;hprd
+bind;29;13;1;0;0;0;1;0;0;0;0;0;0;0;0
+bind_translation;;23;1;0;0;0;1;0;0;0;0;0;0;0;0
+intact;;;841;68;128;16;780;4;6;7;25;8;41;4;0
+dip;;;;90;2;3;68;0;0;0;1;0;0;0;0
+mint;;;;;128;5;108;0;0;1;0;0;0;0;0
+corum;;;;;;278;15;3;1;0;1;0;1;0;0
+imex;;;;;;;781;4;6;6;25;8;33;4;0
+intcomplex;;;;;;;;29;0;0;1;0;0;0;0
+mbinfo;;;;;;;;;6;0;0;0;0;0;0
+matrixdb;;;;;;;;;;15;2;0;1;0;0
+bhf_ucl;;;;;;;;;;;25;8;0;0;0
+bar;;;;;;;;;;;;8;0;0;0
+uniprotpp;;;;;;;;;;;;;41;0;0
+hpidb;;;;;;;;;;;;;;4;0
+hprd;;;;;;;;;;;;;;;1
+Exclusive to source;16;10;31;22;0;261;1;24;0;8;0;0;0;0;1
