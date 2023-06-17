@@ -1,0 +1,10 @@
+;imex;intact;intcomplex;dip;mint;bind;uniprotpp;bind_translation
+imex;339;338;1;24;27;0;2;0
+intact;;398;1;24;32;2;2;0
+intcomplex;;;39;0;0;0;0;0
+dip;;;;25;0;0;0;0
+mint;;;;;32;0;0;0
+bind;;;;;;2;0;0
+uniprotpp;;;;;;;2;0
+bind_translation;;;;;;;;2
+Exclusive to source;1;53;38;1;0;0;0;2
