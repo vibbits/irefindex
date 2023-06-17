@@ -1,0 +1,29 @@
+= Presentation
+
+This presentation is written in Asciidoc and meant to be converted to HTML + reveal-js.
+
+== Setup
+
+The setup is based on the official instructions:
+https://docs.asciidoctor.org/reveal.js-converter/latest/setup/standalone-executable/
+
+Install the Asciidoc converter:
+
+  $ sudo gem install asciidoctor-revealjs
+  $ asciidoctor-revealjs --version
+  Asciidoctor reveal.js 4.1.0 using Asciidoctor 2.0.17 [https://asciidoctor.org]
+  Runtime Environment (ruby 3.0.4p208 (2022-04-12 revision 3fa771dded) [x86_64-linux]) (lc:UTF-8 fs:UTF-8 in:UTF-8 ex:UTF-8)
+
+Install the javascript part:
+
+  $ git clone -b 3.9.2 --depth 1 https://github.com/hakimel/reveal.js.git
+
+== Presentation
+
+To convert the Asciidoc source material to HTML:
+
+  $ asciidoctor-revealjs --out-file=presentation.html presentation.adoc
+
+== Documentation
+
+_TODO_

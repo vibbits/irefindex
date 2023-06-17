@@ -1,0 +1,35 @@
+#!/usr/bin/python3
+"""
+Jinja template for a Python scanner.
+Render with
+  $ scan-gen.py -t flex.j2
+
+See https://docs.python.org/3/library/re.html:
+ [...] the '|' operator is never greedy.
+"""
+
+import re
+import sys
+
+re_species = re.compile(
+"""
+{% for name in names[:-1] -%}
+{{ name }} |
+{% endfor -%}
+{{ names[-1] }}
+""", re.X)
+
+
+def ExtractSpecies(fd):
+    for line in fd:
+        m = re_species.search(line)
+        if m:
+            print(m.group(0))
+
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        with open(sys.argv[1]) as fd:
+            ExtractSpecies(fd)
+    else:
+        ExtractSpecies(sys.stdin)

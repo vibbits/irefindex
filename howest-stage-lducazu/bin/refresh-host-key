@@ -1,0 +1,12 @@
+#!/bin/sh
+
+KNOWN_HOSTS="${HOME}/.ssh/known_hosts"
+HOSTS="$*"
+
+for HOST in $HOSTS; do
+  echo "-- Host $HOST --"
+  # Remove current host keys from known hosts
+  ssh-keygen -R $HOST
+  # Add new key
+  ssh-keyscan $HOST >> $KNOWN_HOSTS
+done

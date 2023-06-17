@@ -1,0 +1,30 @@
+= irefindex validation scripts
+
+== System Setup
+
+Required debian packages:
+
+* r-base
+* r-cran-domc
+* r-cran-dplyr
+* r-cran-readr
+
+These are installed using Ansible.
+
+== Run the scripts
+
+Upload to the irefindex data directory:
+
+  [local]$ scp irefindex_validation_script.R mitab_analysis.R \
+              irefbuild:/dataext/irdata19/
+
+Execute the scripts:
+
+  [irefbuild]$ R --vanilla --file=irefindex_validation_script.R
+  [irefbuild]$ R --vanilla --file=mitab_analysis.R
+
+Get the results:
+
+  [local]$ mkdir release19
+  [local]$ scp irefbuild:/dataext/irdata19/strange*txt release19/
+  [local]$ scp irefbuild:/dataext/irdata19/rplot19.pdf release19/

@@ -1,0 +1,29 @@
+== Infrastructure as Code: Terraform
+
+* Makes use of a particular cloud provider API (Google Cloud Platform)
+* Declarative cloud infrastructure configuration
+* Keeps track of current state
+* Builds & executes a plan to bridge the gap between the current state and the new desired state
+
+== Managed Resources
+
+* Disks & virtual machines
+* Service accounts for machine-to-machine communication
+* Cloud SQL instance, including database & database user
+* Cloud storage bucket + external access control
+* Git Source repo + external access control
+
+== Configuration management: Ansible
+
+* Communicates with a (virtual) machine over `SSH`
+* Executes _tasks_ in a _playbook_ written in `yaml`
+* Ansible does not keep track of state, but all actions are idempotent
+
+== Playbooks
+
+* System updates
+* Installation of OS packages (`apt`), python packages (`pip`)
+* File system mount points
+* PostGreSQL server installation, including database & database user
+* Git installation & `irefindex` software deployment
+* R installation & management of the validation scripts

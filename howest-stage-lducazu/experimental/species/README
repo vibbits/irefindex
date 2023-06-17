@@ -1,0 +1,9 @@
+Experimental scanner for species detection in (log) files.
+
+For Fedora 34, the following packages are required:
+* flex
+* libfl-devel
+* python3-jinja2
+* python3-psycopg2
+
+Build fails with "flex: too many rules (> 8191)!"
