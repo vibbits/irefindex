@@ -34,6 +34,15 @@ resource "google_os_login_ssh_public_key" "lducazu-pubkey" {
   key     = file("~/.ssh/id_rsa.pub")
 }
 
+# Project settings related to google API
+
+resource "google_project_service" "service" {
+  project = local.project
+  service = "compute.googleapis.com"
+
+  disable_on_destroy = false
+}
+
 # Project settings related to networking
 # https://cloud.google.com/sql/docs/postgres/configure-private-services-access and
 # https://github.com/terraform-google-modules/terraform-docs-samples/blob/main/sql_postgres_instance_private_ip/main.tf
