@@ -1,0 +1,83 @@
+= Traineeship Documentation Plan
+// tag::assignment[]
+Luc Ducazu <luc.ducazu@student.howest.be>
+
+== Assignment
+
+*Refinement of a reproducible pipeline for consolidated protein interaction data*
+
+The project concerns the updating and maintaining of the iRefIndex resource, developed in the VIB lab of S. Wodak, Brussels. Currently, the VIB Bioinformatics Core is the maintainer of the database resource. The resource offers access to non-redundant data on protein-protein interactions (PPI) in over a thousand organisms (http://irefindex.vib.be/). These data are consolidated from more than 14 major public databases that curate the scientific literature using a uniquely rigorous consolidation procedure. During the project, it is envisaged to refine the current consolidation pipeline to arrive at a fully reproducible pipeline. This includes the automated build of the needed server by means of Ansible scripts on e.g. Google Cloud as well as the inclusion of more plant specific protein interaction data.
+// end::assignment[]
+
+== Tentative planning
+
+=== Milestone 1: pipeline execution
+
+The objectives are:
+
+* the final irefindex database flat files (release 19)
+* a decent understanding of the inner workings of the software components driving the pipeline
+
+The `irprevious` exported files should also be included. This is required for the next build (release 20).
+
+=== Milestone 2: build automation
+
+Objectives are:
+
+* Automation for instantiating and configuring a GCP VM, capable of executing the entire pipeline.
+  This VM runs a PostgreSQL cluster
+* Replace VM-based PostgreSQL installation with a Google Cloud managed alternative: Cloud SQL or AlloyDB
+* Replace VM with a container image
+
+== Data management
+
+IMPORTANT: To be discussed.
+
+The final irefindex database flat files (including `irprevious` export), will initially be stored on a GCS bucket,
+but they should ultimately be copied to storage managed by VIB staff, which might be a GCS bucket owned by the VIB
+organization, or storage provided by UGent.
+
+As an alternative, VIB staff might opt to start from scratch, using the updated scripts and automation.
+
+== Traceability of steps and methods
+
+=== irefindex release 19
+
+All manual steps required to execute the pipeline have been documented in prior work:
+
+* https://traineeship-notebook.readthedocs.io/en/latest/[Traineeship Notebook^] (Tom Nissens, 2021)
+* irefindex release 15 https://docs.google.com/document/d/1SFdiyxBaKKksP0ajGypteHZ6LE6ryNweP-JnKbxqLyI[Build Notes^]
+  (Ian Donaldson)
+
+These steps will we augmented with personal notes (see Electronic Traineeship Notebook).
+
+=== Build automation
+
+The build automation will be provided as a collection of `terraform` and `ansible` configuration files,
+augmented with personal notes (see Electronic Traineeship Notebook). These configuration files, referred to
+as Infrastructure as Code, describe an _intended state_, rather than being a set of imperative instructions,
+and should be self-documenting.
+
+== Version control
+
+=== irefindex release 19
+
+The pipeline consists primarily of shell (bash) and Python scripts, and a collection of SQL statements.
+These are stored in public GitHub repositories, managed by the VIB organization:
+
+* https://github.com/vibbits/irdata[irdata^]
+* https://github.com/vibbits/irefindex[irefindex^]
+
+These repos were forked from the https://github.com/iandonaldson/irefindex[original^] by Ian Donaldson.
+
+=== Build automation and ETN
+
+The Electronic Traineeship Notebook is written in https://en.wikipedia.org/wiki/AsciiDoc[AsciiDoc^].
+The build automation consists of `terraform` and `ansible` files. These are all plain text and currently stored
+in a private git repo on GCP. Source repositories on GCP can be opened to individuals and groups,
+but _cannot_ be opened to the world (public):
+
+* https://source.cloud.google.com/irefindex/howest-stage[howest-stage-repo^]
+
+IMPORTANT: The final location of this repo needs to be discussed. It contains secrets and PII,
+           such as postgres passwords, GCP billing account numbers, e-mail addresses, telephone numbers etc.

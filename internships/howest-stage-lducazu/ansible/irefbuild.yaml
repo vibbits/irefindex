@@ -1,0 +1,173 @@
+#!/usr/bin/ansible-playbook -v
+
+---
+- name: Configure the irefindex build VM
+  hosts: irefbuild
+  become: yes
+  become_user: root
+
+  vars:
+    user: lducazu_gmail_com
+    relversion: 19
+    irefindexbase: "/home/{{ user }}/irefindex"
+
+  tasks:
+  - name: Update system
+    apt: update_cache=yes upgrade=safe autoremove=yes
+
+  # Generic packages -- required
+  - name: Install required packages
+    apt:
+      pkg:
+      - python3-defusedxml
+      - python3-pip
+      - wget
+      - unzip
+
+  - name: Install or upgrade irefindex python dependencies
+    pip: name=irdata state=latest
+    become: no
+
+  # Generic packages -- optional
+  - name: Install optional packages
+    apt:
+      pkg:
+      - htop
+      - lftp
+      - libxml2-utils
+      - lsof
+      - rsync
+      - tmux
+      - xfsprogs
+
+  - name: Shell convenience config
+    copy: src=convenience.sh dest=/etc/profile.d/
+
+  # File system preparations
+  # Manual step required:
+  # # mkfs -t xfs /dev/disk/by-id/google-dataext
+  - name: Mount data disk
+    mount:
+      src: /dev/disk/by-id/google-dataext
+      path: /dataext
+      fstype: xfs
+      passno: "2"
+      state: mounted
+
+  - name: Create directories
+    file:
+      path: "{{ item }}"
+      state: directory
+      mode: "0755"
+      owner: "{{ user }}"
+      group: "{{ user }}"
+    with_items:
+      - "/dataext/irdata{{ relversion }}"
+      - "/dataext/logs"
+
+  # # PostgreSQL
+
+  # File system preparations
+  # Manual step required:
+  # # mkfs -t xfs /dev/disk/by-id/google-pgdbdisk
+  - name: Mount postgres disk
+    mount:
+      src: /dev/disk/by-id/google-pgdbdisk
+      path: /var/lib/postgresql
+      fstype: xfs
+      passno: "2"
+      state: mounted
+
+  - name: Postgres directory permissions
+    file:
+      path: "/var/lib/postgresql"
+      state: directory
+      mode: "0755"
+      owner: "postgres"
+      group: "postgres"
+
+  - name: Install PostgreSQL server and client
+    apt:
+      pkg:
+      - postgresql
+      # Needed by the ansible modules for postgresql, see also
+      # https://docs.ansible.com/ansible/latest/user_guide/become.html#becoming-an-unprivileged-user
+      - acl
+      - python3-psycopg2
+
+  - name: Configure PostgreSQL server
+    postgresql_set:
+      name: "{{ item.name }}"
+      value: "{{ item.val }}"
+    with_items:
+      - { name: 'effective_cache_size', val: '18GB' }
+      - { name: 'maintenance_work_mem', val: '4GB' }
+      - { name: 'shared_buffers', val: '6GB' }
+      - { name: 'work_mem', val: '512MB' }
+    become: yes
+    become_user: postgres
+    notify:
+      - Restart PostGreSQL
+
+  - name: Create database role
+    postgresql_user:
+      name: "{{ user }}"
+      role_attr_flags: "CREATEDB"
+      state: present
+    become: yes
+    become_user: postgres
+
+  - name: Create irefindex database
+    postgresql_db:
+      name: "irdata{{ relversion }}"
+      login_user: "{{ user }}"
+      state: present  # see also option "restore"
+    become: no
+
+  # irefindex
+
+  - name: Install git
+    apt:
+      pkg:
+      - git
+
+  - name: Deploy irefindex from GitHub
+    git:
+      repo: "git@github.com:vibbits/irefindex.git"
+      dest: "{{ irefindexbase }}"
+      accept_hostkey: yes  # Replace with "accept_newhostkey: yes" in ansible >= 2.12
+    become: no
+
+  - name: Create logs directory
+    file: path="{{ irefindexbase }}/var/log/irdata" state=directory
+    become: no
+
+  - name: Create irefindex user home directory
+    file:
+      path: "/home/irefindex"
+      src: "{{ irefindexbase }}"
+      state: link
+      force: yes
+
+  - name: Install R and packages
+    apt:
+      pkg:
+      - r-base
+      - r-cran-domc
+      - r-cran-dplyr
+      - r-cran-readr
+
+  - name: Copy validation scripts
+    copy:
+      src: "validation/{{ item }}"
+      dest: "/dataext/irdata{{ relversion }}/"
+    become: no
+    with_items:
+      - irefindex_validation_script.R
+      - mitab_analysis.R
+
+  handlers:
+  - name: Restart PostGreSQL
+    service:
+      name: postgresql
+      state: restarted

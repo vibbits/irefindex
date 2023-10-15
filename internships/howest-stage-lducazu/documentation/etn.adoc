@@ -1,0 +1,1895 @@
+= Optimisation and Automatisation of the Technical Framework for the iRefIndex, a Reproducible Pipeline for Consolidated Protein Interaction Data: VIB Internship Notes
+Luc Ducazu <luc.ducazu@student.howest.be>
+
+== Abstract
+
+Molecular interaction data is a key resource in biomedical research and over the past years, there has been a
+proliferation of interaction databases.
+
+There is no single, consistent way protein-protein interaction (PPI) databases refer to the interacting partners.
+One source may use RefSeq identifiers, another source may use SwissProt accessions (see fig 1). It is very hard to
+compare data from different sources (e.g. are 2 interactions identical?) or to combine data from different sources
+(e.g. interactions between the individual proteins in the same complex may be spread across multiple data sources,
+how can they be found?).
+
+The _interaction reference index_ (iRefIndex) is a unifying, consolidated database, combining several other PPI
+databases. Each interaction partner's protein identifier is mapped to a _redundant object group identifier_ (ROGID),
+which is determined from the primary sequence and taxonomy identifier alone. Combining the ROGID from every interaction
+partner in binary interactions, multimers or protein complexes, the redundant _interaction group identifier_ (RIGID)
+can be determined. Identical interactions in different databases will be assigned to the very same RIGID.
+
+The iRefIndex (https://irefindex.vib.be/) is currently maintained by the VIB Bioinformatics Core group. Since the
+source PPI databases are subject to change, there is a regular release of a new iRefIndex version. The last couple
+of releases have been taken care of by HoWest students. The primary goal of this work is to prepare the next iRefIndex
+release (version 19).
+
+The pipeline consists of 4 major parts: (1) download of the source databases, (2) parsing and importing the data in a
+_relational database management system_ (RDBMS), (3) mapping the interactors to ROGIDs and interactions to RIGIDs,
+(4) output of the interaction database in PSI-MITAB format and result validation.
+
+Source interaction databases were downloaded either as PSI-MIXML files (BIND Translation, BioGRID, Corum, IntAct,
+IntComplex) or using a PSI-CQUIC query in PSI-MITAB format (BAR, BHF-UCL, HPIDB, HuRI, IMex, InnateDB, MatrixDB,
+MBInfo, MINT, MPIDB, QUICKGO, REACTOME, UniProtPP and VirHostNet). Unmaintained or otherwise problematic databases
+were copied from the server hosting iRefIndex release 18 (BIND, DIG, DIP, HPRD, MPact and MPPI).
+
+Sequence and auxiliary databases used for mapping (domain specific) protein identifiers to ROGIDs: PSI-MI (OBO),
+Taxonomy, Athaliana, Fly, Yeast, Entrez Gene, GenPept, IPI, MMDB, PDB, RefSeq and UniProt.
+
+PostgreSQL 13 was used as the relational database management system. The release exercise was, in fact, performed twice:
+once using a self-hosted PostgreSQL server and once using a cloud-managed server.
+
+Other changes to the pipeline:
+
+* Port from Python 2 to Python 3
+* Improvements for parallel parsing opportunities
+* Less on-disk data decompression
+* SQL query rewrites and introduction of new indexes
+* Scripted cloud infrastructure using Terraform
+* Automated virtual machine configuration and software deployment using Ansible
+
+.Redundant Object Group (ROG) identifiers vs Redundant interaction Group (RIG) identifiers
+image::images/rog-rig.svg[]
+
+The two outer circles represent redundant object groups (ROG's). Each ROG contains a set of protein sequence
+accessions that point to records describing the exact same sequence from the same organism. The inner circle represents
+a redundant interaction group (RIG). This RIG contains a set of protein interaction accessions that point to records
+describing interactions between the same two proteins (ROG's).
+
+(Source: Razick, S., Magklaras, G. & Donaldson, I.M. _iRefIndex: A consolidated protein interaction database with
+provenance_ BMC Bioinformatics 9, 405 (2008). https://doi.org/10.1186/1471-2105-9-405)
+
+== Background
+
+Protein-protein interactions (PPI) play an important role in biochemical processes, intercellular signaling and other
+essential molecular activities in an organism <<Tur21>>. Research in the area has grown steadily, accelerated by
+advancement of technology for interaction detection, on a small-scale, using high-throughput methods or in silico.
+Some research teams are targeting general PPI networks while others focus on specific organisms, processes
+or interaction types. This has led to the proliferation of PPI databases, which often overlap  -- not
+only in terms of their general focus area but also their specific content.
+These interaction data sets were at first represented in many different forms and collected in various databases,
+each with their own database schema.
+
+In 2004, the Human Proteome Organization (HUPO) Proteomics Standards Initiative (PSI) published the
+PSI-MI XML 1.0 format, focused on protein-protein interactions exclusively.
+In 2007, the HUPO PSI-MI 2.5 standard was published, extending the original with a wider range of interactor types
+and adding kinetic and modelled interaction parameters <<Ker07>>. Besides XML, a simpler tabular format was introduced,
+PSI-MITAB, which is easier and faster to parse and can be imported in spreadsheets. The latest standard can be found
+https://www.psidev.info/mif[on-line^].
+
+The introduction of the file format standard is a necessary, but insufficient, step to enable data aggregation over
+different interaction databases. For example, BioGRID uses the gene IDs as interactor identifier, many
+others use protein IDs. There are, however, many protein identifiers. As illustrated in figure 1 above
+(source: <<Raz08>>), Bind uses RefSeq identifiers, while IntAct uses UniProt accessions.
+
+Wether or not these interaction records both represent the same interaction is far from a trivial question.
+Interactions are identical if and only if all interaction partners are identical. Two proteins, no
+matter what their identifier is, are identical if their primary amino acid sequence is the same. Comparing long
+sequences is cumbersome and time consuming. Cryptographic hashes, such as MD-5 and SHA-1 have been used as fingerprints
+for (long) sequences.
+
+A SEGUID (Sequence Globally Unique ID) is a 27-character unambiguous identifier. It is constructed like this:
+
+. remove non-sequence characters (spaces, new-lines, ...) from the protein sequence and convert to upper case
+. calculate the https://en.wikipedia.org/wiki/SHA-1[SHA-1^] checksum, which is a 160-bit number
+. take the https://en.wikipedia.org/wiki/Base64[base-64^] representation of the SHA-1 checksum and
+  remove the final padding character (=)
+
+Anyone who has access to a protein sequence can determine the SEGUID. However, to translate protein identifiers to
+SEGUIDs and vice-versa, taxonomy information is needed. A ROGID is the concatenation of the SEGUID and
+the NCBI taxonomy identifier.
+
+A RIGID is a similar identifier, constructed like this:
+
+. collect the ROGID of every interaction partner. A binary interaction will have 2 different ROGIDs. A dimer will
+  have 2 times the same ROGID, a trimer will have 3 times the same ROGID. A complex potentially has a long list of
+  ROGIDs.
+. sort the ROGID list alphabetically and concatenate the entries to a single string
+. calculate the SHA-1 checksum of this string of ROGIDs. A trimer will ultimately have a different checksum
+  than a dimer.
+. take the base-64 representation of the SHA-1 checksum and remove the final padding character (=)
+
+The _interaction reference index_ (iRefIndex) is a unifying, consolidated database, combining
+several other PPI databases. It's use of ROGIDs and RIGIDs resulted in a single non-redundant index.
+
+Another non-trivial situation is described in <<Raz08>> (see the article for details).
+
+.Bipartite representation of a protein complex
+image::images/complex.png[]
+
+The network above has 7 proteins (nodes) with a maximum of 21 possible pair-wise interactions (edges).
+Evidence for 12 of the 21 interactions has been found, spread across 4 different interaction databases. 5 of the
+interactions are unique to one database (OPHID), 2 others are unique to another database (HPRD). Finding all the
+pieces seems like a daunting task, but it is made possible with iRefIndex.
+
+The pipeline to build the iRefIndex looks like this:
+
+.iRefIndex build process overview
+image::images/process.svg[]
+
+The sections below describe each of the steps in more detail.
+
+== Notes
+
+IMPORTANT: Some links in this document are subject to access control -- contact luc.ducazu@student.howest.be
+           in case you want access.
+
+Below are mostly unstructured notes, taken during the course of the internship. The goal is to prepare the next
+iRefIndex release (19), based on prior work:
+
+* https://docs.google.com/document/d/1SFdiyxBaKKksP0ajGypteHZ6LE6ryNweP-JnKbxqLyI[Build Notes] by Ian Donaldson
+* https://traineeship-notebook.readthedocs.io/en/latest/[Traineeship Notebook^] by Tom Nissens
+
+Along the way, parts of the pipeline are updated -- primarily ported from Python 2 to Python 3,
+performance issues are tackled and infrastructure management is automated.
+
+The following names are used throughout the text:
+
+irefaccess:: virtual machine providing a way to interact with a cloud-managed PostGreSQL instance
+irefbuild:: virtual machine used to build iRefIndex release 19, runs a local PostGreSQL instance
+irefbuild18:: virtual machine used to build iRefIndex release 18
+irefindex:: name of the GCP project.
+
+=== Setup
+
+==== Development Setup
+
+Development is done on a laptop running Fedora 34, using https://code.visualstudio.com/[VS Code^].
+The following extensions are installed:
+
+* Python (`ms-python.python`)
+* AsciiDoc (`asciidoctor.asciidoctor-vscode`)
+* HashiCorp Terraform (`HashiCorp.terraform`)
+
+Extra RPM packages to install:
+
+* pylint - enable Python linting and select `pylint` as linter
+* black - select `black` as Python formatting provider
+
+Python source code is automatically formatted with https://black.readthedocs.io/[Black^].
+Terraform config scripts can be formatted with `terraform fmt`.
+
+Proposal to use the https://google.github.io/styleguide/pyguide.html[Google Python Style Guide^].
+
+==== GCP setup
+
+Before anything else, a GMail or Google Workspace account is required. You can sign-up at
+https://accounts.google.com/signup[^]. The account used in this document is _lducazu@gmail.com_.
+
+Additional requirements on the development machine:
+
+* a browser where the Google account is signed in
+* the Google Cloud CLI (https://cloud.google.com/sdk/docs/install#rpm[installation instructions^] for Fedora)
+
+Point the browser to the https://console.cloud.google.com/[GCP web console^] to
+
+* create a
+https://cloud.google.com/resource-manager/docs/creating-managing-projects#console[new project^]
+* https://cloud.google.com/resource-manager/docs/creating-managing-projects#console[enable billing^] on the project
+
+The project's name is _irefindex_. Here is how to create a `gcloud` CLI convenience configuration:
+[source%nowrap,console]
+----
+$ gcloud config configurations create irefindex
+Created [irefindex].
+Activated [irefindex].
+$ gcloud config set core/account lducazu@gmail.com
+Updated property [core/account].
+$ gcloud config set core/project irefindex
+Updated property [core/project].
+$ gcloud config set compute/region us-central1
+Updated property [compute/region].
+$ gcloud config set compute/zone us-central1-c
+Updated property [compute/zone].
+$ gcloud config list
+[compute]
+region = us-central1
+zone = us-central1-c
+[core]
+account = lducazu@gmail.com
+disable_usage_reporting = True
+project = irefindex
+
+Your active configuration is: [irefindex]
+----
+
+==== Terraform setup
+
+At this point these steps are all performed _manually_, either using the web console
+or the `gcloud` CLI. These operations need to be _imported_ in Terraform.
+
+The first step is to install Terraform:
+https://learn.hashicorp.com/tutorials/terraform/install-cli[instructions^] to do this, can be
+found on the HashiCorp website. The current issue with installing `terraform` is that
+Fedora 34 is no longer officially supported. We will pretend to be using a RHEL 8 system. The commands
+below are executed as root:
+[source%nowrap,console]
+----
+# dnf config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+Adding repo from: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+# sed -i 's/$releasever/8/g' /etc/yum.repos.d/hashicorp.repo
+# dnf makecache
+# dnf install terraform
+----
+
+The `terraform` tool is written in https://go.dev/[Go^]. Go build tools usually produce statically linked
+executables, which have minimal dependencies on the actual Linux distribution.
+
+The next step is to create application default credentials (ADC) for the Terraform tool.
+[source%nowrap,console]
+----
+$ gcloud auth application-default login
+Your browser has been opened to visit:
+
+    https://accounts.google.com/o/oauth2/XXXXXXXX
+
+Credentials saved to file: [/home/luc/.config/gcloud/application_default_credentials.json]
+
+These credentials will be used by any library that requests Application Default Credentials (ADC).
+[...]
+----
+
+The final step is to configure the project resource and sync the terraform state. The initial project
+configuration looks like this:
+[source%nowrap,terraform]
+----
+provider "google" {
+}
+
+resource "google_project" "irefindex" {
+  name       = "irefindex"
+  project_id = "irefindex"
+}
+----
+
+To _import_ this resource into the terraform state, execute
+[source%nowrap,console]
+----
+$ terraform init
+$ terraform import google_project.irefindex irefindex
+----
+
+The final version is in
+https://source.cloud.google.com/irefindex/howest-stage/+/master:/terraform/bootstrap/project.tf[terraform/bootstrap/project.tf^].
+
+=== irinit
+
+The `irinit` step creates a number of base tables in the database. In principle, this step doesn't have to be the
+very first step, but it has to be run before `irimport`. Prerequisites:
+
+* a running PostGreSQL instance
+* an RDBMS user
+* a database
+
+Quick links to the PostGreSQL documentation:
+
+* PostgreSQL https://www.postgresql.org/[public site^]
+* Google Cloud SQL PostgreSQL https://cloud.google.com/sql/postgresql[landing page^]
+* Google Cloud SQL PostgreSQL https://cloud.google.com/sql/docs/postgres/[documentation]
+
+At the time the internship started, the latest PostGreSQL version supported in GCP was 13.
+Coincidentally, this is also the version shipped with Fedora 34. For running local experiments,
+a PostGreSQL instance was installed on the development machine. RPM packages to install
+
+* postgresql
+* postgresql-server
+* postgresql-docs
+
+Running PostGreSQL on Fedora is a bit different than in other distributions (notably Debian).
+The service won't start out-of-the-box:
+[source%nowrap,console]
+----
+# systemctl start postgresql.service
+Job for postgresql.service failed because the control process exited with error code.
+See "systemctl status postgresql.service" and "journalctl -xeu postgresql.service" for details.
+# systemctl status postgresql.service
+× postgresql.service - PostgreSQL database server
+     Loaded: loaded (/usr/lib/systemd/system/postgresql.service; disabled; vendor preset: disabled)
+     Active: failed (Result: exit-code) since Sat 2022-04-30 16:41:02 CEST; 10s ago
+    Process: 17010 ExecStartPre=/usr/libexec/postgresql-check-db-dir postgresql (code=exited, status=1/FAILURE)
+        CPU: 5ms
+
+Apr 30 16:41:02 nimbus systemd[1]: Starting PostgreSQL database server...
+Apr 30 16:41:02 nimbus postgresql-check-db-dir[17010]: Directory "/var/lib/pgsql/data" is missing or empty.
+Apr 30 16:41:02 nimbus postgresql-check-db-dir[17010]: Use "/usr/bin/postgresql-setup --initdb"
+Apr 30 16:41:02 nimbus postgresql-check-db-dir[17010]: to initialize the database cluster.
+Apr 30 16:41:02 nimbus postgresql-check-db-dir[17010]: See /usr/share/doc/postgresql/README.rpm-dist for more information.
+Apr 30 16:41:02 nimbus systemd[1]: postgresql.service: Control process exited, code=exited, status=1/FAILURE
+Apr 30 16:41:02 nimbus systemd[1]: postgresql.service: Failed with result 'exit-code'.
+Apr 30 16:41:02 nimbus systemd[1]: Failed to start PostgreSQL database server.
+----
+
+Following the instructions in `/usr/share/doc/postgresql/README.rpm-dist`:
+[source%nowrap,console]
+----
+# postgresql-setup --initdb
+ * Initializing database in '/var/lib/pgsql/data'
+ * Initialized, logs are in /var/lib/pgsql/initdb_postgresql.log
+----
+
+The local database service is intentionally left _disabled_, so it doesn't start at boot. To start
+the service manually:
+
+  # systemctl start postgresql.service
+
+Create user `luc`, which is the local OS account -- this has to be executed as user `postgres`
+[source%nowrap,console]
+----
+$ sudo -i -u postgres createuser -d luc
+[sudo] password for luc:
+----
+
+Local connections over Unix domain sockets, make use of password-less
+https://www.postgresql.org/docs/13/auth-peer.html[peer authentication^]. This is configured in
+`/var/lib/pgsql/data/pg_hba.conf`.
+
+The `-d` option in the `createuser` command will allow user `luc` to create and drop databases:
+[source%nowrap,console]
+----
+$ createdb irdata19
+$ psql -l
+                                  List of databases
+   Name    |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges
+-----------+----------+----------+-------------+-------------+-----------------------
+ irdata19  | luc      | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ postgres  | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ template0 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |          |          |             |             | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+           |          |          |             |             | postgres=CTc/postgres
+(4 rows)
+----
+
+To be able to run `irinit` on the development machine, a number of Python2 related
+issues had to be resolved. Also, the next release would be 19:
+
+* https://github.com/vibbits/irdata/commit/600d6ad66daa14bf6f55b689de1bbc8cd9aaa594[^]
+* https://github.com/vibbits/irefindex/commit/d868b446d0d8f06ae3d90d6fcaba80dd25563881[^]
+* https://github.com/vibbits/irefindex/commit/7d724d90ee164fe64e018078a3c59e6ffa7f639f[^]
+* https://github.com/vibbits/irefindex/commit/6f44fab83c2043cbe94232a2c5700915bd70fd36[^]
+
+To finally run `irinit` on a GCP virtual machine:
+
+* create a virtual machine (`terraform/irefindex/gce.tf`) - this machine runs Debian 11, because the standard
+  PostGreSQL version is also 13.
+* create & attach a disk for public data -- initially 512 GB (`terraform/irefindex/gce.tf` & `ansible/irefbuild.yaml`)
+* install and configure postgresql client and server software (`ansible/irefbuild.yaml`)
+* copy the `irefindex` scripts from the local development machines (`bin/rsync-irefindex`)
+
+Commits:
+
+* https://source.cloud.google.com/irefindex/howest-stage/+/3f0c20623872a5635b7ad3abfa00c501e0bf0740[^]
+* https://source.cloud.google.com/irefindex/howest-stage/+/48a1aa878bd9b37186c0eb6867a4f37e68e167ec[^]
+
+==== A Note on SSH
+
+To facilitate SSH access from the development machine to the VM, we first need to find the external IP address
+of the VM:
+[source%nowrap,console]
+----
+$ gcloud compute instances list
+NAME       ZONE           MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+irefbuild  us-central1-c  f1-micro                   10.128.0.5   35.223.228.103  RUNNING
+----
+
+Add the IP address and remote hostname to `/etc/hosts` (as root)
+----
+35.223.228.103  irefbuild
+----
+
+Finally, add the following lines to `~/.ssh/config`
+[source%nowrap,ssh]
+----
+Host irefbuild
+  User lducazu_gmail_com
+  IdentitiesOnly yes
+  IdentityFile ~/.ssh/id_rsa
+  ForwardAgent yes
+----
+
+Enabling _agent forwarding_ allows the use of SSH from the remote host without needing a copy of a private key on the
+remote machine. This becomes handy for exchanging files with `irefbuild18`, the server hosting iRefIndex release 18
+(`scp`, `rsync`), or for accessing GitHub repositories.
+
+The external IP address will be different when the virtual machine is turned off for a while. To manage the host key on
+the development machine:
+
+.refresh-host-key
+[source%nowrap,bash]
+----
+#!/bin/bash
+
+KNOWN_HOSTS="${HOME}/.ssh/known_hosts"
+HOSTS="$*"
+
+for HOST in $HOSTS; do
+  echo "-- Host $HOST --"
+  # Remove current host keys from known hosts
+  ssh-keygen -R $HOST
+  # Add new keys
+  ssh-keyscan $HOST >> $KNOWN_HOSTS
+done
+----
+
+=== irdownload
+
+The `irdownload` step will fetch external interaction and sequence data, along with other support sources.
+
+Initially, source databases were downloaded one by one, verified and compared to the versions used for building
+iRefIndex release 18. Even during the course of the internship, there were changes in download URLs:
+https://github.com/vibbits/irefindex/commit/e3ac42e9fe7be5a11cf9b048f4f09fb4c840df5c[^].
+Once the process was stable, the download was done in one go in May and redone in August.
+
+==== Private source databases
+
+A number of source databases have been stored on Ian Donaldson's machine since the beginning
+
+* BIND - `/home/irefindex/data/ian/bond.unleashedinformatics.com/downloads/data/BIND/data/bindflatfiles/bindindex/20060525*.txt`
+* DIG - `/home/irefindex/data/ian/dig/morbidmap14062010.txt`
+* HPRD - `/home/irefindex/data/ian/HPRD_PSIMI_041310.tar.gz`
+* MPACT - `/home/irefindex/data/ian/mpact/mpact-complete.psi25.xml.gz`
+* MPPI - `/home/irefindex/data/ian/mppi/mppi.gz`
+
+With Alexander Botzki's help, these databases were copied to a cloud storage bucket (`vib-training-data`).
+They can be downloaded manually
+[source%nowrap,console]
+----
+$ cd /dataext/irdata19/
+$ gsutil -m cp -r gs://vib-training-data/BIND/ .
+$ gsutil -m cp -r gs://vib-training-data/DIG/ .
+$ gsutil -m cp -r gs://vib-training-data/HPRD/ .
+$ gsutil -m cp -r gs://vib-training-data/MPACT/ .
+$ gsutil -m cp -r gs://vib-training-data/MPPI/ .
+----
+
+In https://github.com/vibbits/irefindex/commit/f9a237ee6aaf5fe41a49448690398711c66cb09b[^] a new download schema
+was introduced to support downloading from Google Cloud Storage buckets.
+
+Finally, attempts to download the DIP database failed -- the files were also copied from `irefbuild18` to the
+cloud storage bucket.
+
+==== Web Services
+
+PSI-CQUIC <<Del13>> is a service that allows scientists to query interaction records remotely. The service uses REST (and
+SOAP) as protocols, `curl` is about all that is needed.
+It was necessary to add option `-L` to allow `curl` to follow HTTP redirects.
+The source databases downloaded via PSI-CQUIC are all in PSI-MITAB format.
+
+A list of PSI-CQUIC servers and their status: http://www.ebi.ac.uk/Tools/webservices/psicquic/view/main.xhtml[^]
+
+The `SPIKE` PSI-CQUIC server is offline. In an e-mail communication with Tom Hait of the Tel Aviv University
+[source%nowrap,email]
+----
+Dear Luc,
+
+Thank you for your interest in SPIKE DB.
+
+The DB is available to dw from:
+http://www.cs.tau.ac.il/~spike/formats.html
+
+Best,
+Tom Hait
+----
+
+On that page, there is a link to an XML file, but it is not PSI-MIXML. After consulting Alexander Botzki,
+it was decided to drop this database for iRefIndex release 19.
+
+.PSI-MITAB interaction databases (14)
+* BAR
+* BHF-UCL
+* HPIDB
+* HuRI
+* IMEx
+* InnateDB
+* MatrixDB
+* MBINFO
+* MINT
+* MPIDB
+* QuickGO
+* Reactome
+* UniProtPP
+* VirHostNet
+
+==== Other interaction databases
+
+Mostly files in PS-MI XML format, downloaded with `wget` from HTTP and FTP servers.
+
+.PSI-MIXML databases (9)
+* BIND Translation
+* BioGRID
+* CORUM
+* DIP
+* HPRD
+* IntAct
+* IntComplex
+* MPact
+* MPPI
+
+==== Other formats & databases
+
+.Interaction databases (2)
+* BIND
+* DIG
+
+.Sequence databases & Domain specific identifiers (12)
+* Athaliana
+* Entrez Gene
+* Fly
+* GenPept
+* IPI
+* MMDB
+* NCBI Taxonomy
+* PDB
+* PSI-MI Ontology
+* RefSeq
+* UniProt
+* Yeast
+
+Downloads related commit: https://github.com/vibbits/irefindex/commit/f9a237ee6aaf5fe41a49448690398711c66cb09b[^]
+
+=== irmanifest
+
+The `irmanifest` step generates source database metadata, such as database version and download URL. For
+PSI-CQUIC query results and databases without explicit version information, the time stamp of the downloaded files is
+used.
+
+There is no easy way to preserve dates when copying the private source databases from cloud storage buckets.
+A mechanism for adding static metadata has to be included:
+https://github.com/vibbits/irefindex/commit/684f82ab8e97c471a23b663bae376e26daf3e860
+
+The static metadata was based on the file names of the database files. Let's take the BIND database as an example.
+The data files are all named `20060525.*.txt`, hence the following manifest file was composed:
+
+.bind-manifest.tsv
+[source%nowrap]
+----
+BIND	DATE	2006-05-25
+BIND	RELEASE_URL	file:///home/irefindex/data/ian/bond.unleashedinformatics.com/downloads/data/BIND/data/bindflatfiles/bindindex/
+BIND	DOWNLOAD_FILES	20060525*.txt
+----
+
+In case the file names are not based on a date, the time stamps from iRefIndex release 18 are reused.
+
+=== irunpack
+
+The `irunpack` step extracts files from ZIP and TAR archives. Individually gzip compressed files are left untouched,
+i.e. they're not decompressed. Modern systems should be able to deal with compressed files:
+
+* RPM package `gzip` provides tools like `zcat` and `zgrep`, besides of course `gzip` and `gunzip`
+* Python https://docs.python.org/3/library/gzip.html[gzip^] package
+
+=== irparse
+
+The `irparse` step extracts specific information fields from the raw data files, transforms and writes them in a
+format that can easily be imported in a PostGreSQL database: https://www.postgresql.org/docs/13/sql-copy.html[^].
+
+Below are some notes on specific problems.
+
+==== Changes to the VM
+
+The parse step is fairly CPU intensive, 4 source databases are processed simultaneously (`irparallel`).
+Also, a lot of data is generated and the original disk was too small. This translates to changes in
+`terraform/gce-vms/gce.tf`:
+
+* machine type "f1-micro" -> "n2-standard-4"
+* disk size "512" -> "2050" (2 TiB).
+
+For the expansion of the data disk, the regular user quota was exceeded. I had to request a quota increase
+(to 8 TiB): https://cloud.google.com/compute/quotas. The whole process took only a couple of minutes.
+
+GCP & terraform allow to increase the disk size on-line, preserving the original data.
+Although the physical disk size changes, the file system needs to be increased as well.
+To claim the disk space, a (rather risky) 2-step process has to be followed:
+
+* Use gdisk (allows editing of live partitions) to increase to partition size
+
+. Go to expert menu (x), choose (e) relocate backup data structures to the end of the disk
+. Note the partition start (i)
+. Delete the partition (d)
+. Create a new partition (n)
+. Change the partition name (c) to 'dataext'
+. Save the partition table
+
+Once the partition is extended, run `partprobe` to make the kernel aware of the size change.
+
+* Use `xfs_growfs` to extend the file system.
+
+I had to do this a couple of times and decided to get rid of the partition table, i.e. just use the raw disk devices.
+The procedure above is simplified to just the last step (`xfs_growfs`)
+
+==== BIND Translate
+
+There is a parser error while processing BIND_TRANSLATE. The problematic files are
+`taxid10090_PSIMI25.xml` and `taxid9606_PSIMI25.xml`.
+
+Taking a look at one of these files:
+[source%nowrap,console]
+----
+$ xmllint -noout taxid10090_PSIMI25.xml
+taxid10090_PSIMI25.xml:969431: parser error : Input is not proper UTF-8, indicate encoding !
+Bytes: 0x81 0x20 0x64 0x65
+AMP-PMP to the p97-ADP complex resulted in compaction of the molecule, with a 4
+                                                                               ^
+----
+
+The offending line (# 969431) can be extracted using
+[source%nowrap,console]
+----
+$ awk 'NR == 969431' taxid10090_PSIMI25.xml
+"<fullName>An interaction  between the p97-ADP twelve-mer complex and ATP was supported by small-angle X-ray scattering. The p97[2-806]-ADP complex was incubated with the slowly hydrolyzable ATP analog AMP-PNP.  Scattering was measured at the BESSRC-CAT beamline (12-IDC), using samples at low concentrations with detector distances of 2-2.8 min (momentum transfer range 0.00407 &lt; Q &lt; 0.18355 Angstroms-1) or at high concentrations with detector distances of 0.5-1 min (momentum transfer range 0.02011 &lt; Q &lt; 0.7308 Angstroms-1) at a wavelength of 1.30 Angstroms. Data was measured using a nine-element-tiled CCD mosaic detector.  Binding of AMP-PMP to the p97-ADP complex resulted in compaction of the molecule, with a 4 � decrease in the radius of gyration, Rg, and a 26 � decrease in the maximum dimension of the particle Fig. 2A, B, Table 1. The structure was modeled by the program GASBOR, using data to a resolution limit of 8.6 � and six-fold symmetry.  Shifts of the N domain and a decrease in the size of the D2 pore were observed upon binding of AMP-PNP.  Figs. 3, 5 and 6. Analysis of the p97-ADP complex bound to ADP-AIFx or ADP (at the D2 domain), representing ATP hydrolysis states,  revealed further shifts in the N-domain and changes in the D2 pore size. Figs. 3, 5 and 6.</fullName>"
+----
+
+I looked up a couple of encoding schemes, but could not find anything useful for code 0x81 in any of the
+common code tables.
+Looking at the original article: https://doi.org/10.1016/j.str.2004.11.014[^], revealed that this was the
+Angstrom symbol.
+
+To remove all illegal characters:
+[source%nowrap,console]
+----
+$ iconv -c -t utf-8 -o outfile infile
+----
+
+James Collier sent me a mail with a clarification:
+[source%nowrap,email]
+----
+In etn.adoc on 20 May you talk about a character encoding issue. That annoyed me so I did a little digging.
+
+https://en.wikipedia.org/wiki/Mac_OS_Roman
+
+Don't know if this is the actual encoding for that document but it turns out that Mac Roman encodes the angstrom symbol as 0x81
+----
+==== GenPept
+
+There are _many_ warnings while parsing GenPept:
+[source%nowrap]
+----
+Header BAA11874.1 Serine protease (dentilisin) from Treponema denticola is not formatted correctly (no organism)  and should be corrected
+Header BAA13543.1 Yersinia pseudotuberculosis-derived mitogen typeB is not formatted correctly (no organism)  and should be corrected
+Header BAA07619.1 Yersinia pseudotuberculosis-derived mitogen precursor is not formatted correctly (no organism)  and should be corrected
+Header CAA77476.1 XYLA of Ruminococcus flavefaciens is not formatted correctly (no organism)  and should be corrected
+----
+
+The parser expects the species name between square brackets. Maybe in a future release one could try and extract
+the species name from the FASTA header. I did 2 quick experiments, one using `GNU flex and one using plain Python.
+Both failed miserably.
+
+==== UniProt
+
+These files are really big: close to 1 TiB uncompressed
+[source%nowrap,console]
+----
+$ ls -lh UniProt/
+total 146G
+-rw-r--r--. 1 luc luc  151 Mar  2 16:00 reldate.txt
+-rw-r--r--. 1 luc luc 592M May 23 15:58 uniprot_sprot.dat.gz
+-rw-r--r--. 1 luc luc 8.1M Mar  2 16:00 uniprot_sprot_varsplic.fasta.gz
+-rw-r--r--. 1 luc luc 146G Mar  2 15:00 uniprot_trembl.dat.gz
+----
+
+A snippet from the source code of the original UniProt parser:
+
+.irdata_parse_uniprot.sh
+[source%nowrap,bash]
+----
+    [...]
+    elif [ "$FILETYPE" = 'dat' ] || [ "$FILETYPE" = 'dat.gz' ]; then
+
+        # Unpack any gzip archives since the slicing of these files is not
+        # efficient if done repeatedly.
+
+        if [ "$FILETYPE" = 'dat.gz' ]; then
+            UNPACKED_FILENAME=${FILENAME%.gz}
+
+            # Unpack the archive again even if an uncompressed file is present.
+    [...]
+----
+
+This is unacceptable -- we need to avoid having to decompress these files on disk at all cost.
+This is the call chain:
+[source%nowrap]
+----
+irparse UNIPROT
+> irparse-source UNIPROT (via `irparallel`)
+> irdata_parse_uniprot.sh $OUTPUTDIR $FILES (UNIPROT_PARSER in `irdata-config`)
+  with:
+    OUTPUTDIR=/dataext/irdata19/import/UniProt
+    FILES="/dataext/irdata19/UniProt/uniprot_sprot.dat.gz /dataext/irdata19/UniProt/uniprot_trembl.dat.gz"
+> > irunpack-archive (to be excluded)
+> > irdata_split.py -1 $UNIPROT_SPLIT_INTERVAL $FILENAME // <- prints offsets and lengths
+    with:
+      UNIPROT_SPLIT_INTERVAL=100000000 (UNIPROT_SPLIT_INTERVAL in `irdata-config`)
+> > > irslice  (via `irparallel`) <- prints part of the file
+> > > irparse_uniprot.py <- the actual parser
+
+> irdata_parse_uniprot.sh $OUTPUTDIR $FILES (UNIPROT_PARSER in `irdata-config`)
+  with:
+    OUTPUTDIR=/dataext/irdata19/import/UniProt
+    FILES="/dataext/irdata19/UniProt/uniprot_sprot_varsplic.fasta.gz"
+> > irdata_parse_fasta.py" UNIPROT $DATADIR 'sp,acc,id' 'id,acc,date,taxid,mw' $FILENAME
+    with:
+      DATADIR=/dataext/irdata19/import/UniProt
+      FILENAME="/dataext/irdata19/UniProt/uniprot_sprot_varsplic.fasta.gz"
+----
+
+The `irslice` program is not fit for compressed files -- repeated decompression of the files takes too much time
+
+===== Parsing the compressed UniProt files
+
+The UniProt parsing pipeline was modified to prevent the files from being decompressed to disk.
+I tried to run it as such, but gave up after more than 24 hours.
+
+The dominant processes showing up in `htop` were
+
+* `gzip -dc` -- file decompression
+* `head` and `tail` -- used in `irslice` to cut out a block that will be passed to the actual parser
+
+The parsing process `irparse_uniprot.py` did not even show up.
+
+The current pipeline spends time decompressing the file until there is enough data to extract the block.
+This is repeated *for each block*. As blocks further in the file need to be extracted, this takes longer and the
+time spent parsing the file becomes negligible compared to the time to extract the block.
+
+The first idea to speed this up would be to increase UNIPROT_SPLIT_INTERVAL to a very big number,
+ideally
+
+  UNIPROT_SPLIT_INTERVAL = uncompressed file size / PROCESSES
+
+As such, there would be only 1 block per process.
+
+===== Setting a Baseline
+
+A couple of benchmarks were performed on the the development machine, which has 4 cores and hyper-threading enabled,
+a total of 8 vCPUs. A synthetic data file `uniprot_sprot.dat.gz` was created, containing the first 567'483 entries and
+73'583'107 total lines. The file size was 3.5 GiB uncompressed and 606 MiB compressed.
+
+The parsing was performed with varying values for UNIPROT_SPLIT_INTERVAL and PROCESSES (maximum 4) set in
+`irdata-config`. Each set of values was tried 3 times. Times were measured with the Unix `time` command and `htop`
+was also running.
+
+The worst parameter settings that were used are `UNIPROT_SPLIT_INTERVAL` = 100000000 (100e6) and `PROCESSES` = 4, these
+are the standard parameters in `irdata-config`
+[source%nowrap]
+----
+real	2m27.399s
+user	8m10.220s
+sys	0m54.399s
+----
+
+The shortest wall clock time (baseline) with `UNIPROT_SPLIT_INTERVAL` = 1000000000 (1e9) and `PROCESSES` = 4.
+[source%nowrap]
+----
+real	1m4.306s
+user	3m0.044s
+sys	0m17.876s
+----
+
+This is not totally unexpected, since 3.5e9 / 4 is more or less 1e9.
+
+For reference -- just decompressing the file:
+[source%nowrap,console]
+----
+$ time zcat uniprot_sprot.dat.gz > /dev/null
+
+real	0m13.595s
+user	0m13.457s
+sys	0m0.078s
+----
+
+===== Alternative splitting
+
+One of the problems is that parts of the file get decompressed way too many times.
+What if we could limit decompression to only once per process? If every splitting process is aware of how many processes
+there are running in total and be assigned a unique rank, this process would have enough information to be able to
+extract it's own blocks to parse.
+
+This is what `irdata_altsplit.py` does: given a name of a compressed file, a total number of splitting
+processes _t_ and a rank _r_ (with _r_ an integer >= 0 and < _t_),
+the program will decompress the entire file and pass every (_r_ + _t_) entry to the parser.
+
+So, in case of 4 processes:
+
+[cols="1,1,3"]
+|===
+| Process # | Rank | Entries to parse
+
+| #1 | 0 | #0, #4, #8, ...
+| #2 | 1 | #1, #5, #9, ...
+| #3 | 2 | #2, #6, #10, ...
+| #4 | 3 | #3, #7, #11, ...
+|===
+
+Commit: https://github.com/vibbits/irefindex/commit/43b5a3bbc7866d2b73d938cc5c933b013de67053
+
+===== Final benchmark
+
+Best wall clock time while parsing the synthetic dataset (PROCESSES=4)
+
+[source%nowrap]
+----
+real	1m12.813s
+user	7m24.675s
+sys	0m8.238s
+----
+
+At first, this seems worse than the baseline benchmark result, but way better then the result with the original values.
+Taking into account
+
+* parameter UNIPROT_SPLIT_INTERVAL was tuned especially for the synthetic dataset, avoiding repeated decompression
+* the user time of 7.4 minutes is actually good news: there are 4 x 2 active processes: one to decompress the
+  data file and one that parses the entries, that is 8 processes in total. A user time if 7.4 minute means that all
+  8 cores of the development machine have been busy during the 1.2 minute the pipeline has run.
+
+===== Parsing the compressed UniProt files, take 2
+
+[source%nowrap,console]
+----
+$ ./irparse UNIPROT
+/home/lducazu_gmail_com/irefindex/usr/bin/irdata_parse_uniprot.sh /dataext/irdata19/import/UniProt /dataext/irdata19/UniProt/uniprot_sprot.dat.gz /dataext/irdata19/UniProt/uniprot_trembl.dat.gz
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.sh: Merging data files for uniprot_sprot...
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.py: Parsing standard input
+irdata_parse_uniprot.sh: Merging data files for uniprot_trembl...
+/home/lducazu_gmail_com/irefindex/usr/bin/irdata_parse_uniprot.sh /dataext/irdata19/import/UniProt /dataext/irdata19/UniProt/uniprot_sprot_varsplic.fasta.gz
+irdata_parse_fasta.py: Parsing uniprot_sprot_varsplic.fasta.gz
+UNIPROT
+
+real    501m38.891s
+user    1613m46.619s
+sys     49m8.169s
+----
+
+This is about 8 hours and 22 minutes.
+
+==== Parsing summary
+
+Below is a summary of the download and parsing steps. Checks were performed against the data files on the server hosting
+iRefIndex release 18.
+
+[cols="1,1,1,4"]
+|===
+| Database | Download | Parse | Check
+
+| ATHALIANA | OK, version update 46 -> 53 | OK: parser reads the downloaded compressed file | OK +
+`md5sum import/ATHALIANA/Arabidopsis_thaliana.TAIR10.46.uniprot.tsv`
+| BAR | OK | OK | OK +
+`awk '{print $1,$3,$4,$5,$6,$7}' import/BAR/mitab_uid.txt \| md5sum`
+| BHF_UCL | OK | OK | mitab_uid.txt linecount 6201[18] vs 6200[19] +
+unique accession numbers 1818[18] vs 1817[19]
+| BIND | OK, GCS bucket | OK | OK `md5sum`
+| BIND_TRANSLATION | OK | `xmllint` failed | Visual inspection [1]
+| BIOGRID | OK, version update 3.5.187 -> 4.4.209 | OK | Visual inspection [1]
+| CORUM | OK | OK | Visual inspection [1]
+| DIG | OK | OK | OK `md5sum`
+| DIP | NOK - switched to GCS bucket | OK | OK `md5sum`
+| FLY | OK | OK | Visual inspection [1]
+| GENE | OK | OK | Visual inspection [1]
+| GEPEPT | OK | Warnings | Visual inspection [1]
+| HPIDB | OK | OK | mitab_uid.txt linecount 7944[18] vs 7942[19] +
+unique accession numbers 2630[18] vs 2629[19]
+| HPRD | OK | OK | OK +
+`sed 's+/data.*HPRD++' * \| md5sum`
+| HURI [2] | OK | OK | mitab_uid.txt linecount 343090[18] vs 343090[19] +
+unique accession numbers 8259[18] vs 8259[19]
+| IMEX | OK | OK | mitab_uid.txt linecount 1518859[18] vs 1574809[19] +
+unique accession numbers 92266[18] vs 94871[19]
+| INNATEDB | OK | OK | mitab_uid.txt linecount 42658[18] vs 42658[19] +
+unique accession numbers 6454[18] vs 6454[19]
+| INTACT | OK | OK | Visual inspection [1]
+| INTCOMPLEX | OK | OK | Visual inspection [1]
+| IPI | OK | OK | OK: `md5sum`
+| MATRIXDB | OK | OK | mitab_uid.txt linecount 66585[18] vs 66585[19] +
+unique accession numbers 15042[18] vs 15042[19]
+| MBINFO | Added MITAB format specifier | OK | Data files are way smaller than rel 18.
+| MINT | OK | OK | mitab_uid.txt linecount 229939[18] vs 218791[19] +
+unique accession numbers 29257[18] vs 28341[19]
+| MMDB | OK | OK | OK: `md5sum`
+| MPACT | OK | OK | OK +
+`sed 's+/data.*MPACT++' * \| md5sum``
+| MPIDB | OK | OK | mitab_uid.txt linecount 3223[18] vs 3223[19] +
+unique accession numbers 992[18] vs 992[19]
+| MPPI | OK | OK | OK +
+`sed 's+/data.*MPPI++' * \| md5sum`
+| PDB | OK | OK | Visual inspection [1]
+| PSI_MI | OK | OK | OK: `meld`
+| QUICKGO | OK | OK | mitab_uid.txt linecount 117522[18] vs 119590[19] +
+unique accession numbers 20314[18] vs 20212[19]
+| REACTOME | Removed MITAB format specifier | OK | OK +
+`sed 's+/data.*REACTOME++' * \| md5sum`
+| REFSEQ | OK | OK, fixed killed by OOM issue [3] | Visual inspection [1]
+| SPIKE | NOK | N/A | N/A
+| TAXONOMY | OK | OK | names.txt linecount 3400536[18] vs 3620766[19]
+| UNIPROT | OK | OK, fixed performance issue | N/A
+| UNIPROTPP | OK | OK | mitab_uid.txt linecount 42200[18] vs 46053[19] +
+unique accession numbers 9666[18] vs 10374[19]
+| VIRUSHOST | OK | OK | mitab_uid.txt linecount 80010[18] vs 110230[19] +
+unique accession numbers 10049[18] vs 10763[19]
+| YEAST | OK | OK | Visual inspection [1]
+|===
+
+[1] "Visual inspection" means looking at file sizes and spot checking contents
+
+[2] VIB staff have contributed to this database
+
+[3] Commit https://github.com/vibbits/irdata/commit/74eba9844580807326a39290034cd5c15f5b26d4
+
+[18] / [19] iRefIndex release 18 / iRefIndex release 19
+
+=== irimport
+
+The `irimport` step inserts all required source data into tables in a relational database.
+The RDBMS is PostGreSQL 13, the database is `irdata19`.
+
+Initially, data was imported per category. In August, all sources are imported in one go:
+
+   $ ./irimport --all
+
+==== XML sources
+
+[source%nowrap,console]
+----
+$ ./irimport --xml
+$ psql irdata19
+irdata19=> select source, count(source) from xml_names group by source order by source;
+
+      source      |  count
+------------------+----------
+ BIND_TRANSLATION |  6253508
+ BIOGRID          | 34995264
+ CORUM            |   214044
+ HPRD             |  1603530
+ INTACT           | 36874577
+ INTCOMPLEX       |   552421
+ MPACT            |   177797
+ MPPI             |     9070
+(8 rows)
+----
+
+Repetition in August:
+
+[source%nowrap,console]
+----
+irdata19=> select source, count(source) from xml_names group by source order by source;
+      source      |  count
+------------------+----------
+ BIND             |  1372358
+ BIND_TRANSLATION |  6253508
+ BIOGRID          | 34995264
+ CORUM            |   214044
+ DIP              |   705842
+ HPRD             |  1603530
+ INTACT           | 37072328
+ INTCOMPLEX       |   586189
+ MPACT            |   177797
+ MPPI             |     9070
+(10 rows)
+----
+
+In the May edition `BIND` is missing because of the `--xml` (versus `--all`) option: `BIND` is in the list of 'other'
+databases. `DIP` is missing because of early download issues that were resolved afterwards.
+
+Note that the number of interaction records has increased for `IntAct` and `IntComplex`.
+
+==== Tabular sources
+
+[source%nowrap,console]
+----
+$ ./irimport --mitab
+$ psql irdata19
+irdata19=> select source, count(source) from mitab_uid group by source order by source;
+
+  source   |  count
+-----------+---------
+ BAR       |   46864
+ BHF_UCL   |    6200
+ HPIDB     |    7942
+ HURI      |  343090
+ IMEX      | 1574809
+ INNATEDB  |   42658
+ MATRIXDB  |   66585
+ MINT      |  218791
+ MPIDB     |    3223
+ QUICKGO   |  119590
+ REACTOME  |  283992
+ UNIPROTPP |   46053
+ VIRUSHOST |  110230
+(13 rows)
+----
+
+Repetition in August:
+
+[source%nowrap,console]
+----
+irdata19=> select source, count(source) from mitab_uid group by source order by source;
+  source   |  count
+-----------+---------
+ BAR       |   19435
+ BHF_UCL   |    6200
+ HPIDB     |    7934
+ HURI      |  343090
+ IMEX      | 1585929
+ INNATEDB  |   42658
+ MATRIXDB  |   66585
+ MBINFO    |    1162
+ MINT      |  219840
+ MPIDB     |    3223
+ QUICKGO   |  120826
+ REACTOME  |  283992
+ UNIPROTPP |   47903
+ VIRUSHOST |  110230
+(14 rows)
+----
+
+`MBINFO` is missing in the May round because of the missing mitab format specifier.
+
+There is an increase in the number
+of interaction records for `IMEX`, `MINT` and `UNIPROTPP`. There is a decrease for `BAR` (rather spectacular) and
+`QUICKGO`. Unfortunately, the data from May was purged, I'm not able to investigate what happened.
+
+==== Other sources
+
+[source%nowrap,console]
+----
+$ ./irimport --other
+----
+
+Let the fun begin!
+
+===== Athaliana
+
+[source%nowrap,console]
+----
+$ ./irimport ATHALIANA
+BEGIN
+psql:/tmp/tmp88yr_6p4:20: ERROR:  duplicate key value violates unique constraint "athaliana_accessions_pkey"
+DETAIL:  Key (gene_stable_id)=(AT1G01050) already exists.
+CONTEXT:  COPY athaliana_accessions, line 5
+irimport-source: Import failed for data files from ATHALIANA.
+----
+
+There is indeed a key violation: the first column is supposed to be unique, but it is not.
+Table `athaliana_accessions` is only referenced in `import_irefindex_sequences.sql`
+
+[source%nowrap,sql]
+----
+insert into irefindex_sequences
+    select distinct 'athalianabase' as dblabel, gene_stable_id as refvalue,
+        taxid as reftaxid, sequence as refsequence, sequencedate as refdate
+    from athaliana_accessions as A
+    inner join uniprot_proteins as P
+        on A.xref = P.accession
+    union all
+    select distinct 'athalianabase' as dblabel, gene_stable_id as refvalue,
+        P.taxid as reftaxid, P.sequence as refsequence, P.sequencedate as refdate
+    from athaliana_accessions as A
+    inner join uniprot_proteins as P
+        on A.gene_stable_id = P.uniprotid
+
+    -- Exclude previous matches.
+
+    left outer join uniprot_proteins as P2
+        on A.xref = P2.accession
+    where P2.accession is null;
+----
+
+Table definitions
+
+[source%nowrap,console]
+----
+irdata19=> \d athaliana_accessions
+                    Table "public.athaliana_accessions"
+        Column        |       Type        | Collation | Nullable | Default
+----------------------+-------------------+-----------+----------+---------
+ gene_stable_id       | character varying |           | not null |
+ transcript_stable_id | character varying |           |          |
+ protein_stable_id    | character varying |           |          |
+ xref                 | character varying |           | not null |
+ db_name              | character varying |           | not null |
+ info_type            | character varying |           |          |
+ source_identity      | character varying |           |          |
+ xref_identity        | character varying |           |          |
+ linkage_type         | character varying |           |          |
+Indexes:
+    "athaliana_accessions_pkey" PRIMARY KEY, btree (gene_stable_id)
+
+irdata19=> \d uniprot_proteins
+                  Table "public.uniprot_proteins"
+    Column    |       Type        | Collation | Nullable | Default
+--------------+-------------------+-----------+----------+---------
+ uniprotid    | character varying |           | not null |
+ accession    | character varying |           | not null |
+ sequencedate | character varying |           |          |
+ taxid        | integer           |           |          |
+ mw           | integer           |           |          |
+ sequence     | character varying |           | not null |
+ length       | integer           |           | not null |
+ source       | character varying |           | not null |
+Indexes:
+    "uniprot_proteins_pkey" PRIMARY KEY, btree (accession)
+----
+
+So, from the ATHALIANA data set only `gene_stable_id` and `xref` are used -- `taxid`, `sequence` and `sequencedate`
+are provided by `uniprot_proteins`. Looking at all unique `gene_stable_id/xref` pairs,
+are there any duplicate `gene_stable_id`?
+In other words, is any _A thaliana_ gene identifier associated with more than one UniProt identifier?
+
+This is indeed the case:
+
+[source%nowrap,console]
+----
+$ awk '{print $1, $4}' Arabidopsis_thaliana.TAIR10.53.uniprot.tsv | sort -u | awk '{print $1}' | uniq -c | sort -rn | head
+     13 AT4G20640
+     13 AT4G20630
+     13 AT4G20620
+     13 AT4G20610
+     13 AT4G20600
+     13 AT4G20590
+     13 AT4G20580
+      6 AT4G03050
+      5 AT5G04890
+      5 AT1G25211
+$ grep AT4G20640 Arabidopsis_thaliana.TAIR10.53.uniprot.tsv
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ50	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ51	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ52	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ53	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ54	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ55	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ56	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ57	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ58	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ59	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ60	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ61	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+$ grep P0CJ49 Arabidopsis_thaliana.TAIR10.53.uniprot.tsv
+AT4G20590	AT4G20590.1	AT4G20590.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20610	AT4G20610.1	AT4G20610.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20620	AT4G20620.1	AT4G20620.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20600	AT4G20600.1	AT4G20600.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20580	AT4G20580.1	AT4G20580.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20630	AT4G20630.1	AT4G20630.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G20640	AT4G20640.1	AT4G20640.1	P0CJ49	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+----
+
+Spot-checking a couple of P0CJxx, the sequences are all identical.
+
+[source%nowrap,console]
+----
+$ grep AT4G03050 Arabidopsis_thaliana.TAIR10.53.uniprot.tsv
+AT4G03050	AT4G03050.1	AT4G03050.1	Q944X7	Uniprot/SWISSPROT	SEQUENCE_MATCH	99	99	-
+AT4G03050	AT4G03050.1	AT4G03050.1	Q944Z9	Uniprot/SWISSPROT	SEQUENCE_MATCH	63	60	-
+AT4G03050	AT4G03050.1	AT4G03050.1	Q945B4	Uniprot/SWISSPROT	SEQUENCE_MATCH	99	99	-
+AT4G03050	AT4G03050.1	AT4G03050.1	Q945B5	Uniprot/SWISSPROT	SEQUENCE_MATCH	64	61	-
+AT4G03050	AT4G03050.1	AT4G03050.1	Q9ZTA1	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+AT4G03050	AT4G03050.1	AT4G03050.1	Q9ZTA2	Uniprot/SWISSPROT	NONE	72	71	-
+AT4G03050	AT4G03050.2	AT4G03050.2	Q9ZTA1	Uniprot/SWISSPROT	DEPENDENT	-	-	-
+----
+
+`Q9ZTA1` and `Q944Z9` have different protein sequences. So it boils down to picking the best UniProt identifier in the
+list of possible identifiers, based on info_type: "DEPENDENT" is better than "SEQUENCE_MATCH" which is better than
+"NONE".
+
+This can be achieved with the `rank()` window function: https://www.postgresql.org/docs/13/tutorial-window.html.
+Commit https://github.com/vibbits/irefindex/commit/57a44f3c0a4c6e68a9b37073923c9ef6d223daf2 fixes this issue.
+
+==== Database disk
+
+There is a problem with disk space. A new disk has to be added to the system, separating the data source and
+database disks.
+
+Step 1: add a new 2 TiB disk in `terraform/irefbuild/gce.tf` and run
+[source%nowrap,console]
+----
+$ terraform init
+$ terraform apply
+----
+
+Step 2: initialize the disk
+[source%nowrap,console]
+----
+# lsblk
+[...]
+sdc       8:32   0    2T  0 disk
+# gdisk /dev/sdc
+ # (n) create a new partition spanning the whole disk
+ # (c) change the partition name -> pgdbdisk
+ # (w) write changes
+# lsblk
+[...]
+sdc       8:32   0    2T  0 disk
+└─sdc1    8:33   0    2T  0 part
+# mkfs -t xfs /dev/sdc1
+----
+
+Same remark as before: it is more convenient to work with raw disks, so I got rid of the partition scheme eventually.
+
+Step 3: copy existing data to the new partition
+[source%nowrap,console]
+----
+# systemctl stop postgresql
+# lsof | grep /var/lib/postgresql
+  (no output)
+# mount /dev/disk/by-partlabel/pgdbdisk /mnt/
+# cd /var/lib/postgresql/
+root@irefbuild:/var/lib/postgresql# find -xdev | cpio -pvmdu /mnt/
+root@irefbuild:/var/lib/postgresql# umount /mnt
+----
+
+Step 4: add the appropriate mount point and owner/permissions in `ansible/irefbuild.yaml` and run
+
+  $ ansible-playbook -v irefbuild.yaml
+
+Since the database service is not running, the actions related to the PostgreSQL database and database role fail.
+
+Step 5: clean-up
+
+  # reboot
+
+Log in again and check that the disk is mounted and postgresql is started. Finally, to delete the 'hidden' files:
+[source%nowrap,console]
+----
+root@irefbuild:~# mkdir /tmp/root
+root@irefbuild:~# mount -o bind / /tmp/root
+root@irefbuild:~# cd /tmp/root/var/lib/postgresql/
+root@irefbuild:/tmp/root/var/lib/postgresql# rm -rf *
+root@irefbuild:/tmp/root/var/lib/postgresql# cd
+root@irefbuild:~# umount /tmp/root
+----
+
+See commit https://source.cloud.google.com/irefindex/howest-stage/+/b1f944f1d7038d791befd504cd67bc1dad2f2d31
+
+==== Database dump
+
+`irimport` is the last step touching the database before building the iRefIndex. At this point it makes sense to
+make a backup of the database, in the form of a SQL dump. The dump will be written to the GCS bucket.
+
+  $ pg_dump irdata19 | gzip -9 | gsutil cp - gs://irefindex19/irdata19.sql.gz
+
+==== Digression: using meld to compare file versions in git
+
+[source%nowrap,console]
+----
+$ git config --global diff.tool meld
+$ git log --oneline | head -n 20
+[...]
+$ git diff 7022920...be4902e irdata-config
+$ git difftool 7022920...be4902e irdata-config
+----
+
+=== irprevious (irefindex18)
+
+In the `irprevious` step the following files are created:
+
+* `rig2rigid`
+* `rog2rogid`
+* `sequences_archived
+* `sequences_archived_original`
+
+The files are produced on irefbuild18, the machine hosting iRefIndex 18.
+They need to be transferred to `irefbuild`, the machine hosting iRefIndex 19.
+These files are imported during the build step.
+
+Step 1: SSH to host irefbuild18 (34.79.120.17) and find the database name using
+
+  $ psql -l
+
+Step 2: execute `irprevious`
+
+  /home/irefindex/usr/bin$ export PYTHONPATH=/home/irefindex/irefindex/
+  /home/irefindex/usr/bin$ ./irprevious --pgsql irdata18b |& tee /tmp/irprevious.log
+
+Step 3: Create a compressed TAR file containing the files mentioned above and transfer
+        the archive to machine `irefbuild`
+
+  lducazu_gmail_com@irefbuild:/dataext/dumps$ rsync -v -e ssh luc@34.79.120.17:/tmp/irprevious18.tar.gz .
+
+This command will only work properly when _agent forwarding_ is enabled.
+
+Step 3: Create GCS bucket (`terraform/gcs-bucket/irefindex19.tf`) & move the file to GCS bucket
+
+  lducazu_gmail_com@irefbuild:/dataext/dumps$ gsutil cp irprevious18.tar.gz gs://irefindex19/
+  lducazu_gmail_com@irefbuild:/dataext/dumps$ rm irprevious18.tar.gz
+
+See commit https://source.cloud.google.com/irefindex/howest-stage/+/b1f944f1d7038d791befd504cd67bc1dad2f2d31
+
+Step 4: Unpack
+
+  lducazu_gmail_com@irefbuild:/dataext/irdata19$ gsutil cat gs://irefindex19/irprevious18.tar.gz | tar xvzf -
+
+=== irbuild
+
+The `irbuild` step does actually 3 separate things:
+
+. build the iRefIndex (`--build`)
+. generate reports (`--reports`)
+. write the custom PSI-MITAB results to disk (`--output`), invoking `iroutput`
+
+The build step is very slow, after a couple of days there is no longer any noticeable activity --
+although `vmstat` shows that the machine is performing I/O. The program seems to be stuck at
+
+[source%nowrap,sql]
+----
+insert into irefindex_sequence_rogids
+    select distinct refsequence || reftaxid as rogid
+    from irefindex_sequences
+    where reftaxid is not null;
+----
+
+PostgreSQL (v13) docs on optimization:
+
+* https://www.postgresql.org/docs/13/indexes.html[Indexes^], in particular
+  https://www.postgresql.org/docs/13/indexes-expressional.html[Indexes on Expressions^] and
+  https://www.postgresql.org/docs/13/indexes-examine.html[Examining Index Usage^]
+* https://www.postgresql.org/docs/13/performance-tips.html[Performance Tips^]
+
+The following was executed on the development machine, make use of a smaller model (all of SwissProt,
+including splice variants + 10e6 records from Trembl).
+See https://source.cloud.google.com/irefindex/howest-stage/+/2b70857f30916bc3c5fec50c608db5b83ac3093d,
+`experimental/optimize/opt_irefindex_sequences.sql`.
+
+[source%nowrap,sql]
+----
+explain analyse select distinct refsequence || reftaxid as rogid
+    from irefindex_sequences
+    where reftaxid is not null;
+                                                                    QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Unique  (cost=2187948.59..2240978.04 rows=6087135 width=32) (actual time=24577.685..30962.545 rows=10595088 loops=1)
+   ->  Sort  (cost=2187948.59..2214463.32 rows=10605890 width=32) (actual time=24577.684..29941.868 rows=10608272 loops=1)
+         Sort Key: (((refsequence)::text || (reftaxid)::text))
+         Sort Method: external merge  Disk: 460584kB
+         ->  Seq Scan on irefindex_sequences  (cost=0.00..442814.08 rows=10605890 width=32) (actual time=193.122..1808.170 rows=10608272 loops=1)
+               Filter: (reftaxid IS NOT NULL)
+----
+
+Sequential scan for the `WHERE`-clause -- the planner is not taking the index into account,
+even when there is one available. Also note that `reftaxid` is converted to a string (`::text`).
+Eliminating the conversion has only a marginal effect:
+
+[source%nowrap,sql]
+----
+explain analyse select distinct refsequence, reftaxid
+    from irefindex_sequences
+    where reftaxid is not null;
+
+                                                                    QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Unique  (cost=2104163.00..2183532.34 rows=6427215 width=32) (actual time=22902.140..28613.198 rows=10595088 loops=1)
+   ->  Sort  (cost=2104163.00..2130619.45 rows=10582578 width=32) (actual time=22902.139..27661.891 rows=10608272 loops=1)
+         Sort Key: refsequence, reftaxid
+         Sort Method: external merge  Disk: 436048kB
+         ->  Seq Scan on irefindex_sequences  (cost=0.00..363036.78 rows=10582578 width=32) (actual time=192.534..1175.687 rows=10608272 loops=1)
+               Filter: (reftaxid IS NOT NULL)
+----
+
+Creating a new index improves the situation.
+Although the execution time for the query is shorter by a couple of magnitudes, the index creation takes time as well
+
+[source%nowrap,sql]
+----
+create index irefindex_rogid_index on irefindex_sequences (refsequence, reftaxid);
+analyze irefindex_sequences;
+
+explain analyse select distinct refsequence, reftaxid
+    from irefindex_sequences
+    where reftaxid is not null;
+
+                                                                                 QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Unique  (cost=0.56..495779.02 rows=6525520 width=32) (actual time=0.023..2710.997 rows=10595088 loops=1)
+   ->  Index Only Scan using irefindex_rogid_index on irefindex_sequences  (cost=0.56..442792.70 rows=10597265 width=32) (actual time=0.022..1540.338 rows=10608272 loops=1)
+         Index Cond: (reftaxid IS NOT NULL)
+         Heap Fetches: 0
+----
+
+The effect on the `irbuild` step is however not what I had hoped, there is something else going on.
+Again, monitoring with `htop` and `vmstat` shows that all CPUs are idle, but there is I/O in the background.
+Maybe, the disk system is too slow.
+
+In commit https://source.cloud.google.com/irefindex/howest-stage/+/2b70857f30916bc3c5fec50c608db5b83ac3093d, the disk
+type for the database disk was changed from "pd-standard" to "pd-balanced".
+
+The result was somewhat better, but still not satisfactory. Let's try tune the PostGreSQL server on `irefbuild`:
+https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server and
+https://www.postgresql.org/docs/13/wal-reliability.html
+
+* Change machine type to `n2-custom-4-22528`, a VM with 22 GB RAM (`terraform/gce-vms/irefbuild.tf`)
+* Change the following server parameters (`ansible/irefbuild.yaml`)
+** shared_buffers - 6 GB ~ 25% of RAM
+** effective_cache_size - 18 GB
+** work_mem: 512 MB ~ from ANALYSE
+** maintenance_work_mem: 4GB
+
+Eventually, the build succeeds within a reasonable time (see below).
+
+==== Benchmarks
+
+Reading the compressed SQL dump from GCS: 12 min 40 sec
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:~$ time gsutil cat gs://irefindex19/irdata19.sql.gz > /dev/null
+
+real    12m39.627s
+user    4m45.265s
+sys     0m57.832s
+----
+
+Reading and decompressing the compressed SQL dump from GCS: 44 min 35 sec
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:~$ time gsutil cat gs://irefindex19/irdata19.sql.gz | gunzip > /dev/null
+
+real    44m35.676s
+user    48m47.722s
+sys     2m52.215s
+----
+
+Restoring the SQL dump with standard disks: 7 hr 44 min
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:~$ time gsutil cat gs://irefindex19/irdata19.sql.gz | gunzip | psql irdata19
+[...]
+
+real    464m15.638s
+user    67m37.154s
+sys     9m50.494s
+----
+
+Restoring the SQL dump with balanced disks: 6 hr 9 min
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:~$ time gsutil cat gs://irefindex19/irdata19.sql.gz | gunzip | psql irdata19
+[...]
+
+real    369m18.808s
+user    67m49.271s
+sys     9m55.044s
+----
+
+=== The final rounds
+
+To conclude this work and show that the complete pipeline can finish within a reasonable time (less than a week):
+
+* the exercise was restarted from scratch on `irefbuild`
+* after the `irparse` step, a snapshot of the data disk was taken facilitating fast restores
+* a cloud-managed PostgreSQL instance was set up (`terraform/irefdata-db/postgres.tf`)
+  along with a low-powered VM `irefaccess` to execute the exercise (`terraform/gce-vms/irefaccess.tf` and
+  `ansible/irefaccess.yaml`)
+
+==== Self hosted PostGreSQL
+
+The download was step only repeated once, on `irefbuild`. The exercise on `irefaccess` will start from the snapshot and
+have exactly the same data.
+
+The download can easily be performed in parallel:
+[source%nowrap,console]
+----
+$ ./ALLSOURCES | xargs -n1 -P4 sh -c './irdownload $0 > logs/irdownload/$0.stdout 2> logs/irdownload/$0.stderr'
+----
+
+.ALLSOURCES
+[source%nowrap,bash]
+----
+#!/bin/bash
+
+if [ -e "irdata-config" ]; then
+    . "$PWD/irdata-config"
+elif [ -e "scripts/irdata-config" ]; then
+    . 'scripts/irdata-config'
+else
+    . 'irdata-config'
+fi
+
+for SRC in $ALLSOURCES; do
+  isin $SRC $EXCLUDEDSOURCES || echo "$SRC";
+done | sort
+----
+
+The download process takes somewhat less than 7 hours:
+
+.Ingress traffic
+image::images/irdownload-traffic.png[]
+
+Used disk space at this point is less than 300 GB.
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:/dataext/irdata19$ du -msx
+292223  .
+lducazu_gmail_com@irefbuild:/dataext/irdata19$ du -msx * | sort -rn
+150009  UniProt
+99126   RefSeq
+33772   GenPept
+4466    IMEX
+2166    Entrez_Gene
+841     IntAct
+681     MINT
+166     UNIPROTPP
+162     HuRI
+156     BioGRID
+99      IPI
+79      HPRD
+76      BIND
+60      BIND_Translation
+57      QUICKGO
+56      Taxonomy
+56      MATRIXDB
+37      REACTOME
+35      PDB
+28      IntComplex
+26      BHF-UCL
+20      HPIDB
+19      VIRUSHOST
+12      MMDB
+7       DIP
+6       BAR
+5       MPIDB
+4       MBINFO
+2       MPACT
+2       INNATEDB
+2       CORUM
+2       ATHALIANA
+1       yeast
+1       fly
+1       PSI-MI
+1       MPPI
+1       DIG
+----
+
+Pre-parsing steps:
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild$ ./irmanifest --all
+lducazu_gmail_com@irefbuild$ ./irunpack --all
+lducazu_gmail_com@irefbuild$ df -m /dataext/
+Filesystem     1M-blocks   Used Available Use% Mounted on
+/dev/sda         2098175 335145   1763031  16% /dataext
+----
+
+Used disk space at this point is about than 335 GB. Proceeding with `irparse`:
+
+[source%nowrap,console]
+----
+$ time ./ALLSOURCES | xargs -n1 -P4 sh -c './irparse-source $0 > logs/irparse/$0.stdout 2> logs/irparse/$0.stderr'
+
+real    935m19.084s
+user    3269m38.699s
+sys     72m25.630s
+----
+
+That is a whopping 15 hr 35 min. Next, copy the iRefIndex release 18 files (`irprevious` step):
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:/dataext/irdata19$ gsutil cat gs://irefindex19/irprevious18.tar.gz | tar xvzf -
+----
+
+At this point, a snapshot was taken using the `gcloud` CLI on the development machine:
+
+[source%nowrap,console]
+----
+$ gcloud compute disks list
+NAME         LOCATION       LOCATION_SCOPE  SIZE_GB  TYPE         STATUS
+build-boot   us-central1-c  zone            10       pd-standard  READY
+dataext      us-central1-c  zone            2050     pd-standard  READY
+$ gcloud compute snapshots create irparse-snapshot --source-disk dataext
+Creating gce snapshot irdownload-snapshot...done.
+$ gcloud compute snapshots list
+NAME                 DISK_SIZE_GB  SRC_DISK                     STATUS
+irparse-snapshot     2050          us-central1-c/disks/dataext  READY
+----
+
+Importing data and building the iRefIndex
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:~/irefindex/usr/bin$ time ./irimport --all > logs/irimport/stdout 2> logs/irimport/stderr
+
+real    851m43.023s
+user    4m50.328s
+sys     7m37.192s
+
+lducazu_gmail_com@irefbuild:~/irefindex/usr/bin$ time ./irbuild --build > logs/irbuild/build.stdout 2> logs/irbuild/build.stderr
+
+real    2927m51.268s
+user    4m27.578s
+sys     4m32.077s
+
+lducazu_gmail_com@irefbuild:~/irefindex/usr/bin$ time ./irbuild --reports > logs/irbuild/reports.stdout 2> logs/irbuild/reports.stderr
+
+real    12m24.988s
+user    0m0.524s
+sys     0m0.153s
+
+lducazu_gmail_com@irefbuild:~/irefindex/usr/bin$ time ./irbuild --output > logs/irbuild/output.stdout 2> logs/irbuild/output.stderr
+
+real    277m43.431s
+user    43m15.863s
+sys     4m14.793s
+----
+
+Everything together takes about 2 days and 20 hr. Roughly 20% of the time is spent importing data,
+72% in the proper build.
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefbuild:~/irefindex/usr/bin$ df -m /dataext /var/lib/postgresql
+Filesystem     1M-blocks    Used Available Use% Mounted on
+/dev/sdb         2098175 1579369    518807  76% /dataext
+/dev/sdc         2098175 1603053    495123  77% /var/lib/postgresql
+----
+
+After the exercise, all files on the data-disk were copied to the GCS bucket, including the final iRefIndex files:
+
+* 0090.mitab.08-22-2022.txt
+* 10116.mitab.08-22-2022.txt
+* 4932.mitab.08-22-2022.txt
+* 559292.mitab.08-22-2022.txt
+* 562.mitab.08-22-2022.txt
+* 6239.mitab.08-22-2022.txt
+* 7227.mitab.08-22-2022.txt
+* 9606.mitab.08-22-2022.txt
+* All.mitab.08-22-2022.txt
+
+Database dump:
+[source%nowrap,console]
+----
+$ pg_dump irdata19 | gzip -9 | gsutil cp - gs://irefindex19/irdata19.sql.gz
+----
+
+Data files & logs:
+[source%nowrap,console]
+----
+$ gsutil -m rsync -r -d /dataext/logs gs://irefindex19/logs
+$ gsutil -m rsync -r -d /dataext/irdata19 gs://irefindex19/irdata19
+----
+
+==== Cloud-managed PostGreSQL
+
+There was an issue spinning up the `irefaccess` VM: the data-disk could not be created from the snapshot.
+The GCE robot needs permission to read the snapshot:
+
+[source%nowrap,console]
+----
+$ gcloud compute snapshots add-iam-policy-binding irparse-snapshot --member=serviceAccount:gce-robot@irefindex.iam.gserviceaccount.com --role=roles/compute.serviceAgent
+Updated IAM policy for snapshot [irparse-snapshot].
+bindings:
+- members:
+  - serviceAccount:gce-robot@irefindex.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+etag: BwXmTaS4by4=
+version: 1
+----
+
+Also, the  first `irimport` attempt failed:
+
+  >> Error: "temporary file size exceeds temp_file_limit"
+
+[source%nowrap,sql]
+----
+irdata19=> SELECT name, setting FROM pg_settings WHERE name = 'temp_file_limit';
+      name       | setting
+-----------------+---------
+ temp_file_limit | 1021877
+----
+
+To fix this:
+[source%nowrap,console]
+----
+$ gcloud sql instances patch pgirdata19 --database-flags temp_file_limit=2147483647
+The following message will be used for the patch API method.
+{"name": "pgirdata19", "project": "irefindex", "settings": {"databaseFlags": [{"name": "temp_file_limit", "value": "-1"}]}}
+WARNING: This patch modifies database flag values, which may require your instance to be restarted. Check the list of
+ supported flags - https://cloud.google.com/sql/docs/postgres/flags - to see if your instance will be restarted when
+this patch is submitted.
+
+Do you want to continue (Y/n)? Y
+----
+
+In the meantime, this flag is also set in the terraform script (`terraform/irefdata-db/postgres.tf`)
+
+Finally, running the entire build:
+
+[source%nowrap,console]
+----
+lducazu_gmail_com@irefaccess:~/irefindex/usr/bin$ time ./irimport --all > logs/irimport/stdout 2> logs/irimport/stderr
+
+real    1723m22.885s
+user    9m35.493s
+sys     10m32.113s
+
+lducazu_gmail_com@irefaccess:~/irefindex/usr/bin$ time ./irbuild --build > logs/irbuild/build.stdout 2> logs/irbuild/build.stderr
+
+real    4073m31.002s
+user    8m18.198s
+sys     7m4.662s
+
+lducazu_gmail_com@irefaccess:~/irefindex/usr/bin$ time ./irbuild --reports > logs/irbuild/reports.stdout 2> logs/irbuild/reports.stderr
+
+real    26m39.040s
+user    0m0.814s
+sys     0m0.432s
+
+lducazu_gmail_com@irefaccess:~/irefindex/usr/bin$ time ./irbuild --output > logs/irbuild/output.stdout 2> logs/irbuild/output.stderr
+
+real    681m34.915s
+user    77m23.787s
+sys     8m16.650s
+----
+
+Everything together takes about 4 days and 12 hr, roughly 26% of the time is spent importing data and
+62% in the proper build.
+
+== Conclusion
+
+iRefIndex release 19 is ready: https://storage.cloud.google.com/irefindex19/ (private access)
+
+Terraform/Ansible scripts are available: https://source.developers.google.com/p/irefindex/r/howest-stage (private access)
+
+This is a bit of a strange corner case: self-hosting PostGreSQL is faster and cheaper than the cloud-managed option.
+In the self-managed case, the whole process takes less than 4 days. In the cloud-managed case it takes about 5.5 days.
+
+== Future work
+
+* GCP has yet another offering: https://cloud.google.com/alloydb[AlloyDB^] a PostGreSQL
+compatible database, optimized for the hardware in GCP.
+
+* Python: Replacing custom components with standard libraries:
+** argparse for flag/argument handling
+** biopython for parsing
+** Jinja for SQL templates
+
+* Make all the steps idempotent
+
+
+[bibliography]
+== Literature
+
+* [[[Ker07]]] Kerrien, S., Orchard, S., Montecchi-Palazzi, L. et al. _Broadening the horizon - level 2.5 of the
+  HUPO-PSI format for molecular interactions_ +
+  BMC Biol 5, 44 (2007). https://doi.org/10.1186/1741-7007-5-44
+* [[[Raz08]]] Razick, S., Magklaras, G. & Donaldson, I.M. _iRefIndex: A consolidated protein interaction database with
+  provenance_ +
+  BMC Bioinformatics 9, 405 (2008). https://doi.org/10.1186/1471-2105-9-405
+* [[[Del13]]] del-Toro N, Dumousseau M, Orchard S, Jimenez RC, Galeota E, Launay G, Goll J, Breuer K, Ono K,
+  Salwinski L, Hermjakob H. _A new reference implementation of the PSICQUIC web service_ +
+  Nucleic Acids Res. (2013). https://doi.org/10.1093/nar/gkt392
+* [[[Tur21]]] Andrei L. Turinsky, Sam Dupont, Alexander Botzki, Sabry Razick, Brian Turner, Ian M. Donaldson,
+  Shoshana J. Wodak _Navigating the Global Protein–Protein Interaction Landscape Using iRefWeb_ +
+  Structural Genomics, 2021, Volume 2199 (ISBN 978-1-0716-0891-3) https://doi.org/10.1007/978-1-0716-0892-0_12
+
+== List of Abbreviations
+
+CLI:: Command Line Interface
+GCE:: Google Compute Engine
+GCP:: Google Cloud Platform
+GCS:: Google Cloud Storage
+HUPO:: Human Proteome Organization
+IMex:: International Molecular Exchange
+OBO:: Open Biomedical Ontologies
+PPI:: Protein-Protein Interaction
+PSI:: Proteomics Standards Initiative
+PSI-CQUIC:: PSI Common Quiry Interface
+RDBMS:: Relational Database Management System
+REST:: Representational State Transfer
+RIGID:: Redundant Interaction Group identifier
+ROGID:: Redundant Object Group identifier
+SOAP:: Simple Object Access Protocol
+RPM:: RPM Package Manager
+VIB:: Vlaams Instituut voor Biotechnologie
+VM:: Virtual Machine
+
+[appendix]
+== Assignment
+
+*Refinement of a reproducible pipeline for consolidated protein interaction data*
+
+_The project concerns the updating and maintaining of the iRefIndex resource, developed in the VIB lab of S. Wodak,
+Brussels. Currently, the VIB Bioinformatics Core is the maintainer of the database resource. The resource offers access
+to non-redundant data on protein-protein interactions (PPI) in over a thousand organisms (http://irefindex.vib.be/).
+These data are consolidated from more than 14 major public databases that curate the scientific literature using a
+uniquely rigorous consolidation procedure. During the project, it is envisaged to refine the current consolidation
+pipeline to arrive at a fully reproducible pipeline. This includes the automated build of the needed server by means of
+Ansible scripts on e.g. Google Cloud as well as the inclusion of more plant specific protein interaction data._
+
+[appendix]
+include::tdp.adoc[leveloffset=+1,tag=!assignment]
+
+[appendix]
+include::lo.adoc[leveloffset=+1,tag=!assignment]
+
+[appendix]
+== Misc
+
+=== Quick Links
+
+* iRefIndex on the Web: https://irefindex.vib.be/[iRefIndex]
+  / https://irefindex.vib.be/wiki/index.php/iRefIndex[Wiki^]
+  / https://irefindex.vib.be/wiki/index.php/iRefIndex_Manual[Manual^]
+* iRefIndex on Github: https://github.com/vibbits[vibbits^]
+  / https://github.com/vibbits/irdata[irdata^]
+  / https://github.com/vibbits/irefindex[irefindex^]
+  / https://github.com/iandonaldson/irefindex[original^] (Ian Donaldson)
+* VIB Slack Channels: https://app.slack.com/client/T7YBNBCK0/C7XCZ4C5R[#general^]
+  / https://app.slack.com/client/T7YBNBCK0/C80GUCQCA[#softwaredev^]
+* Google Cloud: https://console.cloud.google.com/home/dashboard?project=irefindex[Project iRefIndex Console^]
+  / https://source.developers.google.com/p/irefindex/r/howest-stage[Source Repo^]
+* HoWest: https://leho-howest.instructure.com/courses/12148[Traineeship Landing Page^] (BIT11)
+  / https://stage.howest.be/Student/MyProjects[Mijn Project^]
+  / https://studenthowest-my.sharepoint.com/personal/luc_ducazu_student_howest_be/_layouts/15/onedrive.aspx?id=%2Fsites%2Fextern%2FBIT%2FStage%2F2122%2FDucazu%20Luc%20%28%40H%29&listurl=https%3A%2F%2Fstudenthowest%2Esharepoint%2Ecom%2Fsites%2Fextern%2FBIT%2FStage[Microsoft OneDrive^]
+
+=== Additional reading
+
+==== FAIR principles
+
+* https://en.wikipedia.org/wiki/FAIR_data[FAIR Data^]
+* https://www.go-fair.org/fair-principles/[FAIR Principles^]
+* https://en.wikipedia.org/wiki/Digital_object_identifier[Digital Object Identifier^]
+* https://www.doi.org/[doi.org^]
+
+==== PostgreSQL
+
+* PostgreSQL https://www.postgresql.org/[landing page^],
+  https://www.postgresql.org/docs/13/index.html[documentation^] (v13.6) and
+  https://www.postgresql.org/about/featurematrix/[version feature matrix^]
+* Google Cloud SQL for PostgreSQL https://cloud.google.com/sql/docs/postgres/[overview^],
+  https://cloud.google.com/sql/docs/postgres/introduction[guides^] and
+  https://cloud.google.com/sql/docs/postgres/apis[API reference^]
+
+==== Ansible
+
+* Ansible Google Cloud https://docs.ansible.com/ansible/latest/scenario_guides/guide_gce.html[Platform Guide^]
+* Ansible Google Cloud https://docs.ansible.com/ansible/latest/collections/google/cloud/index.html[Reference^]
+* Ansible https://docs.ansible.com/ansible/latest/collections/community/postgresql/index.html[Community.Postgresql^]
+
+==== Terraform
+
+* Terraform https://learn.hashicorp.com/tutorials/terraform/install-cli[Installation Guide^]
+* Terraform for GCP https://registry.terraform.io/providers/hashicorp/google/latest/docs[Reference^]
+  / https://registry.terraform.io/browse/modules?provider=google[Module Index]
+* Authentication https://cloud.google.com/docs/authentication/best-practices-applications[Best Practices^]
+* Tutorials: https://learn.hashicorp.com/tutorials/terraform/google-cloud-platform-build[HashiCorp^]
+  / https://cloud.google.com/docs/terraform[Google^]
+
+=== Contact Info
+
+==== HoWest
+
+* Paco Hulpiau (paco.hulpiau@howest.be)
+* Bart Quartier (bart.quartier@howest.be)
+
+==== VIB
+
+* Alexander Botzki (+32 9 2446611 / +32 473 941212 / alexander.botzki@vib.be / https://app.slack.com/client/T7YBNBCK0/D035MS070M8[Slack^])
+* James Collier (+31 654 169016 / james.collier@vib.be / https://app.slack.com/client/T7YBNBCK0/D035KBJ4ASH[Slack^])
