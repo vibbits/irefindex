@@ -7,7 +7,7 @@ Please visit https://irefindex.vib.be
 
 ## Recent poster
 
-presented at ELIXIR Belgium National Meeting
+presented at [ELIXIR Belgium National Meeting](https://github.com/vibbits/irefindex/blob/master/20231007-iRefIndex-Scientific-poster.pdf)
 
 ## Release 20
 
