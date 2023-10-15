@@ -21,7 +21,7 @@ provider "google" {
 resource "google_project" "irefindex" {
   name            = local.project
   project_id      = local.project
-  billing_account = sensitive("***REMOVED***")
+  billing_account = sensitive("ID")
 
   lifecycle {
     prevent_destroy = true
