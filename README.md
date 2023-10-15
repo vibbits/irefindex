@@ -1,5 +1,6 @@
 # irefindex
-Data import for iRefIndex
+Project results from internships Silke: folder ETN-Silke-1.0.0
+Project results from internships Luc: folder howest-stage-lducazu
 
 ## iRefIndex background
 
