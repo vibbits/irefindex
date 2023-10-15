@@ -1,8 +1,0 @@
->BAA11874.1 Serine protease (dentilisin) from Treponema denticola
->BAA13543.1 Ablabesmyia notabilis-derived mitogen typeB
->BAA07619.1 Ablabesmyia fatta-derived mitogen precursor
->CAA77476.1 XYLA of Ablabesmyia rhamphe
->SBS20382.1 1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase,1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase,1-(5-phosphoribosyl)-5-[(5-phosphoribosylamino)methylideneamino] imidazole-4-carboxamide isomerase,Phosphoribosylformimino-5-aminoimidazole carboxamide ribonucleotide (ProFAR) isomerase,1-(5-phosp horibosyl)-5-[(5-phosphoribosylamino)me thylideneamino]imidazole-4-carboxamide isomerase,Histidine biosynthesis prot
->AAA26921.1 [Ablabesmyia hilli]
->CDR78740.1 UDP-N-acetylglucosamine--N-acetylmuramyl-(pentapeptide) pyrophosphoryl-undecaprenol N-acetylglucosamine transferase,UDP-N-acetylglucosamine--N-acetylmuramyl-(pentapeptide) pyrophosphoryl-undecaprenol N-acetylglucosamine transferase,undecaprenyldiphospho-muramoylpentapeptide beta-N-acetylglucosaminyltransferase,Spore coat polysaccharide biosynthesis protein, predicted glycosyltransferase,undecaprenyldiphospho-muramoylpentapeptide beta-N-acetylglucosaminyltransferase,Glycosyltransferase family 28 C-terminal
-

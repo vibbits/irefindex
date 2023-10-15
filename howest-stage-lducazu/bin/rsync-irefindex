@@ -1,6 +1,0 @@
-#!/bin/sh
-
-HOST="irefbuild"
-RSYNC_FLAGS="--rsh=ssh --archive --delete --compress --verbose --cvs-exclude"
-
-rsync $RSYNC_FLAGS /stuff/luc/BIT11-stage/howest-vib-code/irefindex $HOST:
