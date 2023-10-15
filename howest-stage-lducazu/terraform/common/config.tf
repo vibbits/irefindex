@@ -14,7 +14,6 @@ locals {
 
   external_users = [
     "user:alexander.botzki@vib.be",
-    "user:bitsfacility@gmail.com", # James Collier
     "user:paco.hulpiau@howest.be",
   ]
 }
