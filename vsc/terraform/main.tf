@@ -67,9 +67,7 @@ resource "openstack_networking_portforwarding_v2" "ssh_pf" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get install -y python3-pip",
-      "sudo pip3 install --upgrade pip",
-      "sudo pip3 install ansible"
+      "sudo apt-get install -y python3 python3-pip",
     ]
 
     connection {
