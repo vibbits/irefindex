@@ -31,12 +31,27 @@ variable "network_name" {
   description = "Network name for the instance"
 }
 
+variable "floating_ip" {
+  type        = string
+  description = "Floating IP for the instance"
+}
+
 variable "floating_ip_id" {
   type        = string
   description = "Floating IP ID for the instance"
 }
 
-variable "ssh_port_forwarding_port" {
+variable "ssh_port" {
   type        = number
-  description = "Port forwarding port for SSH"
+  description = "SSH port for the instance (ideally in 50k range)"
+}
+
+variable "private_key_path" {
+  type        = string
+  description = "Private key path for the instance"
+}
+
+variable "ssh_user" {
+  type        = string
+  description = "SSH user for the instance"
 }
