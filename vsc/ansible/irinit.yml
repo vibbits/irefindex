@@ -1,6 +1,6 @@
 ---
 - name: Irinit
-  hosts: vsc
+  hosts: 10.113.22.53
   become: yes  # Execute tasks with sudo privileges
 
   tasks:
