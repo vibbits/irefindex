@@ -74,8 +74,7 @@
         - /home/irefindex/var/lib/irdata/data
         - /home/irefindex/var/log/irdata
 
-    - name: Go to bin directory
-      command: cd /home/irefindex/usr/bin
-
     - name: Run irinit
       command: ./irinit --init
+      args:
+        chdir: /home/irefindex/usr/bin
