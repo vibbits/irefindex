@@ -40,8 +40,3 @@ variable "ssh_port_forwarding_port" {
   type        = number
   description = "Port forwarding port for SSH"
 }
-
-variable "key_pair_name" {
-  type        = string
-  description = "Key pair for the instance"
-}
