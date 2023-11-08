@@ -1,0 +1,77 @@
+---
+- name: Irinit
+  hosts: all
+  become: yes  # Execute tasks with sudo privileges
+
+  tasks:
+    - name: Add PostgreSQL APT repository
+      shell: echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+
+    - name: Install gnupg
+      apt:
+        name: gnupg
+        state: present
+
+    - name: Add PostgreSQL APT key
+      shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o ~/postgresql-archive-keyring.gpg
+      changed_when: false  # Prevent the task from always being marked as changed
+
+    - name: Move PostgreSQL APT key
+      shell: mv ~/postgresql-archive-keyring.gpg /usr/share/keyrings/postgresql-archive-keyring.gpg
+
+    - name: Remove apt cache
+      shell: rm /var/lib/apt/lists/* -vf
+
+    - name: Run apt clean
+      apt:
+        autoclean: yes
+
+    - name: Add PostgreSQL APT key to apt
+      shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install PostgreSQL
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - postgresql-14
+        - postgresql-client-14
+
+    - name: Create 'root' user in PostgreSQL
+      shell: sudo -u postgres psql -c "CREATE USER root; ALTER USER root WITH SUPERUSER;" -U postgres
+
+    - name: Create 'irdata18A' database
+      shell: createdb irdata18A
+
+    - name: Create directory for irdata18A logs
+      file:
+        path: /data/irdata18/logs
+        state: directory
+
+    - name: Create 'irdata19' database in PostgreSQL
+      shell: createdb irdata19
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+
+    - name: Clone iRefIndex repository
+      git:
+        repo: https://github.com/vibbits/irefindex.git
+        dest: /home/irefindex
+
+    - name: Create directories for irdata data and irdata logs
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - /home/irefindex/var/lib/irdata/data
+        - /home/irefindex/var/log/irdata
+
+    - name: Run irinit
+      command: /home/irefindex/usr/bin/irinit --init
