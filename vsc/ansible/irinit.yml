@@ -21,6 +21,7 @@
 
     - name: Remove apt cache
       shell: rm /var/lib/apt/lists/* -vf
+      ignore_errors: yes
 
     - name: Run apt clean
       apt:
