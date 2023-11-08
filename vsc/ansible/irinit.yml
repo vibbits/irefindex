@@ -75,4 +75,6 @@
         - /home/irefindex/var/log/irdata
 
     - name: Run irinit
-      command: /home/irefindex/usr/bin/irinit --init
+      command: ./irinit --init
+      args:
+        chdir: /home/irefindex/usr/bin
