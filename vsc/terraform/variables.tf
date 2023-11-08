@@ -55,3 +55,8 @@ variable "ssh_user" {
   type        = string
   description = "SSH user for the instance"
 }
+
+variable "public_key_path" {
+  type = string
+  description = "Public key path "
+}

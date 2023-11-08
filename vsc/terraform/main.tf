@@ -13,8 +13,10 @@ provider "openstack" {
   cloud = "openstack"
 }
 
-resource "openstack_compute_keypair_v2" "vsc-key" {
+
+resource "openstack_compute_keypair_v2" "irefindex" {
   name = "${var.base_name}-key"
+  public_key = file(var.public_key_path)
 }
 
 resource "openstack_networking_port_v2" "irefindex" {
@@ -43,7 +45,7 @@ resource "openstack_compute_instance_v2" "irefindex" {
   name        = var.base_name
   image_name  = var.image_name
   flavor_name = var.flavor_name
-  key_pair    = openstack_compute_keypair_v2.vsc-key.name
+  key_pair    = openstack_compute_keypair_v2.irefindex.name
 
   # Declaring security_groups here does nothing as it gets overwritten by the network.port!
   # To add extra security_groups, use network.port.security_group_ids instead
