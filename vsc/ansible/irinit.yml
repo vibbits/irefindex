@@ -1,6 +1,6 @@
 ---
 - name: Irinit
-  hosts: all
+  hosts: localhost
   become: yes  # Execute tasks with sudo privileges
 
   tasks:
