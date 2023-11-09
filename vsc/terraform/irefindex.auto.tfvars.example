@@ -7,3 +7,5 @@ floating_ip = "193.190.80.24"
 private_key_path = "~/.ssh/id_ed25519"
 public_key_path = "~/.ssh/id_ed25519.pub"
 ssh_user = "debian"
+# Storage in gb
+storage = 100

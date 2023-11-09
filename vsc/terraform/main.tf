@@ -15,7 +15,7 @@ provider "openstack" {
 
 
 resource "openstack_compute_keypair_v2" "irefindex" {
-  name = "${var.base_name}-key"
+  name       = "${var.base_name}-key"
   public_key = file(var.public_key_path)
 }
 
@@ -41,14 +41,27 @@ resource "openstack_compute_secgroup_v2" "ssh" {
   }
 }
 
+resource "openstack_blockstorage_volume_v3" "irdata" {
+  name     = "${var.base_name}-irdata-volume"
+  size     = var.storage
+  image_id = var.image_id
+}
+
 resource "openstack_compute_instance_v2" "irefindex" {
   name        = var.base_name
-  image_name  = var.image_name
   flavor_name = var.flavor_name
   key_pair    = openstack_compute_keypair_v2.irefindex.name
 
   # Declaring security_groups here does nothing as it gets overwritten by the network.port!
   # To add extra security_groups, use network.port.security_group_ids instead
+
+  block_device {
+    uuid                  = openstack_blockstorage_volume_v3.irdata.id
+    source_type           = "volume"
+    destination_type      = "volume"
+    boot_index            = 0
+    delete_on_termination = true
+  }
 
   network {
     name = var.network_name
@@ -72,7 +85,7 @@ resource "openstack_networking_portforwarding_v2" "ssh_pf" {
 
     connection {
       host        = var.floating_ip
-      port = var.ssh_port
+      port        = var.ssh_port
       type        = "ssh"
       user        = var.ssh_user
       private_key = file(var.private_key_path)

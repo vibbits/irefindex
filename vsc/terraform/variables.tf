@@ -8,10 +8,15 @@ variable "network_id" {
   description = "Network ID for the instance"
 }
 
-variable "image_name" {
+variable "image_id" {
   type        = string
-  default     = "Debian-11"
-  description = "Image name for the instance"
+  default     = "8ba6f015-e1c7-466d-bfbb-778d17811584" # Debian 11
+  description = "Image id for the instance"
+}
+
+variable "storage" {
+  type        = number
+  description = "Storage for the instance (in GB)"
 }
 
 variable "flavor_name" {
@@ -57,6 +62,6 @@ variable "ssh_user" {
 }
 
 variable "public_key_path" {
-  type = string
+  type        = string
   description = "Public key path "
 }

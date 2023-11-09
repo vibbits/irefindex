@@ -5,6 +5,7 @@ clouds.yaml
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.backup
+.backup
 
 # Editors
 ../.idea/
