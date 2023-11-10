@@ -1,0 +1,11 @@
+base_name = "irefindex"
+flavor_name = "CPUv1.small"
+network_id = "8fda208f-3d0a-4094-8cc0-52458698d2f2"
+floating_ip_id = "46a120d7-908c-40c7-a9fc-bcd266b7b1eb"
+ssh_port = 50022
+floating_ip = "193.190.80.24"
+private_key_path = "~/.ssh/id_ed25519"
+public_key_path = "~/.ssh/id_ed25519.pub"
+ssh_user = "debian"
+# Storage in gb
+storage = 100
