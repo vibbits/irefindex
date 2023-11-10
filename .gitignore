@@ -8,4 +8,4 @@ terraform.tfstate.backup
 .backup
 
 # Editors
-../.idea/
+.idea/
