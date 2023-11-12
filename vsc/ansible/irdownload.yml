@@ -46,8 +46,11 @@
       command: "tmux new-session -d -s irsessions"
 
     - name: Run download scripts in parallel
-      command: "tmux send-keys -t irsessions:{{ item.name }} './irdownload {{ item.script }}' Enter"
-      loop: "{{ windows_scripts | default([]) }}"
+      command: "tmux send-keys -t irsessions:{{ item.script.name }} './irdownload {{ item.script.script }}' Enter"
+      loop:
+        - { script: "BIND_TRANSLATION", name: "window1" }
+        - { script: "BIOGRID", name: "window2" }
+        - { script: "CORUM", name: "window3" }
 
     - name: Show download summary
       command: "tmux attach-session -t irsessions"
