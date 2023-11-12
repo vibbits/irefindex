@@ -38,60 +38,18 @@
     - name: Install Google Cloud CLI
       shell: "apt-get install google-cloud-cli"
 
-    - name: Download databases in parallel
-      command: "./irdownload {{ item }}"
-      async: 172800
-      poll: 0
-      retries: 3
-      with_items:
-        - BIND_TRANSLATION
-        - BIOGRID
-        - CORUM
-        - DIP
-        - HPRD
-        - INTACT
-        - INTCOMPLEX
-        - MPACT
-        - MPPI
-        - BAR
-        - BHF_UCL
-        - HPIDB
-        - HURI
-        - IMEX
-        - INNATEDB
-        - MATRIXDB
-        - MBINFO
-        - MINT
-        - MPIDB
-        - QUICKGO
-        - REACTOME
-        - UNIPROTPP
-        - VIRUSHOST
-        - PSI_MI
-        - TAXONOMY
-        - ATHALIANA
-        - BIND
-        - DIG
-        - FLY
-        - GENE
-        - GENPEPT
-        - IPI
-        - MMDB
-        - PDB
-        - REFSEQ
-        - UNIPROT
-        - YEAST
-      register: download_results
+    - name: Create tmux session
+      command: "tmux new-session -d -s download_session"
+      ignore_errors: true
 
-    - name: Wait for downloads to complete
-      async_status:
-        jid: "{{ item.ansible_job_id }}"
-      loop: "{{ download_results.results }}"
-      register: download_status
-      until: download_status.finished
-      retries: 60
-      delay: 10
+      { % for task in [ "BIND_TRANSLATION", "BIOGRID", "CORUM", "DIP", "HPRD", "INTACT", "INTCOMPLEX", "MPACT", "MPPI", "BAR", "BHF_UCL", "HPIDB", "HURI", "IMEX", "INNATEDB", "MATRIXDB", "MBINFO", "MINT", "MPIDB", "QUICKGO", "REACTOME", "UNIPROTPP", "VIRUSHOST", "PSI_MI", "TAXONOMY", "ATHALIANA", "BIND", "DIG", "FLY", "GENE", "GENPEPT", "IPI", "MMDB", "PDB", "REFSEQ", "UNIPROT", "YEAST" ] % }
+      - name: Run download task {{ task }} in tmux pane
+        command: "cd /home/irefindex/usr/bin && ./irdownload {{ task }}"
+        environment:
+          TMUX: "{{ loop.index }}"
+        { % endfor % }
 
-    - name: Display download results
-      debug:
-        var: download_status.results
+      - name: Attach to tmux session to monitor progress
+        command: "tmux attach-session -t download_session"
+        async: 99999
+        poll: 0
