@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Fix problem with monitoring download progress">
+    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Run all downloads parallel in a tmux session">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,7 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="3426000" />
+      <workItem from="1699798175106" duration="4462000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -140,7 +141,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699802664355</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Fix problem with monitoring download progress">
+      <created>1699802885358</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1699802885358</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Run all downloads parallel in a tmux session">
+      <created>1699803628200</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1699803628200</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -164,6 +179,7 @@
     <MESSAGE value="Fix problems with downloading" />
     <MESSAGE value="Monitor download progress" />
     <MESSAGE value="Fix problem with monitoring download progress" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix problem with monitoring download progress" />
+    <MESSAGE value="Run all downloads parallel in a tmux session" />
+    <option name="LAST_COMMIT_MESSAGE" value="Run all downloads parallel in a tmux session" />
   </component>
 </project>
