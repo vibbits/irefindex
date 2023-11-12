@@ -45,8 +45,8 @@
     - name: Create tmux session for downloads
       command: "tmux new-session -d -s irsessions"
 
-    - name: Run download scripts in parallel
-      command: "tmux send-keys -t irsessions:{{ item.name }} './irdownload {{ item.script }}' Enter"
+    - name: Create tmux windows
+      command: "tmux new-window -t irsessions -n {{ item.name }} './irdownload {{ item.script }}'"
       loop:
         - { name: "window1", script: "BIND_TRANSLATION" }
         - { name: "window2", script: "BIOGRID" }
