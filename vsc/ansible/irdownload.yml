@@ -36,8 +36,8 @@
         force_apt_get: yes
 
     - name: Get a list of installed packages
-        command: "dpkg-query --showformat='${Package}\n' --show"
-        register: dpkg_query_result
+      command: "dpkg-query --showformat='${Package}\n' --show"
+      register: dpkg_query_result
 
     - name: Install Google Cloud CLI
       apt:
