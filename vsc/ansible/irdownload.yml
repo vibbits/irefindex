@@ -45,8 +45,9 @@
       ignore_errors: true
       retries: 3
       delay: 5
-      async: 600
-      poll: 30
+      async: 60
+      poll: 0
+      register: result_bind_translation
 
     - name: Download IR data - BIOGRID
       command: "./irdownload BIOGRID"
@@ -55,8 +56,9 @@
       ignore_errors: true
       retries: 3
       delay: 5
-      async: 600
-      poll: 30
+      async: 60
+      poll: 0
+      register: result_biogrid
 
     - name: Download IR data - CORUM
       command: "./irdownload CORUM"
@@ -64,5 +66,30 @@
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
       retries: 3
-      async: 600
-      poll: 30
+      async: 60
+      poll: 0
+      register: result_corum
+
+    - name: Wait for Bind Translation to complete
+      async_status:
+        jid: "{{ result_bind_translation.ansible_job_id }}"
+      register: job_result_1
+      until: job_result_1.finished
+      retries: 2
+      delay: 30
+
+    - name: Wait for Biogrid to complete
+      async_status:
+        jid: "{{ result_biogrid.ansible_job_id }}"
+      register: job_result_2
+      until: job_result_2.finished
+      retries: 2
+      delay: 30
+
+    - name: Wait for Corum to complete
+      async_status:
+        jid: "{{ result_corum.ansible_job_id }}"
+      register: job_result_3
+      until: job_result_3.finished
+      retries: 2
+      delay: 30
