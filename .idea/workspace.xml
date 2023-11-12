@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Another way to create the tmux windows">
+    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="A different approach">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
     </list>
@@ -48,7 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="7714000" />
+      <workItem from="1699798175106" duration="7768000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -246,7 +246,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699806196077</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="A different approach">
+      <created>1699808894128</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1699808894128</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,6 +286,7 @@
     <MESSAGE value="Try another solution for downloading the databases" />
     <MESSAGE value="Fix mistake in names of windows" />
     <MESSAGE value="Another way to create the tmux windows" />
-    <option name="LAST_COMMIT_MESSAGE" value="Another way to create the tmux windows" />
+    <MESSAGE value="A different approach" />
+    <option name="LAST_COMMIT_MESSAGE" value="A different approach" />
   </component>
 </project>
