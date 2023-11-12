@@ -39,6 +39,7 @@
       apt:
         name: google-cloud-sdk
         state: present
+      when: "'google-cloud-sdk' not in ansible_packages"
 
     - name: Download databases in parallel
       command: "./irdownload {{ item }}"
