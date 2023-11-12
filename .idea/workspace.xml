@@ -47,7 +47,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="3206000" />
+      <workItem from="1699798175106" duration="3426000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -133,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699802608922</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Fix problem with monitoring download progress">
+      <created>1699802664355</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1699802664355</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

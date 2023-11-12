@@ -81,3 +81,17 @@
         - REFSEQ
         - UNIPROT
         - YEAST
+      register: download_results
+
+    - name: Wait for downloads to complete
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      loop: "{{ download_results.results }}"
+      register: download_status
+      until: download_status.finished
+      retries: 60
+      delay: 10
+
+    - name: Display download results
+      debug:
+        var: download_status.results
