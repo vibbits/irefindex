@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="" />
+    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Download all database parallel and automatically" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,6 +26,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -44,8 +45,16 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="237000" />
+      <workItem from="1699798175106" duration="771000" />
     </task>
+    <task id="LOCAL-00001" summary="Download all database parallel and automatically">
+      <created>1699798473797</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699798473797</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -64,5 +73,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Download all database parallel and automatically" />
+    <option name="LAST_COMMIT_MESSAGE" value="Download all database parallel and automatically" />
   </component>
 </project>
