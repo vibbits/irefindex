@@ -1,0 +1,92 @@
+---
+- name: Irdownload
+  hosts: localhost
+  become: yes  # Execute tasks with sudo privileges
+
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - gnupg
+        - curl
+        - sudo
+
+    - name: Add Google Cloud SDK repository
+      lineinfile:
+        dest: /etc/apt/sources.list.d/google-cloud-sdk.list
+        line: "deb [signed-by=/usr/share/keyrings/cloud.google.asc] https://packages.cloud.google.com/apt cloud-sdk main"
+        create: yes
+
+    - name: Import Google Cloud SDK key
+      shell: "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.asc"
+      args:
+        warn: false
+
+    - name: Update apt packages with Google Cloud SDK repository
+      apt:
+        update_cache: yes
+        force_apt_get: yes
+
+    - name: Install Google Cloud CLI
+      apt:
+        name: google-cloud-sdk
+        state: present
+
+    - name: Download databases in parallel
+      command: "./irdownload {{ item }}"
+      async: 172800
+      poll: 0
+      retries: 3
+      with_items:
+        - BIND_TRANSLATION
+        - BIOGRID
+        - CORUM
+        - DIP
+        - HPRD
+        - INTACT
+        - INTCOMPLEX
+        - MPACT
+        - MPPI
+        - BAR
+        - BHF_UCL
+        - HPIDB
+        - HURI
+        - IMEX
+        - INNATEDB
+        - MATRIXDB
+        - MBINFO
+        - MINT
+        - MPIDB
+        - QUICKGO
+        - REACTOME
+        - UNIPROTPP
+        - VIRUSHOST
+        - PSI_MI
+        - TAXONOMY
+        - ATHALIANA
+        - BIND
+        - DIG
+        - FLY
+        - GENE
+        - GENPEPT
+        - IPI
+        - MMDB
+        - PDB
+        - REFSEQ
+        - UNIPROT
+        - YEAST
+      register: download_result
+
+    - name: Fail if any download task fails
+      fail:
+        msg: "Download of {{ item.item }} failed after 3 attempts. Please check and retry manually."
+      when: item.rc != 0
+      with_items: "{{ download_result.results }}"
