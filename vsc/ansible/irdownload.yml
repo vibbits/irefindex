@@ -38,24 +38,31 @@
     - name: Install Google Cloud CLI
       shell: "apt-get install google-cloud-cli"
 
-    - name: Download IR data
-      command: "./irdownload {{ item }}"
+    - name: Download IR data - BIND_TRANSLATION
+        command: "./irdownload BIND_TRANSLATION"
+        args:
+          chdir: "/home/irefindex/usr/bin"
+        ignore_errors: true
+        retries: 3
+        delay: 5
+        async: 15
+        poll: 0
+
+    - name: Download IR data - BIOGRID
+      command: "./irdownload BIOGRID"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
       retries: 3
       delay: 5
-      with_items:
-        - BIND_TRANSLATION
-        - BIOGRID
-        - CORUM
-        - DIP
-        - HPRD
-        - INTACT
-      register: download_result
+      async: 15
+      poll: 0
 
-    - name: Fail if download fails after retries
-      fail:
-        msg: "Download failed for {{ item.item }}"
-      when: item.failed
-      with_items: "{{ download_result.results }}"
+    - name: Download IR data - CORUM
+      command: "./irdownload CORUM"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      async: 15
+      poll: 0
