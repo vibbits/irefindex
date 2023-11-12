@@ -39,14 +39,14 @@
       shell: "apt-get install google-cloud-cli"
 
     - name: Download IR data - BIND_TRANSLATION
-        command: "./irdownload BIND_TRANSLATION"
-        args:
-          chdir: "/home/irefindex/usr/bin"
-        ignore_errors: true
-        retries: 3
-        delay: 5
-        async: 15
-        poll: 0
+      command: "./irdownload BIND_TRANSLATION"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      delay: 5
+      async: 15
+      poll: 0
 
     - name: Download IR data - BIOGRID
       command: "./irdownload BIOGRID"
