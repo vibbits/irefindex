@@ -47,7 +47,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="1600000" />
+      <workItem from="1699798175106" duration="1721000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -91,7 +91,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699799735583</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Fix problems with installing Google Cloud CLI">
+      <created>1699799793187</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1699799793187</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

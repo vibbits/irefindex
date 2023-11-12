@@ -35,15 +35,8 @@
         update_cache: yes
         force_apt_get: yes
 
-    - name: Get a list of installed packages
-      command: "dpkg-query --showformat='${Package}\n' --show"
-      register: dpkg_query_result
-
     - name: Install Google Cloud CLI
-      apt:
-        name: google-cloud-sdk
-        state: present
-      when: "'google-cloud-sdk' not in dpkg_query_result.stdout_lines"
+      shell: "apt-get install google-cloud-cli"
 
     - name: Download databases in parallel
       command: "./irdownload {{ item }}"
