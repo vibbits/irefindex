@@ -83,10 +83,10 @@
         - YEAST
 
     - name: Monitor download progress
-        async_status:
-          jid: "{{ item.ansible_job_id }}"
-        register: download_progress
-        until: download_progress.finished
-        retries: 30
-        delay: 60
-        loop: "{{ download_result.results }}"
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: download_progress
+      until: download_progress.finished
+      retries: 30
+      delay: 60
+      loop: "{{ download_result.results }}"
