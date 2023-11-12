@@ -38,9 +38,8 @@
     - name: Install Google Cloud CLI
       shell: "apt-get install google-cloud-cli"
 
-    - name: Create tmux session
-      command: "tmux new-session -d -s download_session"
-      ignore_errors: true
+    - name: Create tmux session for downloads
+        command: "tmux new-session -d -s irsessions"
 
     - name: Run download scripts in parallel
       command: "tmux send-keys -t irsessions:{{ item.name }} './irdownload {{ item.script }}' Enter"
