@@ -42,14 +42,46 @@
       command: "tmux new-session -d -s download_session"
       ignore_errors: true
 
-      { % for task in [ "BIND_TRANSLATION", "BIOGRID", "CORUM", "DIP", "HPRD", "INTACT", "INTCOMPLEX", "MPACT", "MPPI", "BAR", "BHF_UCL", "HPIDB", "HURI", "IMEX", "INNATEDB", "MATRIXDB", "MBINFO", "MINT", "MPIDB", "QUICKGO", "REACTOME", "UNIPROTPP", "VIRUSHOST", "PSI_MI", "TAXONOMY", "ATHALIANA", "BIND", "DIG", "FLY", "GENE", "GENPEPT", "IPI", "MMDB", "PDB", "REFSEQ", "UNIPROT", "YEAST" ] % }
-      - name: Run download task {{ task }} in tmux pane
-        command: "cd /home/irefindex/usr/bin && ./irdownload {{ task }}"
-        environment:
-          TMUX: "{{ loop.index }}"
-        { % endfor % }
+    - name: Run download scripts in parallel
+      command: "tmux send-keys -t irsessions:{{ item.name }} './irdownload {{ item.script }}' Enter"
+      loop:
+        - { name: "window1", script: "BIND_TRANSLATION" }
+        - { name: "window2", script: "BIOGRID" }
+        - { name: "window3", script: "CORUM" }
+        - { name: "window4", script: "DIP" }
+        - { name: "window5", script: "HPRD" }
+        - { name: "window6", script: "INTACT" }
+        - { name: "window7", script: "INTCOMPLEX" }
+        - { name: "window8", script: "MPACT" }
+        - { name: "window9", script: "MPPI" }
+        - { name: "window10", script: "BAR" }
+        - { name: "window11", script: "BHF_UCL" }
+        - { name: "window12", script: "HPIDB" }
+        - { name: "window13", script: "HURI" }
+        - { name: "window14", script: "IMEX" }
+        - { name: "window15", script: "INNATEDB" }
+        - { name: "window16", script: "MATRIXDB" }
+        - { name: "window17", script: "MBINFO" }
+        - { name: "window18", script: "MINT" }
+        - { name: "window19", script: "MPIDB" }
+        - { name: "window20", script: "QUICKGO" }
+        - { name: "window21", script: "REACTOME" }
+        - { name: "window22", script: "UNIPROTPP" }
+        - { name: "window23", script: "VIRUSHOST" }
+        - { name: "window24", script: "PSI_MI" }
+        - { name: "window25", script: "TAXONOMY" }
+        - { name: "window26", script: "ATHALIANA" }
+        - { name: "window27", script: "BIND" }
+        - { name: "window28", script: "DIG" }
+        - { name: "window29", script: "FLY" }
+        - { name: "window30", script: "GENE" }
+        - { name: "window31", script: "GENPEPT" }
+        - { name: "window32", script: "IPI" }
+        - { name: "window33", script: "MMDB" }
+        - { name: "window34", script: "PDB" }
+        - { name: "window35", script: "REFSEQ" }
+        - { name: "window36", script: "UNIPROT" }
+        - { name: "window37", script: "YEAST" }
 
-      - name: Attach to tmux session to monitor progress
-        command: "tmux attach-session -t download_session"
-        async: 99999
-        poll: 0
+    - name: Show download summary
+      command: "tmux attach-session -t irsessions"
