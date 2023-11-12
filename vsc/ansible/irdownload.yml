@@ -45,8 +45,8 @@
       ignore_errors: true
       retries: 3
       delay: 5
-      async: 15
-      poll: 0
+      async: 600
+      poll: 30
 
     - name: Download IR data - BIOGRID
       command: "./irdownload BIOGRID"
@@ -55,8 +55,8 @@
       ignore_errors: true
       retries: 3
       delay: 5
-      async: 15
-      poll: 0
+      async: 600
+      poll: 30
 
     - name: Download IR data - CORUM
       command: "./irdownload CORUM"
@@ -64,5 +64,5 @@
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
       retries: 3
-      async: 15
-      poll: 0
+      async: 600
+      poll: 30
