@@ -39,48 +39,51 @@
       shell: "apt-get install google-cloud-cli"
 
     - name: Create tmux session for downloads
-      command: "tmux new-session -d -s irsessions"
+        command: "tmux new-session -d -s irsessions"
 
     - name: Run download scripts in parallel
-      command: "tmux send-keys -t irsessions:{{ item.name }} './irdownload {{ item.script }}' Enter"
-      loop:
-        - { name: "window1", script: "BIND_TRANSLATION" }
-        - { name: "window2", script: "BIOGRID" }
-        - { name: "window3", script: "CORUM" }
-        - { name: "window4", script: "DIP" }
-        - { name: "window5", script: "HPRD" }
-        - { name: "window6", script: "INTACT" }
-        - { name: "window7", script: "INTCOMPLEX" }
-        - { name: "window8", script: "MPACT" }
-        - { name: "window9", script: "MPPI" }
-        - { name: "window10", script: "BAR" }
-        - { name: "window11", script: "BHF_UCL" }
-        - { name: "window12", script: "HPIDB" }
-        - { name: "window13", script: "HURI" }
-        - { name: "window14", script: "IMEX" }
-        - { name: "window15", script: "INNATEDB" }
-        - { name: "window16", script: "MATRIXDB" }
-        - { name: "window17", script: "MBINFO" }
-        - { name: "window18", script: "MINT" }
-        - { name: "window19", script: "MPIDB" }
-        - { name: "window20", script: "QUICKGO" }
-        - { name: "window21", script: "REACTOME" }
-        - { name: "window22", script: "UNIPROTPP" }
-        - { name: "window23", script: "VIRUSHOST" }
-        - { name: "window24", script: "PSI_MI" }
-        - { name: "window25", script: "TAXONOMY" }
-        - { name: "window26", script: "ATHALIANA" }
-        - { name: "window27", script: "BIND" }
-        - { name: "window28", script: "DIG" }
-        - { name: "window29", script: "FLY" }
-        - { name: "window30", script: "GENE" }
-        - { name: "window31", script: "GENPEPT" }
-        - { name: "window32", script: "IPI" }
-        - { name: "window33", script: "MMDB" }
-        - { name: "window34", script: "PDB" }
-        - { name: "window35", script: "REFSEQ" }
-        - { name: "window36", script: "UNIPROT" }
-        - { name: "window37", script: "YEAST" }
+      command: "tmux send-keys -t irsessions:{{ 'window' ~ item.0 + 1 }} './irdownload {{ item.1 }}' Enter"
+      loop: "{{ windows_scripts }}"
 
     - name: Show download summary
       command: "tmux attach-session -t irsessions"
+
+  vars:
+    windows_scripts:
+      - [ 0, "BIND_TRANSLATION" ]
+      - [ 1, "BIOGRID" ]
+      - [ 2, "CORUM" ]
+      - [ 3, "DIP" ]
+      - [ 4, "HPRD" ]
+      - [ 5, "INTACT" ]
+      - [ 6, "INTCOMPLEX" ]
+      - [ 7, "MPACT" ]
+      - [ 8, "MPPI" ]
+      - [ 9, "BAR" ]
+      - [ 10, "BHF_UCL" ]
+      - [ 11, "HPIDB" ]
+      - [ 12, "HURI" ]
+      - [ 13, "IMEX" ]
+      - [ 14, "INNATEDB" ]
+      - [ 15, "MATRIXDB" ]
+      - [ 16, "MBINFO" ]
+      - [ 17, "MINT" ]
+      - [ 18, "MPIDB" ]
+      - [ 19, "QUICKGO" ]
+      - [ 20, "REACTOME" ]
+      - [ 21, "UNIPROTPP" ]
+      - [ 22, "VIRUSHOST" ]
+      - [ 23, "PSI_MI" ]
+      - [ 24, "TAXONOMY" ]
+      - [ 25, "ATHALIANA" ]
+      - [ 26, "BIND" ]
+      - [ 27, "DIG" ]
+      - [ 28, "FLY" ]
+      - [ 29, "GENE" ]
+      - [ 30, "GENPEPT" ]
+      - [ 31, "IPI" ]
+      - [ 32, "MMDB" ]
+      - [ 33, "PDB" ]
+      - [ 34, "REFSEQ" ]
+      - [ 35, "UNIPROT" ]
+      - [ 36, "YEAST" ]
