@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Test this approach">
+    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Experiment with async">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
     </list>
@@ -48,7 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="10096000" />
+      <workItem from="1699798175106" duration="10883000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -288,7 +288,14 @@
       <option name="project" value="LOCAL" />
       <updated>1699809958327</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Experiment with async">
+      <created>1699812102447</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1699812102447</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -325,6 +332,7 @@
     <MESSAGE value="Try to run the tasks at the same time" />
     <MESSAGE value="Fix mistake in the code" />
     <MESSAGE value="Test this approach" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test this approach" />
+    <MESSAGE value="Experiment with async" />
+    <option name="LAST_COMMIT_MESSAGE" value="Experiment with async" />
   </component>
 </project>

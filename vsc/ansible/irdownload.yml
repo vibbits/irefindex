@@ -45,7 +45,7 @@
       ignore_errors: true
       retries: 3
       delay: 5
-      async: 60
+      async: 30
       poll: 0
       register: result_bind_translation
 
@@ -70,26 +70,134 @@
       poll: 0
       register: result_corum
 
-    - name: Wait for Bind Translation to complete
+    - name: Download IR data - DIP
+      command: "./irdownload DIP"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      async: 30
+      poll: 0
+      register: result_dip
+
+    - name: Download IR data - HPRD
+      command: "./irdownload HPRD"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      async: 30
+      poll: 0
+      register: result_hprd
+
+    - name: Download IR data - INTACT
+      command: "./irdownload INTACT"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      async: 30
+      poll: 0
+      register: result_intact
+
+    - name: Download IR data - INTCOMPLEX
+      command: "./irdownload INTCOMPLEX"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      async: 30
+      poll: 0
+      register: result_intcomplex
+
+    - name: Download IR data - MPACT
+      command: "./irdownload MPACT"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      async: 30
+      poll: 0
+      register: result_mpact
+
+    - name: Download IR data - MPPI
+      command: "./irdownload MPPI"
+      args:
+        chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      retries: 3
+      async: 30
+      poll: 0
+      register: result_mppi
+
+    - name: Wait for BIND TRANSLATION to complete
       async_status:
         jid: "{{ result_bind_translation.ansible_job_id }}"
       register: job_result_1
       until: job_result_1.finished
-      retries: 2
-      delay: 30
+      retries: 6
+      delay: 5
 
-    - name: Wait for Biogrid to complete
+    - name: Wait for BIOGRID to complete
       async_status:
         jid: "{{ result_biogrid.ansible_job_id }}"
       register: job_result_2
       until: job_result_2.finished
-      retries: 2
-      delay: 30
+      retries: 4
+      delay: 15
 
-    - name: Wait for Corum to complete
+    - name: Wait for CORUM to complete
       async_status:
         jid: "{{ result_corum.ansible_job_id }}"
       register: job_result_3
       until: job_result_3.finished
-      retries: 2
-      delay: 30
+      retries: 4
+      delay: 15
+
+    - name: Wait for DIP to complete
+      async_status:
+        jid: "{{ result_dip.ansible_job_id }}"
+      register: job_result_4
+      until: job_result_4.finished
+      retries: 6
+      delay: 5
+
+    - name: Wait for HPRD to complete
+      async_status:
+        jid: "{{ result_hprd.ansible_job_id }}"
+      register: job_result_5
+      until: job_result_5.finished
+      retries: 6
+      delay: 5
+
+    - name: Wait for INTACT to complete
+      async_status:
+        jid: "{{ result_intact.ansible_job_id }}"
+      register: job_result_6
+      until: job_result_6.finished
+      retries: 6
+      delay: 5
+
+    - name: Wait for INTCOMPLEX to complete
+      async_status:
+        jid: "{{ result_intcomplex.ansible_job_id }}"
+      register: job_result_6
+      until: job_result_6.finished
+      retries: 6
+      delay: 5
+
+    - name: Wait for MPACT to complete
+      async_status:
+        jid: "{{ result_mpact.ansible_job_id }}"
+      register: job_result_7
+      until: job_result_7.finished
+      retries: 6
+      delay: 5
+
+    - name: Wait for MPPI to complete
+      async_status:
+        jid: "{{ result_mppi.ansible_job_id }}"
+      register: job_result_8
+      until: job_result_8.finished
+      retries: 6
+      delay: 5
