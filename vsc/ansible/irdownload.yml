@@ -86,5 +86,5 @@
     - name: Fail if any download task fails
       fail:
         msg: "Download of {{ item.item }} failed after 3 attempts. Please check and retry manually."
-      when: item.rc != 0
+      when: download_result.results[item.ansible_loop.index0].rc != 0
       with_items: "{{ download_result.results }}"
