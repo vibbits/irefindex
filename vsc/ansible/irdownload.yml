@@ -39,7 +39,7 @@
       shell: "apt-get install google-cloud-cli"
 
     - name: Create tmux session for downloads
-        command: "tmux new-session -d -s irsessions"
+      command: "tmux new-session -d -s irsessions"
 
     - name: Run download scripts in parallel
       command: "tmux send-keys -t irsessions:{{ 'window' ~ item.0 + 1 }} './irdownload {{ item.1 }}' Enter"
