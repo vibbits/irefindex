@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Fix problems with downloading">
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
-    </list>
+    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Fix problem with monitoring download progress" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +45,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="2865000" />
+      <workItem from="1699798175106" duration="3151000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -112,7 +110,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699801831590</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Monitor download progress">
+      <created>1699802428929</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1699802428929</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fix problem with monitoring download progress">
+      <created>1699802475082</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1699802475082</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -134,6 +146,8 @@
     <MESSAGE value="Download all database parallel and automatically" />
     <MESSAGE value="Fix problems with installing Google Cloud CLI" />
     <MESSAGE value="Fix problems with downloading" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix problems with downloading" />
+    <MESSAGE value="Monitor download progress" />
+    <MESSAGE value="Fix problem with monitoring download progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix problem with monitoring download progress" />
   </component>
 </project>
