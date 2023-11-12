@@ -48,7 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
-      <workItem from="1699798175106" duration="8708000" />
+      <workItem from="1699798175106" duration="10096000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -267,7 +267,28 @@
       <option name="project" value="LOCAL" />
       <updated>1699809139660</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Try to run the tasks at the same time">
+      <created>1699809866270</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1699809866270</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Fix mistake in the code">
+      <created>1699809896286</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1699809896286</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Test this approach">
+      <created>1699809958327</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1699809958327</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,6 +322,8 @@
     <MESSAGE value="Fix mistake in names of windows" />
     <MESSAGE value="Another way to create the tmux windows" />
     <MESSAGE value="A different approach" />
+    <MESSAGE value="Try to run the tasks at the same time" />
+    <MESSAGE value="Fix mistake in the code" />
     <MESSAGE value="Test this approach" />
     <option name="LAST_COMMIT_MESSAGE" value="Test this approach" />
   </component>
