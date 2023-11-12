@@ -36,9 +36,7 @@
         force_apt_get: yes
 
     - name: Install Google Cloud CLI
-      apt:
-        name: google-cloud-sdk
-        state: present
+      shell: "apt-get install google-cloud-cli"
 
     - name: Download databases in parallel
       command: "./irdownload {{ item }}"
