@@ -81,10 +81,12 @@
         - REFSEQ
         - UNIPROT
         - YEAST
-      register: download_result
 
-    - name: Fail if any download task fails
-      fail:
-        msg: "Download of {{ item.item }} failed after 3 attempts. Please check and retry manually."
-      when: download_result.results[item.ansible_loop.index0].rc != 0
-      with_items: "{{ download_result.results }}"
+    - name: Monitor download progress
+        async_status:
+          jid: "{{ item.ansible_job_id }}"
+        register: download_progress
+        until: download_progress.finished
+        retries: 30
+        delay: 60
+        loop: "{{ download_result.results }}"
