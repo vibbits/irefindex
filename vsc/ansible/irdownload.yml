@@ -38,59 +38,55 @@
     - name: Install Google Cloud CLI
       shell: "apt-get install google-cloud-cli"
 
-    - name: Kill existing tmux session
-      command: "tmux kill-session -t irsessions"
+    - name: Download IR data
+      command: "./irdownload {{ item }}"
+      args:
+        chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      retries: 3
+      delay: 5
+      with_items:
+        - BIND_TRANSLATION
+        - BIOGRID
+        - CORUM
+        - DIP
+        - HPRD
+        - INTACT
+        - INTCOMPLEX
+        - MPACT
+        - MPPI
+        - BAR
+        - BHF_UCL
+        - HPIDB
+        - HURI
+        - IMEX
+        - INNATEDB
+        - MATRIXDB
+        - MBINFO
+        - MINT
+        - MPIDB
+        - QUICKGO
+        - REACTOME
+        - UNIPROTPP
+        - VIRUSHOST
+        - PSI_MI
+        - TAXONOMY
+        - ATHALIANA
+        - BIND
+        - DIG
+        - FLY
+        - GENE
+        - GENPEPT
+        - IPI
+        - MMDB
+        - PDB
+        - REFSEQ
+        - UNIPROT
+        - YEAST
+      register: download_result
 
-    - name: Create tmux session for downloads
-      command: "tmux new-session -d -s irsessions"
-
-    - name: Create tmux windows
-      command: "tmux new-window -t irsessions -n {{ item.name }} './irdownload {{ item.script }}'"
-      loop:
-        - { name: "window1", script: "BIND_TRANSLATION" }
-        - { name: "window2", script: "BIOGRID" }
-        - { name: "window3", script: "CORUM" }
-
-    - name: Show download summary
-      command: "tmux attach-session -t irsessions"
-
-  vars:
-    windows_scripts:
-      - [ 0, "BIND_TRANSLATION" ]
-      - [ 1, "BIOGRID" ]
-      - [ 2, "CORUM" ]
-      - [ 3, "DIP" ]
-      - [ 4, "HPRD" ]
-      - [ 5, "INTACT" ]
-      - [ 6, "INTCOMPLEX" ]
-      - [ 7, "MPACT" ]
-      - [ 8, "MPPI" ]
-      - [ 9, "BAR" ]
-      - [ 10, "BHF_UCL" ]
-      - [ 11, "HPIDB" ]
-      - [ 12, "HURI" ]
-      - [ 13, "IMEX" ]
-      - [ 14, "INNATEDB" ]
-      - [ 15, "MATRIXDB" ]
-      - [ 16, "MBINFO" ]
-      - [ 17, "MINT" ]
-      - [ 18, "MPIDB" ]
-      - [ 19, "QUICKGO" ]
-      - [ 20, "REACTOME" ]
-      - [ 21, "UNIPROTPP" ]
-      - [ 22, "VIRUSHOST" ]
-      - [ 23, "PSI_MI" ]
-      - [ 24, "TAXONOMY" ]
-      - [ 25, "ATHALIANA" ]
-      - [ 26, "BIND" ]
-      - [ 27, "DIG" ]
-      - [ 28, "FLY" ]
-      - [ 29, "GENE" ]
-      - [ 30, "GENPEPT" ]
-      - [ 31, "IPI" ]
-      - [ 32, "MMDB" ]
-      - [ 33, "PDB" ]
-      - [ 34, "REFSEQ" ]
-      - [ 35, "UNIPROT" ]
-      - [ 36, "YEAST" ]
+    - name: Fail if download fails after retries
+      fail:
+        msg: "Download failed for {{ item.item }}"
+      when: item.failed
+      with_items: "{{ download_result.results }}"
