@@ -3,47 +3,47 @@
   hosts: localhost
   become: yes  # Execute tasks with sudo privileges
 
-- tasks:
-  - name: Update apt packages
-    apt:
-      update_cache: yes
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
 
-  - name: Install required packages
-    apt:
-      name: "{{ item }}"
-      state: present
-    loop:
-      - apt-transport-https
-      - ca-certificates
-      - gnupg
-      - curl
-      - sudo
+    - name: Install required packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - gnupg
+        - curl
+        - sudo
 
-  - name: Add Google Cloud SDK repository
-    lineinfile:
-      dest: /etc/apt/sources.list.d/google-cloud-sdk.list
-      line: "deb [signed-by=/usr/share/keyrings/cloud.google.asc] https://packages.cloud.google.com/apt cloud-sdk main"
-      create: yes
+    - name: Add Google Cloud SDK repository
+      lineinfile:
+        dest: /etc/apt/sources.list.d/google-cloud-sdk.list
+        line: "deb [signed-by=/usr/share/keyrings/cloud.google.asc] https://packages.cloud.google.com/apt cloud-sdk main"
+        create: yes
 
-  - name: Import Google Cloud SDK key
-    shell: "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.asc"
-    args:
-      warn: false
+    - name: Import Google Cloud SDK key
+      shell: "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.asc"
+      args:
+        warn: false
 
-  - name: Update apt packages with Google Cloud SDK repository
-    apt:
-      update_cache: yes
-      force_apt_get: yes
+    - name: Update apt packages with Google Cloud SDK repository
+      apt:
+        update_cache: yes
+        force_apt_get: yes
 
-  - name: Get a list of installed packages
-    command: "dpkg-query --showformat='${Package}\n' --show"
-    register: dpkg_query_result
+    - name: Get a list of installed packages
+        command: "dpkg-query --showformat='${Package}\n' --show"
+        register: dpkg_query_result
 
-  - name: Install Google Cloud CLI
-    apt:
-      name: google-cloud-sdk
-      state: present
-    when: "'google-cloud-sdk' not in dpkg_query_result.stdout_lines"
+    - name: Install Google Cloud CLI
+      apt:
+        name: google-cloud-sdk
+        state: present
+      when: "'google-cloud-sdk' not in dpkg_query_result.stdout_lines"
 
     - name: Download databases in parallel
       command: "./irdownload {{ item }}"
