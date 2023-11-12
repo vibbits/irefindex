@@ -38,6 +38,15 @@
     - name: Install Google Cloud CLI
       shell: "apt-get install google-cloud-cli"
 
+    - name: Check if tmux session exists
+      command: "tmux has-session -t irsessions"
+      register: tmux_session_check
+      ignore_errors: true
+
+    - name: Kill existing tmux session
+      command: "tmux kill-session -t irsessions"
+      when: tmux_session_check.rc == 0
+
     - name: Create tmux session for downloads
       command: "tmux new-session -d -s irsessions"
 
