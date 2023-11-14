@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Added some more database download resources" />
+    <list default="true" id="8341ae48-c0b2-44a7-b33c-2ceda8e025e1" name="Changes" comment="Added some more database download resources">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +49,7 @@
       <updated>1699259833129</updated>
       <workItem from="1699259835587" duration="1742000" />
       <workItem from="1699798175106" duration="11400000" />
+      <workItem from="1699894527315" duration="11178000" />
     </task>
     <task id="LOCAL-00001" summary="Download all database parallel and automatically">
       <created>1699798473797</created>
@@ -315,6 +319,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
