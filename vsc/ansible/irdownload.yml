@@ -415,7 +415,7 @@
         jid: "{{ result_bind_translation.ansible_job_id }}"
       register: job_result_1
       until: job_result_1.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -424,7 +424,7 @@
         jid: "{{ result_biogrid.ansible_job_id }}"
       register: job_result_2
       until: job_result_2.finished
-      retries: 4
+      retries: 12
       delay: 15
       ignore_errors: true
 
@@ -433,7 +433,7 @@
         jid: "{{ result_corum.ansible_job_id }}"
       register: job_result_3
       until: job_result_3.finished
-      retries: 4
+      retries: 12
       delay: 15
       ignore_errors: true
 
@@ -442,7 +442,7 @@
         jid: "{{ result_dip.ansible_job_id }}"
       register: job_result_4
       until: job_result_4.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -451,7 +451,7 @@
         jid: "{{ result_hprd.ansible_job_id }}"
       register: job_result_5
       until: job_result_5.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -460,7 +460,7 @@
         jid: "{{ result_intact.ansible_job_id }}"
       register: job_result_6
       until: job_result_6.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -478,7 +478,7 @@
         jid: "{{ result_mpact.ansible_job_id }}"
       register: job_result_7
       until: job_result_7.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -487,7 +487,7 @@
         jid: "{{ result_mppi.ansible_job_id }}"
       register: job_result_8
       until: job_result_8.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -496,7 +496,7 @@
         jid: "{{ result_bar.ansible_job_id }}"
       register: job_result_9
       until: job_result_9.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -505,7 +505,7 @@
         jid: "{{ result_bhf_ucl.ansible_job_id }}"
       register: job_result_10
       until: job_result_10.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -514,7 +514,7 @@
         jid: "{{ result_hpidb.ansible_job_id }}"
       register: job_result_11
       until: job_result_11.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -523,7 +523,7 @@
         jid: "{{ result_imex.ansible_job_id }}"
       register: job_result_12
       until: job_result_12.finished
-      retries: 36
+      retries: 108
       delay: 300
       ignore_errors: true
 
@@ -532,7 +532,7 @@
         jid: "{{ result_innatedb.ansible_job_id }}"
       register: job_result_13
       until: job_result_13.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -541,7 +541,7 @@
         jid: "{{ result_matrixdb.ansible_job_id }}"
       register: job_result_14
       until: job_result_14.finished
-      retries: 10
+      retries: 30
       delay: 30
       ignore_errors: true
 
@@ -550,7 +550,7 @@
         jid: "{{ result_mbinfo.ansible_job_id }}"
       register: job_result_15
       until: job_result_15.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -559,7 +559,7 @@
         jid: "{{ result_mint.ansible_job_id }}"
       register: job_result_16
       until: job_result_16.finished
-      retries: 20
+      retries: 60
       delay: 30
       ignore_errors: true
 
@@ -568,7 +568,7 @@
         jid: "{{ result_mpidb.ansible_job_id }}"
       register: job_result_17
       until: job_result_17.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -577,7 +577,7 @@
         jid: "{{ result_quickgo.ansible_job_id }}"
       register: job_result_18
       until: job_result_18.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -586,7 +586,7 @@
         jid: "{{ result_reactome.ansible_job_id }}"
       register: job_result_19
       until: job_result_19.finished
-      retries: 10
+      retries: 30
       delay: 30
       ignore_errors: true
 
@@ -595,7 +595,7 @@
         jid: "{{ result_uniprotpp.ansible_job_id }}"
       register: job_result_20
       until: job_result_20.finished
-      retries: 10
+      retries: 30
       delay: 30
       ignore_errors: true
 
@@ -604,7 +604,7 @@
         jid: "{{ result_virushost.ansible_job_id }}"
       register: job_result_21
       until: job_result_21.finished
-      retries: 12
+      retries: 36
       delay: 5
       ignore_errors: true
 
@@ -613,7 +613,7 @@
         jid: "{{ result_psi_mi.ansible_job_id }}"
       register: job_result_22
       until: job_result_22.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -622,7 +622,7 @@
         jid: "{{ result_taxonomy.ansible_job_id }}"
       register: job_result_23
       until: job_result_23.finished
-      retries: 12
+      retries: 36
       delay: 5
       ignore_errors: true
 
@@ -631,7 +631,7 @@
         jid: "{{ result_athaliana.ansible_job_id }}"
       register: job_result_24
       until: job_result_24.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -640,7 +640,7 @@
         jid: "{{ result_bind.ansible_job_id }}"
       register: job_result_25
       until: job_result_25.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -649,7 +649,7 @@
         jid: "{{ result_dig.ansible_job_id }}"
       register: job_result_26
       until: job_result_26.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -658,7 +658,7 @@
         jid: "{{ result_fly.ansible_job_id }}"
       register: job_result_27
       until: job_result_27.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -667,7 +667,7 @@
         jid: "{{ result_gene.ansible_job_id }}"
       register: job_result_28
       until: job_result_28.finished
-      retries: 20
+      retries: 60
       delay: 30
       ignore_errors: true
 
@@ -676,7 +676,7 @@
         jid: "{{ result_genpept.ansible_job_id }}"
       register: job_result_29
       until: job_result_29.finished
-      retries: 20
+      retries: 60
       delay: 1800
       ignore_errors: true
 
@@ -685,7 +685,7 @@
         jid: "{{ result_ipi.ansible_job_id }}"
       register: job_result_30
       until: job_result_30.finished
-      retries: 6
+      retries: 18
       delay: 5
       ignore_errors: true
 
@@ -694,7 +694,7 @@
         jid: "{{ result_mmdb.ansible_job_id }}"
       register: job_result_31
       until: job_result_31.finished
-      retries: 12
+      retries: 36
       delay: 5
       ignore_errors: true
 
@@ -703,7 +703,7 @@
         jid: "{{ result_pdb.ansible_job_id }}"
       register: job_result_32
       until: job_result_32.finished
-      retries: 12
+      retries: 36
       delay: 5
       ignore_errors: true
 
@@ -712,7 +712,7 @@
         jid: "{{ result_refseq.ansible_job_id }}"
       register: job_result_33
       until: job_result_33.finished
-      retries: 20
+      retries: 60
       delay: 1800
       ignore_errors: true
 
@@ -721,7 +721,7 @@
         jid: "{{ result_pdb.ansible_job_id }}"
       register: job_result_34
       until: job_result_34.finished
-      retries: 12
+      retries: 36
       delay: 5
       ignore_errors: true
 
@@ -730,6 +730,6 @@
         jid: "{{ result_yeast.ansible_job_id }}"
       register: job_result_35
       until: job_result_35.finished
-      retries: 12
+      retries: 36
       delay: 5
       ignore_errors: true
