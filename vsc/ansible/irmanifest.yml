@@ -1,6 +1,6 @@
 ---
 - name: Irmanifest
-  hosts: all
+  hosts: localhost
   become: yes
 
   tasks:
