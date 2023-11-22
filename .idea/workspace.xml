@@ -54,7 +54,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699479424133</updated>
       <workItem from="1699479426720" duration="4900000" />
-      <workItem from="1700659577844" duration="17761000" />
+      <workItem from="1700659577844" duration="19936000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -175,7 +175,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700682414271</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Detect when a task fails">
+      <created>1700682807065</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1700682807065</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
