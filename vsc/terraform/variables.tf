@@ -25,7 +25,7 @@ variable "flavor_name" {
   description = "Flavor name for the instance"
 
   validation {
-    condition     = can(regex("^(CPU|GPU|UPS)v[0-9]+\\.(nano|tiny|small|medium|large|2xlarge|3xlarge|1_2xlarge|1_3xlarge|4xlarge)$", var.flavor_name))
+    condition     = can(regex("^(CPU|GPU|UPS)v[0-9]+\\.(nano|tiny|small|medium|large|xlarge|2xlarge|3xlarge|1_2xlarge|1_3xlarge|4xlarge)$", var.flavor_name))
     error_message = "Flavor name must be one of CPUv1.nano, CPUv1.tiny, GPUv2.small, CPUv1.small, GPUv3.small, UPSv1.small, UPSv1.medium, GPUv2.medium, GPUv3.medium, CPUv1.medium, UPSv1.large, GPUv2.large, GPUv3.large, CPUv1.large, CPUv1.xlarge, UPSv1.2xlarge, GPUv2.2xlarge, GPUv3.2xlarge, CPUv1.2xlarge, CPUv1.1_2xlarge, UPSv1.3xlarge, CPUv1.3xlarge, CPUv1.1_3xlarge, CPUv1.4xlarge"
   }
 }
