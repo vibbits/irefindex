@@ -1,6 +1,6 @@
 ---
 - name: Irdownload
-  hosts: localhost
+  hosts: all
   become: yes
 
   tasks:
@@ -26,9 +26,7 @@
         create: yes
 
     - name: Import Google Cloud SDK key
-      shell: "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.asc"
-      args:
-        warn: false
+      shell: "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg 2>/dev/null | sudo tee /usr/share/keyrings/cloud.google.asc"
 
     - name: Update apt packages with Google Cloud SDK repository
       apt:

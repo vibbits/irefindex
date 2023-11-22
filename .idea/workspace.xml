@@ -4,12 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Update irdownload">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Terraform starts the irinit Ansible code">
+      <change afterPath="$PROJECT_DIR$/vsc/ansible/main1.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/hello-world.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irinit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irinit.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/terraform/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/terraform/main.tf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/terraform/variables.tf" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/terraform/variables.tf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,13 +34,18 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/vsc/terraform" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\vande\Documents\School\TI3\Software Project\irefindex\vsc\terraform" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -51,7 +56,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699479424133</updated>
       <workItem from="1699479426720" duration="4900000" />
-      <workItem from="1700659577844" duration="797000" />
+      <workItem from="1700659577844" duration="13100000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -123,7 +128,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700660181997</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Terraform starts the irinit Ansible code">
+      <created>1700660410671</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1700660410671</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,6 +159,7 @@
     <MESSAGE value="Ignore errors when removing cache" />
     <MESSAGE value="Fix mistake with running irinit script" />
     <MESSAGE value="Update irdownload" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update irdownload" />
+    <MESSAGE value="Terraform starts the irinit Ansible code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Terraform starts the irinit Ansible code" />
   </component>
 </project>
