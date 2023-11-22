@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Run the irmanifest phase automatically">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Test to fail a task, but to still run further">
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +53,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699479424133</updated>
       <workItem from="1699479426720" duration="4900000" />
-      <workItem from="1700659577844" duration="16240000" />
+      <workItem from="1700659577844" duration="16698000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -147,7 +146,21 @@
       <option name="project" value="LOCAL" />
       <updated>1700679373558</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Add localhost to irmanifest to test it locally">
+      <created>1700681268191</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1700681268191</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Test to fail a task, but to still run further">
+      <created>1700681643871</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1700681643871</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +187,8 @@
     <MESSAGE value="Terraform starts the irinit Ansible code" />
     <MESSAGE value="Terraform, irinit and irdownload follows up each other" />
     <MESSAGE value="Run the irmanifest phase automatically" />
-    <option name="LAST_COMMIT_MESSAGE" value="Run the irmanifest phase automatically" />
+    <MESSAGE value="Add localhost to irmanifest to test it locally" />
+    <MESSAGE value="Test to fail a task, but to still run further" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test to fail a task, but to still run further" />
   </component>
 </project>
