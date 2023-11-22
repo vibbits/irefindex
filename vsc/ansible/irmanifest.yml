@@ -17,10 +17,12 @@
       ignore_errors: true
 
     - name: Create file of acquired resources CORUM
-      command: "./irmanifest CORUM"
-      args:
-        chdir: "/home/irefindex/usr/bin"
+      block:
+        - command: "./irmanifest CORUM"
+          args:
+            chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+
 
     - name: Create file of acquired resources DIP
       command: "./irmanifest DIP"
