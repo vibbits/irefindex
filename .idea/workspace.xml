@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Terraform, irinit and irdownload follows up each other">
-      <change afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Run the irmanifest phase automatically">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +54,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699479424133</updated>
       <workItem from="1699479426720" duration="4900000" />
-      <workItem from="1700659577844" duration="15023000" />
+      <workItem from="1700659577844" duration="16240000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -140,7 +140,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700677266281</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Run the irmanifest phase automatically">
+      <created>1700679373558</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1700679373558</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,6 +173,7 @@
     <MESSAGE value="Update irdownload" />
     <MESSAGE value="Terraform starts the irinit Ansible code" />
     <MESSAGE value="Terraform, irinit and irdownload follows up each other" />
-    <option name="LAST_COMMIT_MESSAGE" value="Terraform, irinit and irdownload follows up each other" />
+    <MESSAGE value="Run the irmanifest phase automatically" />
+    <option name="LAST_COMMIT_MESSAGE" value="Run the irmanifest phase automatically" />
   </component>
 </project>
