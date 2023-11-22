@@ -94,7 +94,7 @@ resource "openstack_networking_portforwarding_v2" "ssh_pf" {
 
   provisioner "local-exec" {
     // StrictHostKeyChecking is set to no as when running this multiple times (e.g. after a terraform destroy), the host key will change and this would fail.
-    command = "ansible-playbook -i '${var.floating_ip},' --ssh-extra-args '-p ${var.ssh_port} -o StrictHostKeyChecking=no' -u ${var.ssh_user} --private-key '${var.private_key_path}' ../ansible/irinit.yml"
+    command = "ansible-playbook -i '${var.floating_ip},' --ssh-extra-args '-p ${var.ssh_port} -o StrictHostKeyChecking=no' -u ${var.ssh_user} --private-key '${var.private_key_path}' ../ansible/main1.yml"
   }
 }
 
