@@ -50,7 +50,7 @@
     - name: Fail the task when conditions are met (DIP)
       fail:
         msg: "Failed"
-      when: "'stat: cannot statx' in dip.stderr or 'grep' in dip.stdout"
+      when: "'stat: cannot statx' in dip_result.stderr or 'grep' in dip_result.stdout"
       ignore_errors: true
 
     - name: Create file of acquired resources HPRD
