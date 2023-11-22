@@ -9,218 +9,256 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources BIOGRID
       command: "./irmanifest BIOGRID"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources CORUM
       command: "./irmanifest CORUM"
       args:
         chdir: "/home/irefindex/usr/bin"
+      ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources DIP
       command: "./irmanifest DIP"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources HPRD
       command: "./irmanifest HPRD"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources INTACT
       command: "./irmanifest INTACT"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources INTCOMPLEX
       command: "./irmanifest INTCOMPLEX"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources MPACT
       command: "./irmanifest MPACT"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources MPPI
       command: "./irmanifest MPPI"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources BAR
       command: "./irmanifest BAR"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources BHF_UCL
       command: "./irmanifest BHF_UCL"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources HPIDB
       command: "./irmanifest HPIDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources HURI
       command: "./irmanifest HURI"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources IMEX
       command: "./irmanifest IMEX"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources INNATEDB
       command: "./irmanifest INNATEDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources MATRIXDB
       command: "./irmanifest MATRIXDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources MBINFO
       command: "./irmanifest MBINFO"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources MINT
       command: "./irmanifest MINT"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources MPIDB
       command: "./irmanifest MPIDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources QUICKGO
       command: "./irmanifest QUICKGO"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources REACTOME
       command: "./irmanifest REACTOME"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources UNIPROTPP
       command: "./irmanifest UNIPROTPP"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources VIRUSHOST
       command: "./irmanifest VIRUSHOST"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources PSI_MI
       command: "./irmanifest PSI_MI"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources TAXONOMY
       command: "./irmanifest TAXONOMY"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources ATHALIANA
       command: "./irmanifest ATHALIANA"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources BIND
       command: "./irmanifest BIND"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources DIG
       command: "./irmanifest DIG"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources FLY
       command: "./irmanifest FLY"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources GENE
       command: "./irmanifest GENE"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources GENPEPT
       command: "./irmanifest GENPEPT"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources IPI
       command: "./irmanifest IPI"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources MMDB
       command: "./irmanifest MMDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources PDB
       command: "./irmanifest PDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources REFSEQ
       command: "./irmanifest REFSEQ"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources UNIPROT
       command: "./irmanifest UNIPROT"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
 
     - name: Create file of acquired resources YEAST
       command: "./irmanifest YEAST"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
+      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
