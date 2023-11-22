@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Terraform starts the irinit Ansible code">
-      <change afterPath="$PROJECT_DIR$/vsc/ansible/main1.yml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Terraform, irinit and irdownload follows up each other">
+      <change afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irinit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irinit.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/terraform/main.tf" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/terraform/main.tf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +31,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/vsc/terraform" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/vsc/ansible" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -44,6 +41,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\vande\Documents\School\TI3\Software Project\irefindex\vsc\ansible" />
       <recent name="C:\Users\vande\Documents\School\TI3\Software Project\irefindex\vsc\terraform" />
     </key>
   </component>
@@ -56,7 +54,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699479424133</updated>
       <workItem from="1699479426720" duration="4900000" />
-      <workItem from="1700659577844" duration="13100000" />
+      <workItem from="1700659577844" duration="15023000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -135,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700660410671</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Terraform, irinit and irdownload follows up each other">
+      <created>1700677266281</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1700677266281</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -160,6 +165,7 @@
     <MESSAGE value="Fix mistake with running irinit script" />
     <MESSAGE value="Update irdownload" />
     <MESSAGE value="Terraform starts the irinit Ansible code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Terraform starts the irinit Ansible code" />
+    <MESSAGE value="Terraform, irinit and irdownload follows up each other" />
+    <option name="LAST_COMMIT_MESSAGE" value="Terraform, irinit and irdownload follows up each other" />
   </component>
 </project>
