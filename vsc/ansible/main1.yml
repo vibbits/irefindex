@@ -1,0 +1,6 @@
+---
+- name: Run irinit playbook
+  import_playbook: irinit.yml
+
+- name: Run irdownload playbook
+  import_playbook: irdownload.yml
