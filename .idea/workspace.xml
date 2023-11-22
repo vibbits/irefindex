@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Test to fail a task, but to still run further">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Detect when a task fails">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
     </list>
@@ -54,7 +54,7 @@
       <option name="presentableId" value="Default" />
       <updated>1699479424133</updated>
       <workItem from="1699479426720" duration="4900000" />
-      <workItem from="1700659577844" duration="16866000" />
+      <workItem from="1700659577844" duration="17761000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -168,7 +168,14 @@
       <option name="project" value="LOCAL" />
       <updated>1700681719281</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Detect when a task fails">
+      <created>1700682414271</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1700682414271</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,6 +204,7 @@
     <MESSAGE value="Run the irmanifest phase automatically" />
     <MESSAGE value="Add localhost to irmanifest to test it locally" />
     <MESSAGE value="Test to fail a task, but to still run further" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test to fail a task, but to still run further" />
+    <MESSAGE value="Detect when a task fails" />
+    <option name="LAST_COMMIT_MESSAGE" value="Detect when a task fails" />
   </component>
 </project>

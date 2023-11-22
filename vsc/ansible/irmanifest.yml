@@ -23,7 +23,12 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
-      failed_when: "'stat: cannot statx' in result.stderr or 'grep:' in result.stdout"
+      register: corum_result
+
+    - name: Fail the task when conditions are met (CORUM)
+      fail:
+        msg: "Failed"
+      when: "'stat: cannot statx' in corum_result.stderr or 'grep' in corum_result.stdout"
 
     - name: Create file of acquired resources DIP
       command: "./irmanifest DIP"
