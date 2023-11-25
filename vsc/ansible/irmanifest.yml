@@ -8,7 +8,6 @@
       command: "./irmanifest BIND_TRANSLATION"
       args:
         chdir: "/home/irefindex/usr/bin"
-      ignore_errors: true
       register: bind_translation_result
 
     - name: Fail the task when conditions are met (BIND_TRANSLATION)
