@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Detect when a task fails">
-      <change afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,21 +26,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/vsc/ansible" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "Irinit-in-Ansible",
+    "last_opened_file_path": "C:/Users/piete/Downloads/irefindex/vsc/terraform",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\piete\Downloads\irefindex\vsc\terraform" />
       <recent name="C:\Users\vande\Documents\School\TI3\Software Project\irefindex\vsc\ansible" />
       <recent name="C:\Users\vande\Documents\School\TI3\Software Project\irefindex\vsc\terraform" />
     </key>
@@ -222,7 +217,6 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Run irinit without human interaction" />
@@ -236,6 +230,6 @@
     <MESSAGE value="Add localhost to irmanifest to test it locally" />
     <MESSAGE value="Test to fail a task, but to still run further" />
     <MESSAGE value="Detect when a task fails" />
-    <option name="LAST_COMMIT_MESSAGE" value="Detect when a task fails" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>
