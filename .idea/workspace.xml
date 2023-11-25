@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Add some more detections for fails" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Test async fail tasks">
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,6 +20,13 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 3
+}]]></component>
   <component name="ProjectId" id="2XuWPFjSc4CrF7xTNqBEDIQB1ZQ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -25,9 +34,16 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "Irinit-in-Ansible",
     "last_opened_file_path": "C:/Users/piete/Downloads/irefindex/vsc/terraform",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -57,6 +73,7 @@
       <workItem from="1700924688619" duration="58000" />
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
+      <workItem from="1700989762102" duration="3465000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -206,7 +223,175 @@
       <option name="project" value="LOCAL" />
       <updated>1700952363501</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Add ignore to all needed tasks">
+      <option name="closed" value="true" />
+      <created>1700953128281</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1700953128281</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Add async tasks">
+      <option name="closed" value="true" />
+      <created>1700956294908</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1700956294908</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700956700256</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1700956700256</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700956789518</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1700956789518</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700956852210</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1700956852210</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700957100838</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1700957100838</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700957207043</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1700957207043</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700957294719</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1700957294719</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700957555032</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1700957555032</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700957610071</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1700957610071</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700990798826</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1700990798826</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700991619085</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1700991619085</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700991759260</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1700991759260</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700991808567</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1700991808567</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700991929453</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1700991929453</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700992061453</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1700992061453</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700992232305</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1700992232305</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700992929346</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1700992929346</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700993230919</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1700993230919</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700993484249</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1700993484249</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700993572711</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1700993572711</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,6 +421,9 @@
     <MESSAGE value="Test to fail a task, but to still run further" />
     <MESSAGE value="Detect when a task fails" />
     <MESSAGE value="Add some more detections for fails" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add some more detections for fails" />
+    <MESSAGE value="Add ignore to all needed tasks" />
+    <MESSAGE value="Add async tasks" />
+    <MESSAGE value="Test async fail tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test async fail tasks" />
   </component>
 </project>
