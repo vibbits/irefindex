@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Detect when a task fails">
+      <change afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +54,17 @@
       <option name="presentableId" value="Default" />
       <updated>1699479424133</updated>
       <workItem from="1699479426720" duration="4900000" />
-      <workItem from="1700659577844" duration="19936000" />
+      <workItem from="1700659577844" duration="24432000" />
+      <workItem from="1700844134361" duration="997000" />
+      <workItem from="1700847424506" duration="1397000" />
+      <workItem from="1700869142637" duration="790000" />
+      <workItem from="1700871927170" duration="18000" />
+      <workItem from="1700920860592" duration="1250000" />
+      <workItem from="1700922966662" duration="294000" />
+      <workItem from="1700924513740" duration="116000" />
+      <workItem from="1700924688619" duration="58000" />
+      <workItem from="1700925066609" duration="661000" />
+      <workItem from="1700927857785" duration="342000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -182,7 +192,21 @@
       <option name="project" value="LOCAL" />
       <updated>1700682807065</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Detect when a task fails">
+      <created>1700685257537</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1700685257537</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Detect when a task fails">
+      <created>1700685372964</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1700685372964</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
