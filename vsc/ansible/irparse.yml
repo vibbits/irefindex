@@ -338,6 +338,10 @@
       poll: 0
 
     - name: Fail the task when conditions are met (BIND_TRANSLATION)
+      async_status:
+        jid: "{{ bind_translation.ansible_job_id }}"
+      register: job_result_1
+      until: job_result_1.finished
       fail:
         msg: "Failed"
       when: "'citation suppressed' in bind_translation_result.stderr or 'failed' in bind_translation_result.stderr or 'is not formatted correctly' in bind_translation_result.stderr"
