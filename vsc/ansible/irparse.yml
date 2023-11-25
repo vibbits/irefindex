@@ -14,7 +14,7 @@
     - name: Fail the task when conditions are met (BIND_TRANSLATION)
       fail:
         msg: "Failed"
-      when: "'did not provide any data' in bind_translation_result.stderr"
+      when: "'did not provide any data' in bind_translation_result.stderr or 'citation suppressed' in bind_translation_result.stderr or 'failed' in bind_translation_result.stderr or 'is not formatted correctly' in bind_translation_result.stderr"
       ignore_errors: true
 
     - name: Coverts the downloaded data to files BIOGRID
@@ -26,7 +26,7 @@
     - name: Fail the task when conditions are met (BIOGRID)
       fail:
         msg: "Failed"
-      when: "'did not provide any data' in biogrid_result.stderr or 'citation suppressed' in biogrid_result.stderr or 'failed' in biogrid_result.stderr or 'is not formatted correctly' in hrpd_result.stderr"
+      when: "'did not provide any data' in biogrid_result.stderr or 'citation suppressed' in biogrid_result.stderr or 'failed' in biogrid_result.stderr or 'is not formatted correctly' in biogrid_result.stderr"
       ignore_errors: true
 
     - name: Coverts the downloaded data to files CORUM
