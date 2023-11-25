@@ -22,6 +22,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: biogrid_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (BIOGRID)
       fail:
@@ -34,6 +35,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: corum_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (CORUM)
       fail:
@@ -46,6 +48,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: dip_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (DIP)
       fail:
@@ -58,6 +61,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: hrpd_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (HRPD)
       fail:
@@ -70,6 +74,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: intact_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (INTACT)
       fail:
@@ -82,6 +87,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: intcomplex_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (INTCOMPLEX)
       fail:
@@ -94,6 +100,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mpact_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (MPACT)
       fail:
@@ -106,6 +113,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mppi_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (MPPI)
       fail:
@@ -118,6 +126,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: bar_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (BAR)
       fail:
@@ -130,6 +139,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: bhf_ucl_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (BHF_UCL)
       fail:
@@ -142,6 +152,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: hpidb_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (HPIDB)
       fail:
@@ -154,6 +165,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: huri_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (HURI)
       fail:
@@ -166,6 +178,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: imex_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (IMEX)
       fail:
@@ -178,6 +191,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: innatedb_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (INNATEDB)
       fail:
@@ -190,6 +204,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: matrixdb_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (MATRIXDB)
       fail:
@@ -202,6 +217,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mbinfo_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (MBINFO)
       fail:
@@ -214,6 +230,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mint_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (MINT)
       fail:
@@ -226,6 +243,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mpidb_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (MPIDB)
       fail:
@@ -238,6 +256,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: quickgo_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (QUICKGO)
       fail:
@@ -250,6 +269,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: reactome_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (REACTOME)
       fail:
@@ -262,6 +282,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: uniprotpp_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (UNIPROTPP)
       fail:
@@ -274,6 +295,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: virushost_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (VIRUSHOST)
       fail:
@@ -286,6 +308,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: psi_mi_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (PSI_MI)
       fail:
@@ -298,6 +321,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: taxonomy_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (TAXONOMY)
       fail:
@@ -310,6 +334,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: athaliana_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (ATHALIANA)
       fail:
@@ -322,6 +347,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: bind_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (BIND)
       fail:
@@ -334,6 +360,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: dig_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (DIG)
       fail:
@@ -346,6 +373,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: fly_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (FLY)
       fail:
@@ -358,6 +386,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: gene_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (GENE)
       fail:
@@ -370,6 +399,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: genpept_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (GENPEPT)
       fail:
@@ -382,6 +412,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: ipi_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (IPI)
       fail:
@@ -394,6 +425,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mmdb_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (MMDB)
       fail:
@@ -406,6 +438,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: pdb_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (PDB)
       fail:
@@ -418,6 +451,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: refseq_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (REFSEQ)
       fail:
@@ -430,6 +464,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: uniprot_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (UNIPROT)
       fail:
@@ -442,6 +477,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: yeast_result
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (YEAST)
       fail:
