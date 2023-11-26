@@ -417,20 +417,29 @@
       when: "'citation suppressed' in bhf_ucl_result.stderr or 'failed' in bhf_ucl_result.stderr or 'is not formatted correctly' in bhf_ucl_result.stderr"
       ignore_errors: true
 
-    - name: Wait for HPIDB to complete
-      async_status:
-        jid: "{{ hpidb_result.ansible_job_id }}"
-      register: job_result_100
-      until: job_result_100.finished
-      retries: 8
-      delay: 30
-      ignore_errors: true
+    - name: Continuously check for failure conditions in HPIDB
+      block:
+        - name: Run HPIDB asynchronously
+          async:
+            jid: "{{ hpidb_result.ansible_job_id }}"
+            poll: 0
+          register: job_result_100
+          until: job_result_100.finished
+          retries: 12
+          delay: 30
+          ignore_errors: true
 
-    - name: Fail the task when conditions are met (HPIDB)
-      fail:
-        msg: "Failed"
-      when: "'citation suppressed' in hpidb_result.stderr or 'failed' in hpidb_result.stderr or 'is not formatted correctly' in hpidb_result.stderr"
-      ignore_errors: true
+        - name: Fail the task when conditions are met (HPIDB)
+          fail:
+            msg: "Failed"
+          when: "'citation suppressed' in job_result_100.stderr or 'failed' in job_result_100.stderr or 'is not formatted correctly' in job_result_100.stderr"
+          ignore_errors: true
+      loop:
+        - 1
+      loop_control:
+        label: "Check failure conditions"
+        sleep: 5
+        until: "'citation suppressed' in job_result_100.stderr or 'failed' in job_result_100.stderr or 'is not formatted correctly' in job_result_100.stderr"
 
     - name: Fail the task when conditions are met (HURI)
       fail:
