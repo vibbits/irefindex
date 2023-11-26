@@ -363,6 +363,13 @@
       when: "'citation suppressed' in biogrid_result or 'failed' in biogrid_result or 'is not formatted correctly' in biogrid_result"
       ignore_errors: true
 
+    - name: Wait for CORUM to complete
+      async_status:
+        jid: "{{ corum_result.ansible_job_id }}"
+      register: job_result_3
+      until: job_result_3.finished or "'citation suppressed' in corum_result.stderr or 'failed' in corum_result.stderr or 'is not formatted correctly' in corum_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (CORUM)
       fail:
         msg: "Failed"
@@ -372,14 +379,21 @@
     - name: Wait for DIP to complete
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
-      register: job_result_101
-      until: job_result_101.finished or "'citation suppressed' in dip_result.stderr or 'failed' in dip_result.stderr or 'is not formatted correctly' in dip_result.stderr"
+      register: job_result_4
+      until: job_result_4.finished or "'citation suppressed' in dip_result.stderr or 'failed' in dip_result.stderr or 'is not formatted correctly' in dip_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (DIP)
       fail:
         msg: "Failed"
-      when: "'failed' in dip_result"
+      when: "'citation suppressed' in dip_result or 'failed' in dip_result or 'is not formatted correctly' in dip_result"
+      ignore_errors: true
+
+    - name: Wait for HPRD to complete
+      async_status:
+        jid: "{{ hprd_result.ansible_job_id }}"
+      register: job_result_5
+      until: job_result_5.finished or "'citation suppressed' in hprd_result.stderr or 'failed' in hprd_result.stderr or 'is not formatted correctly' in hprd_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (HRPD)
@@ -388,10 +402,24 @@
       when: "'citation suppressed' in hrpd_result.stderr or 'failed' in hrpd_result.stderr or 'is not formatted correctly' in hrpd_result.stderr"
       ignore_errors: true
 
+    - name: Wait for INTACT to complete
+      async_status:
+        jid: "{{ intact_result.ansible_job_id }}"
+      register: job_result_6
+      until: job_result_6.finished or "'citation suppressed' in intact_result.stderr or 'failed' in intact_result.stderr or 'is not formatted correctly' in intact_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (INTACT)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in intact_result.stderr or 'failed' in intact_result.stderr or 'is not formatted correctly' in intact_result.stderr"
+      ignore_errors: true
+
+    - name: Wait for INTCOMPLEX to complete
+      async_status:
+        jid: "{{ intcomplex_result.ansible_job_id }}"
+      register: job_result_7
+      until: job_result_7.finished or "'citation suppressed' in intcomplex_result.stderr or 'failed' in intcomplex_result.stderr or 'is not formatted correctly' in intcomplex_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (INTCOMPLEX)
@@ -400,10 +428,24 @@
       when: "'citation suppressed' in intcomplex_result.stderr or 'failed' in intcomplex_result.stderr or 'is not formatted correctly' in intcomplex_result.stderr"
       ignore_errors: true
 
+    - name: Wait for MPACT to complete
+      async_status:
+        jid: "{{ mpact_result.ansible_job_id }}"
+      register: job_result_8
+      until: job_result_8.finished or "'citation suppressed' in mpact_result.stderr or 'failed' in mpact_result.stderr or 'is not formatted correctly' in mpact_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (MPACT)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in mpact_result.stderr or 'failed' in mpact_result.stderr or 'is not formatted correctly' in mpact_result.stderr"
+      ignore_errors: true
+
+    - name: Wait for MPPI to complete
+      async_status:
+        jid: "{{ mppi_result.ansible_job_id }}"
+      register: job_result_9
+      until: job_result_9.finished or "'citation suppressed' in mppi_result.stderr or 'failed' in mppi_result.stderr or 'is not formatted correctly' in mppi_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MPPI)
@@ -412,10 +454,24 @@
       when: "'citation suppressed' in mppi_result.stderr or 'failed' in mppi_result.stderr or 'is not formatted correctly' in mppi_result.stderr"
       ignore_errors: true
 
+    - name: Wait for BAR to complete
+      async_status:
+        jid: "{{ bar_result.ansible_job_id }}"
+      register: job_result_10
+      until: job_result_10.finished or "'citation suppressed' in bar_result.stderr or 'failed' in bar_result.stderr or 'is not formatted correctly' in bar_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (BAR)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in bar_result.stderr or 'failed' in bar_result.stderr or 'is not formatted correctly' in bar_result.stderr"
+      ignore_errors: true
+
+    - name: Wait for BHF_UCL to complete
+      async_status:
+        jid: "{{ bhf_ucl_result.ansible_job_id }}"
+      register: job_result_11
+      until: job_result_11.finished or "'citation suppressed' in bhf_ucl_result.stderr or 'failed' in bhf_ucl_result.stderr or 'is not formatted correctly' in bhf_ucl_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (BHF_UCL)
@@ -427,8 +483,8 @@
     - name: Wait for HPIDB to complete
       async_status:
         jid: "{{ hpidb_result.ansible_job_id }}"
-      register: job_result_100
-      until: job_result_100.finished or "'citation suppressed' in hpidb_result.stderr or 'failed' in hpidb_result.stderr or 'is not formatted correctly' in hpidb_result.stderr"
+      register: job_result_12
+      until: job_result_12.finished or "'citation suppressed' in hpidb_result.stderr or 'failed' in hpidb_result.stderr or 'is not formatted correctly' in hpidb_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (HPIDB)
