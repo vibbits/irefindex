@@ -496,149 +496,149 @@
     - name: Fail the task when conditions are met (HURI)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in huri_result.stderr or 'is not formatted correctly' in huri_result.stderr"
+      when: "'citation suppressed' in huri_result or 'is not formatted correctly' in huri_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (IMEX)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in imex_result.stderr or 'is not formatted correctly' in imex_result.stderr"
+      when: "'citation suppressed' in imex_result or 'is not formatted correctly' in imex_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (INNATEDB)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in innatedb_result.stderr or 'is not formatted correctly' in innatedb_result.stderr"
+      when: "'citation suppressed' in innatedb_result or 'is not formatted correctly' in innatedb_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MATRIXDB)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in matrixdb_result.stderr or 'is not formatted correctly' in matrixdb_result.stderr"
+      when: "'citation suppressed' in matrixdb_result or 'is not formatted correctly' in matrixdb_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MBINFO)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in mbinfo_result.stderr or 'is not formatted correctly' in mbinfo_result.stderr"
+      when: "'citation suppressed' in mbinfo_result or 'is not formatted correctly' in mbinfo_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MINT)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in mint_result.stderr or 'is not formatted correctly' in mint_result.stderr"
+      when: "'citation suppressed' in mint_result or 'is not formatted correctly' in mint_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MPIDB)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in mpidb_result.stderr or 'is not formatted correctly' in mpidb_result.stderr"
+      when: "'citation suppressed' in mpidb_result or 'is not formatted correctly' in mpidb_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (QUICKGO)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in quickgo_result.stderr or 'is not formatted correctly' in quickgo_result.stderr"
+      when: "'citation suppressed' in quickgo_result or 'is not formatted correctly' in quickgo_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (REACTOME)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in reactome_result.stderr or 'is not formatted correctly' in reactome_result.stderr"
+      when: "'citation suppressed' in reactome_result or 'is not formatted correctly' in reactome_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (UNIPROTPP)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in uniprotpp_result.stderr or 'is not formatted correctly' in uniprotpp_result.stderr"
+      when: "'citation suppressed' in uniprotpp_result or 'is not formatted correctly' in uniprotpp_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (VIRUSHOST)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in virushost_result.stderr or 'is not formatted correctly' in virushost_result.stderr"
+      when: "'citation suppressed' in virushost_result or 'is not formatted correctly' in virushost_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (PSI_MI)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in psi_mi_result.stderr or 'is not formatted correctly' in psi_mi_result.stderr"
+      when: "'citation suppressed' in psi_mi_result or 'is not formatted correctly' in psi_mi_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (TAXONOMY)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in taxonomy_result.stderr or 'is not formatted correctly' in taxonomy_result.stderr"
+      when: "'citation suppressed' in taxonomy_result or 'is not formatted correctly' in taxonomy_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (ATHALIANA)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in athaliana_result.stderr or 'is not formatted correctly' in athaliana_result.stderr"
+      when: "'citation suppressed' in athaliana_result or 'is not formatted correctly' in athaliana_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (BIND)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in bind_result.stderr or 'is not formatted correctly' in bind_result.stderr"
+      when: "'citation suppressed' in bind_result or 'is not formatted correctly' in bind_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (DIG)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in dig_result.stderr or 'is not formatted correctly' in dig_result.stderr"
+      when: "'citation suppressed' in dig_result or 'is not formatted correctly' in dig_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (FLY)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in fly_result.stderr or 'is not formatted correctly' in fly_result.stderr"
+      when: "'citation suppressed' in fly_result or 'is not formatted correctly' in fly_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (GENE)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in gene_result.stderr or 'is not formatted correctly' in gene_result.stderr"
+      when: "'citation suppressed' in gene_result or 'is not formatted correctly' in gene_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (GENPEPT)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in genpept_result.stderr or 'is not formatted correctly' in genpept_result.stderr"
+      when: "'citation suppressed' in genpept_result or 'is not formatted correctly' in genpept_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (IPI)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in ipi_result.stderr or 'is not formatted correctly' in ipi_result.stderr"
+      when: "'citation suppressed' in ipi_result or 'is not formatted correctly' in ipi_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MMDB)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in mmdb_result.stderr or 'is not formatted correctly' in mmdb_result.stderr"
+      when: "'citation suppressed' in mmdb_result or 'is not formatted correctly' in mmdb_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (PDB)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in pdb_result.stderr or 'is not formatted correctly' in pdb_result.stderr"
+      when: "'citation suppressed' in pdb_result or 'is not formatted correctly' in pdb_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (REFSEQ)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in refseq_result.stderr or 'is not formatted correctly' in refseq_result.stderr"
+      when: "'citation suppressed' in refseq_result or 'is not formatted correctly' in refseq_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (UNIPROT)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in uniprot.stderr or 'is not formatted correctly' in uniprot.stderr"
+      when: "'citation suppressed' in uniprot or 'is not formatted correctly' in uniprot"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (YEAST)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in yeast_result.stderr or 'is not formatted correctly' in yeast_result.stderr"
+      when: "'citation suppressed' in yeast_result or 'is not formatted correctly' in yeast_result"
       ignore_errors: true
