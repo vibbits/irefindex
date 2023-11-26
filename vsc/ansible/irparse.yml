@@ -341,7 +341,7 @@
       async_status:
         jid: "{{ bind_translation_result.ansible_job_id }}"
       register: job_result_1
-      until: job_result_1.finished
+      until: job_result_1.finished or "'citation suppressed' in bind_translation_result.stderr or 'failed' in bind_translation_result.stderr or 'is not formatted correctly' in bind_translation_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (BIND_TRANSLATION)
@@ -354,7 +354,7 @@
       async_status:
         jid: "{{ biogrid_result.ansible_job_id }}"
       register: job_result_2
-      until: job_result_2.finished
+      until: job_result_2.finished or "'citation suppressed' in biogrid_result.stderr or 'failed' in biodgrid_result.stderr or 'is not formatted correctly' in biogrid_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (BIOGRID)
@@ -367,6 +367,13 @@
       fail:
         msg: "Failed"
       when: "'citation suppressed' in corum_result.stderr or 'failed' in corum_result.stderr or 'is not formatted correctly' in corum_result.stderr"
+      ignore_errors: true
+
+    - name: Wait for DIP to complete
+      async_status:
+        jid: "{{ dip_result.ansible_job_id }}"
+      register: job_result_3
+      until: job_result_3.finished or "'citation suppressed' in dip_result.stderr or 'failed' in dip_result.stderr or 'is not formatted correctly' in dip_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (DIP)
