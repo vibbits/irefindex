@@ -424,8 +424,8 @@
             jid: "{{ hpidb_result.ansible_job_id }}"
             poll: 0
           register: job_result_100
-          until: job_result_100.finished
-          retries: 12
+          until: job_result_100.finished or "'citation suppressed' in job_result_100.stderr or 'failed' in job_result_100.stderr or 'is not formatted correctly' in job_result_100.stderr"
+          retries: 8
           delay: 30
           ignore_errors: true
 
@@ -434,12 +434,7 @@
             msg: "Failed"
           when: "'citation suppressed' in job_result_100.stderr or 'failed' in job_result_100.stderr or 'is not formatted correctly' in job_result_100.stderr"
           ignore_errors: true
-      loop:
-        - 1
-      loop_control:
-        label: "Check failure conditions"
-        sleep: 5
-        until: "'citation suppressed' in job_result_100.stderr or 'failed' in job_result_100.stderr or 'is not formatted correctly' in job_result_100.stderr"
+      ignore_errors: true
 
     - name: Fail the task when conditions are met (HURI)
       fail:
