@@ -422,8 +422,8 @@
         jid: "{{ hpidb_result.ansible_job_id }}"
       register: job_result_100
       until: job_result_100.finished
-      retries: 40
-      delay: 20
+      retries: 8
+      delay: 30
       ignore_errors: true
 
     - name: Fail the task when conditions are met (HPIDB)
