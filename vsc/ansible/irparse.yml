@@ -389,11 +389,11 @@
       when: "'citation suppressed' in dip_result or 'failed' in dip_result or 'is not formatted correctly' in dip_result"
       ignore_errors: true
 
-    - name: Wait for HPRD to complete
+    - name: Wait for HRPD to complete
       async_status:
         jid: "{{ hprd_result.ansible_job_id }}"
       register: job_result_5
-      until: job_result_5.finished or "'citation suppressed' in hprd_result.stderr or 'failed' in hprd_result.stderr or 'is not formatted correctly' in hprd_result.stderr"
+      until: job_result_5.finished or "'citation suppressed' in hrpd_result.stderr or 'failed' in hrpd_result.stderr or 'is not formatted correctly' in hrpd_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (HRPD)
@@ -484,7 +484,7 @@
       async_status:
         jid: "{{ hpidb_result.ansible_job_id }}"
       register: job_result_12
-      until: job_result_12.finished or "'citation suppressed' in hpidb_result.stderr or 'failed' in hpidb_result.stderr or 'is not formatted correctly' in hpidb_result.stderr"
+      until: job_result_12.finished or "'citation suppressed' in hpidb_result.stderr or 'is not formatted correctly' in hpidb_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (HPIDB)

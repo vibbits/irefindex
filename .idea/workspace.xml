@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Wait for tasks to finish or to fail">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Remove .stderr">
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,7 +73,7 @@
       <workItem from="1700924688619" duration="58000" />
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
-      <workItem from="1700989762102" duration="4396000" />
+      <workItem from="1700989762102" duration="4552000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -407,7 +407,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700994214703</updated>
     </task>
-    <option name="localTasksCounter" value="45" />
+    <task id="LOCAL-00045" summary="Remove .stderr">
+      <option name="closed" value="true" />
+      <created>1700994638292</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1700994638292</updated>
+    </task>
+    <option name="localTasksCounter" value="46" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -441,6 +449,7 @@
     <MESSAGE value="Add async tasks" />
     <MESSAGE value="Test async fail tasks" />
     <MESSAGE value="Wait for tasks to finish or to fail" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wait for tasks to finish or to fail" />
+    <MESSAGE value="Remove .stderr" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove .stderr" />
   </component>
 </project>
