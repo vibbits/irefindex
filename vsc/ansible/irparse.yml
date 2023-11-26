@@ -391,7 +391,7 @@
 
     - name: Wait for HRPD to complete
       async_status:
-        jid: "{{ hprd_result.ansible_job_id }}"
+        jid: "{{ hrpd_result.ansible_job_id }}"
       register: job_result_5
       until: job_result_5.finished or "'citation suppressed' in hrpd_result.stderr or 'failed' in hrpd_result.stderr or 'is not formatted correctly' in hrpd_result.stderr"
       ignore_errors: true
