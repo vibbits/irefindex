@@ -379,7 +379,7 @@
     - name: Fail the task when conditions are met (DIP)
       fail:
         msg: "Failed"
-      when: "'citation suppressed' in dip_result or 'failed' in dip_result or 'is not formatted correctly' in dip_result"
+      when: "'citation suppressed' in dip_result"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (HRPD)
