@@ -339,7 +339,7 @@
 
     - name: Wait for BIND_TRANSLATION to complete
       async_status:
-        jid: "{{ bind_translation.ansible_job_id }}"
+        jid: "{{ bind_translation_result.ansible_job_id }}"
       register: job_result_1
       until: job_result_1.finished
       ignore_errors: true
