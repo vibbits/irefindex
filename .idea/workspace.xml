@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Remove a failing condition" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Delete .stderr">
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -71,7 +73,7 @@
       <workItem from="1700924688619" duration="58000" />
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
-      <workItem from="1700989762102" duration="5486000" />
+      <workItem from="1700989762102" duration="6230000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -429,7 +431,23 @@
       <option name="project" value="LOCAL" />
       <updated>1700995777286</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Solve mistake in naming of a variable">
+      <option name="closed" value="true" />
+      <created>1700995935891</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1700995935891</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Delete .stderr">
+      <option name="closed" value="true" />
+      <created>1700996117423</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1700996117423</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -465,6 +483,8 @@
     <MESSAGE value="Wait for tasks to finish or to fail" />
     <MESSAGE value="Remove .stderr" />
     <MESSAGE value="Remove a failing condition" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove a failing condition" />
+    <MESSAGE value="Solve mistake in naming of a variable" />
+    <MESSAGE value="Delete .stderr" />
+    <option name="LAST_COMMIT_MESSAGE" value="Delete .stderr" />
   </component>
 </project>

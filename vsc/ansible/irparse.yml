@@ -493,10 +493,24 @@
       when: "'citation suppressed' in hpidb_result or 'is not formatted correctly' in hpidb_result"
       ignore_errors: true
 
+    - name: Wait for HURI to complete
+      async_status:
+        jid: "{{ huri_result.ansible_job_id }}"
+      register: job_result_13
+      until: job_result_13.finished or "'citation suppressed' in huri_result.stderr or 'failed' in huri_result.stderr or 'is not formatted correctly' in huri_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (HURI)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in huri_result or 'is not formatted correctly' in huri_result"
+      ignore_errors: true
+
+    - name: Wait for IMEXX to complete
+      async_status:
+        jid: "{{ imexx_result.ansible_job_id }}"
+      register: job_result_14
+      until: job_result_14.finished or "'citation suppressed' in imexx_result.stderr or 'failed' in imexx_result.stderr or 'is not formatted correctly' in imexx_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (IMEX)
@@ -505,10 +519,24 @@
       when: "'citation suppressed' in imex_result or 'is not formatted correctly' in imex_result"
       ignore_errors: true
 
+    - name: Wait for INNATEDB to complete
+      async_status:
+        jid: "{{ innatedb_result.ansible_job_id }}"
+      register: job_result_15
+      until: job_result_15.finished or "'citation suppressed' in innatedb_result.stderr or 'failed' in innatedb_result.stderr or 'is not formatted correctly' in innatedb_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (INNATEDB)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in innatedb_result or 'is not formatted correctly' in innatedb_result"
+      ignore_errors: true
+
+    - name: Wait for MATRIXDB to complete
+      async_status:
+        jid: "{{ matrixdb_result.ansible_job_id }}"
+      register: job_result_16
+      until: job_result_16.finished or "'citation suppressed' in matrixdb_result.stderr or 'failed' in matrixdb_result.stderr or 'is not formatted correctly' in matrixdb_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MATRIXDB)
@@ -517,10 +545,24 @@
       when: "'citation suppressed' in matrixdb_result or 'is not formatted correctly' in matrixdb_result"
       ignore_errors: true
 
+    - name: Wait for MBINFO to complete
+      async_status:
+        jid: "{{ mbinfo_result.ansible_job_id }}"
+      register: job_result_17
+      until: job_result_17.finished or "'citation suppressed' in mbinfo_result.stderr or 'failed' in mbinfo_result.stderr or 'is not formatted correctly' in mbinfo_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (MBINFO)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in mbinfo_result or 'is not formatted correctly' in mbinfo_result"
+      ignore_errors: true
+
+    - name: Wait for MINT to complete
+      async_status:
+        jid: "{{ mint_result.ansible_job_id }}"
+      register: job_result_18
+      until: job_result_18.finished or "'citation suppressed' in mint_result.stderr or 'failed' in mint_result.stderr or 'is not formatted correctly' in mint_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MINT)
@@ -529,10 +571,24 @@
       when: "'citation suppressed' in mint_result or 'is not formatted correctly' in mint_result"
       ignore_errors: true
 
+    - name: Wait for MPIDB to complete
+      async_status:
+        jid: "{{ mpidb_result.ansible_job_id }}"
+      register: job_result_19
+      until: job_result_19.finished or "'citation suppressed' in mpidb_result.stderr or 'failed' in mpidb_result.stderr or 'is not formatted correctly' in mpidb_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (MPIDB)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in mpidb_result or 'is not formatted correctly' in mpidb_result"
+      ignore_errors: true
+
+    - name: Wait for QUICKGO to complete
+      async_status:
+        jid: "{{ quickgo_result.ansible_job_id }}"
+      register: job_result_20
+      until: job_result_20.finished or "'citation suppressed' in quickgo_result.stderr or 'failed' in quickgo_result.stderr or 'is not formatted correctly' in quickgo_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (QUICKGO)
@@ -541,10 +597,24 @@
       when: "'citation suppressed' in quickgo_result or 'is not formatted correctly' in quickgo_result"
       ignore_errors: true
 
+    - name: Wait for REACTOME to complete
+      async_status:
+        jid: "{{ reactome_result.ansible_job_id }}"
+      register: job_result_21
+      until: job_result_21.finished or "'citation suppressed' in reactome_result.stderr or 'failed' in reactome_result.stderr or 'is not formatted correctly' in reactome_result.stderr"
+      ignore_errors: true
+
     - name: Fail the task when conditions are met (REACTOME)
       fail:
         msg: "Failed"
       when: "'citation suppressed' in reactome_result or 'is not formatted correctly' in reactome_result"
+      ignore_errors: true
+
+    - name: Wait for UNIPROTPP to complete
+      async_status:
+        jid: "{{ uniprotpp_result.ansible_job_id }}"
+      register: job_result_22
+      until: job_result_22.finished or "'citation suppressed' in uniprotpp_result.stderr or 'failed' in uniprotpp_result.stderr or 'is not formatted correctly' in uniprotpp_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (UNIPROTPP)
