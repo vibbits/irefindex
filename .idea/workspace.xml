@@ -73,7 +73,7 @@
       <workItem from="1700924688619" duration="58000" />
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
-      <workItem from="1700989762102" duration="3055000" />
+      <workItem from="1700989762102" duration="3295000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -367,7 +367,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700992929346</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="Test async fail tasks">
+      <option name="closed" value="true" />
+      <created>1700993230919</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1700993230919</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

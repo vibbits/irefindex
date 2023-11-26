@@ -372,8 +372,8 @@
     - name: Wait for DIP to complete
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
-      register: job_result_3
-      until: job_result_3.finished or "'citation suppressed' in dip_result.stderr or 'failed' in dip_result.stderr or 'is not formatted correctly' in dip_result.stderr"
+      register: job_result_101
+      until: job_result_101.finished or "'citation suppressed' in dip_result.stderr or 'failed' in dip_result.stderr or 'is not formatted correctly' in dip_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (DIP)
