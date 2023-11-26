@@ -420,8 +420,8 @@
     - name: Wait for HPIDB to complete
       async_status:
         jid: "{{ hpidb_result.ansible_job_id }}"
-      register: job_result_4
-      until: job_result_4.finished
+      register: job_result_100
+      until: job_result_100.finished
       ignore_errors: true
 
     - name: Fail the task when conditions are met (HPIDB)
