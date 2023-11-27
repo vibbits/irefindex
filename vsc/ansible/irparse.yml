@@ -506,11 +506,11 @@
       when: "'citation suppressed' in huri_result or 'is not formatted correctly' in huri_result"
       ignore_errors: true
 
-    - name: Wait for IMEXX to complete
+    - name: Wait for IMEX to complete
       async_status:
-        jid: "{{ imexx_result.ansible_job_id }}"
+        jid: "{{ imex_result.ansible_job_id }}"
       register: job_result_14
-      until: job_result_14.finished or "'citation suppressed' in imexx_result.stderr or 'failed' in imexx_result.stderr or 'is not formatted correctly' in imexx_result.stderr"
+      until: job_result_14.finished or "'citation suppressed' in imex_result.stderr or 'failed' in imex_result.stderr or 'is not formatted correctly' in imex_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (IMEX)
