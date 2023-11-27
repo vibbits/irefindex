@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Fix wrong variable name">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Search reason why it doesn't fail">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +75,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="1172000" />
+      <workItem from="1701078374000" duration="1533000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -215,14 +216,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00024" summary="Test async fail tasks">
-      <option name="closed" value="true" />
-      <created>1700956700256</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1700956700256</updated>
     </task>
     <task id="LOCAL-00025" summary="Test async fail tasks">
       <option name="closed" value="true" />
@@ -448,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701079218377</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="Search reason why it doesn't fail">
+      <option name="closed" value="true" />
+      <created>1701079566438</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1701079566438</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -489,6 +490,7 @@
     <MESSAGE value="Add waiting/failing tasks" />
     <MESSAGE value="Change error messages" />
     <MESSAGE value="Fix wrong variable name" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix wrong variable name" />
+    <MESSAGE value="Search reason why it doesn't fail" />
+    <option name="LAST_COMMIT_MESSAGE" value="Search reason why it doesn't fail" />
   </component>
 </project>
