@@ -490,12 +490,8 @@
     - name: Fail the task when conditions are met (HPIDB)
       fail:
         msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "'citation suppressed' in job_result_12 or 'is not formatted correctly' in job_result_12"
+      when: "job_result_12.finished == 0"
       ignore_errors: true
-
-    - name: Debug hpidb_result
-      debug:
-        var: job_result_12
           
     - name: Wait for HURI to complete
       async_status:
@@ -633,11 +629,6 @@
       register: job_result_23
       until: job_result_23.finished or "'citation suppressed' in virushost_result.stderr or 'failed' in virushost_result.stderr or 'is not formatted correctly' in virushost_result.stderr"
       ignore_errors: true
-
-
-    - name: Debug job_result_23
-      debug:
-        var: job_result_23
 
     - name: Fail the task when conditions are met (VIRUSHOST)
       fail:
