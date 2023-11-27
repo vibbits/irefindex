@@ -493,9 +493,9 @@
       when: "'citation suppressed' in job_result_12 or 'is not formatted correctly' in job_result_12"
       ignore_errors: true
 
-    - name: Debug job_result_12
+    - name: Debug hpidb_result
       debug:
-        var: job_result_12
+        var: hpidb_result
           
     - name: Wait for HURI to complete
       async_status:
