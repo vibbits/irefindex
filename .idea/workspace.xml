@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Wait unlimited amount of time for waiting tasks">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Debug">
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +74,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="6601000" />
+      <workItem from="1701078374000" duration="6683000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -215,14 +215,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00038" summary="Test async fail tasks">
-      <option name="closed" value="true" />
-      <created>1700992232305</created>
-      <option name="number" value="00038" />
-      <option name="presentableId" value="LOCAL-00038" />
-      <option name="project" value="LOCAL" />
-      <updated>1700992232305</updated>
     </task>
     <task id="LOCAL-00039" summary="Test async fail tasks">
       <option name="closed" value="true" />
@@ -448,7 +440,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701085462861</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="Debug">
+      <option name="closed" value="true" />
+      <created>1701085675192</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1701085675192</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,9 +488,9 @@
     <MESSAGE value="Change error messages" />
     <MESSAGE value="Fix wrong variable name" />
     <MESSAGE value="Search reason why it doesn't fail" />
-    <MESSAGE value="Debug" />
     <MESSAGE value="Test again on localhost" />
     <MESSAGE value="Wait unlimited amount of time for waiting tasks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wait unlimited amount of time for waiting tasks" />
+    <MESSAGE value="Debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Debug" />
   </component>
 </project>
