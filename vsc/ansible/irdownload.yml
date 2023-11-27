@@ -256,7 +256,7 @@
       retries: 3
       async: 300
       poll: 0
-      register: result_unitprotpp
+      register: result_uniprotpp
 
     - name: Download IR data - VIRUSHOST
       command: "./irdownload VIRUSHOST"
