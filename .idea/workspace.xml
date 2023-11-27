@@ -75,7 +75,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="20872000" />
+      <workItem from="1701078374000" duration="21794000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -216,14 +216,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00054" summary="Search reason why it doesn't fail">
-      <option name="closed" value="true" />
-      <created>1701079939372</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1701079939372</updated>
     </task>
     <task id="LOCAL-00055" summary="Search reason why it doesn't fail">
       <option name="closed" value="true" />
@@ -449,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701102746567</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="Change the execution times">
+      <option name="closed" value="true" />
+      <created>1701109690641</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1701109690641</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
