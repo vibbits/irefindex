@@ -495,9 +495,9 @@
 
     - name: Debug job_result_12
       debug:
-        var: job_result_12          
+        var: job_result_12
           
-          - name: Wait for HURI to complete
+    - name: Wait for HURI to complete
       async_status:
         jid: "{{ huri_result.ansible_job_id }}"
       register: job_result_13
