@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Add waiting/failing tasks">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Change error messages">
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +74,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="653000" />
+      <workItem from="1701078374000" duration="818000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -216,14 +215,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Add ignore to all needed tasks">
-      <option name="closed" value="true" />
-      <created>1700953128281</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1700953128281</updated>
     </task>
     <task id="LOCAL-00023" summary="Add async tasks">
       <option name="closed" value="true" />
@@ -449,7 +440,15 @@
       <option name="project" value="LOCAL" />
       <updated>1700996563998</updated>
     </task>
-    <option name="localTasksCounter" value="51" />
+    <task id="LOCAL-00051" summary="Change error messages">
+      <option name="closed" value="true" />
+      <created>1701079051854</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1701079051854</updated>
+    </task>
+    <option name="localTasksCounter" value="52" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,6 +487,7 @@
     <MESSAGE value="Solve mistake in naming of a variable" />
     <MESSAGE value="Delete .stderr" />
     <MESSAGE value="Add waiting/failing tasks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add waiting/failing tasks" />
+    <MESSAGE value="Change error messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change error messages" />
   </component>
 </project>
