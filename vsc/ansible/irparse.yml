@@ -118,7 +118,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: huri_result
       ignore_errors: true
-      async: 30
+      async: 120
       poll: 0
 
     - name: Coverts the downloaded data to files INNATEDB
@@ -145,7 +145,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mbinfo_result
       ignore_errors: true
-      async: 900
+      async: 300
       poll: 0
 
     - name: Coverts the downloaded data to files MPIDB
@@ -154,7 +154,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mpidb_result
       ignore_errors: true
-      async: 540
+      async: 180
       poll: 0
 
     - name: Coverts the downloaded data to files MINT
@@ -163,7 +163,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mint_result
       ignore_errors: true
-      async: 180
+      async: 60
       poll: 0
 
     - name: Coverts the downloaded data to files MATRIXDB
@@ -172,7 +172,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: matrixdb_result
       ignore_errors: true
-      async: 360
+      async: 120
       poll: 0
 
     - name: Coverts the downloaded data to files QUICKGO
@@ -181,7 +181,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: quickgo_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files REACTOME
@@ -190,7 +190,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: reactome_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files VIRUSHOST
@@ -199,7 +199,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: virushost_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files UNIPROTPP
@@ -208,7 +208,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: uniprotpp_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files PSI_MI
@@ -217,7 +217,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: psi_mi_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files TAXONOMY
@@ -226,7 +226,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: taxonomy_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files ATHALIANA
@@ -235,7 +235,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: athaliana_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files DIG
@@ -244,7 +244,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: dig_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files BIND
@@ -253,7 +253,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: bind_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files FLY
@@ -262,7 +262,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: fly_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files IPI
@@ -280,7 +280,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: gene_result
       ignore_errors: true
-      async: 1800
+      async: 600
       poll: 0
 
     - name: Coverts the downloaded data to files GENPEPT
@@ -375,7 +375,6 @@
       ignore_errors: true
       retries: 8
       delay: 15
-      # 2 MINUTEN
 
     - name: Wait for HPRD to complete
       async_status:
@@ -415,7 +414,6 @@
       ignore_errors: true
       retries: 6
       delay: 10
-      # 1 MINUTE
 
     - name: Wait for MPPI to complete
       async_status:
@@ -425,7 +423,6 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # 30 SECONDS
 
     - name: Wait for BAR to complete
       async_status:
@@ -443,9 +440,8 @@
       register: job_result_11
       until: job_result_11.finished
       ignore_errors: true
-      retries: 4
-      delay: 30
-      # 2 MINUTEN
+      retries: 8
+      delay: 15
 
     - name: Wait for HPIDB to complete
       async_status:
@@ -455,8 +451,6 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # CITATION SUPPRESSED
-      # 30 SECONDEN
           
     - name: Wait for HURI to complete
       async_status:
@@ -464,9 +458,8 @@
       register: job_result_13
       until: job_result_13.finished
       ignore_errors: true
-      retries: 6
-      delay: 5
-      # NOT PROVIDE
+      retries: 8
+      delay: 15
 
     - name: Wait for IMEX to complete
       async_status:
@@ -476,8 +469,6 @@
       ignore_errors: true
       retries: 16
       delay: 30
-      #CITATION SUPPRESSED
-      # 8 MINUTEN
 
     - name: Wait for INNATEDB to complete
       async_status:
@@ -495,9 +486,8 @@
       register: job_result_16
       until: job_result_16.finished
       ignore_errors: true
-      retries: 72
-      delay: 5
-      # 2 MINUTEN
+      retries: 8
+      delay: 15
       # DATA PROCESSING FAILED
 
     - name: Wait for MBINFO to complete
@@ -506,10 +496,8 @@
       register: job_result_17
       until: job_result_17.finished
       ignore_errors: true
-      retries: 180
-      delay: 5
-      # 5 MINUTEN
-      # CITATION SUPPRESSED
+      retries: 10
+      delay: 30
 
     - name: Wait for MINT to complete
       async_status:
@@ -517,9 +505,8 @@
       register: job_result_18
       until: job_result_18.finished
       ignore_errors: true
-      retries: 36
-      delay: 5
-      # 1 MINUUT
+      retries: 6
+      delay: 10
 
     - name: Wait for MPIDB to complete
       async_status:
@@ -527,9 +514,8 @@
       register: job_result_19
       until: job_result_19.finished
       ignore_errors: true
-      retries: 108
-      delay: 5
-      # 3 MINUTEN
+      retries: 6
+      delay: 30
 
     - name: Wait for QUICKGO to complete
       async_status:
@@ -537,9 +523,8 @@
       register: job_result_20
       until: job_result_20.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # DID NOT PROVIDE
 
     - name: Wait for REACTOME to complete
       async_status:
@@ -547,9 +532,8 @@
       register: job_result_21
       until: job_result_21.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # 30 SECONDEN
 
     - name: Wait for UNIPROTPP to complete
       async_status:
@@ -557,9 +541,8 @@
       register: job_result_22
       until: job_result_22.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # DID NOT PROVIDE ANY DATA
 
     - name: Wait for VIRUSHOST to complete
       async_status:
@@ -567,9 +550,8 @@
       register: job_result_23
       until: job_result_23.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # 30 SECONDEN
 
     - name: Wait for PSI_MI to complete
       async_status:
@@ -577,9 +559,8 @@
       register: job_result_24
       until: job_result_24.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # 30 SECONDEN
 
     - name: Wait for TAXONOMY to complete
       async_status:
@@ -587,7 +568,7 @@
       register: job_result_25
       until: job_result_25.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # DID NOT PROVIDE DATA
 
@@ -597,9 +578,8 @@
       register: job_result_26
       until: job_result_26.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # 30 SECONDEN
 
     - name: Wait for BIND to complete
       async_status:
@@ -607,9 +587,8 @@
       register: job_result_27
       until: job_result_27.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # 30 SECONDEN
 
     - name: Wait for DIG to complete
       async_status:
@@ -617,9 +596,8 @@
       register: job_result_28
       until: job_result_28.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # 30 SECONDEN
 
     - name: Wait for FLY to complete
       async_status:
@@ -627,9 +605,8 @@
       register: job_result_29
       until: job_result_29.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
-      # 30 SECONDEN
 
     - name: Wait for GENE to complete
       async_status:
@@ -637,8 +614,8 @@
       register: job_result_30
       until: job_result_30.finished
       ignore_errors: true
-      retries: 360
-      delay: 5
+      retries: 20
+      delay: 30
       # 10 MINUTEN
       # UNEXPECTED END OF FILE
 

@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Search why a successful task fails">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Change the execution times">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
@@ -75,7 +75,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="18593000" />
+      <workItem from="1701078374000" duration="20872000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -216,14 +216,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00053" summary="Search reason why it doesn't fail">
-      <option name="closed" value="true" />
-      <created>1701079566438</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1701079566438</updated>
     </task>
     <task id="LOCAL-00054" summary="Search reason why it doesn't fail">
       <option name="closed" value="true" />
@@ -449,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701096968853</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="Change the execution times">
+      <option name="closed" value="true" />
+      <created>1701102746567</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1701102746567</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -467,7 +467,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Terraform starts the irinit Ansible code" />
     <MESSAGE value="Terraform, irinit and irdownload follows up each other" />
     <MESSAGE value="Run the irmanifest phase automatically" />
     <MESSAGE value="Add localhost to irmanifest to test it locally" />
@@ -492,6 +491,7 @@
     <MESSAGE value="Fix mistake in variable name" />
     <MESSAGE value="Add retries and time limits to the check tasks" />
     <MESSAGE value="Search why a successful task fails" />
-    <option name="LAST_COMMIT_MESSAGE" value="Search why a successful task fails" />
+    <MESSAGE value="Change the execution times" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change the execution times" />
   </component>
 </project>
