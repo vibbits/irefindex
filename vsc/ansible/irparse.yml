@@ -582,10 +582,6 @@
       until: job_result_19.finished or "'citation suppressed' in mpidb_result.stderr or 'failed' in mpidb_result.stderr or 'is not formatted correctly' in mpidb_result.stderr"
       ignore_errors: true
 
-    - name: Debug mpidb_result
-      debug:
-        var: job_result_19
-
     - name: Fail the task when conditions are met (MPIDB)
       fail:
         msg: "Failed: citation suppressed errors or wrong format errors"
@@ -637,6 +633,11 @@
       register: job_result_23
       until: job_result_23.finished or "'citation suppressed' in virushost_result.stderr or 'failed' in virushost_result.stderr or 'is not formatted correctly' in virushost_result.stderr"
       ignore_errors: true
+
+
+    - name: Debug job_result_23
+      debug:
+        var: job_result_23
 
     - name: Fail the task when conditions are met (VIRUSHOST)
       fail:
