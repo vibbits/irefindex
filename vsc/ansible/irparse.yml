@@ -390,7 +390,7 @@
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
       register: job_result_4
-      until: job_result_4.finished or "'citation suppressed' in dip_result.stderr or 'failed' in dip_result.stderr or 'is not formatted correctly' in dip_result.stderr"
+      until: job_result_4.finished
       ignore_errors: true
       retries: -1
       delay: 5
