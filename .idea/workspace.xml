@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Debug">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Test again on localhost">
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +74,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="6035000" />
+      <workItem from="1701078374000" duration="6379000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -216,14 +215,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00036" summary="Test async fail tasks">
-      <option name="closed" value="true" />
-      <created>1700991929453</created>
-      <option name="number" value="00036" />
-      <option name="presentableId" value="LOCAL-00036" />
-      <option name="project" value="LOCAL" />
-      <updated>1700991929453</updated>
     </task>
     <task id="LOCAL-00037" summary="Test async fail tasks">
       <option name="closed" value="true" />
@@ -449,7 +440,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701083706809</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="Test again on localhost">
+      <option name="closed" value="true" />
+      <created>1701085111382</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1701085111382</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -467,7 +466,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Run irinit without human interaction" />
     <MESSAGE value="Add hosts where the script can run" />
     <MESSAGE value="Ignore errors when removing cache" />
     <MESSAGE value="Fix mistake with running irinit script" />
@@ -492,6 +490,7 @@
     <MESSAGE value="Fix wrong variable name" />
     <MESSAGE value="Search reason why it doesn't fail" />
     <MESSAGE value="Debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debug" />
+    <MESSAGE value="Test again on localhost" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test again on localhost" />
   </component>
 </project>
