@@ -346,7 +346,7 @@
 
     - name: Fail the task when conditions are met (BIND_TRANSLATION)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in bind_translation_result or 'is not formatted correctly' in bind_translation_result"
       ignore_errors: true
 
@@ -359,7 +359,7 @@
 
     - name: Fail the task when conditions are met (BIOGRID)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in biogrid_result or 'is not formatted correctly' in biogrid_result"
       ignore_errors: true
 
@@ -372,7 +372,7 @@
 
     - name: Fail the task when conditions are met (CORUM)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in corum_result or 'is not formatted correctly' in corum_result"
       ignore_errors: true
 
@@ -385,7 +385,7 @@
 
     - name: Fail the task when conditions are met (DIP)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in dip_result or 'is not formatted correctly' in dip_result"
       ignore_errors: true
 
@@ -398,7 +398,7 @@
 
     - name: Fail the task when conditions are met (HRPD)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in hrpd_result or 'is not formatted correctly' in hrpd_result"
       ignore_errors: true
 
@@ -411,7 +411,7 @@
 
     - name: Fail the task when conditions are met (INTACT)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in intact_result or 'is not formatted correctly' in intact_result"
       ignore_errors: true
 
@@ -424,7 +424,7 @@
 
     - name: Fail the task when conditions are met (INTCOMPLEX)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in intcomplex_result or 'is not formatted correctly' in intcomplex_result"
       ignore_errors: true
 
@@ -437,7 +437,7 @@
 
     - name: Fail the task when conditions are met (MPACT)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in mpact_result or 'is not formatted correctly' in mpact_result"
       ignore_errors: true
 
@@ -450,7 +450,7 @@
 
     - name: Fail the task when conditions are met (MPPI)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in mppi_result or 'is not formatted correctly' in mppi_result"
       ignore_errors: true
 
@@ -463,7 +463,7 @@
 
     - name: Fail the task when conditions are met (BAR)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in bar_result or 'is not formatted correctly' in bar_result"
       ignore_errors: true
 
@@ -476,7 +476,7 @@
 
     - name: Fail the task when conditions are met (BHF_UCL)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in bhf_ucl_result or 'is not formatted correctly' in bhf_ucl_result"
       ignore_errors: true
 
@@ -489,7 +489,7 @@
 
     - name: Fail the task when conditions are met (HPIDB)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in hpidb_result or 'is not formatted correctly' in hpidb_result"
       ignore_errors: true
 
@@ -502,7 +502,7 @@
 
     - name: Fail the task when conditions are met (HURI)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in huri_result or 'is not formatted correctly' in huri_result"
       ignore_errors: true
 
@@ -515,7 +515,7 @@
 
     - name: Fail the task when conditions are met (IMEX)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in imex_result or 'is not formatted correctly' in imex_result"
       ignore_errors: true
 
@@ -528,7 +528,7 @@
 
     - name: Fail the task when conditions are met (INNATEDB)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in innatedb_result or 'is not formatted correctly' in innatedb_result"
       ignore_errors: true
 
@@ -541,7 +541,7 @@
 
     - name: Fail the task when conditions are met (MATRIXDB)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in matrixdb_result or 'is not formatted correctly' in matrixdb_result"
       ignore_errors: true
 
@@ -554,7 +554,7 @@
 
     - name: Fail the task when conditions are met (MBINFO)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in mbinfo_result or 'is not formatted correctly' in mbinfo_result"
       ignore_errors: true
 
@@ -567,7 +567,7 @@
 
     - name: Fail the task when conditions are met (MINT)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in mint_result or 'is not formatted correctly' in mint_result"
       ignore_errors: true
 
@@ -580,7 +580,7 @@
 
     - name: Fail the task when conditions are met (MPIDB)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in mpidb_result or 'is not formatted correctly' in mpidb_result"
       ignore_errors: true
 
@@ -593,7 +593,7 @@
 
     - name: Fail the task when conditions are met (QUICKGO)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in quickgo_result or 'is not formatted correctly' in quickgo_result"
       ignore_errors: true
 
@@ -606,7 +606,7 @@
 
     - name: Fail the task when conditions are met (REACTOME)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in reactome_result or 'is not formatted correctly' in reactome_result"
       ignore_errors: true
 
@@ -619,96 +619,201 @@
 
     - name: Fail the task when conditions are met (UNIPROTPP)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in uniprotpp_result or 'is not formatted correctly' in uniprotpp_result"
+      ignore_errors: true
+
+    - name: Wait for VIRUSHOST to complete
+      async_status:
+        jid: "{{ virushost_result.ansible_job_id }}"
+      register: job_result_23
+      until: job_result_23.finished or "'citation suppressed' in virushost_result.stderr or 'failed' in virushost_result.stderr or 'is not formatted correctly' in virushost_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (VIRUSHOST)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in virushost_result or 'is not formatted correctly' in virushost_result"
+      ignore_errors: true
+
+    - name: Wait for PSI_MI to complete
+      async_status:
+        jid: "{{ psi_mi_result.ansible_job_id }}"
+      register: job_result_24
+      until: job_result_24.finished or "'citation suppressed' in psi_mi_result.stderr or 'failed' in psi_mi_result.stderr or 'is not formatted correctly' in psi_mi_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (PSI_MI)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in psi_mi_result or 'is not formatted correctly' in psi_mi_result"
+      ignore_errors: true
+
+    - name: Wait for TAXONOMY to complete
+      async_status:
+        jid: "{{ taxonomy_result.ansible_job_id }}"
+      register: job_result_25
+      until: job_result_25.finished or "'citation suppressed' in taxonomy_result.stderr or 'failed' in taxonomy_result.stderr or 'is not formatted correctly' in taxonomy_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (TAXONOMY)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in taxonomy_result or 'is not formatted correctly' in taxonomy_result"
+      ignore_errors: true
+
+    - name: Wait for ATHALIANA to complete
+      async_status:
+        jid: "{{ athaliana_result.ansible_job_id }}"
+      register: job_result_26
+      until: job_result_26.finished or "'citation suppressed' in athaliana_result.stderr or 'failed' in athaliana_result.stderr or 'is not formatted correctly' in athaliana_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (ATHALIANA)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in athaliana_result or 'is not formatted correctly' in athaliana_result"
+      ignore_errors: true
+
+    - name: Wait for BIND to complete
+      async_status:
+        jid: "{{ bind_result.ansible_job_id }}"
+      register: job_result_27
+      until: job_result_27.finished or "'citation suppressed' in bind_result.stderr or 'failed' in bind_result.stderr or 'is not formatted correctly' in bind_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (BIND)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in bind_result or 'is not formatted correctly' in bind_result"
+      ignore_errors: true
+
+    - name: Wait for DIG to complete
+      async_status:
+        jid: "{{ dig_result.ansible_job_id }}"
+      register: job_result_28
+      until: job_result_28.finished or "'citation suppressed' in dig_result.stderr or 'failed' in dig_result.stderr or 'is not formatted correctly' in dig_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (DIG)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in dig_result or 'is not formatted correctly' in dig_result"
+      ignore_errors: true
+
+    - name: Wait for FLY to complete
+      async_status:
+        jid: "{{ fly_result.ansible_job_id }}"
+      register: job_result_29
+      until: job_result_29.finished or "'citation suppressed' in fly_result.stderr or 'failed' in fly_result.stderr or 'is not formatted correctly' in fly_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (FLY)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in fly_result or 'is not formatted correctly' in fly_result"
+      ignore_errors: true
+
+    - name: Wait for GENE to complete
+      async_status:
+        jid: "{{ gene_result.ansible_job_id }}"
+      register: job_result_30
+      until: job_result_30.finished or "'citation suppressed' in gene_result.stderr or 'failed' in gene_result.stderr or 'is not formatted correctly' in gene_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (GENE)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in gene_result or 'is not formatted correctly' in gene_result"
+      ignore_errors: true
+
+    - name: Wait for GENPEPT to complete
+      async_status:
+        jid: "{{ genpept_result.ansible_job_id }}"
+      register: job_result_31
+      until: job_result_31.finished or "'citation suppressed' in genpept_result.stderr or 'failed' in genpept_result.stderr or 'is not formatted correctly' in genpept_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (GENPEPT)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in genpept_result or 'is not formatted correctly' in genpept_result"
+      ignore_errors: true
+
+    - name: Wait for IPI to complete
+      async_status:
+        jid: "{{ ipi_result.ansible_job_id }}"
+      register: job_result_32
+      until: job_result_32.finished or "'citation suppressed' in ipi_result.stderr or 'failed' in ipi_result.stderr or 'is not formatted correctly' in ipi_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (IPI)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in ipi_result or 'is not formatted correctly' in ipi_result"
+      ignore_errors: true
+
+    - name: Wait for MMDB to complete
+      async_status:
+        jid: "{{ mmdb_result.ansible_job_id }}"
+      register: job_result_33
+      until: job_result_33.finished or "'citation suppressed' in mmdb_result.stderr or 'failed' in mmdb_result.stderr or 'is not formatted correctly' in mmdb_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (MMDB)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in mmdb_result or 'is not formatted correctly' in mmdb_result"
+      ignore_errors: true
+
+    - name: Wait for PDB to complete
+      async_status:
+        jid: "{{ pdb_result.ansible_job_id }}"
+      register: job_result_34
+      until: job_result_34.finished or "'citation suppressed' in pdb_result.stderr or 'failed' in pdb_result.stderr or 'is not formatted correctly' in pdb_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (PDB)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in pdb_result or 'is not formatted correctly' in pdb_result"
+      ignore_errors: true
+
+    - name: Wait for REFSEQ to complete
+      async_status:
+        jid: "{{ refseq_result.ansible_job_id }}"
+      register: job_result_35
+      until: job_result_35.finished or "'citation suppressed' in refseq_result.stderr or 'failed' in refseq_result.stderr or 'is not formatted correctly' in refseq_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (REFSEQ)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in refseq_result or 'is not formatted correctly' in refseq_result"
+      ignore_errors: true
+
+    - name: Wait for UNIPROT to complete
+      async_status:
+        jid: "{{ uniprot_result.ansible_job_id }}"
+      register: job_result_36
+      until: job_result_36.finished or "'citation suppressed' in uniprot_result.stderr or 'failed' in uniprot_result.stderr or 'is not formatted correctly' in uniprot_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (UNIPROT)
       fail:
-        msg: "Failed"
-      when: "'citation suppressed' in uniprot or 'is not formatted correctly' in uniprot"
+        msg: "Failed: citation suppressed errors or wrong format errors"
+      when: "'citation suppressed' in uniprot_result or 'is not formatted correctly' in uniprot_result"
+      ignore_errors: true
+
+    - name: Wait for YEAST to complete
+      async_status:
+        jid: "{{ yeast_result.ansible_job_id }}"
+      register: job_result_37
+      until: job_result_37.finished or "'citation suppressed' in yeast_result.stderr or 'failed' in yeast_result.stderr or 'is not formatted correctly' in yeast_result.stderr"
       ignore_errors: true
 
     - name: Fail the task when conditions are met (YEAST)
       fail:
-        msg: "Failed"
+        msg: "Failed: citation suppressed errors or wrong format errors"
       when: "'citation suppressed' in yeast_result or 'is not formatted correctly' in yeast_result"
       ignore_errors: true
