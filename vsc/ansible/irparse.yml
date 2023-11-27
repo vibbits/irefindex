@@ -341,10 +341,11 @@
       async_status:
         jid: "{{ bind_translation_result.ansible_job_id }}"
       register: job_result_1
-      until: job_result_1.finished or "'citation suppressed' in bind_translation_result.stderr or 'failed' in bind_translation_result.stderr or 'is not formatted correctly' in bind_translation_result.stderr"
+      until: job_result_1.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # NOT PROVIDE
 
     - name: Fail the task when conditions are met (BIND_TRANSLATION)
       fail:
@@ -356,10 +357,11 @@
       async_status:
         jid: "{{ biogrid_result.ansible_job_id }}"
       register: job_result_2
-      until: job_result_2.finished or "'citation suppressed' in biogrid_result.stderr or 'failed' in biodgrid_result.stderr or 'is not formatted correctly' in biogrid_result.stderr"
+      until: job_result_2.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      #NOT PROVIDE
 
     - name: Fail the task when conditions are met (BIOGRID)
       fail:
@@ -371,10 +373,11 @@
       async_status:
         jid: "{{ corum_result.ansible_job_id }}"
       register: job_result_3
-      until: job_result_3.finished or "'citation suppressed' in corum_result.stderr or 'failed' in corum_result.stderr or 'is not formatted correctly' in corum_result.stderr"
+      until: job_result_3.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      #NOT PROVIDE
 
     - name: Fail the task when conditions are met (CORUM)
       fail:
@@ -382,18 +385,15 @@
       when: "job_result_3.finished == 0"
       ignore_errors: true
 
-    - name: Debug
-      debug:
-        var: dip_result
-
     - name: Wait for DIP to complete
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
       register: job_result_4
       until: job_result_4.finished
       ignore_errors: true
-      retries: 120
+      retries: 72
       delay: 5
+      # 2 MINUTEN
 
     - name: Fail the task when conditions are met (DIP)
       fail:
@@ -401,14 +401,15 @@
       when: "job_result_4.finished == 0"
       ignore_errors: true
 
-    - name: Wait for HRPD to complete
+    - name: Wait for HPRD to complete
       async_status:
         jid: "{{ hrpd_result.ansible_job_id }}"
       register: job_result_5
-      until: job_result_5.finished or "'citation suppressed' in hrpd_result.stderr or 'failed' in hrpd_result.stderr or 'is not formatted correctly' in hrpd_result.stderr"
+      until: job_result_5.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # NOT PROVIDE
 
     - name: Fail the task when conditions are met (HRPD)
       fail:
@@ -420,10 +421,11 @@
       async_status:
         jid: "{{ intact_result.ansible_job_id }}"
       register: job_result_6
-      until: job_result_6.finished or "'citation suppressed' in intact_result.stderr or 'failed' in intact_result.stderr or 'is not formatted correctly' in intact_result.stderr"
+      until: job_result_6.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # NOT PROVIDE
 
     - name: Fail the task when conditions are met (INTACT)
       fail:
@@ -435,10 +437,11 @@
       async_status:
         jid: "{{ intcomplex_result.ansible_job_id }}"
       register: job_result_7
-      until: job_result_7.finished or "'citation suppressed' in intcomplex_result.stderr or 'failed' in intcomplex_result.stderr or 'is not formatted correctly' in intcomplex_result.stderr"
+      until: job_result_7.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # NOT PROVIDE
 
     - name: Fail the task when conditions are met (INTCOMPLEX)
       fail:
@@ -450,10 +453,11 @@
       async_status:
         jid: "{{ mpact_result.ansible_job_id }}"
       register: job_result_8
-      until: job_result_8.finished or "'citation suppressed' in mpact_result.stderr or 'failed' in mpact_result.stderr or 'is not formatted correctly' in mpact_result.stderr"
+      until: job_result_8.finished
       ignore_errors: true
-      retries: -1
+      retries: 36
       delay: 5
+      # 1 MINUTE
 
     - name: Fail the task when conditions are met (MPACT)
       fail:
@@ -465,10 +469,11 @@
       async_status:
         jid: "{{ mppi_result.ansible_job_id }}"
       register: job_result_9
-      until: job_result_9.finished or "'citation suppressed' in mppi_result.stderr or 'failed' in mppi_result.stderr or 'is not formatted correctly' in mppi_result.stderr"
+      until: job_result_9.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDS
 
     - name: Fail the task when conditions are met (MPPI)
       fail:
@@ -480,10 +485,11 @@
       async_status:
         jid: "{{ bar_result.ansible_job_id }}"
       register: job_result_10
-      until: job_result_10.finished or "'citation suppressed' in bar_result.stderr or 'failed' in bar_result.stderr or 'is not formatted correctly' in bar_result.stderr"
+      until: job_result_10.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # NOT PROVIDE
 
     - name: Fail the task when conditions are met (BAR)
       fail:
@@ -495,10 +501,11 @@
       async_status:
         jid: "{{ bhf_ucl_result.ansible_job_id }}"
       register: job_result_11
-      until: job_result_11.finished or "'citation suppressed' in bhf_ucl_result.stderr or 'failed' in bhf_ucl_result.stderr or 'is not formatted correctly' in bhf_ucl_result.stderr"
+      until: job_result_11.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDS
 
     - name: Fail the task when conditions are met (BHF_UCL)
       fail:
@@ -510,10 +517,12 @@
       async_status:
         jid: "{{ hpidb_result.ansible_job_id }}"
       register: job_result_12
-      until: job_result_12.finished or "'citation suppressed' in hpidb_result.stderr or 'is not formatted correctly' in hpidb_result.stderr"
+      until: job_result_12.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # CITATION SUPPRESSED
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (HPIDB)
       fail:
@@ -525,10 +534,11 @@
       async_status:
         jid: "{{ huri_result.ansible_job_id }}"
       register: job_result_13
-      until: job_result_13.finished or "'citation suppressed' in huri_result.stderr or 'failed' in huri_result.stderr or 'is not formatted correctly' in huri_result.stderr"
+      until: job_result_13.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # NOT PROVIDE
 
     - name: Fail the task when conditions are met (HURI)
       fail:
@@ -540,10 +550,12 @@
       async_status:
         jid: "{{ imex_result.ansible_job_id }}"
       register: job_result_14
-      until: job_result_14.finished or "'citation suppressed' in imex_result.stderr or 'failed' in imex_result.stderr or 'is not formatted correctly' in imex_result.stderr"
+      until: job_result_14.finished
       ignore_errors: true
-      retries: -1
+      retries: 288
       delay: 5
+      #CITATION SUPPRESSED
+      # 8 MINUTEN
 
     - name: Fail the task when conditions are met (IMEX)
       fail:
@@ -555,10 +567,11 @@
       async_status:
         jid: "{{ innatedb_result.ansible_job_id }}"
       register: job_result_15
-      until: job_result_15.finished or "'citation suppressed' in innatedb_result.stderr or 'failed' in innatedb_result.stderr or 'is not formatted correctly' in innatedb_result.stderr"
+      until: job_result_15.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # NOT PROVIDE
 
     - name: Fail the task when conditions are met (INNATEDB)
       fail:
@@ -570,10 +583,12 @@
       async_status:
         jid: "{{ matrixdb_result.ansible_job_id }}"
       register: job_result_16
-      until: job_result_16.finished or "'citation suppressed' in matrixdb_result.stderr or 'failed' in matrixdb_result.stderr or 'is not formatted correctly' in matrixdb_result.stderr"
+      until: job_result_16.finished
       ignore_errors: true
-      retries: -1
+      retries: 72
       delay: 5
+      # 2 MINUTEN
+      # DATA PROCESSING FAILED
 
     - name: Fail the task when conditions are met (MATRIXDB)
       fail:
@@ -585,10 +600,12 @@
       async_status:
         jid: "{{ mbinfo_result.ansible_job_id }}"
       register: job_result_17
-      until: job_result_17.finished or "'citation suppressed' in mbinfo_result.stderr or 'failed' in mbinfo_result.stderr or 'is not formatted correctly' in mbinfo_result.stderr"
+      until: job_result_17.finished
       ignore_errors: true
-      retries: -1
+      retries: 180
       delay: 5
+      # 5 MINUTEN
+      # CITATION SUPPRESSED
 
     - name: Fail the task when conditions are met (MBINFO)
       fail:
@@ -600,10 +617,11 @@
       async_status:
         jid: "{{ mint_result.ansible_job_id }}"
       register: job_result_18
-      until: job_result_18.finished or "'citation suppressed' in mint_result.stderr or 'failed' in mint_result.stderr or 'is not formatted correctly' in mint_result.stderr"
+      until: job_result_18.finished
       ignore_errors: true
-      retries: -1
+      retries: 36
       delay: 5
+      # 1 MINUUT
 
     - name: Fail the task when conditions are met (MINT)
       fail:
@@ -615,10 +633,11 @@
       async_status:
         jid: "{{ mpidb_result.ansible_job_id }}"
       register: job_result_19
-      until: job_result_19.finished or "'citation suppressed' in mpidb_result.stderr or 'failed' in mpidb_result.stderr or 'is not formatted correctly' in mpidb_result.stderr"
+      until: job_result_19.finished
       ignore_errors: true
-      retries: -1
+      retries: 108
       delay: 5
+      # 3 MINUTEN
 
     - name: Fail the task when conditions are met (MPIDB)
       fail:
@@ -630,10 +649,11 @@
       async_status:
         jid: "{{ quickgo_result.ansible_job_id }}"
       register: job_result_20
-      until: job_result_20.finished or "'citation suppressed' in quickgo_result.stderr or 'failed' in quickgo_result.stderr or 'is not formatted correctly' in quickgo_result.stderr"
+      until: job_result_20.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # DID NOT PROVIDE
 
     - name: Fail the task when conditions are met (QUICKGO)
       fail:
@@ -645,10 +665,11 @@
       async_status:
         jid: "{{ reactome_result.ansible_job_id }}"
       register: job_result_21
-      until: job_result_21.finished or "'citation suppressed' in reactome_result.stderr or 'failed' in reactome_result.stderr or 'is not formatted correctly' in reactome_result.stderr"
+      until: job_result_21.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (REACTOME)
       fail:
@@ -660,10 +681,11 @@
       async_status:
         jid: "{{ uniprotpp_result.ansible_job_id }}"
       register: job_result_22
-      until: job_result_22.finished or "'citation suppressed' in uniprotpp_result.stderr or 'failed' in uniprotpp_result.stderr or 'is not formatted correctly' in uniprotpp_result.stderr"
+      until: job_result_22.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # DID NOT PROVIDE ANY DATA
 
     - name: Fail the task when conditions are met (UNIPROTPP)
       fail:
@@ -675,10 +697,11 @@
       async_status:
         jid: "{{ virushost_result.ansible_job_id }}"
       register: job_result_23
-      until: job_result_23.finished or "'citation suppressed' in virushost_result.stderr or 'failed' in virushost_result.stderr or 'is not formatted correctly' in virushost_result.stderr"
+      until: job_result_23.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (VIRUSHOST)
       fail:
@@ -690,10 +713,11 @@
       async_status:
         jid: "{{ psi_mi_result.ansible_job_id }}"
       register: job_result_24
-      until: job_result_24.finished or "'citation suppressed' in psi_mi_result.stderr or 'failed' in psi_mi_result.stderr or 'is not formatted correctly' in psi_mi_result.stderr"
+      until: job_result_24.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (PSI_MI)
       fail:
@@ -705,10 +729,11 @@
       async_status:
         jid: "{{ taxonomy_result.ansible_job_id }}"
       register: job_result_25
-      until: job_result_25.finished or "'citation suppressed' in taxonomy_result.stderr or 'failed' in taxonomy_result.stderr or 'is not formatted correctly' in taxonomy_result.stderr"
+      until: job_result_25.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # DID NOT PROVIDE DATA
 
     - name: Fail the task when conditions are met (TAXONOMY)
       fail:
@@ -720,10 +745,11 @@
       async_status:
         jid: "{{ athaliana_result.ansible_job_id }}"
       register: job_result_26
-      until: job_result_26.finished or "'citation suppressed' in athaliana_result.stderr or 'failed' in athaliana_result.stderr or 'is not formatted correctly' in athaliana_result.stderr"
+      until: job_result_26.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (ATHALIANA)
       fail:
@@ -735,10 +761,11 @@
       async_status:
         jid: "{{ bind_result.ansible_job_id }}"
       register: job_result_27
-      until: job_result_27.finished or "'citation suppressed' in bind_result.stderr or 'failed' in bind_result.stderr or 'is not formatted correctly' in bind_result.stderr"
+      until: job_result_27.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (BIND)
       fail:
@@ -750,10 +777,11 @@
       async_status:
         jid: "{{ dig_result.ansible_job_id }}"
       register: job_result_28
-      until: job_result_28.finished or "'citation suppressed' in dig_result.stderr or 'failed' in dig_result.stderr or 'is not formatted correctly' in dig_result.stderr"
+      until: job_result_28.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (DIG)
       fail:
@@ -765,10 +793,11 @@
       async_status:
         jid: "{{ fly_result.ansible_job_id }}"
       register: job_result_29
-      until: job_result_29.finished or "'citation suppressed' in fly_result.stderr or 'failed' in fly_result.stderr or 'is not formatted correctly' in fly_result.stderr"
+      until: job_result_29.finished
       ignore_errors: true
-      retries: -1
+      retries: 18
       delay: 5
+      # 30 SECONDEN
 
     - name: Fail the task when conditions are met (FLY)
       fail:
@@ -780,10 +809,12 @@
       async_status:
         jid: "{{ gene_result.ansible_job_id }}"
       register: job_result_30
-      until: job_result_30.finished or "'citation suppressed' in gene_result.stderr or 'failed' in gene_result.stderr or 'is not formatted correctly' in gene_result.stderr"
+      until: job_result_30.finished
       ignore_errors: true
-      retries: -1
+      retries: 360
       delay: 5
+      # 10 MINUTEN
+      # UNEXPECTED END OF FILE
 
     - name: Fail the task when conditions are met (GENE)
       fail:
