@@ -389,7 +389,7 @@
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
       register: job_result_4
-      until: job_result_4.finished
+      until: job_result_4.finished or job_result_4.rc == 0
       ignore_errors: true
       retries: 72
       delay: 5
