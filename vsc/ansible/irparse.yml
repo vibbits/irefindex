@@ -74,7 +74,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mpact_result
       ignore_errors: true
-      retry: 3
+      retries: 3
       async: 60
       poll: 0
 
