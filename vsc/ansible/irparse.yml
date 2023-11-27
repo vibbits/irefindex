@@ -382,13 +382,17 @@
       when: "job_result_3.finished == 0"
       ignore_errors: true
 
+    - name: Debug
+      debug:
+        var: dip_result
+
     - name: Wait for DIP to complete
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
       register: job_result_4
-      until: job_result_4.finished or "'citation suppressed' in dip_result.stderr or 'failed' in dip_result.stderr or 'is not formatted correctly' in dip_result.stderr"
+      until: job_result_4.finished
       ignore_errors: true
-      retries: -1
+      retries: 120
       delay: 5
 
     - name: Fail the task when conditions are met (DIP)
