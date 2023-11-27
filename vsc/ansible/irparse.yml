@@ -488,7 +488,6 @@
       ignore_errors: true
       retries: 8
       delay: 15
-      # DATA PROCESSING FAILED
 
     - name: Wait for MBINFO to complete
       async_status:
@@ -608,6 +607,9 @@
       retries: 6
       delay: 5
 
+
+      # VANAF HIER AANVULLEN!!!!
+
     - name: Wait for GENE to complete
       async_status:
         jid: "{{ gene_result.ansible_job_id }}"
@@ -616,7 +618,6 @@
       ignore_errors: true
       retries: 20
       delay: 30
-      # 10 MINUTEN
       # UNEXPECTED END OF FILE
 
     - name: Wait for GENPEPT to complete
