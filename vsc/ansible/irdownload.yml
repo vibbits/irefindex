@@ -1,6 +1,6 @@
 ---
 - name: Irdownload
-  hosts: all
+  hosts: localhost
   become: yes
 
   tasks:
