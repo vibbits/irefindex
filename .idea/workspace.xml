@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Add retries and time limits to the check tasks">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Search why a successful task fails">
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +74,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="12903000" />
+      <workItem from="1701078374000" duration="16567000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -215,46 +215,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00047" summary="Remove a failing condition">
-      <option name="closed" value="true" />
-      <created>1700995777286</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1700995777286</updated>
-    </task>
-    <task id="LOCAL-00048" summary="Solve mistake in naming of a variable">
-      <option name="closed" value="true" />
-      <created>1700995935891</created>
-      <option name="number" value="00048" />
-      <option name="presentableId" value="LOCAL-00048" />
-      <option name="project" value="LOCAL" />
-      <updated>1700995935891</updated>
-    </task>
-    <task id="LOCAL-00049" summary="Delete .stderr">
-      <option name="closed" value="true" />
-      <created>1700996117423</created>
-      <option name="number" value="00049" />
-      <option name="presentableId" value="LOCAL-00049" />
-      <option name="project" value="LOCAL" />
-      <updated>1700996117423</updated>
-    </task>
-    <task id="LOCAL-00050" summary="Add waiting/failing tasks">
-      <option name="closed" value="true" />
-      <created>1700996563998</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1700996563998</updated>
-    </task>
-    <task id="LOCAL-00051" summary="Change error messages">
-      <option name="closed" value="true" />
-      <created>1701079051854</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1701079051854</updated>
     </task>
     <task id="LOCAL-00052" summary="Fix wrong variable name">
       <option name="closed" value="true" />
@@ -448,7 +408,47 @@
       <option name="project" value="LOCAL" />
       <updated>1701092959601</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="Add retries and time limits to the check tasks">
+      <option name="closed" value="true" />
+      <created>1701093244170</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1701093244170</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Search why a successful task fails">
+      <option name="closed" value="true" />
+      <created>1701095002859</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1701095002859</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Search why a successful task fails">
+      <option name="closed" value="true" />
+      <created>1701095815831</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1701095815831</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Search why a successful task fails">
+      <option name="closed" value="true" />
+      <created>1701096013989</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1701096013989</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Search why a successful task fails">
+      <option name="closed" value="true" />
+      <created>1701096066236</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1701096066237</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -466,7 +466,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Update irdownload" />
     <MESSAGE value="Terraform starts the irinit Ansible code" />
     <MESSAGE value="Terraform, irinit and irdownload follows up each other" />
     <MESSAGE value="Run the irmanifest phase automatically" />
@@ -491,6 +490,7 @@
     <MESSAGE value="Debug" />
     <MESSAGE value="Fix mistake in variable name" />
     <MESSAGE value="Add retries and time limits to the check tasks" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add retries and time limits to the check tasks" />
+    <MESSAGE value="Search why a successful task fails" />
+    <option name="LAST_COMMIT_MESSAGE" value="Search why a successful task fails" />
   </component>
 </project>
