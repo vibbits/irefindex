@@ -74,7 +74,8 @@
         chdir: "/home/irefindex/usr/bin"
       register: mpact_result
       ignore_errors: true
-      async: yes
+      retry: 3
+      async: 60
       poll: 0
 
     - name: Coverts the downloaded data to files MPPI
