@@ -37,7 +37,8 @@
         chdir: "/home/irefindex/usr/bin"
       register: dip_result
       ignore_errors: true
-      async: yes
+      retries: 3
+      async: 120
       poll: 0
 
     - name: Coverts the downloaded data to files HPRD
@@ -389,17 +390,11 @@
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
       register: job_result_4
-      until: job_result_4.finished or job_result_4.rc == 0
+      until: job_result_4.finished
       ignore_errors: true
       retries: 72
       delay: 5
       # 2 MINUTEN
-
-    - name: Fail the task when conditions are met (DIP)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_4.finished == 0"
-      ignore_errors: true
 
     - name: Wait for HPRD to complete
       async_status:
