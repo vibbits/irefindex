@@ -493,7 +493,11 @@
       when: "'citation suppressed' in job_result_12 or 'is not formatted correctly' in job_result_12"
       ignore_errors: true
 
-    - name: Wait for HURI to complete
+    - name: Debug job_result_12
+      debug:
+        var: job_result_12          
+          
+          - name: Wait for HURI to complete
       async_status:
         jid: "{{ huri_result.ansible_job_id }}"
       register: job_result_13
