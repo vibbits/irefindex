@@ -10,7 +10,7 @@
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
       register: bind_translation_result
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files BIOGRID
@@ -19,7 +19,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: biogrid_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files CORUM
@@ -28,7 +28,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: corum_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files DIP
@@ -37,7 +37,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: dip_result
       ignore_errors: true
-      async: 360
+      async: 120
       poll: 0
 
     - name: Coverts the downloaded data to files HPRD
@@ -46,7 +46,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: hrpd_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files INTACT
@@ -55,7 +55,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: intact_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files INTCOMPLEX
@@ -64,7 +64,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: intcomplex_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files MPACT
@@ -73,7 +73,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mpact_result
       ignore_errors: true
-      async: 180
+      async: 60
       poll: 0
 
     - name: Coverts the downloaded data to files MPPI
@@ -82,7 +82,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mppi_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files BAR
@@ -91,7 +91,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: bar_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files BHF_UCL
@@ -100,7 +100,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: bhf_ucl_result
       ignore_errors: true
-      async: 90
+      async: 120
       poll: 0
 
     - name: Coverts the downloaded data to files HPIDB
@@ -109,7 +109,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: hpidb_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files HURI
@@ -118,7 +118,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: huri_result
       ignore_errors: true
-      async: 90
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files INNATEDB
@@ -127,7 +127,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: innatedb_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files IMEX
@@ -136,7 +136,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: imex_result
       ignore_errors: true
-      async: 1440
+      async: 480
       poll: 0
 
     - name: Coverts the downloaded data to files MBINFO
@@ -145,7 +145,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mbinfo_result
       ignore_errors: true
-      async: yes
+      async: 900
       poll: 0
 
     - name: Coverts the downloaded data to files MPIDB
@@ -154,7 +154,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mpidb_result
       ignore_errors: true
-      async: yes
+      async: 540
       poll: 0
 
     - name: Coverts the downloaded data to files MINT
@@ -163,7 +163,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mint_result
       ignore_errors: true
-      async: yes
+      async: 180
       poll: 0
 
     - name: Coverts the downloaded data to files MATRIXDB
@@ -172,7 +172,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: matrixdb_result
       ignore_errors: true
-      async: yes
+      async: 360
       poll: 0
 
     - name: Coverts the downloaded data to files QUICKGO
@@ -181,7 +181,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: quickgo_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files REACTOME
@@ -190,7 +190,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: reactome_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files VIRUSHOST
@@ -199,7 +199,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: virushost_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files UNIPROTPP
@@ -208,7 +208,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: uniprotpp_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files PSI_MI
@@ -217,7 +217,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: psi_mi_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files TAXONOMY
@@ -226,7 +226,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: taxonomy_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files ATHALIANA
@@ -235,7 +235,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: athaliana_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files DIG
@@ -244,7 +244,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: dig_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files BIND
@@ -253,7 +253,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: bind_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files FLY
@@ -262,7 +262,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: fly_result
       ignore_errors: true
-      async: yes
+      async: 90
       poll: 0
 
     - name: Coverts the downloaded data to files IPI
@@ -280,7 +280,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: gene_result
       ignore_errors: true
-      async: yes
+      async: 1800
       poll: 0
 
     - name: Coverts the downloaded data to files GENPEPT
@@ -343,7 +343,7 @@
       register: job_result_1
       until: job_result_1.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # NOT PROVIDE
 
@@ -353,7 +353,7 @@
       register: job_result_2
       until: job_result_2.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       #NOT PROVIDE
 
@@ -363,7 +363,7 @@
       register: job_result_3
       until: job_result_3.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       #NOT PROVIDE
 
@@ -373,8 +373,8 @@
       register: job_result_4
       until: job_result_4.finished
       ignore_errors: true
-      retries: 72
-      delay: 5
+      retries: 8
+      delay: 15
       # 2 MINUTEN
 
     - name: Wait for HPRD to complete
@@ -383,7 +383,7 @@
       register: job_result_5
       until: job_result_5.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # NOT PROVIDE
 
@@ -393,7 +393,7 @@
       register: job_result_6
       until: job_result_6.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # NOT PROVIDE
 
@@ -403,7 +403,7 @@
       register: job_result_7
       until: job_result_7.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # NOT PROVIDE
 
@@ -413,8 +413,8 @@
       register: job_result_8
       until: job_result_8.finished
       ignore_errors: true
-      retries: 36
-      delay: 5
+      retries: 6
+      delay: 10
       # 1 MINUTE
 
     - name: Wait for MPPI to complete
@@ -423,7 +423,7 @@
       register: job_result_9
       until: job_result_9.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # 30 SECONDS
 
@@ -433,7 +433,7 @@
       register: job_result_10
       until: job_result_10.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # NOT PROVIDE
 
@@ -443,9 +443,9 @@
       register: job_result_11
       until: job_result_11.finished
       ignore_errors: true
-      retries: 18
-      delay: 5
-      # 30 SECONDS
+      retries: 4
+      delay: 30
+      # 2 MINUTEN
 
     - name: Wait for HPIDB to complete
       async_status:
@@ -453,7 +453,7 @@
       register: job_result_12
       until: job_result_12.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # CITATION SUPPRESSED
       # 30 SECONDEN
@@ -464,7 +464,7 @@
       register: job_result_13
       until: job_result_13.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # NOT PROVIDE
 
@@ -474,8 +474,8 @@
       register: job_result_14
       until: job_result_14.finished
       ignore_errors: true
-      retries: 288
-      delay: 5
+      retries: 16
+      delay: 30
       #CITATION SUPPRESSED
       # 8 MINUTEN
 
@@ -485,15 +485,9 @@
       register: job_result_15
       until: job_result_15.finished
       ignore_errors: true
-      retries: 18
+      retries: 6
       delay: 5
       # NOT PROVIDE
-
-    - name: Fail the task when conditions are met (INNATEDB)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_15.finished == 0"
-      ignore_errors: true
 
     - name: Wait for MATRIXDB to complete
       async_status:
@@ -506,12 +500,6 @@
       # 2 MINUTEN
       # DATA PROCESSING FAILED
 
-    - name: Fail the task when conditions are met (MATRIXDB)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_16.finished == 0"
-      ignore_errors: true
-
     - name: Wait for MBINFO to complete
       async_status:
         jid: "{{ mbinfo_result.ansible_job_id }}"
@@ -523,12 +511,6 @@
       # 5 MINUTEN
       # CITATION SUPPRESSED
 
-    - name: Fail the task when conditions are met (MBINFO)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_17.finished == 0"
-      ignore_errors: true
-
     - name: Wait for MINT to complete
       async_status:
         jid: "{{ mint_result.ansible_job_id }}"
@@ -538,12 +520,6 @@
       retries: 36
       delay: 5
       # 1 MINUUT
-
-    - name: Fail the task when conditions are met (MINT)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_18.finished == 0"
-      ignore_errors: true
 
     - name: Wait for MPIDB to complete
       async_status:
@@ -555,12 +531,6 @@
       delay: 5
       # 3 MINUTEN
 
-    - name: Fail the task when conditions are met (MPIDB)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_19.finished == 0"
-      ignore_errors: true
-
     - name: Wait for QUICKGO to complete
       async_status:
         jid: "{{ quickgo_result.ansible_job_id }}"
@@ -570,12 +540,6 @@
       retries: 18
       delay: 5
       # DID NOT PROVIDE
-
-    - name: Fail the task when conditions are met (QUICKGO)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_20.finished == 0"
-      ignore_errors: true
 
     - name: Wait for REACTOME to complete
       async_status:
@@ -587,12 +551,6 @@
       delay: 5
       # 30 SECONDEN
 
-    - name: Fail the task when conditions are met (REACTOME)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_21.finished == 0"
-      ignore_errors: true
-
     - name: Wait for UNIPROTPP to complete
       async_status:
         jid: "{{ uniprotpp_result.ansible_job_id }}"
@@ -602,12 +560,6 @@
       retries: 18
       delay: 5
       # DID NOT PROVIDE ANY DATA
-
-    - name: Fail the task when conditions are met (UNIPROTPP)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_22.finished == 0"
-      ignore_errors: true
 
     - name: Wait for VIRUSHOST to complete
       async_status:
@@ -619,12 +571,6 @@
       delay: 5
       # 30 SECONDEN
 
-    - name: Fail the task when conditions are met (VIRUSHOST)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_23.finished == 0"
-      ignore_errors: true
-
     - name: Wait for PSI_MI to complete
       async_status:
         jid: "{{ psi_mi_result.ansible_job_id }}"
@@ -634,12 +580,6 @@
       retries: 18
       delay: 5
       # 30 SECONDEN
-
-    - name: Fail the task when conditions are met (PSI_MI)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_24.finished == 0"
-      ignore_errors: true
 
     - name: Wait for TAXONOMY to complete
       async_status:
@@ -651,12 +591,6 @@
       delay: 5
       # DID NOT PROVIDE DATA
 
-    - name: Fail the task when conditions are met (TAXONOMY)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_25.finished == 0"
-      ignore_errors: true
-
     - name: Wait for ATHALIANA to complete
       async_status:
         jid: "{{ athaliana_result.ansible_job_id }}"
@@ -666,12 +600,6 @@
       retries: 18
       delay: 5
       # 30 SECONDEN
-
-    - name: Fail the task when conditions are met (ATHALIANA)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_26.finished == 0"
-      ignore_errors: true
 
     - name: Wait for BIND to complete
       async_status:
@@ -683,12 +611,6 @@
       delay: 5
       # 30 SECONDEN
 
-    - name: Fail the task when conditions are met (BIND)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_27.finished == 0"
-      ignore_errors: true
-
     - name: Wait for DIG to complete
       async_status:
         jid: "{{ dig_result.ansible_job_id }}"
@@ -698,12 +620,6 @@
       retries: 18
       delay: 5
       # 30 SECONDEN
-
-    - name: Fail the task when conditions are met (DIG)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_28.finished == 0"
-      ignore_errors: true
 
     - name: Wait for FLY to complete
       async_status:
@@ -715,12 +631,6 @@
       delay: 5
       # 30 SECONDEN
 
-    - name: Fail the task when conditions are met (FLY)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_29.finished == 0"
-      ignore_errors: true
-
     - name: Wait for GENE to complete
       async_status:
         jid: "{{ gene_result.ansible_job_id }}"
@@ -731,12 +641,6 @@
       delay: 5
       # 10 MINUTEN
       # UNEXPECTED END OF FILE
-
-    - name: Fail the task when conditions are met (GENE)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_30.finished == 0"
-      ignore_errors: true
 
     - name: Wait for GENPEPT to complete
       async_status:
