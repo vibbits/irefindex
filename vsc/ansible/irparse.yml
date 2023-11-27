@@ -392,11 +392,8 @@
       register: job_result_4
       until: job_result_4.finished
       ignore_errors: true
+      retries: 120
       delay: 5
-
-    - name: Debug
-      debug:
-        var: job_result_4
 
     - name: Fail the task when conditions are met (DIP)
       fail:
