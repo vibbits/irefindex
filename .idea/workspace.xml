@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Debug">
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Add retries and time limits to the check tasks">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +74,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="8239000" />
+      <workItem from="1701078374000" duration="12903000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -215,22 +215,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00045" summary="Remove .stderr">
-      <option name="closed" value="true" />
-      <created>1700994638292</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1700994638292</updated>
-    </task>
-    <task id="LOCAL-00046" summary="Remove .stderr">
-      <option name="closed" value="true" />
-      <created>1700995399403</created>
-      <option name="number" value="00046" />
-      <option name="presentableId" value="LOCAL-00046" />
-      <option name="project" value="LOCAL" />
-      <updated>1700995399403</updated>
     </task>
     <task id="LOCAL-00047" summary="Remove a failing condition">
       <option name="closed" value="true" />
@@ -448,7 +432,23 @@
       <option name="project" value="LOCAL" />
       <updated>1701086716422</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="Fix mistake in variable name">
+      <option name="closed" value="true" />
+      <created>1701087337576</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1701087337576</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Add retries and time limits to the check tasks">
+      <option name="closed" value="true" />
+      <created>1701092959601</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1701092959601</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -466,8 +466,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ignore errors when removing cache" />
-    <MESSAGE value="Fix mistake with running irinit script" />
     <MESSAGE value="Update irdownload" />
     <MESSAGE value="Terraform starts the irinit Ansible code" />
     <MESSAGE value="Terraform, irinit and irdownload follows up each other" />
@@ -491,6 +489,8 @@
     <MESSAGE value="Test again on localhost" />
     <MESSAGE value="Wait unlimited amount of time for waiting tasks" />
     <MESSAGE value="Debug" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debug" />
+    <MESSAGE value="Fix mistake in variable name" />
+    <MESSAGE value="Add retries and time limits to the check tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add retries and time limits to the check tasks" />
   </component>
 </project>
