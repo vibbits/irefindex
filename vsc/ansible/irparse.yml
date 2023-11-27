@@ -382,6 +382,10 @@
       when: "job_result_3.finished == 0"
       ignore_errors: true
 
+    - name: Debug
+      debug:
+        var: dip_result.stderr
+
     - name: Wait for DIP to complete
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
@@ -390,6 +394,10 @@
       ignore_errors: true
       retries: -1
       delay: 5
+
+    - name: Debug
+      debug:
+        var: dip_result.stderr
 
     - name: Fail the task when conditions are met (DIP)
       fail:
