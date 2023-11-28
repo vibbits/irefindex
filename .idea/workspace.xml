@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Change the execution times">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Add some more values, waiting for some downloads we have to redo to check for some more errors">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irimport.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irimport.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +76,7 @@
       <workItem from="1700925066609" duration="661000" />
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
-      <workItem from="1701078374000" duration="21794000" />
+      <workItem from="1701078374000" duration="33478000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -216,30 +217,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00055" summary="Search reason why it doesn't fail">
-      <option name="closed" value="true" />
-      <created>1701080026524</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1701080026524</updated>
-    </task>
-    <task id="LOCAL-00056" summary="Debug">
-      <option name="closed" value="true" />
-      <created>1701080171767</created>
-      <option name="number" value="00056" />
-      <option name="presentableId" value="LOCAL-00056" />
-      <option name="project" value="LOCAL" />
-      <updated>1701080171767</updated>
-    </task>
-    <task id="LOCAL-00057" summary="Debug">
-      <option name="closed" value="true" />
-      <created>1701081597666</created>
-      <option name="number" value="00057" />
-      <option name="presentableId" value="LOCAL-00057" />
-      <option name="project" value="LOCAL" />
-      <updated>1701081597666</updated>
     </task>
     <task id="LOCAL-00058" summary="Debug">
       <option name="closed" value="true" />
@@ -449,7 +426,31 @@
       <option name="project" value="LOCAL" />
       <updated>1701109690641</updated>
     </task>
-    <option name="localTasksCounter" value="84" />
+    <task id="LOCAL-00084" summary="clean up">
+      <option name="closed" value="true" />
+      <created>1701111712459</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1701111712459</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Add irimport with already some calculated time for each async task">
+      <option name="closed" value="true" />
+      <created>1701163722118</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1701163722118</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Add some more values, waiting for some downloads we have to redo to check for some more errors">
+      <option name="closed" value="true" />
+      <created>1701165067723</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1701165067723</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -467,9 +468,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Terraform, irinit and irdownload follows up each other" />
-    <MESSAGE value="Run the irmanifest phase automatically" />
-    <MESSAGE value="Add localhost to irmanifest to test it locally" />
     <MESSAGE value="Test to fail a task, but to still run further" />
     <MESSAGE value="Detect when a task fails" />
     <MESSAGE value="Add some more detections for fails" />
@@ -492,6 +490,9 @@
     <MESSAGE value="Add retries and time limits to the check tasks" />
     <MESSAGE value="Search why a successful task fails" />
     <MESSAGE value="Change the execution times" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the execution times" />
+    <MESSAGE value="clean up" />
+    <MESSAGE value="Add irimport with already some calculated time for each async task" />
+    <MESSAGE value="Add some more values, waiting for some downloads we have to redo to check for some more errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add some more values, waiting for some downloads we have to redo to check for some more errors" />
   </component>
 </project>
