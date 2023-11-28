@@ -271,7 +271,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: ipi_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files GENE
@@ -298,7 +298,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mmdb_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files PDB
@@ -307,7 +307,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: pdb_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Coverts the downloaded data to files REFSEQ
@@ -334,7 +334,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: yeast_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Wait for BIND_TRANSLATION to complete
@@ -624,103 +624,63 @@
       async_status:
         jid: "{{ genpept_result.ansible_job_id }}"
       register: job_result_31
-      until: job_result_31.finished or "'citation suppressed' in genpept_result.stderr or 'failed' in genpept_result.stderr or 'is not formatted correctly' in genpept_result.stderr"
+      until: job_result_31.finished
       ignore_errors: true
       retries: -1
       delay: 5
-
-    - name: Fail the task when conditions are met (GENPEPT)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_31.finished == 0"
-      ignore_errors: true
 
     - name: Wait for IPI to complete
       async_status:
         jid: "{{ ipi_result.ansible_job_id }}"
       register: job_result_32
-      until: job_result_32.finished or "'citation suppressed' in ipi_result.stderr or 'failed' in ipi_result.stderr or 'is not formatted correctly' in ipi_result.stderr"
+      until: job_result_32.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
-
-    - name: Fail the task when conditions are met (IPI)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_32.finished == 0"
-      ignore_errors: true
+      # NOT PROVIDE
 
     - name: Wait for MMDB to complete
       async_status:
         jid: "{{ mmdb_result.ansible_job_id }}"
       register: job_result_33
-      until: job_result_33.finished or "'citation suppressed' in mmdb_result.stderr or 'failed' in mmdb_result.stderr or 'is not formatted correctly' in mmdb_result.stderr"
+      until: job_result_33.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
-
-    - name: Fail the task when conditions are met (MMDB)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_33.finished == 0"
-      ignore_errors: true
 
     - name: Wait for PDB to complete
       async_status:
         jid: "{{ pdb_result.ansible_job_id }}"
       register: job_result_34
-      until: job_result_34.finished or "'citation suppressed' in pdb_result.stderr or 'failed' in pdb_result.stderr or 'is not formatted correctly' in pdb_result.stderr"
+      until: job_result_34.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
-
-    - name: Fail the task when conditions are met (PDB)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_34.finished == 0"
-      ignore_errors: true
+      #INVALID DISTANCE CODE
 
     - name: Wait for REFSEQ to complete
       async_status:
         jid: "{{ refseq_result.ansible_job_id }}"
       register: job_result_35
-      until: job_result_35.finished or "'citation suppressed' in refseq_result.stderr or 'failed' in refseq_result.stderr or 'is not formatted correctly' in refseq_result.stderr"
+      until: job_result_35.finished
       ignore_errors: true
       retries: -1
       delay: 5
-
-    - name: Fail the task when conditions are met (REFSEQ)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_35.finished == 0"
-      ignore_errors: true
 
     - name: Wait for UNIPROT to complete
       async_status:
         jid: "{{ uniprot_result.ansible_job_id }}"
       register: job_result_36
-      until: job_result_36.finished or "'citation suppressed' in uniprot_result.stderr or 'failed' in uniprot_result.stderr or 'is not formatted correctly' in uniprot_result.stderr"
+      until: job_result_36.finished
       ignore_errors: true
       retries: -1
       delay: 5
-
-    - name: Fail the task when conditions are met (UNIPROT)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_36.finished == 0"
-      ignore_errors: true
 
     - name: Wait for YEAST to complete
       async_status:
         jid: "{{ yeast_result.ansible_job_id }}"
       register: job_result_37
-      until: job_result_37.finished or "'citation suppressed' in yeast_result.stderr or 'failed' in yeast_result.stderr or 'is not formatted correctly' in yeast_result.stderr"
+      until: job_result_37.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
-
-    - name: Fail the task when conditions are met (YEAST)
-      fail:
-        msg: "Failed: citation suppressed errors or wrong format errors"
-      when: "job_result_37.finished == 0"
-      ignore_errors: true
