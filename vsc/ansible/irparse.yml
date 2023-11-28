@@ -289,7 +289,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: genpept_result
       ignore_errors: true
-      async: yes
+      async: 120
       poll: 0
 
     - name: Coverts the downloaded data to files MMDB
@@ -316,7 +316,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: refseq_result
       ignore_errors: true
-      async: yes
+      async: 240
       poll: 0
 
     - name: Coverts the downloaded data to files UNIPROT
@@ -607,9 +607,6 @@
       retries: 6
       delay: 5
 
-
-      # VANAF HIER AANVULLEN!!!!
-
     - name: Wait for GENE to complete
       async_status:
         jid: "{{ gene_result.ansible_job_id }}"
@@ -626,8 +623,10 @@
       register: job_result_31
       until: job_result_31.finished
       ignore_errors: true
-      retries: -1
-      delay: 5
+      retries: 8
+      delay: 15
+      # LOTS OF HEADER FAILING ERRORS
+      # ITS ALWAYS STUCK
 
     - name: Wait for IPI to complete
       async_status:
@@ -664,8 +663,9 @@
       register: job_result_35
       until: job_result_35.finished
       ignore_errors: true
-      retries: -1
-      delay: 5
+      retries: 8
+      delay: 30
+      # LOTS OF HEADER FAILING ERRORS
 
     - name: Wait for UNIPROT to complete
       async_status:

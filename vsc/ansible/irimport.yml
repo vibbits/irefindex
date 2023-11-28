@@ -280,7 +280,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: gene_result
       ignore_errors: true
-      async: 600
+      async: 2700
       poll: 0
 
     - name: Import GENPEPT
@@ -289,7 +289,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: genpept_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Import MMDB
@@ -316,7 +316,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: refseq_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Import UNIPROT
@@ -598,18 +598,14 @@
       retries: 6
       delay: 5
 
-
-      # VANAF HIER AANVULLEN!!!!
-
     - name: Wait for GENE to complete
       async_status:
         jid: "{{ gene_result.ansible_job_id }}"
       register: job_result_30
       until: job_result_30.finished
       ignore_errors: true
-      retries: 20
-      delay: 30
-      # UNEXPECTED END OF FILE
+      retries: 23
+      delay: 120
 
     - name: Wait for GENPEPT to complete
       async_status:
@@ -617,7 +613,7 @@
       register: job_result_31
       until: job_result_31.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
 
     - name: Wait for IPI to complete
@@ -654,7 +650,7 @@
       register: job_result_35
       until: job_result_35.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
 
     - name: Wait for UNIPROT to complete
