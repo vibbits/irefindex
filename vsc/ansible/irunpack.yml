@@ -9,8 +9,8 @@
         name: unzip
         state: present
 
-    - name: Coverts the downloaded data to files BIND_TRANSLATION
-      command: "./irparse BIND_TRANSLATION"
+    - name: Unpack BIND_TRANSLATION
+      command: "./irunpack BIND_TRANSLATION"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
@@ -18,8 +18,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files BIOGRID
-      command: "./irparse BIOGRID"
+    - name: Unpack BIOGRID
+      command: "./irunpack BIOGRID"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: biogrid_result
@@ -27,8 +27,8 @@
       async: 120
       poll: 0
 
-    - name: Coverts the downloaded data to files CORUM
-      command: "./irparse CORUM"
+    - name: Unpack CORUM
+      command: "./irunpack CORUM"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: corum_result
@@ -36,8 +36,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files DIP
-      command: "./irparse DIP"
+    - name: Unpack DIP
+      command: "./irunpack DIP"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: dip_result
@@ -45,8 +45,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files HPRD
-      command: "./irparse HPRD"
+    - name: Unpack HPRD
+      command: "./irunpack HPRD"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: hrpd_result
@@ -54,8 +54,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files INTACT
-      command: "./irparse INTACT"
+    - name: Unpack INTACT
+      command: "./irunpack INTACT"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: intact_result
@@ -63,8 +63,8 @@
       async: 180
       poll: 0
 
-    - name: Coverts the downloaded data to files INTCOMPLEX
-      command: "./irparse INTCOMPLEX"
+    - name: Unpack INTCOMPLEX
+      command: "./irunpack INTCOMPLEX"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: intcomplex_result
@@ -72,8 +72,8 @@
       async: 60
       poll: 0
 
-    - name: Coverts the downloaded data to files MPACT
-      command: "./irparse MPACT"
+    - name: Unpack MPACT
+      command: "./irunpack MPACT"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mpact_result
@@ -81,8 +81,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files MPPI
-      command: "./irparse MPPI"
+    - name: Unpack MPPI
+      command: "./irunpack MPPI"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mppi_result
@@ -90,8 +90,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files BAR
-      command: "./irparse BAR"
+    - name: Unpack BAR
+      command: "./irunpack BAR"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: bar_result
@@ -99,8 +99,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files BHF_UCL
-      command: "./irparse BHF_UCL"
+    - name: Unpack BHF_UCL
+      command: "./irunpack BHF_UCL"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: bhf_ucl_result
@@ -108,8 +108,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files HPIDB
-      command: "./irparse HPIDB"
+    - name: Unpack HPIDB
+      command: "./irunpack HPIDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: hpidb_result
@@ -117,8 +117,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files HURI
-      command: "./irparse HURI"
+    - name: Unpack HURI
+      command: "./irunpack HURI"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: huri_result
@@ -126,8 +126,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files INNATEDB
-      command: "./irparse INNATEDB"
+    - name: Unpack INNATEDB
+      command: "./irunpack INNATEDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: innatedb_result
@@ -135,8 +135,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files IMEX
-      command: "./irparse IMEX"
+    - name: Unpack IMEX
+      command: "./irunpack IMEX"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: imex_result
@@ -144,8 +144,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files MBINFO
-      command: "./irparse MBINFO"
+    - name: Unpack MBINFO
+      command: "./irunpack MBINFO"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mbinfo_result
@@ -153,8 +153,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files MPIDB
-      command: "./irparse MPIDB"
+    - name: Unpack MPIDB
+      command: "./irunpack MPIDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mpidb_result
@@ -162,8 +162,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files MINT
-      command: "./irparse MINT"
+    - name: Unpack MINT
+      command: "./irunpack MINT"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mint_result
@@ -171,8 +171,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files MATRIXDB
-      command: "./irparse MATRIXDB"
+    - name: Unpack MATRIXDB
+      command: "./irunpack MATRIXDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: matrixdb_result
@@ -180,8 +180,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files QUICKGO
-      command: "./irparse QUICKGO"
+    - name: Unpack QUICKGO
+      command: "./irunpack QUICKGO"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: quickgo_result
@@ -189,8 +189,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files REACTOME
-      command: "./irparse REACTOME"
+    - name: Unpack REACTOME
+      command: "./irunpack REACTOME"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: reactome_result
@@ -198,8 +198,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files VIRUSHOST
-      command: "./irparse VIRUSHOST"
+    - name: Unpack VIRUSHOST
+      command: "./irunpack VIRUSHOST"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: virushost_result
@@ -207,8 +207,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files UNIPROTPP
-      command: "./irparse UNIPROTPP"
+    - name: Unpack UNIPROTPP
+      command: "./irunpack UNIPROTPP"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: uniprotpp_result
@@ -216,8 +216,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files PSI_MI
-      command: "./irparse PSI_MI"
+    - name: Unpack PSI_MI
+      command: "./irunpack PSI_MI"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: psi_mi_result
@@ -225,8 +225,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files TAXONOMY
-      command: "./irparse TAXONOMY"
+    - name: Unpack TAXONOMY
+      command: "./irunpack TAXONOMY"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: taxonomy_result
@@ -237,8 +237,8 @@
       # tar: Unexpected EOF in archive
       # tar: Error is not recoverable: exiting now
 
-    - name: Coverts the downloaded data to files ATHALIANA
-      command: "./irparse ATHALIANA"
+    - name: Unpack ATHALIANA
+      command: "./irunpack ATHALIANA"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: athaliana_result
@@ -246,8 +246,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files DIG
-      command: "./irparse DIG"
+    - name: Unpack DIG
+      command: "./irunpack DIG"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: dig_result
@@ -255,8 +255,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files BIND
-      command: "./irparse BIND"
+    - name: Unpack BIND
+      command: "./irunpack BIND"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: bind_result
@@ -264,8 +264,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files FLY
-      command: "./irparse FLY"
+    - name: Unpack FLY
+      command: "./irunpack FLY"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: fly_result
@@ -273,8 +273,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files IPI
-      command: "./irparse IPI"
+    - name: Unpack IPI
+      command: "./irunpack IPI"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: ipi_result
@@ -282,8 +282,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files GENE
-      command: "./irparse GENE"
+    - name: Unpack GENE
+      command: "./irunpack GENE"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: gene_result
@@ -291,8 +291,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files GENPEPT
-      command: "./irparse GENPEPT"
+    - name: Unpack GENPEPT
+      command: "./irunpack GENPEPT"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: genpept_result
@@ -300,8 +300,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files MMDB
-      command: "./irparse MMDB"
+    - name: Unpack MMDB
+      command: "./irunpack MMDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mmdb_result
@@ -309,8 +309,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files PDB
-      command: "./irparse PDB"
+    - name: Unpack PDB
+      command: "./irunpack PDB"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: pdb_result
@@ -318,8 +318,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files REFSEQ
-      command: "./irparse REFSEQ"
+    - name: Unpack REFSEQ
+      command: "./irunpack REFSEQ"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: refseq_result
@@ -327,8 +327,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files UNIPROT
-      command: "./irparse UNIPROT"
+    - name: Unpack UNIPROT
+      command: "./irunpack UNIPROT"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: uniprot_result
@@ -336,8 +336,8 @@
       async: 30
       poll: 0
 
-    - name: Coverts the downloaded data to files YEAST
-      command: "./irparse YEAST"
+    - name: Unpack YEAST
+      command: "./irunpack YEAST"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: yeast_result
