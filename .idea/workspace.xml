@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Add some more values">
-      <change afterPath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Automate the irunpack phase in Ansible">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +76,7 @@
       <workItem from="1700927857785" duration="342000" />
       <workItem from="1700989762102" duration="7293000" />
       <workItem from="1701078374000" duration="33579000" />
-      <workItem from="1701263020155" duration="6367000" />
+      <workItem from="1701263020155" duration="7558000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -217,14 +217,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00059" summary="Debug">
-      <option name="closed" value="true" />
-      <created>1701081763369</created>
-      <option name="number" value="00059" />
-      <option name="presentableId" value="LOCAL-00059" />
-      <option name="project" value="LOCAL" />
-      <updated>1701081763369</updated>
     </task>
     <task id="LOCAL-00060" summary="Debug">
       <option name="closed" value="true" />
@@ -450,7 +442,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701211305645</updated>
     </task>
-    <option name="localTasksCounter" value="88" />
+    <task id="LOCAL-00088" summary="Automate the irunpack phase in Ansible">
+      <option name="closed" value="true" />
+      <created>1701283025123</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1701283025123</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -468,7 +468,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Detect when a task fails" />
     <MESSAGE value="Add some more detections for fails" />
     <MESSAGE value="Add ignore to all needed tasks" />
     <MESSAGE value="Add async tasks" />
@@ -493,6 +492,7 @@
     <MESSAGE value="Add irimport with already some calculated time for each async task" />
     <MESSAGE value="Add some more values, waiting for some downloads we have to redo to check for some more errors" />
     <MESSAGE value="Add some more values" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add some more values" />
+    <MESSAGE value="Automate the irunpack phase in Ansible" />
+    <option name="LAST_COMMIT_MESSAGE" value="Automate the irunpack phase in Ansible" />
   </component>
 </project>
