@@ -19,7 +19,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: biogrid_result
       ignore_errors: true
-      async: 30
+      async: 3600
       poll: 0
 
     - name: Import CORUM
@@ -352,8 +352,8 @@
       register: job_result_2
       until: job_result_2.finished
       ignore_errors: true
-      retries: 6
-      delay: 5
+      retries: 12
+      delay: 300
 
     - name: Wait for CORUM to complete
       async_status:
