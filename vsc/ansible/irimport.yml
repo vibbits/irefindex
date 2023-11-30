@@ -55,7 +55,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: intact_result
       ignore_errors: true
-      async: 30
+      async: 4500
       poll: 0
 
     - name: Import INTCOMPLEX
@@ -389,8 +389,8 @@
       register: job_result_6
       until: job_result_6.finished
       ignore_errors: true
-      retries: 6
-      delay: 5
+      retries: 15
+      delay: 300
 
     - name: Wait for INTCOMPLEX to complete
       async_status:

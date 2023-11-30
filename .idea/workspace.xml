@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Update wait times irimport phase tasks" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Update wait times irimport phase tasks">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irimport.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irimport.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,7 +77,7 @@
       <workItem from="1700989762102" duration="7293000" />
       <workItem from="1701078374000" duration="33579000" />
       <workItem from="1701263020155" duration="13480000" />
-      <workItem from="1701353896682" duration="3194000" />
+      <workItem from="1701353896682" duration="4085000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -215,14 +218,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00063" summary="Debug">
-      <option name="closed" value="true" />
-      <created>1701082948572</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1701082948572</updated>
     </task>
     <task id="LOCAL-00064" summary="Debug">
       <option name="closed" value="true" />
@@ -448,7 +443,15 @@
       <option name="project" value="LOCAL" />
       <updated>1701357242569</updated>
     </task>
-    <option name="localTasksCounter" value="92" />
+    <task id="LOCAL-00092" summary="Update wait times irimport phase tasks">
+      <option name="closed" value="true" />
+      <created>1701358201866</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1701358201866</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
