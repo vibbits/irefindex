@@ -10,7 +10,7 @@
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
       register: bind_translation_result
-      async: 30
+      async: 60
       poll: 0
 
     - name: Coverts the downloaded data to files BIOGRID
@@ -19,7 +19,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: biogrid_result
       ignore_errors: true
-      async: 30
+      async: 2700
       poll: 0
 
     - name: Coverts the downloaded data to files CORUM
@@ -46,7 +46,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: hrpd_result
       ignore_errors: true
-      async: 30
+      async: 180
       poll: 0
 
     - name: Coverts the downloaded data to files INTACT
@@ -64,7 +64,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: intcomplex_result
       ignore_errors: true
-      async: 30
+      async: 180
       poll: 0
 
     - name: Coverts the downloaded data to files MPACT
@@ -280,7 +280,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: gene_result
       ignore_errors: true
-      async: 600
+      async: 900
       poll: 0
 
     - name: Coverts the downloaded data to files GENPEPT
@@ -289,7 +289,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: genpept_result
       ignore_errors: true
-      async: 120
+      async: 600
       poll: 0
 
     - name: Coverts the downloaded data to files MMDB
@@ -316,7 +316,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: refseq_result
       ignore_errors: true
-      async: 240
+      async: 300
       poll: 0
 
     - name: Coverts the downloaded data to files UNIPROT
@@ -344,8 +344,7 @@
       until: job_result_1.finished
       ignore_errors: true
       retries: 6
-      delay: 5
-      # NOT PROVIDE
+      delay: 10
 
     - name: Wait for BIOGRID to complete
       async_status:
@@ -353,8 +352,8 @@
       register: job_result_2
       until: job_result_2.finished
       ignore_errors: true
-      retries: 6
-      delay: 5
+      retries: 9
+      delay: 300
       #NOT PROVIDE
 
     - name: Wait for CORUM to complete
@@ -383,8 +382,7 @@
       until: job_result_5.finished
       ignore_errors: true
       retries: 6
-      delay: 5
-      # NOT PROVIDE
+      delay: 30
 
     - name: Wait for INTACT to complete
       async_status:
@@ -403,8 +401,7 @@
       until: job_result_7.finished
       ignore_errors: true
       retries: 6
-      delay: 5
-      # NOT PROVIDE
+      delay: 30
 
     - name: Wait for MPACT to complete
       async_status:
@@ -569,7 +566,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # DID NOT PROVIDE DATA
+      #NOT PROVIDE
 
     - name: Wait for ATHALIANA to complete
       async_status:
@@ -613,9 +610,9 @@
       register: job_result_30
       until: job_result_30.finished
       ignore_errors: true
-      retries: 20
-      delay: 30
-      # UNEXPECTED END OF FILE
+      retries: 15
+      delay: 60
+      # UNEXPECTED END OF FILE --> strange
 
     - name: Wait for GENPEPT to complete
       async_status:
@@ -623,10 +620,9 @@
       register: job_result_31
       until: job_result_31.finished
       ignore_errors: true
-      retries: 8
-      delay: 15
-      # LOTS OF HEADER FAILING ERRORS
-      # ITS ALWAYS STUCK
+      retries: 10
+      delay: 60
+      # CRC CHECK FAILED
 
     - name: Wait for IPI to complete
       async_status:
@@ -656,6 +652,7 @@
       retries: 6
       delay: 5
       #INVALID DISTANCE CODE
+      # strange!!!
 
     - name: Wait for REFSEQ to complete
       async_status:
@@ -663,9 +660,10 @@
       register: job_result_35
       until: job_result_35.finished
       ignore_errors: true
-      retries: 8
+      retries: 10
       delay: 30
-      # LOTS OF HEADER FAILING ERRORS
+      # PARSING FAILED FOR SOME PROTEINS
+      # STRANGE
 
     - name: Wait for UNIPROT to complete
       async_status:
