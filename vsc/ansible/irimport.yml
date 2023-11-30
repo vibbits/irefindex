@@ -19,7 +19,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: biogrid_result
       ignore_errors: true
-      async: 30
+      async: 3600
       poll: 0
 
     - name: Import CORUM
@@ -37,7 +37,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: dip_result
       ignore_errors: true
-      async: 120
+      async: 60
       poll: 0
 
     - name: Import HPRD
@@ -46,7 +46,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: hrpd_result
       ignore_errors: true
-      async: 30
+      async: 180
       poll: 0
 
     - name: Import INTACT
@@ -55,7 +55,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: intact_result
       ignore_errors: true
-      async: 30
+      async: 4500
       poll: 0
 
     - name: Import INTCOMPLEX
@@ -64,7 +64,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: intcomplex_result
       ignore_errors: true
-      async: 30
+      async: 180
       poll: 0
 
     - name: Import MPACT
@@ -82,7 +82,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: mppi_result
       ignore_errors: true
-      async: 30
+      async: 60
       poll: 0
 
     - name: Import BAR
@@ -325,7 +325,7 @@
         chdir: "/home/irefindex/usr/bin"
       register: uniprot_result
       ignore_errors: true
-      async: yes
+      async: 30
       poll: 0
 
     - name: Import YEAST
@@ -352,8 +352,8 @@
       register: job_result_2
       until: job_result_2.finished
       ignore_errors: true
-      retries: 6
-      delay: 5
+      retries: 12
+      delay: 300
 
     - name: Wait for CORUM to complete
       async_status:
@@ -363,6 +363,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # import failed
 
     - name: Wait for DIP to complete
       async_status:
@@ -370,8 +371,8 @@
       register: job_result_4
       until: job_result_4.finished
       ignore_errors: true
-      retries: 8
-      delay: 15
+      retries: 6
+      delay: 10
 
     - name: Wait for HPRD to complete
       async_status:
@@ -380,7 +381,7 @@
       until: job_result_5.finished
       ignore_errors: true
       retries: 6
-      delay: 5
+      delay: 30
 
     - name: Wait for INTACT to complete
       async_status:
@@ -388,8 +389,8 @@
       register: job_result_6
       until: job_result_6.finished
       ignore_errors: true
-      retries: 6
-      delay: 5
+      retries: 15
+      delay: 300
 
     - name: Wait for INTCOMPLEX to complete
       async_status:
@@ -398,7 +399,7 @@
       until: job_result_7.finished
       ignore_errors: true
       retries: 6
-      delay: 5
+      delay: 30
 
     - name: Wait for MPACT to complete
       async_status:
@@ -416,7 +417,7 @@
       until: job_result_9.finished
       ignore_errors: true
       retries: 6
-      delay: 5
+      delay: 10
 
     - name: Wait for BAR to complete
       async_status:
@@ -426,6 +427,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for BHF_UCL to complete
       async_status:
@@ -471,6 +473,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for MATRIXDB to complete
       async_status:
@@ -552,6 +555,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED --> strange!!
 
     - name: Wait for TAXONOMY to complete
       async_status:
@@ -561,6 +565,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for ATHALIANA to complete
       async_status:
@@ -579,6 +584,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED --> strange!!
 
     - name: Wait for DIG to complete
       async_status:
@@ -615,6 +621,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for IPI to complete
       async_status:
@@ -624,6 +631,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for MMDB to complete
       async_status:
@@ -633,7 +641,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # INVALID INPUT SYNTAX FOR TYPE INTEGER
+      # INVALID INPUT SYNTAX FOR TYPE INTEGER --> STRANGE!!!
 
     - name: Wait for PDB to complete
       async_status:
@@ -643,6 +651,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for REFSEQ to complete
       async_status:
@@ -652,6 +661,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for UNIPROT to complete
       async_status:
@@ -659,8 +669,9 @@
       register: job_result_36
       until: job_result_36.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
+      # IMPORT FAILED
 
     - name: Wait for YEAST to complete
       async_status:

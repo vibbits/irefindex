@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Fix mistakes in irunpack">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Update wait times irimport phase tasks">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irimport.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irimport.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +77,7 @@
       <workItem from="1700989762102" duration="7293000" />
       <workItem from="1701078374000" duration="33579000" />
       <workItem from="1701263020155" duration="13480000" />
+      <workItem from="1701353896682" duration="4085000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -218,30 +218,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00061" summary="Debug">
-      <option name="closed" value="true" />
-      <created>1701082256440</created>
-      <option name="number" value="00061" />
-      <option name="presentableId" value="LOCAL-00061" />
-      <option name="project" value="LOCAL" />
-      <updated>1701082256440</updated>
-    </task>
-    <task id="LOCAL-00062" summary="Debug">
-      <option name="closed" value="true" />
-      <created>1701082771929</created>
-      <option name="number" value="00062" />
-      <option name="presentableId" value="LOCAL-00062" />
-      <option name="project" value="LOCAL" />
-      <updated>1701082771929</updated>
-    </task>
-    <task id="LOCAL-00063" summary="Debug">
-      <option name="closed" value="true" />
-      <created>1701082948572</created>
-      <option name="number" value="00063" />
-      <option name="presentableId" value="LOCAL-00063" />
-      <option name="project" value="LOCAL" />
-      <updated>1701082948572</updated>
     </task>
     <task id="LOCAL-00064" summary="Debug">
       <option name="closed" value="true" />
@@ -451,7 +427,31 @@
       <option name="project" value="LOCAL" />
       <updated>1701285348249</updated>
     </task>
-    <option name="localTasksCounter" value="90" />
+    <task id="LOCAL-00090" summary="Check commands and detect errors">
+      <option name="closed" value="true" />
+      <created>1701354999733</created>
+      <option name="number" value="00090" />
+      <option name="presentableId" value="LOCAL-00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1701354999733</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Update wait times irimport phase tasks">
+      <option name="closed" value="true" />
+      <created>1701357242569</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1701357242569</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Update wait times irimport phase tasks">
+      <option name="closed" value="true" />
+      <created>1701358201866</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1701358201866</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -469,8 +469,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add ignore to all needed tasks" />
-    <MESSAGE value="Add async tasks" />
     <MESSAGE value="Test async fail tasks" />
     <MESSAGE value="Wait for tasks to finish or to fail" />
     <MESSAGE value="Remove .stderr" />
@@ -494,6 +492,8 @@
     <MESSAGE value="Add some more values" />
     <MESSAGE value="Automate the irunpack phase in Ansible" />
     <MESSAGE value="Fix mistakes in irunpack" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix mistakes in irunpack" />
+    <MESSAGE value="Check commands and detect errors" />
+    <MESSAGE value="Update wait times irimport phase tasks" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update wait times irimport phase tasks" />
   </component>
 </project>
