@@ -1,0 +1,9 @@
+---
+- name: Run irunpack playbook
+  import_playbook: irunpack.yml
+
+- name: Run irmanifest playbook
+  import_playbook: irmanifest.yml
+
+- name: Run irparse playbook
+  import_playbook: irparse.yml
