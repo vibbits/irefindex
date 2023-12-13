@@ -2,7 +2,8 @@
 - name: Irdownload
   hosts: localhost
   become: true
-  gather_facts: false
+  gather_facts: true # WE NEED THIS HERE FOR THE DATES!
+
   vars:
     # All sources that should be downloaded
     jobs:
