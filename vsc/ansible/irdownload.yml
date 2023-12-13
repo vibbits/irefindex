@@ -110,14 +110,14 @@
 
     - name: "Ensure that /data/irdata18/logs/irdownload/ exists"
       ansible.builtin.file:
-        path: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_extended }}"
+        path: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}"
         state: directory
         mode: "0755"
 
     - name: "Copy logs"
       ansible.builtin.copy:
         content: "{{ item.stdout }}"
-        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_extended }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.out"
+        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.out"
         mode: "0644"
         remote_src: false
       no_log: true
@@ -127,7 +127,7 @@
     - name: "Copy error logs"
       ansible.builtin.copy:
         content: "{{ item.stderr }}"
-        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_extended }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err"
+        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err"
         mode: "0644"
         remote_src: false
       no_log: true
