@@ -233,10 +233,7 @@
       ignore_errors: true
       async: 30
       poll: 0
-      # gzip: stdin: invalid compressed data--format violated
-      # tar: Unexpected EOF in archive
-      # tar: Error is not recoverable: exiting now
-      # strange!!
+      # FAILED - STRANGE
 
     - name: Unpack ATHALIANA
       command: "./irunpack ATHALIANA"
@@ -355,6 +352,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (BIND_TRANSLATION)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_1.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_1.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_1.stderr"
+        fail_msg: "Failed"
+      when: job_result_1.rc == 0
+      ignore_errors: true
+
     - name: Wait for BIOGRID to complete
       async_status:
         jid: "{{ biogrid_result.ansible_job_id }}"
@@ -363,6 +370,16 @@
       ignore_errors: true
       retries: 8
       delay: 15
+
+    - name: Fail the task when conditions are met (BIOGRID)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_2.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_2.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_2.stderr"
+        fail_msg: "Failed"
+      when: job_result_2.rc == 0
+      ignore_errors: true
 
     - name: Wait for CORUM to complete
       async_status:
@@ -373,6 +390,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (CORUM)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_3.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_3.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_3.stderr"
+        fail_msg: "Failed"
+      when: job_result_3.rc == 0
+      ignore_errors: true
+
     - name: Wait for DIP to complete
       async_status:
         jid: "{{ dip_result.ansible_job_id }}"
@@ -381,6 +408,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (DIP)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_4.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_4.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_4.stderr"
+        fail_msg: "Failed"
+      when: job_result_4.rc == 0
+      ignore_errors: true
 
     - name: Wait for HPRD to complete
       async_status:
@@ -391,6 +428,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (HPRD)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_5.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_5.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_5.stderr"
+        fail_msg: "Failed"
+      when: job_result_5.rc == 0
+      ignore_errors: true
+
     - name: Wait for INTACT to complete
       async_status:
         jid: "{{ intact_result.ansible_job_id }}"
@@ -399,6 +446,16 @@
       ignore_errors: true
       retries: 6
       delay: 30
+
+    - name: Fail the task when conditions are met (INTACT)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_6.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_6.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_6.stderr"
+        fail_msg: "Failed"
+      when: job_result_6.rc == 0
+      ignore_errors: true
 
     - name: Wait for INTCOMPLEX to complete
       async_status:
@@ -409,6 +466,16 @@
       retries: 6
       delay: 10
 
+    - name: Fail the task when conditions are met (INTCOMPLEX)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_7.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_7.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_7.stderr"
+        fail_msg: "Failed"
+      when: job_result_7.rc == 0
+      ignore_errors: true
+
     - name: Wait for MPACT to complete
       async_status:
         jid: "{{ mpact_result.ansible_job_id }}"
@@ -417,6 +484,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (MPACT)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_8.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_8.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_8.stderr"
+        fail_msg: "Failed"
+      when: job_result_8.rc == 0
+      ignore_errors: true
 
     - name: Wait for MPPI to complete
       async_status:
@@ -427,6 +504,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (MPPI)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_9.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_9.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_9.stderr"
+        fail_msg: "Failed"
+      when: job_result_9.rc == 0
+      ignore_errors: true
+
     - name: Wait for BAR to complete
       async_status:
         jid: "{{ bar_result.ansible_job_id }}"
@@ -435,6 +522,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (BAR)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_10.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_10.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_10.stderr"
+        fail_msg: "Failed"
+      when: job_result_10.rc == 0
+      ignore_errors: true
 
     - name: Wait for BHF_UCL to complete
       async_status:
@@ -445,6 +542,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (BHF_UCL)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_11.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_11.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_11.stderr"
+        fail_msg: "Failed"
+      when: job_result_11.rc == 0
+      ignore_errors: true
+
     - name: Wait for HPIDB to complete
       async_status:
         jid: "{{ hpidb_result.ansible_job_id }}"
@@ -453,6 +560,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (HPIDB)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_12.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_12.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_12.stderr"
+        fail_msg: "Failed"
+      when: job_result_12.rc == 0
+      ignore_errors: true
 
     - name: Wait for HURI to complete
       async_status:
@@ -463,6 +580,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (HURI)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_13.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_13.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_13.stderr"
+        fail_msg: "Failed"
+      when: job_result_13.rc == 0
+      ignore_errors: true
+
     - name: Wait for IMEX to complete
       async_status:
         jid: "{{ imex_result.ansible_job_id }}"
@@ -471,6 +598,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (IMEX)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_14.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_14.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_14.stderr"
+        fail_msg: "Failed"
+      when: job_result_14.rc == 0
+      ignore_errors: true
 
     - name: Wait for INNATEDB to complete
       async_status:
@@ -481,6 +618,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (INNATEDB)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_15.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_15.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_15.stderr"
+        fail_msg: "Failed"
+      when: job_result_15.rc == 0
+      ignore_errors: true
+
     - name: Wait for MATRIXDB to complete
       async_status:
         jid: "{{ matrixdb_result.ansible_job_id }}"
@@ -489,6 +636,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (MATRIXDB)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_16.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_16.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_16.stderr"
+        fail_msg: "Failed"
+      when: job_result_16.rc == 0
+      ignore_errors: true
 
     - name: Wait for MBINFO to complete
       async_status:
@@ -499,6 +656,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (MBINFO)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_17.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_17.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_17.stderr"
+        fail_msg: "Failed"
+      when: job_result_17.rc == 0
+      ignore_errors: true
+
     - name: Wait for MINT to complete
       async_status:
         jid: "{{ mint_result.ansible_job_id }}"
@@ -507,6 +674,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (MINT)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_18.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_18.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_18.stderr"
+        fail_msg: "Failed"
+      when: job_result_18.rc == 0
+      ignore_errors: true
 
     - name: Wait for MPIDB to complete
       async_status:
@@ -517,6 +694,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (MPIDB)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_19.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_19.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_19.stderr"
+        fail_msg: "Failed"
+      when: job_result_19.rc == 0
+      ignore_errors: true
+
     - name: Wait for QUICKGO to complete
       async_status:
         jid: "{{ quickgo_result.ansible_job_id }}"
@@ -525,6 +712,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (QUICKGO)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_20.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_20.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_20.stderr"
+        fail_msg: "Failed"
+      when: job_result_20.rc == 0
+      ignore_errors: true
 
     - name: Wait for REACTOME to complete
       async_status:
@@ -535,6 +732,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (REACTOME)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_21.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_21.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_21.stderr"
+        fail_msg: "Failed"
+      when: job_result_21.rc == 0
+      ignore_errors: true
+
     - name: Wait for UNIPROTPP to complete
       async_status:
         jid: "{{ uniprotpp_result.ansible_job_id }}"
@@ -543,6 +750,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (MPACT)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_22.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_22.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_22.stderr"
+        fail_msg: "Failed"
+      when: job_result_22.rc == 0
+      ignore_errors: true
 
     - name: Wait for VIRUSHOST to complete
       async_status:
@@ -553,6 +770,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (VIRUSHOST)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_23.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_23.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_23.stderr"
+        fail_msg: "Failed"
+      when: job_result_23.rc == 0
+      ignore_errors: true
+
     - name: Wait for PSI_MI to complete
       async_status:
         jid: "{{ psi_mi_result.ansible_job_id }}"
@@ -561,6 +788,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (PSI_MI)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_24.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_24.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_24.stderr"
+        fail_msg: "Failed"
+      when: job_result_24.rc == 0
+      ignore_errors: true
 
     - name: Wait for TAXONOMY to complete
       async_status:
@@ -579,6 +816,7 @@
           - "'tar: Error is not recoverable: exiting now' not in job_result_25.stderr"
         fail_msg: "Failed"
       when: job_result_25.rc == 0
+      ignore_errors: true
 
     - name: Wait for ATHALIANA to complete
       async_status:
@@ -589,6 +827,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (ATHALIANA)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_26.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_26.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_26.stderr"
+        fail_msg: "Failed"
+      when: job_result_26.rc == 0
+      ignore_errors: true
+
     - name: Wait for BIND to complete
       async_status:
         jid: "{{ bind_result.ansible_job_id }}"
@@ -597,6 +845,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (BIND)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_27.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_27.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_27.stderr"
+        fail_msg: "Failed"
+      when: job_result_27.rc == 0
+      ignore_errors: true
 
     - name: Wait for DIG to complete
       async_status:
@@ -607,6 +865,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (DIG)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_28.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_28.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_28.stderr"
+        fail_msg: "Failed"
+      when: job_result_28.rc == 0
+      ignore_errors: true
+
     - name: Wait for FLY to complete
       async_status:
         jid: "{{ fly_result.ansible_job_id }}"
@@ -615,6 +883,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (FLY)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_29.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_29.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_29.stderr"
+        fail_msg: "Failed"
+      when: job_result_29.rc == 0
+      ignore_errors: true
 
     - name: Wait for GENE to complete
       async_status:
@@ -625,6 +903,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (GENE)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_30.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_30.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_30.stderr"
+        fail_msg: "Failed"
+      when: job_result_30.rc == 0
+      ignore_errors: true
+
     - name: Wait for GENPEPT to complete
       async_status:
         jid: "{{ genpept_result.ansible_job_id }}"
@@ -633,6 +921,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (GENPEPT)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_31.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_31.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_31.stderr"
+        fail_msg: "Failed"
+      when: job_result_31.rc == 0
+      ignore_errors: true
 
     - name: Wait for IPI to complete
       async_status:
@@ -643,6 +941,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (IPI)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_32.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_32.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_32.stderr"
+        fail_msg: "Failed"
+      when: job_result_32.rc == 0
+      ignore_errors: true
+
     - name: Wait for MMDB to complete
       async_status:
         jid: "{{ mmdb_result.ansible_job_id }}"
@@ -651,6 +959,16 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (MMDB)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_33.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_33.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_33.stderr"
+        fail_msg: "Failed"
+      when: job_result_33.rc == 0
+      ignore_errors: true
 
     - name: Wait for PDB to complete
       async_status:
@@ -661,6 +979,16 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (PDB)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_34.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_34.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_34.stderr"
+        fail_msg: "Failed"
+      when: job_result_34.rc == 0
+      ignore_errors: true
+
     - name: Wait for REFSEQ to complete
       async_status:
         jid: "{{ refseq_result.ansible_job_id }}"
@@ -670,14 +998,34 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (REFSEQ)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_35.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_35.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_35.stderr"
+        fail_msg: "Failed"
+      when: job_result_35.rc == 0
+      ignore_errors: true
+
     - name: Wait for UNIPROT to complete
       async_status:
         jid: "{{ uniprot_result.ansible_job_id }}"
       register: job_result_36
       until: job_result_36.finished
       ignore_errors: true
-      retries: -1
+      retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (UNIPROT)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_36.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_36.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_36.stderr"
+        fail_msg: "Failed"
+      when: job_result_36.rc == 0
+      ignore_errors: true
 
     - name: Wait for YEAST to complete
       async_status:
@@ -688,98 +1036,12 @@
       retries: 6
       delay: 5
 
-    - name: Ensure that /data/irdata/logs/irunpack/ exists
-      file:
-        path: "/data/irdata/logs/irunpack/"
-        state: directory
-        mode: 0755
-
-    - name: Copy log files
-      async_status:
-        jid: "{{ item.ansible_job_id }}"
-      copy:
-        content: "{{ item.stdout }}"
-        dest: "/data/irdata/logs/irunpack/{{ item.name }}.log"
-      loop:
-        - bind_translation_result
-        - biogrid_result
-        - corum_result
-        - dip_result
-        - hrpd_result
-        - intact_result
-        - intcomplex_result
-        - mpact_result
-        - mppi_result
-        - bar_result
-        - bhf_ucl_result
-        - hpidb_result
-        - huri_result
-        - innatedb_result
-        - imex_result
-        - mbinfo_result
-        - mpidb_result
-        - mint_result
-        - matrixdb_result
-        - quickgo_result
-        - reactome_result
-        - virushost_result
-        - uniprotpp_result
-        - psi_mi_result
-        - taxonomy_result
-        - athaliana_result
-        - dig_result
-        - bind_result
-        - fly_result
-        - gene_result
-        - genpept_result
-        - ipi_result
-        - mmdb_result
-        - pdb_result
-        - refseq_result
-        - uniprot_result
-        - yeast_result
-
-    - name: Copy log errors files
-      async_status:
-        jid: "{{ item.ansible_job_id }}"
-      copy:
-        content: "{{ item.stderr }}"
-        dest: "/data/irdata/logs/irunpack/{{ item.name }}.err.log"
-      loop:
-        - bind_translation_result
-        - biogrid_result
-        - corum_result
-        - dip_result
-        - hrpd_result
-        - intact_result
-        - intcomplex_result
-        - mpact_result
-        - mppi_result
-        - bar_result
-        - bhf_ucl_result
-        - hpidb_result
-        - huri_result
-        - innatedb_result
-        - imex_result
-        - mbinfo_result
-        - mpidb_result
-        - mint_result
-        - matrixdb_result
-        - quickgo_result
-        - reactome_result
-        - virushost_result
-        - uniprotpp_result
-        - psi_mi_result
-        - taxonomy_result
-        - athaliana_result
-        - dig_result
-        - bind_result
-        - fly_result
-        - gene_result
-        - genpept_result
-        - ipi_result
-        - mmdb_result
-        - pdb_result
-        - refseq_result
-        - uniprot_result
-        - yeast_result
+    - name: Fail the task when conditions are met (YEAST)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_37.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_37.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_37.stderr"
+        fail_msg: "Failed"
+      when: job_result_37.rc == 0
+      ignore_errors: true
