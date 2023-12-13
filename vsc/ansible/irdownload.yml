@@ -389,14 +389,14 @@
       register: result_refseq
 
     - name: Download IR data - UNIPROT
-      command: "./irdownload PDB"
+      command: "./irdownload UNIPROT"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
       retries: 3
       async: 60
       poll: 0
-      register: result_pdb
+      register: result_uniprot
 
     - name: Download IR data - YEAST
       command: "./irdownload YEAST"
@@ -716,7 +716,7 @@
 
     - name: Wait for UNIPROT to complete
       async_status:
-        jid: "{{ result_pdb.ansible_job_id }}"
+        jid: "{{ result_uniprot.ansible_job_id }}"
       register: job_result_34
       until: job_result_34.finished
       retries: 36
@@ -731,3 +731,99 @@
       retries: 36
       delay: 5
       ignore_errors: true
+
+    - name: Ensure that /data/irdata/logs/irdownload/ exists
+      file:
+        path: "/data/irdata/logs/irdownload/"
+        state: directory
+        mode: 0755
+
+    - name: Copy log files
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      copy:
+        content: "{{ item.stdout }}"
+        dest: "/data/irdata/logs/irdownload/{{ item.name }}.log"
+      loop:
+        - result_bind_translation
+        - result_biogrid
+        - result_corum
+        - result_dip
+        - result_hprd
+        - result_intact
+        - result_intcomplex
+        - result_mpact
+        - result_mppi
+        - result_bar
+        - result_bhf_ucl
+        - result_hpidb
+        - result_huri
+        - result_imex
+        - result_innatedb
+        - result_matrixdb
+        - result_mbinfo
+        - result_mint
+        - result_mpidb
+        - result_quickgo
+        - result_reactome
+        - result_uniprotpp
+        - result_virushost
+        - result_psi_mi
+        - result_taxonomy
+        - result_athaliana
+        - result_bind
+        - result_dig
+        - result_fly
+        - result_gene
+        - result_genpept
+        - result_ipi
+        - result_mmdb
+        - result_pdb
+        - result_refseq
+        - result_uniprot
+        - result_yeast
+
+    - name: Copy error log files
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      copy:
+        content: "{{ item.stderr }}"
+        dest: "/data/irdata/logs/irdownload/{{ item.name }}.err.log"
+      loop:
+        - result_bind_translation
+        - result_biogrid
+        - result_corum
+        - result_dip
+        - result_hprd
+        - result_intact
+        - result_intcomplex
+        - result_mpact
+        - result_mppi
+        - result_bar
+        - result_bhf_ucl
+        - result_hpidb
+        - result_huri
+        - result_imex
+        - result_innatedb
+        - result_matrixdb
+        - result_mbinfo
+        - result_mint
+        - result_mpidb
+        - result_quickgo
+        - result_reactome
+        - result_uniprotpp
+        - result_virushost
+        - result_psi_mi
+        - result_taxonomy
+        - result_athaliana
+        - result_bind
+        - result_dig
+        - result_fly
+        - result_gene
+        - result_genpept
+        - result_ipi
+        - result_mmdb
+        - result_pdb
+        - result_refseq
+        - result_uniprot
+        - result_yeast

@@ -78,3 +78,22 @@
       command: ./irinit --init
       args:
         chdir: /home/irefindex/usr/bin
+      register: irinit_output
+
+    - name: Ensure that /data/irdata/logs exists
+      file:
+        path: "/data/irdata/logs"
+        state: directory
+        mode: 0755
+
+    - name: Copy log files
+      copy:
+        src: "{{ directory.stdout }}"
+        dest: "/data/irdata/logs/irinit.log"
+        mode: 0644
+
+    - name: Copy error log files
+      copy:
+        src: "{{ directory.stderr }}"
+        dest: "/data/irdata/logs/irinit.err.log"
+        mode: 0644
