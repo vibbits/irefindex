@@ -109,14 +109,14 @@
 
     - name: "Ensure that /data/irdata18/logs/irdownload/ exists"
       ansible.builtin.file:
-        path: "/data/irdata18/logs/irdownload/"
+        path: "/data/irdata18/logs/irdownload/{{ ansible_date_time.date }}"
         state: directory
         mode: "0755"
 
     - name: "Copy logs"
       ansible.builtin.copy:
         content: "{{ item.stdout }}"
-        dest: "/data/irdata18/logs/irdownload/{{ item.invocation.module_args._raw_params.split() | last | lower }}.log"
+        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.date }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.log"
         mode: "0644"
       when: item.stdout != ""
       loop: "{{ job_result.results }}"
@@ -124,7 +124,7 @@
     - name: "Copy error logs"
       ansible.builtin.copy:
         content: "{{ item.stderr }}"
-        dest: "/data/irdata18/logs/irdownload/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err.log"
+        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.date }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err.log"
         mode: "0644"
       when: item.stderr != ""
       loop: "{{ job_result.results }}"
