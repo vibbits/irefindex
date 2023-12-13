@@ -1008,9 +1008,3 @@
           - "'tar: Error is not recoverable: exiting now' not in job_result_37.stderr"
         fail_msg: "Failed"
       when: job_result_37.rc == 0
-
-    - name: Ensure that /data/irdata/logs/irunpack/ exists
-      file:
-        path: "/data/irdata/logs/irunpack/"
-        state: directory
-        mode: 0755
