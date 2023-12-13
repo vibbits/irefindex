@@ -738,92 +738,106 @@
         state: directory
         mode: 0755
 
-    - name: Copy log files
-      async_status:
-        jid: "{{ item.ansible_job_id }}"
+    - name: Copy logs
       copy:
         content: "{{ item.stdout }}"
-        dest: "/data/irdata/logs/irdownload/{{ item.name }}.log"
-      loop:
-        - result_bind_translation
-        - result_biogrid
-        - result_corum
-        - result_dip
-        - result_hprd
-        - result_intact
-        - result_intcomplex
-        - result_mpact
-        - result_mppi
-        - result_bar
-        - result_bhf_ucl
-        - result_hpidb
-        - result_huri
-        - result_imex
-        - result_innatedb
-        - result_matrixdb
-        - result_mbinfo
-        - result_mint
-        - result_mpidb
-        - result_quickgo
-        - result_reactome
-        - result_uniprotpp
-        - result_virushost
-        - result_psi_mi
-        - result_taxonomy
-        - result_athaliana
-        - result_bind
-        - result_dig
-        - result_fly
-        - result_gene
-        - result_genpept
-        - result_ipi
-        - result_mmdb
-        - result_pdb
-        - result_refseq
-        - result_uniprot
-        - result_yeast
+        dest: "/data/irdata/logs/irdownload/{{ item.async_job.name }}.log"
+      until: job_result_{{ item }}.finished
+      loop: "{{ range(1, 36) | list }}"
 
-    - name: Copy error log files
-      async_status:
-        jid: "{{ item.ansible_job_id }}"
+    - name: Copy error logs
       copy:
         content: "{{ item.stderr }}"
-        dest: "/data/irdata/logs/irdownload/{{ item.name }}.err.log"
-      loop:
-        - result_bind_translation
-        - result_biogrid
-        - result_corum
-        - result_dip
-        - result_hprd
-        - result_intact
-        - result_intcomplex
-        - result_mpact
-        - result_mppi
-        - result_bar
-        - result_bhf_ucl
-        - result_hpidb
-        - result_huri
-        - result_imex
-        - result_innatedb
-        - result_matrixdb
-        - result_mbinfo
-        - result_mint
-        - result_mpidb
-        - result_quickgo
-        - result_reactome
-        - result_uniprotpp
-        - result_virushost
-        - result_psi_mi
-        - result_taxonomy
-        - result_athaliana
-        - result_bind
-        - result_dig
-        - result_fly
-        - result_gene
-        - result_genpept
-        - result_ipi
-        - result_mmdb
-        - result_pdb
-        - result_refseq
-        - result_uniprot
-        - result_yeast
+        dest: "/data/irdata/logs/irdownload/{{ item.async_job.name }}.err.log"
+      until: job_result_{{ item }}.finished
+      loop: "{{ range(1, 36) | list }}"
+
+    # - name: Copy log files
+    #   async_status:
+    #     jid: "{{ item.ansible_job_id }}"
+    #   copy:
+    #     content: "{{ item.stdout }}"
+    #     dest: "/data/irdata/logs/irdownload/{{ item.name }}.log"
+    #   loop:
+    #     - result_bind_translation
+    #     - result_biogrid
+    #     - result_corum
+    #     - result_dip
+    #     - result_hprd
+    #     - result_intact
+    #     - result_intcomplex
+    #     - result_mpact
+    #     - result_mppi
+    #     - result_bar
+    #     - result_bhf_ucl
+    #     - result_hpidb
+    #     - result_huri
+    #     - result_imex
+    #     - result_innatedb
+    #     - result_matrixdb
+    #     - result_mbinfo
+    #     - result_mint
+    #     - result_mpidb
+    #     - result_quickgo
+    #     - result_reactome
+    #     - result_uniprotpp
+    #     - result_virushost
+    #     - result_psi_mi
+    #     - result_taxonomy
+    #     - result_athaliana
+    #     - result_bind
+    #     - result_dig
+    #     - result_fly
+    #     - result_gene
+    #     - result_genpept
+    #     - result_ipi
+    #     - result_mmdb
+    #     - result_pdb
+    #     - result_refseq
+    #     - result_uniprot
+    #     - result_yeast
+    #
+    # - name: Copy error log files
+    #   async_status:
+    #     jid: "{{ item.ansible_job_id }}"
+    #   copy:
+    #     content: "{{ item.stderr }}"
+    #     dest: "/data/irdata/logs/irdownload/{{ item.name }}.err.log"
+    #   loop:
+    #     - result_bind_translation
+    #     - result_biogrid
+    #     - result_corum
+    #     - result_dip
+    #     - result_hprd
+    #     - result_intact
+    #     - result_intcomplex
+    #     - result_mpact
+    #     - result_mppi
+    #     - result_bar
+    #     - result_bhf_ucl
+    #     - result_hpidb
+    #     - result_huri
+    #     - result_imex
+    #     - result_innatedb
+    #     - result_matrixdb
+    #     - result_mbinfo
+    #     - result_mint
+    #     - result_mpidb
+    #     - result_quickgo
+    #     - result_reactome
+    #     - result_uniprotpp
+    #     - result_virushost
+    #     - result_psi_mi
+    #     - result_taxonomy
+    #     - result_athaliana
+    #     - result_bind
+    #     - result_dig
+    #     - result_fly
+    #     - result_gene
+    #     - result_genpept
+    #     - result_ipi
+    #     - result_mmdb
+    #     - result_pdb
+    #     - result_refseq
+    #     - result_uniprot
+    #     - result_yeast
