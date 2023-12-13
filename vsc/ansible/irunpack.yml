@@ -571,6 +571,15 @@
       retries: 6
       delay: 5
 
+    - name: Fail the task when conditions are met (TAXONOMY)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_25.stderr"
+          - "'tar: Unexpected EOF in archive' not in job_result_25.stderr"
+          - "'tar: Error is not recoverable: exiting now' not in job_result_25.stderr"
+        fail_msg: "Failed"
+      when: job_result_25.rc == 0
+
     - name: Wait for ATHALIANA to complete
       async_status:
         jid: "{{ athaliana_result.ansible_job_id }}"
