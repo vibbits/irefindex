@@ -199,11 +199,6 @@
       when: "'stat: cannot statx' in matrixdb_result.stderr or 'grep' in matrixdb_result.stdout"
       ignore_errors: true
 
-    - name: Rename mbinfo_psicquic.txt.original
-      command: mv /home/irefindex/var/lib/irdata/data/MBINFO/mbinfo_psicquic.txt.original /home/irefindex/var/lib/irdata/data/MBINFO/mbinfo_psicquic.txt
-      args:
-        creates: /home/irefindex/var/lib/irdata/data/MBINFO/mbinfo_psicquic.txt
-
     - name: Create file of acquired resources MBINFO
       command: "./irmanifest MBINFO"
       args:
