@@ -389,14 +389,14 @@
       register: result_refseq
 
     - name: Download IR data - UNIPROT
-      command: "./irdownload PDB"
+      command: "./irdownload UNIPROT"
       args:
         chdir: "/home/irefindex/usr/bin"
       ignore_errors: true
       retries: 3
       async: 60
       poll: 0
-      register: result_pdb
+      register: result_uniprot
 
     - name: Download IR data - YEAST
       command: "./irdownload YEAST"
@@ -716,7 +716,7 @@
 
     - name: Wait for UNIPROT to complete
       async_status:
-        jid: "{{ result_pdb.ansible_job_id }}"
+        jid: "{{ result_uniprot.ansible_job_id }}"
       register: job_result_34
       until: job_result_34.finished
       retries: 36
@@ -731,3 +731,187 @@
       retries: 36
       delay: 5
       ignore_errors: true
+
+    - name: "Ensure that /data/irdata18/logs/irdownload/ exists"
+      ansible.builtin.file:
+        path: "/data/irdata18/logs/irdownload/"
+        state: directory
+        mode: "0755"
+
+    - name: "Copy logs"
+      ansible.builtin.copy:
+        content: item.stdout
+        dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.log"
+        mode: "0644"
+      until: item.finished
+      loop:
+        # TODO: there should be a better way...
+        - job_result_1
+        - job_result_2
+        - job_result_3
+        - job_result_4
+        - job_result_5
+        - job_result_6
+        - job_result_7
+        - job_result_8
+        - job_result_9
+        - job_result_10
+        - job_result_11
+        - job_result_12
+        - job_result_13
+        - job_result_14
+        - job_result_15
+        - job_result_16
+        - job_result_17
+        - job_result_18
+        - job_result_19
+        - job_result_20
+        - job_result_21
+        - job_result_22
+        - job_result_23
+        - job_result_24
+        - job_result_25
+        - job_result_26
+        - job_result_27
+        - job_result_28
+        - job_result_29
+        - job_result_30
+        - job_result_31
+        - job_result_32
+        - job_result_33
+        - job_result_34
+        - job_result_35
+
+    - name: "Copy error logs"
+      ansible.builtin.copy:
+        content: item.stderr
+        dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.err.log"
+        mode: "0644"
+      until: item.finished
+      loop:
+        - job_result_1
+        - job_result_2
+        - job_result_3
+        - job_result_4
+        - job_result_5
+        - job_result_6
+        - job_result_7
+        - job_result_8
+        - job_result_9
+        - job_result_10
+        - job_result_11
+        - job_result_12
+        - job_result_13
+        - job_result_14
+        - job_result_15
+        - job_result_16
+        - job_result_17
+        - job_result_18
+        - job_result_19
+        - job_result_20
+        - job_result_21
+        - job_result_22
+        - job_result_23
+        - job_result_24
+        - job_result_25
+        - job_result_26
+        - job_result_27
+        - job_result_28
+        - job_result_29
+        - job_result_30
+        - job_result_31
+        - job_result_32
+        - job_result_33
+        - job_result_34
+        - job_result_35
+
+
+    # - name: Copy log files
+    #   async_status:
+    #     jid: "{{ item.ansible_job_id }}"
+    #   copy:
+    #     content: "{{ item.stdout }}"
+    #     dest: "/data/irdata/logs/irdownload/{{ item.name }}.log"
+    #   loop:
+    #     - result_bind_translation
+    #     - result_biogrid
+    #     - result_corum
+    #     - result_dip
+    #     - result_hprd
+    #     - result_intact
+    #     - result_intcomplex
+    #     - result_mpact
+    #     - result_mppi
+    #     - result_bar
+    #     - result_bhf_ucl
+    #     - result_hpidb
+    #     - result_huri
+    #     - result_imex
+    #     - result_innatedb
+    #     - result_matrixdb
+    #     - result_mbinfo
+    #     - result_mint
+    #     - result_mpidb
+    #     - result_quickgo
+    #     - result_reactome
+    #     - result_uniprotpp
+    #     - result_virushost
+    #     - result_psi_mi
+    #     - result_taxonomy
+    #     - result_athaliana
+    #     - result_bind
+    #     - result_dig
+    #     - result_fly
+    #     - result_gene
+    #     - result_genpept
+    #     - result_ipi
+    #     - result_mmdb
+    #     - result_pdb
+    #     - result_refseq
+    #     - result_uniprot
+    #     - result_yeast
+    #
+    # - name: Copy error log files
+    #   async_status:
+    #     jid: "{{ item.ansible_job_id }}"
+    #   copy:
+    #     content: "{{ item.stderr }}"
+    #     dest: "/data/irdata/logs/irdownload/{{ item.name }}.err.log"
+    #   loop:
+    #     - result_bind_translation
+    #     - result_biogrid
+    #     - result_corum
+    #     - result_dip
+    #     - result_hprd
+    #     - result_intact
+    #     - result_intcomplex
+    #     - result_mpact
+    #     - result_mppi
+    #     - result_bar
+    #     - result_bhf_ucl
+    #     - result_hpidb
+    #     - result_huri
+    #     - result_imex
+    #     - result_innatedb
+    #     - result_matrixdb
+    #     - result_mbinfo
+    #     - result_mint
+    #     - result_mpidb
+    #     - result_quickgo
+    #     - result_reactome
+    #     - result_uniprotpp
+    #     - result_virushost
+    #     - result_psi_mi
+    #     - result_taxonomy
+    #     - result_athaliana
+    #     - result_bind
+    #     - result_dig
+    #     - result_fly
+    #     - result_gene
+    #     - result_genpept
+    #     - result_ipi
+    #     - result_mmdb
+    #     - result_pdb
+    #     - result_refseq
+    #     - result_uniprot
+    #     - result_yeast
