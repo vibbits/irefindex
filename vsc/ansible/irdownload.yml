@@ -82,10 +82,11 @@
         update_cache: true
         force_apt_get: true
 
-    - name: Install Google Cloud CLI
-      ansible.builtin.apt:
-        name: google-cloud-sdk
-        state: present
+    # TODO: Figure out why this doesn't work
+    # - name: Install Google Cloud CLI
+    #   ansible.builtin.apt:
+    #     name: google-cloud-sdk
+    #     state: present
 
     - name: Run jobs
       ansible.builtin.command: "./irdownload {{ item }}"
@@ -117,7 +118,7 @@
         content: item.stdout
         dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.log"
         mode: "0644"
-      until: item.finished
+      when: item.finished
       loop: "{{ result.results }}"
 
     - name: "Copy error logs"
@@ -125,7 +126,7 @@
         content: item.stderr
         dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.err.log"
         mode: "0644"
-      until: item.finished
+      when: item.finished
       loop: "{{ result.results }}"
     #
     # - name: Download IR data - BIND_TRANSLATION
