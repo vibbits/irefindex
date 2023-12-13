@@ -72,21 +72,15 @@
         dest: /usr/share/keyrings/cloud.google.asc
         mode: "0644"
 
-    # - name: Import Google Cloud SDK key
-    #   ansible.builtin.shell: "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg 2>/dev/null | sudo tee /usr/share/keyrings/cloud.google.asc"
-    #   args:
-    #     creates: /usr/share/keyrings/cloud.google.asc
-
     - name: Update apt packages with Google Cloud SDK repository
       ansible.builtin.apt:
         update_cache: true
         force_apt_get: true
 
-    # TODO: Figure out why this doesn't work
-    # - name: Install Google Cloud CLI
-    #   ansible.builtin.apt:
-    #     name: google-cloud-sdk
-    #     state: present
+    - name: Install Google Cloud CLI
+      ansible.builtin.apt:
+        name: google-cloud-cli
+        state: present
 
     - name: Run jobs
       ansible.builtin.command: "./irdownload {{ item | upper }}"
