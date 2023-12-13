@@ -1000,11 +1000,98 @@
       retries: 6
       delay: 5
 
-    - name: Fail the task when conditions are met (YEAST)
-      assert:
-        that:
-          - "'gzip: stdin: invalid compressed data--format violated' not in job_result_37.stderr"
-          - "'tar: Unexpected EOF in archive' not in job_result_37.stderr"
-          - "'tar: Error is not recoverable: exiting now' not in job_result_37.stderr"
-        fail_msg: "Failed"
-      when: job_result_37.rc == 0
+    - name: Ensure that /data/irdata/logs/irunpack/ exists
+      file:
+        path: "/data/irdata/logs/irunpack/"
+        state: directory
+        mode: 0755
+
+    - name: Copy log files
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      copy:
+        content: "{{ item.stdout }}"
+        dest: "/data/irdata/logs/irunpack/{{ item.name }}.log"
+      loop:
+        - bind_translation_result
+        - biogrid_result
+        - corum_result
+        - dip_result
+        - hrpd_result
+        - intact_result
+        - intcomplex_result
+        - mpact_result
+        - mppi_result
+        - bar_result
+        - bhf_ucl_result
+        - hpidb_result
+        - huri_result
+        - innatedb_result
+        - imex_result
+        - mbinfo_result
+        - mpidb_result
+        - mint_result
+        - matrixdb_result
+        - quickgo_result
+        - reactome_result
+        - virushost_result
+        - uniprotpp_result
+        - psi_mi_result
+        - taxonomy_result
+        - athaliana_result
+        - dig_result
+        - bind_result
+        - fly_result
+        - gene_result
+        - genpept_result
+        - ipi_result
+        - mmdb_result
+        - pdb_result
+        - refseq_result
+        - uniprot_result
+        - yeast_result
+
+    - name: Copy log errors files
+      async_status:
+        jid: "{{ item.ansible_job_id }}"
+      copy:
+        content: "{{ item.stderr }}"
+        dest: "/data/irdata/logs/irunpack/{{ item.name }}.err.log"
+      loop:
+        - bind_translation_result
+        - biogrid_result
+        - corum_result
+        - dip_result
+        - hrpd_result
+        - intact_result
+        - intcomplex_result
+        - mpact_result
+        - mppi_result
+        - bar_result
+        - bhf_ucl_result
+        - hpidb_result
+        - huri_result
+        - innatedb_result
+        - imex_result
+        - mbinfo_result
+        - mpidb_result
+        - mint_result
+        - matrixdb_result
+        - quickgo_result
+        - reactome_result
+        - virushost_result
+        - uniprotpp_result
+        - psi_mi_result
+        - taxonomy_result
+        - athaliana_result
+        - dig_result
+        - bind_result
+        - fly_result
+        - gene_result
+        - genpept_result
+        - ipi_result
+        - mmdb_result
+        - pdb_result
+        - refseq_result
+        - uniprot_result
+        - yeast_result
