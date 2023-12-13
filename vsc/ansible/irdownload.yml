@@ -742,15 +742,87 @@
       copy:
         content: "{{ item.stdout }}"
         dest: "/data/irdata/logs/irdownload/{{ item.async_job.name }}.log"
-      until: job_result_{{ item }}.finished
-      loop: "{{ range(1, 36) | list }}"
+      until: "{{ item }}.finished"
+      loop:
+        # TODO: there should be a better way...
+        - job_result_1
+        - job_result_2
+        - job_result_3
+        - job_result_4
+        - job_result_5
+        - job_result_6
+        - job_result_7
+        - job_result_8
+        - job_result_9
+        - job_result_10
+        - job_result_11
+        - job_result_12
+        - job_result_13
+        - job_result_14
+        - job_result_15
+        - job_result_16
+        - job_result_17
+        - job_result_18
+        - job_result_19
+        - job_result_20
+        - job_result_21
+        - job_result_22
+        - job_result_23
+        - job_result_24
+        - job_result_25
+        - job_result_26
+        - job_result_27
+        - job_result_28
+        - job_result_29
+        - job_result_30
+        - job_result_31
+        - job_result_32
+        - job_result_33
+        - job_result_34
+        - job_result_35
 
     - name: Copy error logs
       copy:
         content: "{{ item.stderr }}"
         dest: "/data/irdata/logs/irdownload/{{ item.async_job.name }}.err.log"
-      until: job_result_{{ item }}.finished
-      loop: "{{ range(1, 36) | list }}"
+      until: "{{ item }}.finished"
+      loop: 
+        - job_result_1
+        - job_result_2
+        - job_result_3
+        - job_result_4
+        - job_result_5
+        - job_result_6
+        - job_result_7
+        - job_result_8
+        - job_result_9
+        - job_result_10
+        - job_result_11
+        - job_result_12
+        - job_result_13
+        - job_result_14
+        - job_result_15
+        - job_result_16
+        - job_result_17
+        - job_result_18
+        - job_result_19
+        - job_result_20
+        - job_result_21
+        - job_result_22
+        - job_result_23
+        - job_result_24
+        - job_result_25
+        - job_result_26
+        - job_result_27
+        - job_result_28
+        - job_result_29
+        - job_result_30
+        - job_result_31
+        - job_result_32
+        - job_result_33
+        - job_result_34
+        - job_result_35
+
 
     # - name: Copy log files
     #   async_status:
