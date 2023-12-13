@@ -33,6 +33,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: corum_result
+      # FAILED - IRDOWNLOAD
 
     - name: Fail the task when conditions are met (CORUM)
       fail:
@@ -117,6 +118,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: bar_result
+      # FAILED - IRDOWNLOAD
 
     - name: Fail the task when conditions are met (BAR)
       fail:
@@ -177,6 +179,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: innatedb_result
+      # FAILED - IRDOWNLOAD
 
     - name: Fail the task when conditions are met (INNATEDB)
       fail:
@@ -196,11 +199,17 @@
       when: "'stat: cannot statx' in matrixdb_result.stderr or 'grep' in matrixdb_result.stdout"
       ignore_errors: true
 
+    - name: Rename mbinfo_psicquic.txt.original
+      command: mv /home/irefindex/var/lib/irdata/data/MBINFO/mbinfo_psicquic.txt.original /home/irefindex/var/lib/irdata/data/MBINFO/mbinfo_psicquic.txt
+      args:
+        creates: /home/irefindex/var/lib/irdata/data/MBINFO/mbinfo_psicquic.txt
+
     - name: Create file of acquired resources MBINFO
       command: "./irmanifest MBINFO"
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mbinfo_result
+      # FAILED - STRANGE
 
     - name: Fail the task when conditions are met (MBINFO)
       fail:
@@ -225,6 +234,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mpidb_result
+      # FAILED - STRANGE
 
     - name: Fail the task when conditions are met (MPIDB)
       fail:
@@ -237,6 +247,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: quickgo_result
+      # FAILED - STRANGE
 
     - name: Fail the task when conditions are met (QUICKGO)
       fail:
@@ -381,6 +392,7 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: ipi_result
+      # FAILED - IRDOWNLOAD
 
     - name: Fail the task when conditions are met (IPI)
       fail:
