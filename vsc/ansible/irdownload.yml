@@ -732,17 +732,18 @@
       delay: 5
       ignore_errors: true
 
-    - name: Ensure that /data/irdata/logs/irdownload/ exists
-      file:
-        path: "/data/irdata/logs/irdownload/"
+    - name: "Ensure that /data/irdata18/logs/irdownload/ exists"
+      ansible.builtin.file:
+        path: "/data/irdata18/logs/irdownload/"
         state: directory
-        mode: 0755
+        mode: "0755"
 
-    - name: Copy logs
-      copy:
-        content: "{{ item.stdout }}"
-        dest: "/data/irdata/logs/irdownload/{{ item.async_job.name }}.log"
-      until: "{{ item }}.finished"
+    - name: "Copy logs"
+      ansible.builtin.copy:
+        content: item.stdout
+        dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.log"
+        mode: "0644"
+      until: item.finished
       loop:
         # TODO: there should be a better way...
         - job_result_1
@@ -781,12 +782,13 @@
         - job_result_34
         - job_result_35
 
-    - name: Copy error logs
-      copy:
-        content: "{{ item.stderr }}"
-        dest: "/data/irdata/logs/irdownload/{{ item.async_job.name }}.err.log"
-      until: "{{ item }}.finished"
-      loop: 
+    - name: "Copy error logs"
+      ansible.builtin.copy:
+        content: item.stderr
+        dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.err.log"
+        mode: "0644"
+      until: item.finished
+      loop:
         - job_result_1
         - job_result_2
         - job_result_3
