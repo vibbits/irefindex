@@ -89,7 +89,7 @@
     #     state: present
 
     - name: Run jobs
-      ansible.builtin.command: "./irdownload {{ item }}"
+      ansible.builtin.command: "./irdownload {{ item | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
       async: 3600
@@ -115,19 +115,19 @@
 
     - name: "Copy logs"
       ansible.builtin.copy:
-        content: item.stdout
-        dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.log"
+        content: "{{ item.stdout }}"
+        dest: "/data/irdata18/logs/irdownload/{{ item.invocation.module_args._raw_params.split() | last | lower }}.log"
         mode: "0644"
-      when: item.finished
-      loop: "{{ result.results }}"
+      when: item.stdout != ""
+      loop: "{{ job_result.results }}"
 
     - name: "Copy error logs"
       ansible.builtin.copy:
-        content: item.stderr
-        dest: "/data/irdata18/logs/irdownload/{{ item.async_job.name }}.err.log"
+        content: "{{ item.stderr }}"
+        dest: "/data/irdata18/logs/irdownload/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err.log"
         mode: "0644"
-      when: item.finished
-      loop: "{{ result.results }}"
+      when: item.stderr != ""
+      loop: "{{ job_result.results }}"
     #
     # - name: Download IR data - BIND_TRANSLATION
     #   ansible.builtin.command: "./irdownload BIND_TRANSLATION"
