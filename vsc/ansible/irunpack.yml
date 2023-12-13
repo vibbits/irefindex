@@ -571,6 +571,14 @@
       retries: 6
       delay: 5
 
+    - name: Debug taxonomy_result
+      debug:
+        var: taxonomy_result
+
+    - name: Debug job_result_25
+      debug:
+        var: job_result_25
+
     - name: Fail the task when conditions are met (TAXONOMY)
       assert:
         that:
