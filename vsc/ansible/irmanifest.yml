@@ -204,7 +204,6 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mbinfo_result
-      # FAILED - STRANGE
 
     - name: Fail the task when conditions are met (MBINFO)
       fail:
@@ -229,7 +228,6 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: mpidb_result
-      # FAILED - STRANGE
 
     - name: Fail the task when conditions are met (MPIDB)
       fail:
@@ -242,7 +240,6 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       register: quickgo_result
-      # FAILED - STRANGE
 
     - name: Fail the task when conditions are met (QUICKGO)
       fail:
