@@ -363,7 +363,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # import failed
+      # FAILED - IRDOWNLOAD
 
     - name: Wait for DIP to complete
       async_status:
@@ -427,7 +427,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - IRDOWNLOAD
 
     - name: Wait for BHF_UCL to complete
       async_status:
@@ -473,7 +473,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - IRDOWNLOAD
 
     - name: Wait for MATRIXDB to complete
       async_status:
@@ -555,7 +555,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED --> strange!!
+      # FAILED - STRANGE
 
     - name: Wait for TAXONOMY to complete
       async_status:
@@ -565,7 +565,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - UNPACK
 
     - name: Wait for ATHALIANA to complete
       async_status:
@@ -584,7 +584,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED --> strange!!
+      # FAILED - STRANGE
 
     - name: Wait for DIG to complete
       async_status:
@@ -621,7 +621,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - IRPARSE
 
     - name: Wait for IPI to complete
       async_status:
@@ -631,7 +631,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - IRDOWNLOAD
 
     - name: Wait for MMDB to complete
       async_status:
@@ -641,7 +641,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # INVALID INPUT SYNTAX FOR TYPE INTEGER --> STRANGE!!!
+      # FAILED - STRANGE
 
     - name: Wait for PDB to complete
       async_status:
@@ -651,7 +651,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - IRPARSE
 
     - name: Wait for REFSEQ to complete
       async_status:
@@ -661,7 +661,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - IRPARSE
 
     - name: Wait for UNIPROT to complete
       async_status:
@@ -671,7 +671,7 @@
       ignore_errors: true
       retries: 6
       delay: 5
-      # IMPORT FAILED
+      # FAILED - IRPARSE
 
     - name: Wait for YEAST to complete
       async_status:
@@ -681,99 +681,3 @@
       ignore_errors: true
       retries: 6
       delay: 5
-
-    - name: Ensure that /data/irdata/logs/irimport/ exists
-      file:
-        path: "/data/irdata/logs/irimport/"
-        state: directory
-        mode: 0755
-
-    - name: Copy log files
-      async_status:
-        jid: "{{ item.ansible_job_id }}"
-      copy:
-        content: "{{ item.stdout }}"
-        dest: "/data/irdata/logs/irimport/{{ item.name }}.log"
-      loop:
-        - bind_translation_result
-        - biogrid_result
-        - corum_result
-        - dip_result
-        - hprd_result
-        - intact_result
-        - intcomplex_result
-        - mpact_result
-        - mppi_result
-        - bar_result
-        - bhf_ucl_result
-        - hpidb_result
-        - huri_result
-        - imex_result
-        - innatedb_result
-        - matrixdb_result
-        - mbinfo_result
-        - mint_result
-        - mpidb_result
-        - quickgo_result
-        - reactome_result
-        - uniprotpp_result
-        - virushost_result
-        - psi_mi_result
-        - taxonomy_result
-        - athaliana_result
-        - bind_result
-        - dig_result
-        - fly_result
-        - gene_result
-        - genpept_result
-        - ipi_result
-        - mmdb_result
-        - pdb_result
-        - refseq_result
-        - uniprot_result
-        - yeast_result
-
-    - name: Copy error log files
-      async_status:
-        jid: "{{ item.ansible_job_id }}"
-      copy:
-        content: "{{ item.stderr }}"
-        dest: "/data/irdata/logs/irimport/{{ item.name }}.err.log"
-      loop:
-        - bind_translation_result
-        - biogrid_result
-        - corum_result
-        - dip_result
-        - hprd_result
-        - intact_result
-        - intcomplex_result
-        - mpact_result
-        - mppi_result
-        - bar_result
-        - bhf_ucl_result
-        - hpidb_result
-        - huri_result
-        - imex_result
-        - innatedb_result
-        - matrixdb_result
-        - mbinfo_result
-        - mint_result
-        - mpidb_result
-        - quickgo_result
-        - reactome_result
-        - uniprotpp_result
-        - virushost_result
-        - psi_mi_result
-        - taxonomy_result
-        - athaliana_result
-        - bind_result
-        - dig_result
-        - fly_result
-        - gene_result
-        - genpept_result
-        - ipi_result
-        - mmdb_result
-        - pdb_result
-        - refseq_result
-        - uniprot_result
-        - yeast_result
