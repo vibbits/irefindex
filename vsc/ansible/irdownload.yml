@@ -2,46 +2,55 @@
 - name: Irdownload
   hosts: localhost
   become: true
+  gather_facts: true # WE NEED THIS HERE FOR THE DATES!
+
   vars:
     # All sources that should be downloaded
+    #
+    # Parameters:
+    #  runner_retries[default=3]: Number of times to retry the job if it fails
+    #  runner_delay[default=0]: Delay in seconds between runner retries
+    #  runner_async[default=30]: Number of seconds to wait before checking if the job is finished
+    #  retries[default=18]: Number of times to retry the check
+    #  delay[default=5]: Delay in seconds between the checks
     jobs:
-      - { name: "bind_translation", runner_retries: 3, runner_delay: 5, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "biogrid", runner_retries: 3, runner_delay: 5, runner_async: 60, retries: 12, delay: 15 }
-      - { name: "corum", runner_retries: 3, runner_async: 60, retries: 12, delay: 15 }
-      - { name: "dip", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "hprd", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "intact", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "intcomplex", runner_retries: 3, runner_async: 30, retries: 6, delay: 5 }
-      - { name: "mpact", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "mppi", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "bar", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "bhf_ucl", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "hpidb", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "huri", runner_retries: 3, runner_async: 60, retries: 36, delay: 5 }
-      - { name: "imex", runner_retries: 3, runner_async: 10800, retries: 108, delay: 300 }
-      - { name: "innatedb", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "matrixdb", runner_retries: 3, runner_async: 300, retries: 30, delay: 30 }
-      - { name: "mbinfo", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "mint", runner_retries: 3, runner_async: 600, retries: 60, delay: 30 }
-      - { name: "mpidb", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "quickgo", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "reactome", runner_retries: 3, runner_async: 300, retries: 30, delay: 30 }
-      - { name: "uniprotpp", runner_retries: 3, runner_async: 300, retries: 30, delay: 30 }
-      - { name: "virushost", runner_retries: 3, runner_async: 60, retries: 36, delay: 5 }
-      - { name: "psi_mi", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "taxonomy", runner_retries: 3, runner_async: 60, retries: 36, delay: 5 }
-      - { name: "athaliana", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "bind", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "dig", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "fly", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "gene", runner_retries: 3, runner_async: 600, retries: 60, delay: 30 }
-      - { name: "genpept", runner_retries: 3, runner_async: 36000, retries: 60, delay: 1800 }
-      - { name: "ipi", runner_retries: 3, runner_async: 30, retries: 18, delay: 5 }
-      - { name: "mmdb", runner_retries: 3, runner_async: 60, retries: 36, delay: 5 }
-      - { name: "pdb", runner_retries: 3, runner_async: 60, retries: 36, delay: 5 }
-      - { name: "refseq", runner_retries: 3, runner_async: 36000, retries: 60, delay: 1800 }
-      - { name: "uniprot", runner_retries: 3, runner_async: 60, retries: 36, delay: 5 }
-      - { name: "yeast", runner_retries: 3, runner_async: 60, retries: 36, delay: 5 }
+      - { name: "athaliana" }
+      - { name: "bar" }
+      - { name: "bhf_ucl" }
+      - { name: "bind" }
+      - { name: "bind_translation", runner_delay: 5 }
+      - { name: "biogrid", runner_delay: 5, runner_async: 60, retries: 12, delay: 15 }
+      - { name: "corum", runner_async: 60, retries: 12, delay: 15 }
+      - { name: "dig" }
+      - { name: "dip" }
+      - { name: "fly" }
+      - { name: "gene", runner_async: 600, retries: 60, delay: 30 }
+      - { name: "genpept", runner_async: 36000, retries: 60, delay: 1800 }
+      - { name: "hpidb" }
+      - { name: "hprd" }
+      - { name: "huri", runner_async: 60, retries: 36 }
+      - { name: "imex", runner_async: 10800, retries: 108, delay: 300 }
+      - { name: "innatedb" }
+      - { name: "intact" }
+      - { name: "intcomplex", retries: 6 }
+      - { name: "ipi" }
+      - { name: "matrixdb", runner_async: 300, retries: 30, delay: 30 }
+      - { name: "mbinfo" }
+      - { name: "mint", runner_async: 600, retries: 60, delay: 30 }
+      - { name: "mmdb", runner_async: 60, retries: 36 }
+      - { name: "mpact" }
+      - { name: "mpidb" }
+      - { name: "mppi" }
+      - { name: "pdb", runner_async: 60, retries: 36 }
+      - { name: "psi_mi" }
+      - { name: "quickgo" }
+      - { name: "reactome", runner_async: 300, retries: 30, delay: 30 }
+      - { name: "refseq", runner_async: 36000, retries: 60, delay: 1800 }
+      - { name: "taxonomy", runner_async: 60, retries: 36 }
+      - { name: "uniprot", runner_async: 60, retries: 36 }
+      - { name: "uniprotpp", runner_async: 300, retries: 30, delay: 30 }
+      - { name: "virushost", runner_async: 60, retries: 36 }
+      - { name: "yeast", runner_async: 60, retries: 36 }
 
   tasks:
     - name: Update apt packages
@@ -86,14 +95,13 @@
       ansible.builtin.command: "./irdownload {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
-      # async: 3600
-      async: "{{ item.runner_async | default(3600) }}"
+      async: "{{ item.runner_async | default(30) }}"
       poll: 0
       loop: "{{ jobs }}"
       register: result
       changed_when: false
       delay: "{{ item.runner_delay | default(0) }}"
-      retries: "{{ item.runner_retries | default(0) }}"
+      retries: "{{ item.runner_retries | default(3) }}"
       ignore_errors: true
 
     - name: Wait for jobs to complete
@@ -101,30 +109,32 @@
         jid: "{{ item.ansible_job_id }}"
       register: job_result
       until: job_result.finished
-      # retries: 36
-      # delay: 5
-      retries: "{{ item.retries | default(30) }}"
+      retries: "{{ item.retries | default(18) }}"
       delay: "{{ item.delay | default(5) }}"
       loop: "{{ result.results }}"
 
     - name: "Ensure that /data/irdata18/logs/irdownload/ exists"
       ansible.builtin.file:
-        path: "/data/irdata18/logs/irdownload/{{ ansible_date_time.date }}"
+        path: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}"
         state: directory
         mode: "0755"
 
     - name: "Copy logs"
       ansible.builtin.copy:
         content: "{{ item.stdout }}"
-        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.date }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.log"
+        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.out"
         mode: "0644"
+        remote_src: false
+      no_log: true
       when: item.stdout != ""
       loop: "{{ job_result.results }}"
 
     - name: "Copy error logs"
       ansible.builtin.copy:
         content: "{{ item.stderr }}"
-        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.date }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err.log"
+        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err"
         mode: "0644"
+        remote_src: false
+      no_log: true
       when: item.stderr != ""
       loop: "{{ job_result.results }}"
