@@ -238,15 +238,6 @@
       # tar: Error is not recoverable: exiting now
       # strange!!
 
-    - name: Fail the task when conditions are met (TAXONOMY)
-      assert:
-        that:
-          - "'gzip: stdin: invalid compressed data--format violated' not in taxonomy_result.stdout"
-          - "'tar: Unexpected EOF in archive' not in taxonomy_result.stdout"
-          - "'tar: Error is not recoverable: exiting now' not in taxonomy_result.stdout"
-        fail_msg: "TAXONOMY extraction failed with errors"
-      when: taxonomy_result.rc == 0
-
     - name: Unpack ATHALIANA
       command: "./irunpack ATHALIANA"
       args:
@@ -579,6 +570,15 @@
       ignore_errors: true
       retries: 6
       delay: 5
+
+    - name: Fail the task when conditions are met (TAXONOMY)
+      assert:
+        that:
+          - "'gzip: stdin: invalid compressed data--format violated' not in taxonomy_result.stdout"
+          - "'tar: Unexpected EOF in archive' not in taxonomy_result.stdout"
+          - "'tar: Error is not recoverable: exiting now' not in taxonomy_result.stdout"
+        fail_msg: "TAXONOMY extraction failed with errors"
+      when: taxonomy_result.rc == 0
 
     - name: Wait for ATHALIANA to complete
       async_status:
