@@ -1,6 +1,6 @@
 ---
 - name: Irdownload
-  hosts: localhost
+  hosts: all
   become: true
   gather_facts: true # WE NEED THIS HERE FOR THE DATES!
 
@@ -9,7 +9,6 @@
     #
     # Parameters:
     #  runner_retries[default=3]: Number of times to retry the job if it fails
-    #  runner_delay[default=0]: Delay in seconds between runner retries
     #  runner_async[default=30]: Number of seconds to wait before checking if the job is finished
     #  retries[default=18]: Number of times to retry the check
     #  delay[default=5]: Delay in seconds between the checks
@@ -18,8 +17,8 @@
       - { name: "bar" }
       - { name: "bhf_ucl" }
       - { name: "bind" }
-      - { name: "bind_translation", runner_delay: 5 }
-      - { name: "biogrid", runner_delay: 5, runner_async: 60, retries: 12, delay: 15 }
+      - { name: "bind_translation", }
+      - { name: "biogrid", runner_async: 60, retries: 12, delay: 15 }
       - { name: "corum", runner_async: 60, retries: 12, delay: 15 }
       - { name: "dig" }
       - { name: "dip" }
@@ -51,6 +50,9 @@
       - { name: "uniprotpp", runner_async: 300, retries: 30, delay: 30 }
       - { name: "virushost", runner_async: 60, retries: 36 }
       - { name: "yeast", runner_async: 60, retries: 36 }
+
+    date: "{{ ansible_date_time.iso8601_basic }}"
+    log_location: "/data/irdata18/logs/irdownload/{{ date }}"
 
   tasks:
     - name: Update apt packages
@@ -96,33 +98,32 @@
       args:
         chdir: "/home/irefindex/usr/bin"
       async: "{{ item.runner_async | default(30) }}"
-      poll: 0
-      loop: "{{ jobs }}"
-      register: result
       changed_when: false
-      delay: "{{ item.runner_delay | default(0) }}"
+      loop: "{{ jobs }}"
+      poll: 0
+      register: result
       retries: "{{ item.runner_retries | default(3) }}"
-      ignore_errors: true
 
     - name: Wait for jobs to complete
       ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
-      register: job_result
-      until: job_result.finished
-      retries: "{{ item.retries | default(18) }}"
       delay: "{{ item.delay | default(5) }}"
+      ignore_errors: true
       loop: "{{ result.results }}"
+      retries: "{{ item.retries | default(18) }}"
+      register: job_result
+      until: job_result.finished == true
 
-    - name: "Ensure that /data/irdata18/logs/irdownload/ exists"
+    - name: "Ensure that `log_location` exists"
       ansible.builtin.file:
-        path: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}"
+        path: "{{ log_location }}"
         state: directory
         mode: "0755"
 
     - name: "Copy logs"
       ansible.builtin.copy:
         content: "{{ item.stdout }}"
-        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.out"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.out"
         mode: "0644"
         remote_src: false
       no_log: true
@@ -132,9 +133,23 @@
     - name: "Copy error logs"
       ansible.builtin.copy:
         content: "{{ item.stderr }}"
-        dest: "/data/irdata18/logs/irdownload/{{ ansible_date_time.iso8601_basic }}/{{ item.invocation.module_args._raw_params.split() | last | lower }}.err"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.err"
         mode: "0644"
         remote_src: false
       no_log: true
       when: item.stderr != ""
       loop: "{{ job_result.results }}"
+
+    - name: Gather failed jobs
+      ansible.builtin.set_fact:
+        failed_jobs: "{{ failed_jobs | default([]) + [item.item.item.name] }}"
+      no_log: true
+      when: item.failed
+      loop: "{{ job_result.results }}"
+
+    - name: Print failed jobs
+      ansible.builtin.fail:
+        msg:
+          - "The following resources failed to download: {{ failed_jobs | join(', ') }}"
+          - "Please check the logs in `{{ log_location }}` for more information."
+      when: failed_jobs is defined
