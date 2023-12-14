@@ -1,0 +1,45 @@
+  # All sources that should be downloaded
+  #
+  # Parameters:
+  #  download_runner_retries[default=3]: Number of times to retry the job if it fails
+  #  download_runner_async[default=30]: Number of seconds to wait before checking if the job is finished
+  #  download_retries[default=18]: Number of times to retry the check
+  #  download_delay[default=5]: Delay in seconds between the checks
+  jobs:
+    - { name: "athaliana" }
+    - { name: "bar" }
+    - { name: "bhf_ucl" }
+    - { name: "bind" }
+    - { name: "bind_translation", }
+    - { name: "biogrid", download_runner_async: 60, download_retries: 12, download_delay: 15 }
+    - { name: "corum", download_runner_async: 60, download_retries: 12, download_delay: 15 }
+    - { name: "dig" }
+    - { name: "dip" }
+    - { name: "fly" }
+    - { name: "gene", download_runner_async: 600, download_retries: 60, download_delay: 30 }
+    - { name: "genpept", download_runner_async: 36000, download_retries: 60, download_delay: 1800 }
+    - { name: "hpidb" }
+    - { name: "hprd" }
+    - { name: "huri", download_runner_async: 60, download_retries: 36 }
+    - { name: "imex", download_runner_async: 10800, download_retries: 108, download_delay: 300 }
+    - { name: "innatedb" }
+    - { name: "intact" }
+    - { name: "intcomplex", download_retries: 6 }
+    - { name: "ipi" }
+    - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30 }
+    - { name: "mbinfo" }
+    - { name: "mint", download_runner_async: 600, download_retries: 60, download_delay: 30 }
+    - { name: "mmdb", download_runner_async: 60, download_retries: 36 }
+    - { name: "mpact" }
+    - { name: "mpidb" }
+    - { name: "mppi" }
+    - { name: "pdb", download_runner_async: 60, download_retries: 36 }
+    - { name: "psi_mi" }
+    - { name: "quickgo" }
+    - { name: "reactome", download_runner_async: 300, download_retries: 30, download_delay: 30 }
+    - { name: "refseq", download_runner_async: 36000, download_retries: 60, download_delay: 1800 }
+    - { name: "taxonomy", download_runner_async: 60, download_retries: 36 }
+    - { name: "uniprot", download_runner_async: 60, download_retries: 36 }
+    - { name: "uniprotpp", download_runner_async: 300, download_retries: 30, download_delay: 30 }
+    - { name: "virushost", download_runner_async: 60, download_retries: 36 }
+    - { name: "yeast", download_runner_async: 60, download_retries: 36 }

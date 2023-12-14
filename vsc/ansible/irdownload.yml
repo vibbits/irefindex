@@ -2,57 +2,10 @@
 - name: Irdownload
   hosts: all
   become: true
-  gather_facts: true # WE NEED THIS HERE FOR THE DATES!
-
-  vars:
-    # All sources that should be downloaded
-    #
-    # Parameters:
-    #  runner_retries[default=3]: Number of times to retry the job if it fails
-    #  runner_async[default=30]: Number of seconds to wait before checking if the job is finished
-    #  retries[default=18]: Number of times to retry the check
-    #  delay[default=5]: Delay in seconds between the checks
-    jobs:
-      - { name: "athaliana" }
-      - { name: "bar" }
-      - { name: "bhf_ucl" }
-      - { name: "bind" }
-      - { name: "bind_translation", }
-      - { name: "biogrid", runner_async: 60, retries: 12, delay: 15 }
-      - { name: "corum", runner_async: 60, retries: 12, delay: 15 }
-      - { name: "dig" }
-      - { name: "dip" }
-      - { name: "fly" }
-      - { name: "gene", runner_async: 600, retries: 60, delay: 30 }
-      - { name: "genpept", runner_async: 36000, retries: 60, delay: 1800 }
-      - { name: "hpidb" }
-      - { name: "hprd" }
-      - { name: "huri", runner_async: 60, retries: 36 }
-      - { name: "imex", runner_async: 10800, retries: 108, delay: 300 }
-      - { name: "innatedb" }
-      - { name: "intact" }
-      - { name: "intcomplex", retries: 6 }
-      - { name: "ipi" }
-      - { name: "matrixdb", runner_async: 300, retries: 30, delay: 30 }
-      - { name: "mbinfo" }
-      - { name: "mint", runner_async: 600, retries: 60, delay: 30 }
-      - { name: "mmdb", runner_async: 60, retries: 36 }
-      - { name: "mpact" }
-      - { name: "mpidb" }
-      - { name: "mppi" }
-      - { name: "pdb", runner_async: 60, retries: 36 }
-      - { name: "psi_mi" }
-      - { name: "quickgo" }
-      - { name: "reactome", runner_async: 300, retries: 30, delay: 30 }
-      - { name: "refseq", runner_async: 36000, retries: 60, delay: 1800 }
-      - { name: "taxonomy", runner_async: 60, retries: 36 }
-      - { name: "uniprot", runner_async: 60, retries: 36 }
-      - { name: "uniprotpp", runner_async: 300, retries: 30, delay: 30 }
-      - { name: "virushost", runner_async: 60, retries: 36 }
-      - { name: "yeast", runner_async: 60, retries: 36 }
-
-    date: "{{ ansible_date_time.iso8601_basic }}"
-    log_location: "/data/irdata18/logs/irdownload/{{ date }}"
+  gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
+  vars_files:
+    - ./vars/logs.yml
+    - ./vars/sources.yml
 
   tasks:
     - name: Update apt packages
@@ -97,20 +50,20 @@
       ansible.builtin.command: "./irdownload {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
-      async: "{{ item.runner_async | default(30) }}"
+      async: "{{ item.download_runner_async | default(30) }}"
       changed_when: false
       loop: "{{ jobs }}"
       poll: 0
       register: result
-      retries: "{{ item.runner_retries | default(3) }}"
+      retries: "{{ item.download_runner_retries | default(3) }}"
 
     - name: Wait for jobs to complete
       ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
-      delay: "{{ item.delay | default(5) }}"
+      delay: "{{ item.download_delay | default(5) }}"
       ignore_errors: true
       loop: "{{ result.results }}"
-      retries: "{{ item.retries | default(18) }}"
+      retries: "{{ item.download_retries | default(18) }}"
       register: job_result
       until: job_result.finished == true
 
