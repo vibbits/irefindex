@@ -1,2 +1,2 @@
 date: "{{ ansible_date_time.iso8601_basic }}"
-log_location: "/data/irdata18/logs/irdownload/{{ date }}"
+logs_dir: "/data/irdata18/logs/{{ date }}"

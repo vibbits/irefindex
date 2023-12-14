@@ -7,6 +7,9 @@
     - ./vars/logs.yml
     - ./vars/sources.yml
 
+  vars:
+    log_location: "{{ logs_dir }}/irdownload"
+
   tasks:
     - name: Update apt packages
       ansible.builtin.apt:
@@ -55,17 +58,18 @@
       loop: "{{ jobs }}"
       poll: 0
       register: result
-      retries: "{{ item.download_runner_retries | default(3) }}"
+      retries: "{{ item.download_runner_retries | default(18) }}"
+      ignore_errors: true
 
     - name: Wait for jobs to complete
       ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
-      delay: "{{ item.download_delay | default(5) }}"
+      delay: "{{ item.item.download_delay | default(5) }}"
       ignore_errors: true
-      loop: "{{ result.results }}"
-      retries: "{{ item.download_retries | default(18) }}"
+      retries: "{{ item.item.download_retries | default(18) }}"
       register: job_result
       until: job_result.finished == true
+      loop: "{{ result.results }}"
 
     - name: "Ensure that `log_location` exists"
       ansible.builtin.file:
@@ -73,7 +77,17 @@
         state: directory
         mode: "0755"
 
-    - name: "Copy logs"
+    - name: Copy msg
+      ansible.builtin.copy:
+        content: "{{ item.msg }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.msg"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.msg is defined and item.msg != ""
+      loop: "{{ job_result.results }}"
+
+    - name: Copy logs
       ansible.builtin.copy:
         content: "{{ item.stdout }}"
         dest: "{{ log_location }}/{{ item.item.item.name }}.out"
@@ -83,7 +97,7 @@
       when: item.stdout != ""
       loop: "{{ job_result.results }}"
 
-    - name: "Copy error logs"
+    - name: Copy error logs
       ansible.builtin.copy:
         content: "{{ item.stderr }}"
         dest: "{{ log_location }}/{{ item.item.item.name }}.err"
