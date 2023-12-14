@@ -1,7 +1,7 @@
 ---
 - name: Irdownload
   hosts: localhost
-  become: true
+  become: yes
   gather_facts: true # WE NEED THIS HERE FOR THE DATES!
 
   vars:
