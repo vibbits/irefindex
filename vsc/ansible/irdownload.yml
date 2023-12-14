@@ -59,7 +59,6 @@
       poll: 0
       register: result
       retries: "{{ item.download_runner_retries | default(18) }}"
-      ignore_errors: true
 
     - name: Wait for jobs to complete
       ansible.builtin.async_status:
