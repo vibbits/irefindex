@@ -1,453 +1,86 @@
 ---
 - name: Irmanifest
-  hosts: localhost
-  become: yes
+  hosts: all
+  become: true
+  gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
+  vars_files:
+    - ./vars/logs.yml
+    - ./vars/sources.yml
+
+  vars:
+    log_location: "{{ logs_dir }}/irmanifest"
 
   tasks:
-    - name: Create file of acquired resources BIND_TRANSLATION
-      command: "./irmanifest BIND_TRANSLATION"
+    - name: Run irmanifest for each source
+      ansible.builtin.command: "./irmanifest {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
-      register: bind_translation_result
+      changed_when: false
+      register: job_result
+      loop: "{{ jobs }}"
 
-    - name: Fail the task when conditions are met (BIND_TRANSLATION)
-      fail:
+    - name: Fail jobs where conditions are met
+      ansible.builtin.fail:
         msg: "Failed"
-      when: "'stat: cannot statx' in bind_translation_result.stderr or 'grep' in bind_translation_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources BIOGRID
-      command: "./irmanifest BIOGRID"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: biogrid_result
-
-    - name: Fail the task when conditions are met (BIOGRID)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in biogrid_result.stderr or 'grep' in biogrid_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources CORUM
-      command: "./irmanifest CORUM"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: corum_result
-      # FAILED - IRDOWNLOAD
-
-    - name: Fail the task when conditions are met (CORUM)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in corum_result.stderr or 'grep' in corum_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources DIP
-      command: "./irmanifest DIP"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: dip_result
-
-    - name: Fail the task when conditions are met (DIP)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in dip_result.stderr or 'grep' in dip_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources HPRD
-      command: "./irmanifest HPRD"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: hrpd_result
-
-    - name: Fail the task when conditions are met (HRPD)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in hrpd_result.stderr or 'grep' in hrpd_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources INTACT
-      command: "./irmanifest INTACT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: intact_result
-
-    - name: Fail the task when conditions are met (INTACT)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in intact_result.stderr or 'grep' in intact_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources INTCOMPLEX
-      command: "./irmanifest INTCOMPLEX"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: intcomplex_result
-
-    - name: Fail the task when conditions are met (INTCOMPLEX)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in intcomplex_result.stderr or 'grep' in intcomplex_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources MPACT
-      command: "./irmanifest MPACT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mpact_result
-
-    - name: Fail the task when conditions are met (MPACT)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in mpact_result.stderr or 'grep' in mpact_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources MPPI
-      command: "./irmanifest MPPI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mppi_result
-
-    - name: Fail the task when conditions are met (MPPI)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in mppi_result.stderr or 'grep' in mppi_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources BAR
-      command: "./irmanifest BAR"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: bar_result
-      # FAILED - IRDOWNLOAD
-
-    - name: Fail the task when conditions are met (BAR)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in bar_result.stderr or 'grep' in bar_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources BHF_UCL
-      command: "./irmanifest BHF_UCL"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: bhf_ucl_result
-
-    - name: Fail the task when conditions are met (BHF_UCL)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in bhf_ucl_result.stderr or 'grep' in bhf_ucl_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources HPIDB
-      command: "./irmanifest HPIDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: hpidb_result
-
-    - name: Fail the task when conditions are met (HPIDB)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in hpidb_result.stderr or 'grep' in hpidb_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources HURI
-      command: "./irmanifest HURI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: huri_result
-
-    - name: Fail the task when conditions are met (HURI)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in huri_result.stderr or 'grep' in huri_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources IMEX
-      command: "./irmanifest IMEX"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: imex_result
-
-    - name: Fail the task when conditions are met (IMEX)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in imex_result.stderr or 'grep' in imex_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources INNATEDB
-      command: "./irmanifest INNATEDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: innatedb_result
-      # FAILED - IRDOWNLOAD
-
-    - name: Fail the task when conditions are met (INNATEDB)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in innatedb_result.stderr or 'grep' in innatedb_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources MATRIXDB
-      command: "./irmanifest MATRIXDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: matrixdb_result
-
-    - name: Fail the task when conditions are met (MATRIXDB)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in matrixdb_result.stderr or 'grep' in matrixdb_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources MBINFO
-      command: "./irmanifest MBINFO"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mbinfo_result
-
-    - name: Fail the task when conditions are met (MBINFO)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in mbinfo_result.stderr or 'grep' in mbinfo_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources MINT
-      command: "./irmanifest MINT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mint_result
-
-    - name: Fail the task when conditions are met (MINT)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in mint_result.stderr or 'grep' in mint_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources MPIDB
-      command: "./irmanifest MPIDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mpidb_result
-
-    - name: Fail the task when conditions are met (MPIDB)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in mpidb_result.stderr or 'grep' in mpidb_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources QUICKGO
-      command: "./irmanifest QUICKGO"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: quickgo_result
-
-    - name: Fail the task when conditions are met (QUICKGO)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in quickgo_result.stderr or 'grep' in quickgo_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources REACTOME
-      command: "./irmanifest REACTOME"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: reactome_result
-
-    - name: Fail the task when conditions are met (REACTOME)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in reactome_result.stderr or 'grep' in reactome_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources UNIPROTPP
-      command: "./irmanifest UNIPROTPP"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: uniprotpp_result
-
-    - name: Fail the task when conditions are met (UNIPROTPP)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in uniprotpp_result.stderr or 'grep' in uniprotpp_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources VIRUSHOST
-      command: "./irmanifest VIRUSHOST"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: virushost_result
-
-    - name: Fail the task when conditions are met (VIRUSHOST)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in virushost_result.stderr or 'grep' in virushost_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources PSI_MI
-      command: "./irmanifest PSI_MI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: psi_mi_result
-
-    - name: Fail the task when conditions are met (PSI_MI)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in psi_mi_result.stderr or 'grep' in psi_mi_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources TAXONOMY
-      command: "./irmanifest TAXONOMY"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: taxonomy_result
-
-    - name: Fail the task when conditions are met (TAXONOMY)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in taxonomy_result.stderr or 'grep' in taxonomy_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources ATHALIANA
-      command: "./irmanifest ATHALIANA"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: athaliana_result
-
-    - name: Fail the task when conditions are met (ATHALIANA)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in athaliana_result.stderr or 'grep' in athaliana_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources BIND
-      command: "./irmanifest BIND"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: bind_result
-
-    - name: Fail the task when conditions are met (BIND)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in bind_result.stderr or 'grep' in bind_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources DIG
-      command: "./irmanifest DIG"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: dig_result
-
-    - name: Fail the task when conditions are met (DIG)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in dig_result.stderr or 'grep' in dig_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources FLY
-      command: "./irmanifest FLY"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: fly_result
-
-    - name: Fail the task when conditions are met (FLY)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in fly_result.stderr or 'grep' in fly_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources GENE
-      command: "./irmanifest GENE"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: gene_result
-
-    - name: Fail the task when conditions are met (GENE)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in gene_result.stderr or 'grep' in gene_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources GENPEPT
-      command: "./irmanifest GENPEPT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: genpept_result
-
-    - name: Fail the task when conditions are met (GENPEPT)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in genpept_result.stderr or 'grep' in genpept_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources IPI
-      command: "./irmanifest IPI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: ipi_result
-      # FAILED - IRDOWNLOAD
-
-    - name: Fail the task when conditions are met (IPI)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in ipi_result.stderr or 'grep' in ipi_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources MMDB
-      command: "./irmanifest MMDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mmdb_result
-
-    - name: Fail the task when conditions are met (MMDB)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in mmdb_result.stderr or 'grep' in mmdb_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources PDB
-      command: "./irmanifest PDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: pdb_result
-
-    - name: Fail the task when conditions are met (PDB)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in pdb_result.stderr or 'grep' in pdb_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources REFSEQ
-      command: "./irmanifest REFSEQ"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: refseq_result
-
-    - name: Fail the task when conditions are met (REFSEQ)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in refseq_result.stderr or 'grep' in refseq_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources UNIPROT
-      command: "./irmanifest UNIPROT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: uniprot_result
-
-    - name: Fail the task when conditions are met (UNIPROT)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in uniprot_result.stderr or 'grep' in uniprot_result.stdout"
-      ignore_errors: true
-
-    - name: Create file of acquired resources YEAST
-      command: "./irmanifest YEAST"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: yeast_result
-
-    - name: Fail the task when conditions are met (YEAST)
-      fail:
-        msg: "Failed"
-      when: "'stat: cannot statx' in yeast_result.stderr or 'grep' in yeast_result.stdout"
-      ignore_errors: true
+      when: "'stat: cannot statx' in item.stderr or 'grep' in item.stdout"
+      failed_when: false
+      no_log: true
+      register: failed_jobs
+      loop: "{{ job_result.results }}"
+
+    - name: "Ensure that `log_location` exists"
+      ansible.builtin.file:
+        path: "{{ log_location }}"
+        state: directory
+        mode: "0755"
+
+    - name: Copy msg
+      ansible.builtin.copy:
+        content: "{{ item.msg }}"
+        dest: "{{ log_location }}/{{ item.item.name }}.msg"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.msg is defined and item.msg != ""
+      loop: "{{ job_result.results }}"
+
+    - name: Copy logs
+      ansible.builtin.copy:
+        content: "{{ item.stdout }}"
+        dest: "{{ log_location }}/{{ item.item.name }}.out"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.stdout != ""
+      loop: "{{ job_result.results }}"
+
+    - name: Copy error logs
+      ansible.builtin.copy:
+        content: "{{ item.stderr }}"
+        dest: "{{ log_location }}/{{ item.item.name }}.err"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.stderr != ""
+      loop: "{{ job_result.results }}"
+
+    - name: Gather failed jobs
+      ansible.builtin.set_fact:
+        filtered_failed_jobs: "{{ failed_jobs.results
+                                | selectattr('msg', 'defined')
+                                | selectattr('msg', 'equalto', 'Failed')
+                                | list }} "
+      when:
+        - failed_jobs is defined
+        - failed_jobs.results is defined
+
+    - name: Print failed jobs
+      ansible.builtin.fail:
+        msg: >-
+          The following resources failed to unpack: {{
+          filtered_failed_jobs
+          | map(attribute='item.item.name')
+          | join(', ')
+          }}.
+          Please check the logs in `{{ log_location }}` for more information.
+      when: filtered_failed_jobs is defined and filtered_failed_jobs | length > 0
