@@ -43,12 +43,27 @@
       no_log: true
       loop: "{{ job_result.results }}"
 
-    - name: Store all non-existing directories their names
+    - name: Store all missing directories
       ansible.builtin.set_fact:
         failed_dirs: "{{ failed_dirs | default([]) + [item.item.item.item.name | upper] }}"
       no_log: true
       when: not item.stat.exists
       loop: "{{ dir_stat.results }}"
+
+    - name: Check if directory has content
+      ansible.builtin.find:
+        paths: "/home/irefindex/var/lib/irdata/data/{{ item.item.item.name | regex_replace('_', '-') | upper }}"
+        recurse: false
+      no_log: true
+      register: dir_content
+      loop: "{{ job_result.results }}"
+
+    - name: Store all empty directories
+      ansible.builtin.set_fact:
+        failed_dirs: "{{ failed_dirs | default([]) + [item.item.item.item.name | upper] }}"
+      no_log: true
+      when: item.files | length == 0
+      loop: "{{ dir_content.results }}"
 
     - name: Fail jobs where conditions are met
       ansible.builtin.assert:
@@ -123,7 +138,7 @@
     - name: Print missing dirs
       ansible.builtin.fail:
         msg: >-
-          The following sources are missing, this might indicate a failed download: {{
+          There are sources missing, this might indicate a failed download: {{
           failed_dirs
           | map('regex_replace', '^(.*)$', '\1 (/home/irefindex/var/lib/irdata/data/\1)')
           | join(', ')
