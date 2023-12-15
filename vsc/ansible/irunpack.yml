@@ -85,17 +85,23 @@
       when: item.stderr != ""
       loop: "{{ job_result.results }}"
 
+    - name: Gather failed jobs
+      set_fact:
+        filtered_failed_jobs: "{{ failed_jobs.results
+                                | selectattr('msg', 'defined')
+                                | selectattr('msg', 'equalto', 'Failed')
+                                | list }} "
+      when: 
+        - failed_jobs is defined 
+        - failed_jobs.results is defined 
+
     - name: Print failed jobs
       ansible.builtin.fail:
         msg: >-
           The following resources failed to unpack: {{
-          failed_jobs.results
-          | selectattr('msg', 'defined')
-          | selectattr('msg', 'equalto', 'Failed')
+          filtered_failed_jobs
           | map(attribute='item.item.item.name')
           | join(', ')
           }}.
           Please check the logs in `{{ log_location }}` for more information.
-      when: failed_jobs is defined and
-            failed_jobs.results is defined and
-            failed_jobs.results | length > 0
+      when: filtered_failed_jobs is defined and filtered_failed_jobs | length > 0
