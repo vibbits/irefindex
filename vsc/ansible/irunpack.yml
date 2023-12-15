@@ -36,6 +36,20 @@
       delay: "{{ item.item.unpack_delay | default(5) }}"
       loop: "{{ result.results }}"
 
+    - name: Check if directory exists
+      ansible.builtin.stat:
+        path: "/home/irefindex/var/lib/irdata/data/{{ item.item.item.name | regex_replace('_', '-') | upper }}"
+      register: dir_stat
+      no_log: true
+      loop: "{{ job_result.results }}"
+
+    - name: Store all non-existing directories their names
+      ansible.builtin.set_fact:
+        failed_dirs: "{{ failed_dirs | default([]) + [item.item.item.item.name | upper] }}"
+      no_log: true
+      when: not item.stat.exists
+      loop: "{{ dir_stat.results }}"
+
     - name: Fail jobs where conditions are met
       ansible.builtin.assert:
         that:
@@ -86,14 +100,14 @@
       loop: "{{ job_result.results }}"
 
     - name: Gather failed jobs
-      set_fact:
+      ansible.builtin.set_fact:
         filtered_failed_jobs: "{{ failed_jobs.results
                                 | selectattr('msg', 'defined')
                                 | selectattr('msg', 'equalto', 'Failed')
                                 | list }} "
-      when: 
-        - failed_jobs is defined 
-        - failed_jobs.results is defined 
+      when:
+        - failed_jobs is defined
+        - failed_jobs.results is defined
 
     - name: Print failed jobs
       ansible.builtin.fail:
@@ -105,3 +119,13 @@
           }}.
           Please check the logs in `{{ log_location }}` for more information.
       when: filtered_failed_jobs is defined and filtered_failed_jobs | length > 0
+
+    - name: Print missing dirs
+      ansible.builtin.fail:
+        msg: >-
+          The following sources are missing, this might indicate a failed download: {{
+          failed_dirs
+          | map('regex_replace', '^(.*)$', '\1 (/home/irefindex/var/lib/irdata/data/\1)')
+          | join(', ')
+          }}
+      when: failed_dirs is defined and failed_dirs | length > 0
