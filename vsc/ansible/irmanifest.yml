@@ -1,6 +1,6 @@
 ---
 - name: Irmanifest
-  hosts: localhost
+  hosts: all
   become: true
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   vars_files:
@@ -21,7 +21,7 @@
 
     - name: Fail jobs where conditions are met
       ansible.builtin.fail:
-        msg: "Failed"
+        msg: "FAILED: Cannot statx or grep a certain file or directory"
       when: "'stat: cannot statx' in item.stderr or 'grep' in item.stdout"
       failed_when: false
       no_log: true
