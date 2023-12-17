@@ -4,6 +4,11 @@
   become: yes
 
   tasks:
+    - name: Install irdata module
+      pip:
+        name: irdata
+        state: present
+
     - name: Coverts the downloaded data to files BIND_TRANSLATION
       command: "./irparse BIND_TRANSLATION"
       args:
