@@ -71,7 +71,7 @@
           - "'gzip: stdin: invalid compressed data--format violated' not in item.stderr"
           - "'tar: Unexpected EOF in archive' not in item.stderr"
           - "'tar: Error is not recoverable: exiting now' not in item.stderr"
-        fail_msg: "Failed"
+        fail_msg: "FAILED: Invalid compressed data OR Unexpected EOF in archive OR Error is not recoverable"
       when: item.rc == 0
       no_log: true
       failed_when: false
@@ -134,6 +134,7 @@
           }}.
           Please check the logs in `{{ log_location }}` for more information.
       when: filtered_failed_jobs is defined and filtered_failed_jobs | length > 0
+      ignore_errors: true
 
     - name: Print missing dirs
       ansible.builtin.fail:
