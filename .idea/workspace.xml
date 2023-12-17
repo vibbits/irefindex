@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Test locally">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Optimize irunpack">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +88,7 @@
       <workItem from="1702512005525" duration="196000" />
       <workItem from="1702512327849" duration="8023000" />
       <workItem from="1702661543819" duration="452000" />
-      <workItem from="1702774354515" duration="2052000" />
+      <workItem from="1702774354515" duration="2837000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -229,14 +229,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00085" summary="Add irimport with already some calculated time for each async task">
-      <option name="closed" value="true" />
-      <created>1701163722118</created>
-      <option name="number" value="00085" />
-      <option name="presentableId" value="LOCAL-00085" />
-      <option name="project" value="LOCAL" />
-      <updated>1701163722118</updated>
     </task>
     <task id="LOCAL-00086" summary="Add some more values, waiting for some downloads we have to redo to check for some more errors">
       <option name="closed" value="true" />
@@ -462,7 +454,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702774481463</updated>
     </task>
-    <option name="localTasksCounter" value="114" />
+    <task id="LOCAL-00114" summary="Optimize irunpack">
+      <option name="closed" value="true" />
+      <created>1702776446993</created>
+      <option name="number" value="00114" />
+      <option name="presentableId" value="LOCAL-00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1702776446993</updated>
+    </task>
+    <option name="localTasksCounter" value="115" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,7 +480,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Search reason why it doesn't fail" />
     <MESSAGE value="Test again on localhost" />
     <MESSAGE value="Wait unlimited amount of time for waiting tasks" />
     <MESSAGE value="Debug" />
@@ -505,6 +504,7 @@
     <MESSAGE value="Delete code with mistakes" />
     <MESSAGE value="Try to fix mistakes" />
     <MESSAGE value="Test locally" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test locally" />
+    <MESSAGE value="Optimize irunpack" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimize irunpack" />
   </component>
 </project>
