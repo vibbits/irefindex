@@ -20,3 +20,15 @@ If you don't want terraform to let you confirm your configuration, add the `-aut
 
 To unprovision the machine run `terraform destroy`. Please do note that this will kill any ongoing progress.
 
+### Known problems
+#### Irunpack
+##### TAXONOMY
+gzip: stdin: invalid compressed data--crc error
+
+gzip: stdin: invalid compressed data--length error
+tar: Unexpected EOF in archive
+tar: Error is not recoverable: exiting now
+
+#### Irmanifest
+
+
