@@ -1,48 +1,64 @@
-  # All sources that should be downloaded
-  #
-  # Parameters:
-  #  download_runner_retries[default=3]: Number of times to retry the job if it fails
-  #  download_runner_async[default=30]: Number of seconds to wait before checking if the job is finished
-  #  download_retries[default=18]: Number of times to retry the check
-  #  download_delay[default=5]: Delay in seconds between the checks
-  #  unpack_async[default=30]: Number of seconds to wait before checking if the job is finished
-  #  unpack_retries[default=6]: Number of times to retry the check
-  #  unpack_delay[default=5]: Delay in seconds between the checks
-  jobs:
-    - { name: "athaliana" }
-    - { name: "bar" }
-    - { name: "bhf_ucl" }
-    - { name: "bind" }
-    - { name: "bind_translation" }
-    - { name: "dig" }
-    - { name: "dip" }
-    - { name: "fly" }
-    - { name: "hpidb" }
-    - { name: "hprd" }
-    - { name: "innatedb" }
-    - { name: "ipi" }
-    - { name: "mbinfo" }
-    - { name: "mpact" }
-    - { name: "mpidb" }
-    - { name: "mppi" }
-    - { name: "psi_mi" }
-    - { name: "quickgo" }
-    - { name: "intact", unpack_async: 180, unpack_delay: 30 }
-    - { name: "intcomplex", unpack_async: 60, unpack_delay: 10 , download_retries: 6 }
-    - { name: "huri" , download_runner_async: 60, download_retries: 36 }
-    - { name: "pdb" , download_runner_async: 60, download_retries: 36 }
-    - { name: "mmdb" , download_runner_async: 60, download_retries: 36 }
-    - { name: "taxonomy" , download_runner_async: 60, download_retries: 36 }
-    - { name: "virushost" , download_runner_async: 60, download_retries: 36 }
-    - { name: "yeast" , download_runner_async: 60, download_retries: 36 }
-    - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15 , download_runner_async: 60, download_retries: 12, download_delay: 15 }
-    - { name: "corum" , download_runner_async: 60, download_retries: 12, download_delay: 15 }
-    - { name: "matrixdb" , download_runner_async: 300, download_retries: 30, download_delay: 30 }
-    - { name: "uniprotpp" , download_runner_async: 300, download_retries: 30, download_delay: 30 }
-    - { name: "uniprot" , download_runner_async: 60, download_retries: 36 }
-    - { name: "mint" , download_runner_async: 600, download_retries: 60, download_delay: 30 }
-    - { name: "gene" , download_runner_async: 600, download_retries: 60, download_delay: 30 }
-    - { name: "reactome" , download_runner_async: 300, download_retries: 30, download_delay: 30 }
-    - { name: "imex" , download_runner_async: 10800, download_retries: 108, download_delay: 300 }
-    - { name: "refseq" , download_runner_async: 36000, download_retries: 60, download_delay: 1800 }
-    - { name: "genpept" , download_runner_async: 36000, download_retries: 60, download_delay: 1800 }
+# IRPARSE NOTES:
+# FAILED - STRANGE on REFSEQ
+# FAILED - STRANGE on PDB
+# FAILED - IRDOWNLOAD on IPI
+# FAILED - STRANGE on GENPEPT
+# FAILED - STRANGE on GENE
+# FAILED - IRUNPACK on TAXONOMY
+# FAILED - IRDOWNLOAD on INNATEDB
+# FAILED - IRDOWNLOAD on BAR
+# FAILED - STRANGE on INTACT
+# FAILED - IRDOWNLOAD on CORUM
+
+# All sources that should be downloaded
+#
+# Parameters:
+#  download_runner_retries[default=3]: Number of times to retry the job if it fails
+#  download_runner_async[default=30]: Number of seconds to wait before checking if the job is finished
+#  download_retries[default=18]: Number of times to retry the check
+#  download_delay[default=5]: Delay in seconds between the checks
+#  unpack_async[default=30]: Number of seconds to wait before checking if the job is finished
+#  unpack_retries[default=6]: Number of times to retry the check
+#  unpack_delay[default=5]: Delay in seconds between the checks
+#  parse_async[default=30]: Number of seconds to wait before checking if the job is finished
+#  parse_retries[default=6]: Number of times to retry the check
+#  parse_delay[default=5]: Delay in seconds between the checks
+jobs:
+  - { name: "athaliana" }
+  - { name: "bar" }
+  - { name: "bind" }
+  - { name: "dig" }
+  - { name: "fly" }
+  - { name: "hpidb" }
+  - { name: "innatedb" }
+  - { name: "ipi" }
+  - { name: "mppi" }
+  - { name: "psi_mi" }
+  - { name: "quickgo" }
+  - { name: "hprd", parse_async: 180, parse_delay: 30 }
+  - { name: "mpact", parse_async: 60, parse_delay: 10 }
+  - { name: "mpidb", parse_async: 180, parse_delay: 30 }
+  - { name: "intact", unpack_async: 180, unpack_delay: 30 }
+  - { name: "bind_translation", parse_async: 60, parse_delay: 10 }
+  - { name: "mbinfo", parse_async: 300, parse_retries: 10, parse_delay: 30 }
+  - { name: "dip", parse_async: 120, parse_retries: 8, parse_delay: 15 }
+  - { name: "bhf_ucl", parse_async: 120, parse_retries: 8, parse_delay: 15 }
+  - { name: "pdb" , download_runner_async: 60, download_retries: 36 }
+  - { name: "mmdb" , download_runner_async: 60, download_retries: 36 }
+  - { name: "taxonomy" , download_runner_async: 60, download_retries: 36 }
+  - { name: "virushost" , download_runner_async: 60, download_retries: 36 }
+  - { name: "yeast" , download_runner_async: 60, download_retries: 36 }
+  - { name: "intcomplex", unpack_async: 60, unpack_delay: 10 , download_retries: 6, parse_async: 180, parse_delay: 30 }
+  - { name: "huri" , download_runner_async: 60, download_retries: 36, parse_async: 120, parse_retries: 8, parse_delay: 15 }
+  - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15 , download_runner_async: 60, download_retries: 12, download_delay: 15, parse_async: 2700, parse_retries: 9, parse_delay: 300 }
+  - { name: "corum" , download_runner_async: 60, download_retries: 12, download_delay: 15 }
+  - { name: "matrixdb" , download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, parse_retries: 8, parse_delay: 15 }
+  - { name: "uniprotpp" , download_runner_async: 300, download_retries: 30, download_delay: 30 }
+  # TODO: Figure out actual parse_async and parse_retries amounts
+  - { name: "uniprot" , download_runner_async: 60, download_retries: 36, parse_async: 50, parse_retries: 10 }
+  - { name: "mint" , download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 60, parse_delay: 10 }
+  - { name: "gene" , download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 900, parse_retries: 15, parse_delay: 60 }
+  - { name: "reactome" , download_runner_async: 300, download_retries: 30, download_delay: 30 }
+  - { name: "imex" , download_runner_async: 10800, download_retries: 108, download_delay: 300, parse_async: 480, parse_retries: 16, parse_delay: 30 }
+  - { name: "refseq" , download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 300, parse_retries: 10, parse_delay: 30 }
+  - { name: "genpept" , download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 600, parse_retries: 10, parse_delay: 60 }
