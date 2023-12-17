@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Optimize irunpack">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Test irmanifest local">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +88,7 @@
       <workItem from="1702512005525" duration="196000" />
       <workItem from="1702512327849" duration="8023000" />
       <workItem from="1702661543819" duration="452000" />
-      <workItem from="1702774354515" duration="2837000" />
+      <workItem from="1702774354515" duration="3589000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -229,22 +229,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00086" summary="Add some more values, waiting for some downloads we have to redo to check for some more errors">
-      <option name="closed" value="true" />
-      <created>1701165067723</created>
-      <option name="number" value="00086" />
-      <option name="presentableId" value="LOCAL-00086" />
-      <option name="project" value="LOCAL" />
-      <updated>1701165067723</updated>
-    </task>
-    <task id="LOCAL-00087" summary="Add some more values">
-      <option name="closed" value="true" />
-      <created>1701211305645</created>
-      <option name="number" value="00087" />
-      <option name="presentableId" value="LOCAL-00087" />
-      <option name="project" value="LOCAL" />
-      <updated>1701211305645</updated>
     </task>
     <task id="LOCAL-00088" summary="Automate the irunpack phase in Ansible">
       <option name="closed" value="true" />
@@ -462,7 +446,23 @@
       <option name="project" value="LOCAL" />
       <updated>1702776446993</updated>
     </task>
-    <option name="localTasksCounter" value="115" />
+    <task id="LOCAL-00115" summary="Add known problems in Irunpack phase">
+      <option name="closed" value="true" />
+      <created>1702777788749</created>
+      <option name="number" value="00115" />
+      <option name="presentableId" value="LOCAL-00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1702777788749</updated>
+    </task>
+    <task id="LOCAL-00116" summary="Test irmanifest local">
+      <option name="closed" value="true" />
+      <created>1702777915844</created>
+      <option name="number" value="00116" />
+      <option name="presentableId" value="LOCAL-00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1702777915844</updated>
+    </task>
+    <option name="localTasksCounter" value="117" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -480,8 +480,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Test again on localhost" />
-    <MESSAGE value="Wait unlimited amount of time for waiting tasks" />
     <MESSAGE value="Debug" />
     <MESSAGE value="Fix mistake in variable name" />
     <MESSAGE value="Add retries and time limits to the check tasks" />
@@ -505,6 +503,8 @@
     <MESSAGE value="Try to fix mistakes" />
     <MESSAGE value="Test locally" />
     <MESSAGE value="Optimize irunpack" />
-    <option name="LAST_COMMIT_MESSAGE" value="Optimize irunpack" />
+    <MESSAGE value="Add known problems in Irunpack phase" />
+    <MESSAGE value="Test irmanifest local" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test irmanifest local" />
   </component>
 </project>
