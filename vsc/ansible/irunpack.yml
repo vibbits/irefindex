@@ -141,7 +141,6 @@
           }}.
           Please check the logs in `{{ log_location }}` for more information.
       when: filtered_failed_jobs is defined and filtered_failed_jobs | length > 0
-      # ignore_errors: true
       failed_when: false
 
     - name: Print missing dirs
