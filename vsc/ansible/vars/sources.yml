@@ -10,7 +10,7 @@
 # FAILED - STRANGE on INTACT
 # FAILED - IRDOWNLOAD on CORUM
 
-# All sources that should be downloaded
+# All sources that should be processed
 #
 # Parameters:
 #  download_runner_retries[default=3]: Number of times to retry the job if it fails
