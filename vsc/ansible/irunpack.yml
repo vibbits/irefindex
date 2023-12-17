@@ -1,6 +1,6 @@
 ---
 - name: Irunpack
-  hosts: localhost
+  hosts: all
   become: true
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   vars_files:
@@ -9,6 +9,7 @@
 
   vars:
     log_location: "{{ logs_dir }}/irunpack"
+    data_dir: "/home/irefindex/var/lib/irdata/data"
 
   tasks:
     - name: Install unzip
@@ -36,34 +37,40 @@
       delay: "{{ item.item.unpack_delay | default(5) }}"
       loop: "{{ result.results }}"
 
-    - name: Check if directory exists
-      ansible.builtin.stat:
-        path: "/home/irefindex/var/lib/irdata/data/{{ item.item.item.name | regex_replace('_', '-') | upper }}"
-      register: dir_stat
-      no_log: true
-      loop: "{{ job_result.results }}"
-
-    - name: Store all missing directories
-      ansible.builtin.set_fact:
-        failed_dirs: "{{ failed_dirs | default([]) + [item.item.item.item.name | upper] }}"
-      no_log: true
-      when: not item.stat.exists
-      loop: "{{ dir_stat.results }}"
-
-    - name: Check if directory has content
+    - name: Fetch all directories
       ansible.builtin.find:
-        paths: "/home/irefindex/var/lib/irdata/data/{{ item.item.item.name | regex_replace('_', '-') | upper }}"
+        paths: "{{ data_dir }}"
+        file_type: directory
+        recurse: true
+      register: all_directories
+
+    - name: Gather all directory contents
+      ansible.builtin.find:
+        paths: "{{ item.path }}"
         recurse: false
       no_log: true
       register: dir_content
-      loop: "{{ job_result.results }}"
+      loop: "{{ all_directories.files }}"
 
     - name: Store all empty directories
       ansible.builtin.set_fact:
-        failed_dirs: "{{ failed_dirs | default([]) + [item.item.item.item.name | upper] }}"
+        failed_dirs: "{{ failed_dirs | default([]) + [item.item.path | regex_replace('_', '-') | lower | basename] }}"
       no_log: true
       when: item.files | length == 0
       loop: "{{ dir_content.results }}"
+
+    - name: Convert directories to uniform format
+      ansible.builtin.set_fact:
+        existing_dirs: "{{ existing_dirs | default([]) + [item.path | regex_replace('_', '-') | lower | basename] }}"
+      no_log: true
+      loop: "{{ all_directories.files }}"
+
+    - name: Store all missing directories
+      ansible.builtin.set_fact:
+        failed_dirs: "{{ failed_dirs | default([]) + [item.name | lower] }}"
+      no_log: true
+      when: item.name | regex_replace('_', '-') | lower not in existing_dirs
+      loop: "{{ jobs }}"
 
     - name: Fail jobs where conditions are met
       ansible.builtin.assert:
@@ -134,14 +141,12 @@
           }}.
           Please check the logs in `{{ log_location }}` for more information.
       when: filtered_failed_jobs is defined and filtered_failed_jobs | length > 0
-      ignore_errors: true
+      # ignore_errors: true
+      failed_when: false
 
     - name: Print missing dirs
       ansible.builtin.fail:
         msg: >-
-          There are sources missing, this might indicate a failed download: {{
-          failed_dirs
-          | map('regex_replace', '^(.*)$', '\1 (/home/irefindex/var/lib/irdata/data/\1)')
-          | join(', ')
-          }}
+          There are sources missing, this might indicate a failed download: [{{ failed_dirs | join(', ') }}].
+          Looked in `{{ data_dir }}`
       when: failed_dirs is defined and failed_dirs | length > 0
