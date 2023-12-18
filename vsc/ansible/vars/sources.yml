@@ -1,3 +1,15 @@
+# IRPARSE NOTES:
+# FAILED - STRANGE on REFSEQ
+# FAILED - STRANGE on PDB
+# FAILED - IRDOWNLOAD on IPI
+# FAILED - STRANGE on GENPEPT
+# FAILED - STRANGE on GENE
+# FAILED - IRUNPACK on TAXONOMY
+# FAILED - IRDOWNLOAD on INNATEDB
+# FAILED - IRDOWNLOAD on BAR
+# FAILED - STRANGE on INTACT
+# FAILED - IRDOWNLOAD on CORUM
+
 # All sources that should be processed
 #
 # Parameters:
@@ -41,9 +53,9 @@ jobs:
   - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15 , download_runner_async: 60, download_retries: 12, download_delay: 15, parse_async: 3600, parse_retries: 12, parse_delay: 300 }
   - { name: "corum" , download_runner_async: 60, download_retries: 12, download_delay: 15 }
   - { name: "matrixdb" , download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, parse_retries: 8, parse_delay: 15 }
-  - { name: "uniprotpp" , download_runner_async: 300, download_retries: 25, download_delay: 180, parse_async: 60, parse_delay: 5, parse_retries: 12 }
+  - { name: "uniprotpp" , download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 60, parse_delay: 5, parse_retries: 12 }
   # TODO: Figure out actual parse_async and parse_retries amounts
-  - { name: "uniprot" , download_runner_async: 1500, download_retries: 36, parse_async: 50, parse_retries: 10 }
+  - { name: "uniprot" , download_runner_async: 1500, download_retries: 25, parse_async: 180, parse_retries: 10 }
   - { name: "mint" , download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 60, parse_delay: 10 }
   - { name: "gene" , download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 1200, parse_retries: 20, parse_delay: 60 }
   - { name: "reactome" , download_runner_async: 300, download_retries: 30, download_delay: 30 }
