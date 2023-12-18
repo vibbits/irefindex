@@ -44,6 +44,12 @@
         recurse: true
       register: all_directories
 
+    - name: Convert directories to uniform format
+      ansible.builtin.set_fact:
+        existing_dirs: "{{ existing_dirs | default([]) + [item.path | regex_replace('_', '-') | lower | basename] }}"
+      no_log: true
+      loop: "{{ all_directories.files }}"
+
     - name: Gather all directory contents
       ansible.builtin.find:
         paths: "{{ item.path }}"
@@ -59,18 +65,18 @@
       when: item.files | length == 0
       loop: "{{ dir_content.results }}"
 
-    - name: Convert directories to uniform format
-      ansible.builtin.set_fact:
-        existing_dirs: "{{ existing_dirs | default([]) + [item.path | regex_replace('_', '-') | lower | basename] }}"
-      no_log: true
-      loop: "{{ all_directories.files }}"
-
     - name: Store all missing directories
       ansible.builtin.set_fact:
         failed_dirs: "{{ failed_dirs | default([]) + [item.name | lower] }}"
       no_log: true
       when: item.name | regex_replace('_', '-') | lower not in existing_dirs
       loop: "{{ jobs }}"
+
+    - name: Validate and remove duplicates in failed_dirs
+      ansible.builtin.set_fact:
+        failed_collected: "{{ failed_collected | default([]) + [item] }}"
+      when: item in jobs | map(attribute='name')
+      loop: "{{ failed_dirs | unique }}"
 
     - name: Fail jobs where conditions are met
       ansible.builtin.assert:
@@ -146,6 +152,6 @@
     - name: Print missing dirs
       ansible.builtin.fail:
         msg: >-
-          There are sources missing, this might indicate a failed download: [{{ failed_dirs | join(', ') }}].
+          There are sources missing, this might indicate a failed download: [{{ failed_collected | join(', ') }}].
           Looked in `{{ data_dir }}`
-      when: failed_dirs is defined and failed_dirs | length > 0
+      when: failed_collected is defined and failed_collected | length > 0
