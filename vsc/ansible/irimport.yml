@@ -1,683 +1,82 @@
 ---
 - name: Import
-  hosts: localhost
-  become: yes
+  hosts: all
+  become: true
+  gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
+  vars_files:
+    - ./vars/logs.yml
+    - ./vars/sources.yml
+
+  vars:
+    log_location: "{{ logs_dir }}/irdimport"
 
   tasks:
-    - name: Import BIND_TRANSLATION
-      command: "./irimport BIND_TRANSLATION"
+    - name: Run irimport jobs
+      ansible.builtin.command: "./irimport {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
-      ignore_errors: true
-      register: bind_translation_result
-      async: 30
+      async: "{{ item.import_async | default(30) }}"
+      changed_when: false
       poll: 0
-
-    - name: Import BIOGRID
-      command: "./irimport BIOGRID"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: biogrid_result
-      ignore_errors: true
-      async: 3600
-      poll: 0
-
-    - name: Import CORUM
-      command: "./irimport CORUM"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: corum_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import DIP
-      command: "./irimport DIP"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: dip_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import HPRD
-      command: "./irimport HPRD"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: hrpd_result
-      ignore_errors: true
-      async: 180
-      poll: 0
-
-    - name: Import INTACT
-      command: "./irimport INTACT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: intact_result
-      ignore_errors: true
-      async: 4500
-      poll: 0
-
-    - name: Import INTCOMPLEX
-      command: "./irimport INTCOMPLEX"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: intcomplex_result
-      ignore_errors: true
-      async: 180
-      poll: 0
-
-    - name: Import MPACT
-      command: "./irimport MPACT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mpact_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import MPPI
-      command: "./irimport MPPI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mppi_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import BAR
-      command: "./irimport BAR"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: bar_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import BHF_UCL
-      command: "./irimport BHF_UCL"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: bhf_ucl_result
-      ignore_errors: true
-      async: 240
-      poll: 0
-
-    - name: Import HPIDB
-      command: "./irimport HPIDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: hpidb_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import HURI
-      command: "./irimport HURI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: huri_result
-      ignore_errors: true
-      async: 180
-      poll: 0
-
-    - name: Import INNATEDB
-      command: "./irimport INNATEDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: innatedb_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import IMEX
-      command: "./irimport IMEX"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: imex_result
-      ignore_errors: true
-      async: 1080
-      poll: 0
-
-    - name: Import MBINFO
-      command: "./irimport MBINFO"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mbinfo_result
-      ignore_errors: true
-      async: 480
-      poll: 0
-
-    - name: Import MPIDB
-      command: "./irimport MPIDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mpidb_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import MINT
-      command: "./irimport MINT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mint_result
-      ignore_errors: true
-      async: 240
-      poll: 0
-
-    - name: Import MATRIXDB
-      command: "./irimport MATRIXDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: matrixdb_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import QUICKGO
-      command: "./irimport QUICKGO"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: quickgo_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import REACTOME
-      command: "./irimport REACTOME"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: reactome_result
-      ignore_errors: true
-      async: 120
-      poll: 0
-
-    - name: Import VIRUSHOST
-      command: "./irimport VIRUSHOST"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: virushost_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import UNIPROTPP
-      command: "./irimport UNIPROTPP"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: uniprotpp_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import PSI_MI
-      command: "./irimport PSI_MI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: psi_mi_result
-      ignore_errors: true
-      async: 60
-      poll: 0
-
-    - name: Import TAXONOMY
-      command: "./irimport TAXONOMY"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: taxonomy_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import ATHALIANA
-      command: "./irimport ATHALIANA"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: athaliana_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import DIG
-      command: "./irimport DIG"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: dig_result
-      ignore_errors: true
-      async: 180
-      poll: 0
-
-    - name: Import BIND
-      command: "./irimport BIND"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: bind_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import FLY
-      command: "./irimport FLY"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: fly_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import IPI
-      command: "./irimport IPI"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: ipi_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import GENE
-      command: "./irimport GENE"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: gene_result
-      ignore_errors: true
-      async: 2700
-      poll: 0
-
-    - name: Import GENPEPT
-      command: "./irimport GENPEPT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: genpept_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import MMDB
-      command: "./irimport MMDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: mmdb_result
-      ignore_errors: true
-      async: yes
-      poll: 0
-
-    - name: Import PDB
-      command: "./irimport PDB"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: pdb_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import REFSEQ
-      command: "./irimport REFSEQ"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: refseq_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import UNIPROT
-      command: "./irimport UNIPROT"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: uniprot_result
-      ignore_errors: true
-      async: 30
-      poll: 0
-
-    - name: Import YEAST
-      command: "./irimport YEAST"
-      args:
-        chdir: "/home/irefindex/usr/bin"
-      register: yeast_result
-      ignore_errors: true
-      async: 6
-      poll: 0
-
-    - name: Wait for BIND_TRANSLATION to complete
-      async_status:
-        jid: "{{ bind_translation_result.ansible_job_id }}"
-      register: job_result_1
-      until: job_result_1.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-
-    - name: Wait for BIOGRID to complete
-      async_status:
-        jid: "{{ biogrid_result.ansible_job_id }}"
-      register: job_result_2
-      until: job_result_2.finished
-      ignore_errors: true
-      retries: 12
-      delay: 300
-
-    - name: Wait for CORUM to complete
-      async_status:
-        jid: "{{ corum_result.ansible_job_id }}"
-      register: job_result_3
-      until: job_result_3.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRDOWNLOAD
-
-    - name: Wait for DIP to complete
-      async_status:
-        jid: "{{ dip_result.ansible_job_id }}"
-      register: job_result_4
-      until: job_result_4.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for HPRD to complete
-      async_status:
-        jid: "{{ hrpd_result.ansible_job_id }}"
-      register: job_result_5
-      until: job_result_5.finished
-      ignore_errors: true
-      retries: 6
-      delay: 30
-
-    - name: Wait for INTACT to complete
-      async_status:
-        jid: "{{ intact_result.ansible_job_id }}"
-      register: job_result_6
-      until: job_result_6.finished
-      ignore_errors: true
-      retries: 15
-      delay: 300
-
-    - name: Wait for INTCOMPLEX to complete
-      async_status:
-        jid: "{{ intcomplex_result.ansible_job_id }}"
-      register: job_result_7
-      until: job_result_7.finished
-      ignore_errors: true
-      retries: 6
-      delay: 30
-
-    - name: Wait for MPACT to complete
-      async_status:
-        jid: "{{ mpact_result.ansible_job_id }}"
-      register: job_result_8
-      until: job_result_8.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for MPPI to complete
-      async_status:
-        jid: "{{ mppi_result.ansible_job_id }}"
-      register: job_result_9
-      until: job_result_9.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for BAR to complete
-      async_status:
-        jid: "{{ bar_result.ansible_job_id }}"
-      register: job_result_10
-      until: job_result_10.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRDOWNLOAD
-
-    - name: Wait for BHF_UCL to complete
-      async_status:
-        jid: "{{ bhf_ucl_result.ansible_job_id }}"
-      register: job_result_11
-      until: job_result_11.finished
-      ignore_errors: true
-      retries: 8
-      delay: 30
-
-    - name: Wait for HPIDB to complete
-      async_status:
-        jid: "{{ hpidb_result.ansible_job_id }}"
-      register: job_result_12
-      until: job_result_12.finished
-      ignore_errors: true
-      retries: 12
-      delay: 5
-
-    - name: Wait for HURI to complete
-      async_status:
-        jid: "{{ huri_result.ansible_job_id }}"
-      register: job_result_13
-      until: job_result_13.finished
-      ignore_errors: true
-      retries: 6
-      delay: 30
-
-    - name: Wait for IMEX to complete
-      async_status:
-        jid: "{{ imex_result.ansible_job_id }}"
-      register: job_result_14
-      until: job_result_14.finished
-      ignore_errors: true
-      retries: 18
-      delay: 60
-
-    - name: Wait for INNATEDB to complete
-      async_status:
-        jid: "{{ innatedb_result.ansible_job_id }}"
-      register: job_result_15
-      until: job_result_15.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRDOWNLOAD
-
-    - name: Wait for MATRIXDB to complete
-      async_status:
-        jid: "{{ matrixdb_result.ansible_job_id }}"
-      register: job_result_16
-      until: job_result_16.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for MBINFO to complete
-      async_status:
-        jid: "{{ mbinfo_result.ansible_job_id }}"
-      register: job_result_17
-      until: job_result_17.finished
-      ignore_errors: true
-      retries: 8
-      delay: 60
-
-    - name: Wait for MINT to complete
-      async_status:
-        jid: "{{ mint_result.ansible_job_id }}"
-      register: job_result_18
-      until: job_result_18.finished
-      ignore_errors: true
-      retries: 8
-      delay: 30
-
-    - name: Wait for MPIDB to complete
-      async_status:
-        jid: "{{ mpidb_result.ansible_job_id }}"
-      register: job_result_19
-      until: job_result_19.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for QUICKGO to complete
-      async_status:
-        jid: "{{ quickgo_result.ansible_job_id }}"
-      register: job_result_20
-      until: job_result_20.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for REACTOME to complete
-      async_status:
-        jid: "{{ reactome_result.ansible_job_id }}"
-      register: job_result_21
-      until: job_result_21.finished
-      ignore_errors: true
-      retries: 4
-      delay: 30
-
-    - name: Wait for UNIPROTPP to complete
-      async_status:
-        jid: "{{ uniprotpp_result.ansible_job_id }}"
-      register: job_result_22
-      until: job_result_22.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for VIRUSHOST to complete
-      async_status:
-        jid: "{{ virushost_result.ansible_job_id }}"
-      register: job_result_23
-      until: job_result_23.finished
-      ignore_errors: true
-      retries: 6
-      delay: 10
-
-    - name: Wait for PSI_MI to complete
-      async_status:
-        jid: "{{ psi_mi_result.ansible_job_id }}"
-      register: job_result_24
-      until: job_result_24.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - STRANGE
-
-    - name: Wait for TAXONOMY to complete
-      async_status:
-        jid: "{{ taxonomy_result.ansible_job_id }}"
-      register: job_result_25
-      until: job_result_25.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - UNPACK
-
-    - name: Wait for ATHALIANA to complete
-      async_status:
-        jid: "{{ athaliana_result.ansible_job_id }}"
-      register: job_result_26
-      until: job_result_26.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-
-    - name: Wait for BIND to complete
-      async_status:
-        jid: "{{ bind_result.ansible_job_id }}"
-      register: job_result_27
-      until: job_result_27.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - STRANGE
-
-    - name: Wait for DIG to complete
-      async_status:
-        jid: "{{ dig_result.ansible_job_id }}"
-      register: job_result_28
-      until: job_result_28.finished
-      ignore_errors: true
-      retries: 6
-      delay: 30
-
-    - name: Wait for FLY to complete
-      async_status:
-        jid: "{{ fly_result.ansible_job_id }}"
-      register: job_result_29
-      until: job_result_29.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-
-    - name: Wait for GENE to complete
-      async_status:
-        jid: "{{ gene_result.ansible_job_id }}"
-      register: job_result_30
-      until: job_result_30.finished
-      ignore_errors: true
-      retries: 23
-      delay: 120
-
-    - name: Wait for GENPEPT to complete
-      async_status:
-        jid: "{{ genpept_result.ansible_job_id }}"
-      register: job_result_31
-      until: job_result_31.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRPARSE
-
-    - name: Wait for IPI to complete
-      async_status:
-        jid: "{{ ipi_result.ansible_job_id }}"
-      register: job_result_32
-      until: job_result_32.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRDOWNLOAD
-
-    - name: Wait for MMDB to complete
-      async_status:
-        jid: "{{ mmdb_result.ansible_job_id }}"
-      register: job_result_33
-      until: job_result_33.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - STRANGE
-
-    - name: Wait for PDB to complete
-      async_status:
-        jid: "{{ pdb_result.ansible_job_id }}"
-      register: job_result_34
-      until: job_result_34.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRPARSE
-
-    - name: Wait for REFSEQ to complete
-      async_status:
-        jid: "{{ refseq_result.ansible_job_id }}"
-      register: job_result_35
-      until: job_result_35.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRPARSE
-
-    - name: Wait for UNIPROT to complete
-      async_status:
-        jid: "{{ uniprot_result.ansible_job_id }}"
-      register: job_result_36
-      until: job_result_36.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
-      # FAILED - IRPARSE
-
-    - name: Wait for YEAST to complete
-      async_status:
-        jid: "{{ yeast_result.ansible_job_id }}"
-      register: job_result_37
-      until: job_result_37.finished
-      ignore_errors: true
-      retries: 6
-      delay: 5
+      register: job_result
+      loop: "{{ jobs }}"
+
+    - name: Wait for irimport jobs to complete
+      ansible.builtin.async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      ignore_errors: true
+      retries: "{{ item.import_retries | default(6) }}"
+      delay: "{{ item.import_delay | default(5) }}"
+      loop: "{{ job_result.results }}"
+
+    - name: "Ensure that `log_location` exists"
+      ansible.builtin.file:
+        path: "{{ log_location }}"
+        state: directory
+        mode: "0755"
+
+    - name: Copy msg
+      ansible.builtin.copy:
+        content: "{{ item.msg }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.msg"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.msg is defined and item.msg != ""
+      loop: "{{ job_result.results }}"
+
+    - name: Copy logs
+      ansible.builtin.copy:
+        content: "{{ item.stdout }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.out"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.stdout != ""
+      loop: "{{ job_result.results }}"
+
+    - name: Copy error logs
+      ansible.builtin.copy:
+        content: "{{ item.stderr }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.err"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.stderr != ""
+      loop: "{{ job_result.results }}"
+
+    - name: Gather failed jobs
+      ansible.builtin.set_fact:
+        failed_import_jobs: "{{ failed_import_jobs | default([]) + [item.item.item.name] }}"
+      no_log: true
+      when: item.failed
+      loop: "{{ job_result.results }}"
+
+    - name: Print failed jobs
+      ansible.builtin.fail:
+        msg:
+          - "The following resources failed to import: {{ failed_import_jobs | join(', ') }}"
+          - "Please check the logs in `{{ log_location }}` for more information."
+      when: failed_import_jobs is defined

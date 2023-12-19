@@ -33,7 +33,7 @@ The `main1.yml` playbook should be automatically run by terraform. The `main2.ym
 Running any of the playbooks can be done by the following command: *(you may have to change some values depending on your `./terraform/irefindex.auto.tfvars` file configuration)*
 
 ```bash
-ansible-playbook -i '193.190.80.24:50022,' -u 'debian' --private-key=~/.ssh/id_ed25519 ansible/<playbook>.yml
+ansible-playbook -i '193.190.80.24,' --ssh-extra-args='-p 50022' -u 'debian' --private-key=~/.ssh/id_ed25519 ansible/<playbook>.yml
 ```
 
 ### Adding/removing sources from runs
@@ -49,6 +49,10 @@ If you had issues with a certain source; have resolved the issue, and want to re
 ### Error handling
 
 The playbooks provide a more advantagous way of starting the actions by running this in parralel. To prevent that a error for another resource would kill or corrupt another source its process; errors are collected and shown together when all sources have finished their process.
+
+#### SSH Error?
+
+If you are receiving a invalid keys error from ssh, you can run the `./fix_ssh_key.sh` or `./fix_ssh_key.ps1` scripts for `linux` or `windows` respectivly.
 
 #### Debugging iRefIndex issues
 
