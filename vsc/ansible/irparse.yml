@@ -61,6 +61,7 @@
       no_log: true
       when: item.stdout != ""
       loop: "{{ job_result.results }}"
+      ignore_errors: true
 
     - name: Copy error logs
       ansible.builtin.copy:
