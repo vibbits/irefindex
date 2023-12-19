@@ -1,6 +1,6 @@
 ---
 - name: Irunpack
-  hosts: all
+  hosts: localhost
   become: true
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   vars_files:
@@ -155,3 +155,4 @@
           There are sources missing, this might indicate a failed download: [{{ failed_collected | join(', ') }}].
           Looked in `{{ data_dir }}`
       when: failed_collected is defined and failed_collected | length > 0
+      ignore_errors: true
