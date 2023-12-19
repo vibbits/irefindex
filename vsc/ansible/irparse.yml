@@ -74,7 +74,7 @@
 
     - name: Gather failed jobs
       ansible.builtin.set_fact:
-        failed_jobs: "{{ failed_jobs | default([]) + [item.item.item.name] }}"
+        failed_parsing_jobs: "{{ failed_parsing_jobs | default([]) + [item.item.item.name] }}"
       no_log: true
       when: item.failed
       loop: "{{ job_result.results }}"
@@ -82,6 +82,6 @@
     - name: Print failed jobs
       ansible.builtin.fail:
         msg:
-          - "The following resources failed to parse: {{ failed_jobs | join(', ') }}"
+          - "The following resources failed to parse: {{ failed_parsing_jobs | join(', ') }}"
           - "Please check the logs in `{{ log_location }}` for more information."
-      when: failed_jobs is defined
+      when: failed_parsing_jobs is defined
