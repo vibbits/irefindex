@@ -32,8 +32,8 @@
       register: job_result
       until: job_result.finished
       ignore_errors: true
-      retries: "{{ item.parse_retries | default(6) }}"
-      delay: "{{ item.parse_delay | default(5) }}"
+      retries: "{{ item.item.parse_retries | default(6) }}"
+      delay: "{{ item.item.parse_delay | default(5) }}"
       loop: "{{ job_result.results }}"
 
     - name: "Ensure that `log_location` exists"
