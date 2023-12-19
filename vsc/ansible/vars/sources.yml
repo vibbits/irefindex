@@ -1,28 +1,3 @@
-# TODO: Determine which of these still apply
-# FAILED - IRDOWNLOAD on BAR (irpase)
-# FAILED - IRDOWNLOAD on CORUM (irpase)
-# FAILED - IRDOWNLOAD on INNATEDB (irpase)
-# FAILED - IRDOWNLOAD on IPI (irpase)
-# FAILED - IRUNPACK on TAXONOMY (irpase)
-# FAILED - STRANGE on GENE (irpase)
-# FAILED - STRANGE on GENPEPT (irpase)
-# FAILED - STRANGE on INTACT (irpase)
-# FAILED - STRANGE on PDB (irpase)
-# FAILED - STRANGE on REFSEQ (irpase)
-
-# FAILED - IRDOWNLOAD on BAR (irimport)
-# FAILED - IRDOWNLOAD on CORUM (irimport)
-# FAILED - IRDOWNLOAD on INNATEDB (irimport)
-# FAILED - IRDOWNLOAD on IPI (irimport)
-# FAILED - IRPARSE on GENPEPT (irimport)
-# FAILED - IRPARSE on PDB (irimport)
-# FAILED - IRPARSE on REFSEQ (irimport)
-# FAILED - IRPARSE on UNIPROT (irimport)
-# FAILED - STRANGE on BIND (irimport)
-# FAILED - STRANGE on MMDB (irimport)
-# FAILED - STRANGE on PSI_MI (irimport)
-# FAILED - UNPACK on TAXONOMY (irimport)
-
 # All sources that should be processed
 #
 # Parameters:
@@ -63,7 +38,7 @@ jobs:
   - { name: "mmdb", download_runner_async: 60, download_retries: 36 }
   - { name: "taxonomy", download_runner_async: 60, download_retries: 36 }
   - { name: "virushost", download_runner_async: 60, download_retries: 36, import_async: 30, import_delay: 10 }
-  - { name: "yeast", download_runner_async: 60, download_retries: 36, import_async: 6 }
+  - { name: "yeast", download_runner_async: 90, download_retries: 54, import_async: 6 }
   - { name: "intcomplex", unpack_async: 60, unpack_delay: 10, download_retries: 6, parse_async: 270, parse_delay: 30, parse_retries: 9, import_async: 180, import_delay: 30 }
   - { name: "huri", download_runner_async: 60, download_retries: 36, parse_async: 180, parse_retries: 12, parse_delay: 15, import_async: 180, import_delay: 30 }
   - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15, download_runner_async: 60, download_retries: 12, download_delay: 15, parse_async: 3600, parse_retries: 12, parse_delay: 300, import_async: 3600, import_retries: 12, import_delay: 300 }
@@ -71,9 +46,9 @@ jobs:
   - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, parse_retries: 8, parse_delay: 15, import_async: 60, import_delay: 10 }
   - { name: "uniprotpp", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 60, parse_delay: 5, parse_retries: 12, import_async: 60, import_delay: 10 }
   # TODO: Figure out actual parse_async and parse_retries amounts
-  - { name: "uniprot", download_runner_async: 1500, download_retries: 25, parse_async: 180, parse_retries: 10 }
+  - { name: "uniprot", download_runner_async: 2000, download_retries: 34, parse_async: 180, parse_retries: 10 }
   - { name: "mint", download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 60, parse_delay: 10, import_async: 240, import_retries: 8, import_delay: 30 }
-  - { name: "gene", download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 1200, parse_retries: 20, parse_delay: 60, import_async: 2700, import_retries: 23, import_delay: 120 }
+  - { name: "gene", download_runner_async: 800, download_retries: 40, download_delay: 60, parse_async: 1200, parse_retries: 20, parse_delay: 60, import_async: 2700, import_retries: 23, import_delay: 120 }
   - { name: "reactome", download_runner_async: 300, download_retries: 30, download_delay: 30, import_async: 120, import_retries: 4, import_delay: 30 }
   - { name: "imex", download_runner_async: 10800, download_retries: 108, download_delay: 300, parse_async: 480, parse_retries: 16, parse_delay: 30, import_async: 1080, import_retries: 18, import_delay: 60 }
   - { name: "refseq", download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 300, parse_retries: 10, parse_delay: 30 }

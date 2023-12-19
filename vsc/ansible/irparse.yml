@@ -1,6 +1,6 @@
 ---
 - name: Irparse
-  hosts: all
+  hosts: localhost
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   become: true
   vars_files:
@@ -61,6 +61,7 @@
       no_log: true
       when: item.stdout != ""
       loop: "{{ job_result.results }}"
+      ignore_errors: true
 
     - name: Copy error logs
       ansible.builtin.copy:
