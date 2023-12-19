@@ -50,6 +50,10 @@ If you had issues with a certain source; have resolved the issue, and want to re
 
 The playbooks provide a more advantagous way of starting the actions by running this in parralel. To prevent that a error for another resource would kill or corrupt another source its process; errors are collected and shown together when all sources have finished their process.
 
+#### SSH Error?
+
+If you are receiving a invalid keys error from ssh, you can run the `./fix_ssh_key.sh` or `./fix_ssh_key.ps1` scripts for `linux` or `windows` respectivly.
+
 #### Debugging iRefIndex issues
 
 All jobs are logged to the `/data/irdata18/logs/<datetime>/` directory. The `datetime` for that playbook will be printed in the terminal fail message if any errors occur.
