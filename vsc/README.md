@@ -33,7 +33,7 @@ The `main1.yml` playbook should be automatically run by terraform. The `main2.ym
 Running any of the playbooks can be done by the following command: *(you may have to change some values depending on your `./terraform/irefindex.auto.tfvars` file configuration)*
 
 ```bash
-ansible-playbook -i '193.190.80.24:50022,' -u 'debian' --private-key=~/.ssh/id_ed25519 ansible/<playbook>.yml
+ansible-playbook -i '193.190.80.24,' --ssh-extra-args='-p 50022' -u 'debian' --private-key=~/.ssh/id_ed25519 ansible/<playbook>.yml
 ```
 
 ### Adding/removing sources from runs
