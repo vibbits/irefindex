@@ -47,7 +47,7 @@ jobs:
   - { name: "mmdb" , download_runner_async: 60, download_retries: 36 }
   - { name: "taxonomy" , download_runner_async: 60, download_retries: 36 }
   - { name: "virushost" , download_runner_async: 60, download_retries: 36 }
-  - { name: "yeast" , download_runner_async: 60, download_retries: 36 }
+  - { name: "yeast" , download_runner_async: 90, download_retries: 54 }
   - { name: "intcomplex", unpack_async: 60, unpack_delay: 10 , download_retries: 6, parse_async: 270, parse_delay: 30, parse_retries: 9 }
   - { name: "huri" , download_runner_async: 60, download_retries: 36, parse_async: 180, parse_retries: 12, parse_delay: 15 }
   - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15 , download_runner_async: 60, download_retries: 12, download_delay: 15, parse_async: 3600, parse_retries: 12, parse_delay: 300 }
@@ -55,7 +55,7 @@ jobs:
   - { name: "matrixdb" , download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, parse_retries: 8, parse_delay: 15 }
   - { name: "uniprotpp" , download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 60, parse_delay: 5, parse_retries: 12 }
   # TODO: Figure out actual parse_async and parse_retries amounts
-  - { name: "uniprot" , download_runner_async: 1500, download_retries: 25, parse_async: 180, parse_retries: 10 }
+  - { name: "uniprot" , download_runner_async: 2000, download_retries: 34, parse_async: 180, parse_retries: 10 }
   - { name: "mint" , download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 60, parse_delay: 10 }
   - { name: "gene" , download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 1200, parse_retries: 20, parse_delay: 60 }
   - { name: "reactome" , download_runner_async: 300, download_retries: 30, download_delay: 30 }
