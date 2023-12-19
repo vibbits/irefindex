@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Fix mistake in parse times">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irmanifest.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irparse.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irparse.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irunpack.yml" afterDir="false" />
-    </list>
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Test locally" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -232,14 +227,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00092" summary="Update wait times irimport phase tasks">
-      <option name="closed" value="true" />
-      <created>1701358201866</created>
-      <option name="number" value="00092" />
-      <option name="presentableId" value="LOCAL-00092" />
-      <option name="project" value="LOCAL" />
-      <updated>1701358201866</updated>
     </task>
     <task id="LOCAL-00093" summary="Update wait times irimport phase tasks">
       <option name="closed" value="true" />
@@ -465,7 +452,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702981410712</updated>
     </task>
-    <option name="localTasksCounter" value="121" />
+    <task id="LOCAL-00121" summary="Test locally">
+      <option name="closed" value="true" />
+      <created>1702981957486</created>
+      <option name="number" value="00121" />
+      <option name="presentableId" value="LOCAL-00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1702981957486</updated>
+    </task>
+    <option name="localTasksCounter" value="122" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -501,13 +496,13 @@
     <MESSAGE value="Add scripts of second round together" />
     <MESSAGE value="Delete code with mistakes" />
     <MESSAGE value="Try to fix mistakes" />
-    <MESSAGE value="Test locally" />
     <MESSAGE value="Optimize irunpack" />
     <MESSAGE value="Add known problems in Irunpack phase" />
     <MESSAGE value="Test irmanifest local" />
     <MESSAGE value="Optimize irmanifest" />
     <MESSAGE value="Update uniprot mirror source link" />
     <MESSAGE value="Fix mistake in parse times" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix mistake in parse times" />
+    <MESSAGE value="Test locally" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test locally" />
   </component>
 </project>
