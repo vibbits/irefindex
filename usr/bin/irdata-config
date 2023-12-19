@@ -562,7 +562,7 @@ TAXONOMY_SCHEMA='taxonomy'
 # UniProt
 # OK
 UNIPROT_DOWNLOAD_FILES="uniprot_sprot.dat.gz uniprot_trembl.dat.gz uniprot_sprot_varsplic.fasta.gz reldate.txt"
-UNIPROT_MIRROR='ftp://ftp.uniprot.org'
+UNIPROT_MIRROR='ftp://ftp.ebi.ac.uk'
 UNIPROT_RELEASE='current_release'
 
 UNIPROT_RELEASE_URL="$UNIPROT_MIRROR/pub/databases/uniprot/$UNIPROT_RELEASE/knowledgebase/complete/"
