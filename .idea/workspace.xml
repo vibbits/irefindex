@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Update time amounts" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Fix mistake">
+      <change afterPath="$PROJECT_DIR$/vsc/ansible/after_main1.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vsc/ansible/after_main2.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vsc/ansible/main3.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +44,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "SCRUM-43-ansible",
-    "last_opened_file_path": "C:/Users/piete/Downloads/irefindex",
+    "last_opened_file_path": "C:/Users/piete/Downloads/irefindex/vsc/ansible",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -50,6 +55,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\piete\Downloads\irefindex\vsc\ansible" />
       <recent name="C:\Users\piete\Downloads\irefindex\vsc\terraform" />
       <recent name="C:\Users\vande\Documents\School\TI3\Software Project\irefindex\vsc\ansible" />
       <recent name="C:\Users\vande\Documents\School\TI3\Software Project\irefindex\vsc\terraform" />
@@ -89,7 +95,7 @@
       <workItem from="1702889282121" duration="4248000" />
       <workItem from="1703083901895" duration="504000" />
       <workItem from="1703084704112" duration="21000" />
-      <workItem from="1703168979157" duration="2382000" />
+      <workItem from="1703168979157" duration="2722000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -230,14 +236,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00103" summary="Solve errors">
-      <option name="closed" value="true" />
-      <created>1702500450510</created>
-      <option name="number" value="00103" />
-      <option name="presentableId" value="LOCAL-00103" />
-      <option name="project" value="LOCAL" />
-      <updated>1702500450510</updated>
     </task>
     <task id="LOCAL-00104" summary="Solve errors">
       <option name="closed" value="true" />
@@ -463,7 +461,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703171380216</updated>
     </task>
-    <option name="localTasksCounter" value="132" />
+    <task id="LOCAL-00132" summary="Fix mistake">
+      <option name="closed" value="true" />
+      <created>1703171598775</created>
+      <option name="number" value="00132" />
+      <option name="presentableId" value="LOCAL-00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1703171598775</updated>
+    </task>
+    <option name="localTasksCounter" value="133" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -503,9 +509,9 @@
     <MESSAGE value="SCRUM-32 Test" />
     <MESSAGE value="SCRUM-43 Test" />
     <MESSAGE value="Test irimport locally" />
-    <MESSAGE value="Fix mistake" />
     <MESSAGE value="Testing" />
     <MESSAGE value="Update time amounts" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update time amounts" />
+    <MESSAGE value="Fix mistake" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix mistake" />
   </component>
 </project>
