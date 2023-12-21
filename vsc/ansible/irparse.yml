@@ -22,7 +22,7 @@
         chdir: "/home/irefindex/usr/bin"
       changed_when: false
       poll: 0
-      async: "{{ item.parse_async | default(30) }}"
+      async: "{{ item.parse_async | default(60) }}"
       register: job_result
       loop: "{{ jobs }}"
 
@@ -32,7 +32,7 @@
       register: job_result
       until: job_result.finished
       ignore_errors: true
-      retries: "{{ item.item.parse_retries | default(6) }}"
+      retries: "{{ item.item.parse_retries | default(12) }}"
       delay: "{{ item.item.parse_delay | default(5) }}"
       loop: "{{ job_result.results }}"
 
