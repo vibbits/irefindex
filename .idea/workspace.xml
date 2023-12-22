@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Fix mistake">
-      <change afterPath="$PROJECT_DIR$/vsc/ansible/after_main1.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vsc/ansible/after_main2.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/vsc/ansible/main3.yml" afterDir="false" />
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Try to solve a problem with a dead state worker">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +93,7 @@
       <workItem from="1702889282121" duration="4248000" />
       <workItem from="1703083901895" duration="504000" />
       <workItem from="1703084704112" duration="21000" />
-      <workItem from="1703168979157" duration="2722000" />
+      <workItem from="1703168979157" duration="18373000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -236,30 +234,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00104" summary="Solve errors">
-      <option name="closed" value="true" />
-      <created>1702500660424</created>
-      <option name="number" value="00104" />
-      <option name="presentableId" value="LOCAL-00104" />
-      <option name="project" value="LOCAL" />
-      <updated>1702500660424</updated>
-    </task>
-    <task id="LOCAL-00105" summary="Update which resource do fail">
-      <option name="closed" value="true" />
-      <created>1702500705160</created>
-      <option name="number" value="00105" />
-      <option name="presentableId" value="LOCAL-00105" />
-      <option name="project" value="LOCAL" />
-      <updated>1702500705160</updated>
-    </task>
-    <task id="LOCAL-00106" summary="Update which resources do fail">
-      <option name="closed" value="true" />
-      <created>1702501156367</created>
-      <option name="number" value="00106" />
-      <option name="presentableId" value="LOCAL-00106" />
-      <option name="project" value="LOCAL" />
-      <updated>1702501156367</updated>
     </task>
     <task id="LOCAL-00107" summary="Update which resources do fail">
       <option name="closed" value="true" />
@@ -469,7 +443,31 @@
       <option name="project" value="LOCAL" />
       <updated>1703171598775</updated>
     </task>
-    <option name="localTasksCounter" value="133" />
+    <task id="LOCAL-00133" summary="Add some more playbooks">
+      <option name="closed" value="true" />
+      <created>1703171787251</created>
+      <option name="number" value="00133" />
+      <option name="presentableId" value="LOCAL-00133" />
+      <option name="project" value="LOCAL" />
+      <updated>1703171787251</updated>
+    </task>
+    <task id="LOCAL-00134" summary="Try to solve a problem with a dead state worker">
+      <option name="closed" value="true" />
+      <created>1703247515502</created>
+      <option name="number" value="00134" />
+      <option name="presentableId" value="LOCAL-00134" />
+      <option name="project" value="LOCAL" />
+      <updated>1703247515502</updated>
+    </task>
+    <task id="LOCAL-00135" summary="Try to solve a problem with a dead state worker">
+      <option name="closed" value="true" />
+      <created>1703327826572</created>
+      <option name="number" value="00135" />
+      <option name="presentableId" value="LOCAL-00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1703327826572</updated>
+    </task>
+    <option name="localTasksCounter" value="136" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -487,8 +485,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Check commands and detect errors" />
-    <MESSAGE value="Update wait times irimport phase tasks" />
     <MESSAGE value="Detect undetected errors" />
     <MESSAGE value="Fix mistakes" />
     <MESSAGE value="Solve errors" />
@@ -512,6 +508,8 @@
     <MESSAGE value="Testing" />
     <MESSAGE value="Update time amounts" />
     <MESSAGE value="Fix mistake" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix mistake" />
+    <MESSAGE value="Add some more playbooks" />
+    <MESSAGE value="Try to solve a problem with a dead state worker" />
+    <option name="LAST_COMMIT_MESSAGE" value="Try to solve a problem with a dead state worker" />
   </component>
 </project>
