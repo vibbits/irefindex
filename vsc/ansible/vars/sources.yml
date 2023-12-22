@@ -70,7 +70,7 @@ jobs:
   - { name: "corum", download_runner_async: 60, download_retries: 12, download_delay: 15 }
   - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 200, parse_retries: 8, parse_delay: 25, import_async: 120, import_delay: 10 }
   - { name: "uniprotpp", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, import_async: 120, import_delay: 10 }
-  - { name: "uniprot", download_runner_async: 2000, download_retries: 34, parse_async: 36000, parse_retries: 60, parse_delay: 600 }
+  - { name: "uniprot", download_runner_async: 2000, download_retries: 60, download_delay: 100, parse_async: 36000, parse_retries: 60, parse_delay: 600 }
   - { name: "mint", download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 120, import_async: 360, import_delay: 30 }
   - { name: "gene", download_runner_async: 800, download_retries: 40, download_delay: 60, parse_async: 1600, parse_retries: 27, parse_delay: 60, import_async: 3240, import_retries: 27, import_delay: 120 }
   - { name: "reactome", download_runner_async: 300, download_retries: 30, download_delay: 30, import_async: 240, import_retries: 8, import_delay: 30 }
