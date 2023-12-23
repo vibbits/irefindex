@@ -81,6 +81,8 @@ At this point your file structure should look like this:
     terraform init
     ```
 4. Run terraform to provision the machine and run the `./ansible/main1.yml` playbook:
+    > Note: When asked for confirmation, double check that you want to perform this action and type `yes`.
+    > If you want to skip the confirmation step, you can add the `-auto-approve` flag to the command.
     ```bash
     # pwd: irefindex/vsc/terraform
     terraform apply
@@ -157,3 +159,14 @@ This allows quick and easy debugging of any issues that may occur.
 ### BAR
 
 This resource can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
+
+## FAQ
+
+### What are all the things that Terraform provisions?
+
+- A keypair (to be used to access the VM)
+- A security group (to allow SSH access)
+- A port (to attach the security group to)
+- A volume (to store the data)
+- A VM (to run the iRefIndex software)
+- A port forwarding rule (to allow SSH access to the VM)
