@@ -1,6 +1,6 @@
 # IRefIndex VSC
 
-This module contains the changes that were neccecary to run and build the irefindex on the VSC. 
+This module contains the changes that were neccecary to run and build the irefindex on the VSC.
 
 ## Terraform
 
@@ -24,7 +24,7 @@ To unprovision the machine run `terraform destroy`. Please do note that this wil
 
 ### Setup
 
-Make sure you have installed ansible on your machine, this machine will act as a human and interact with the infrastructure that has been created by the terraform code. 
+Make sure you have installed ansible on your machine, this machine will act as a human and interact with the infrastructure that has been created by the terraform code.
 
 The `main1.yml` playbook should be automatically run by terraform. The `main2.yml` and `main3.yml` playbooks should be run manually after the first playbook has finished. And any potential errors have been resolved.
 
@@ -60,10 +60,10 @@ All jobs are logged to the `/data/irdata18/logs/<datetime>/` directory. The `dat
 
 The logging is separated for each process using directories. So if you want to debug the `irdownload` process, you can find the logs in the `/data/irdata18/logs/<datetime>/irdownload/` directory.
 
-There can be up to three different filetypes for each item in the directory. 
+There can be up to three different filetypes for each item in the directory.
 
 - `.out` file contains the stdout of the process
-- `.err` file contains the stderr of the process 
+- `.err` file contains the stderr of the process
 - `.msg` file contains any extra messages that have been sent to ansible
 
 This allows quick and easy debugging of any issues that may occur.
@@ -74,6 +74,49 @@ This allows quick and easy debugging of any issues that may occur.
 
 This resource can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
 
+## A step by step usage guide
 
+### 1. Install terraform and ansible
 
+This is the only step that is not accomodated by any image or command; as this will depend on your local machine.
+
+You can find the installation guides here:
+
+- [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) []
+
+### 2. Clone this repository and navigate to the terraform directory
+
+```bash
+git clone https://github.com/vibbits/irefindex.git
+cd irefindex/vsc/terraform
+```
+
+### 3. Download your `clouds.yaml` file from the VSC platform
+
+1. Go to the [VSC cloud platform](https://cloud.vscentrum.be) and sign in if you haven't already.
+2. On the dashboard open the `Identity` navigation group:
+![Cloud overview](./.assets/cloud-overview.jpg)
+3. The group will expand and show you items, of those items click on `Application Credentials`:
+![Cloud overview zoom into Application Credentials](./.assets/cloud-overview-zoom.jpg)
+4. On the application credentials page we will need to create new credentials, click on the `Create Application Credential` button:
+![Application Credentials page](./.assets/cloud-credentials.jpg)
+5. Fill in the form with your desired configuration, and click on the `Create Application Credential` button:
+![Application Credentials form](./.assets/cloud-create-credential.jpg)
+6. Your credentials will be shown, do not share these with anyone. Click on the `Download clouds.yaml` button to download your `clouds.yaml` file and place this in the `./terraform/` directory:
+![Application credential created](./.assets/cloud-credential-created.jpg)
+
+At this point your file structure should look like this:
+
+```bash
+└── vsc
+    ├── README.md
+    ├── ansible
+    │   └── # ... (ansible files)
+    └── terraform
+        ├── clouds.yaml # <--- This file should be here
+        ├── irefindex.auto.tfvars.example
+        ├── main.tf
+        └── variables.tf
+```
 
