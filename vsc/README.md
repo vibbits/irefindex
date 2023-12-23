@@ -29,15 +29,25 @@ cd irefindex/vsc/terraform
 > If you are already signed in, you can skip to step 4 by clicking [here](https://cloud.vscentrum.be/dashboard/identity/application_credentials).
 
 1. Go to the [VSC cloud platform](https://cloud.vscentrum.be) and sign in if you haven't already.
+
 2. On the dashboard open the `Identity` navigation group:
+
 ![Cloud overview](./.assets/cloud-overview.jpg)
+
 3. The group will expand and show you items, of those items click on `Application Credentials`:
+
 ![Cloud overview zoom into Application Credentials](./.assets/cloud-overview-zoom-identity.jpg)
+
 4. On the application credentials page we will need to create new credentials, click on the `Create Application Credential` button:
+
 ![Application Credentials page](./.assets/cloud-credentials.jpg)
+
 5. Fill in the form with your desired configuration, and click on the `Create Application Credential` button:
+
 ![Application Credentials form](./.assets/cloud-create-credential.jpg)
+
 6. Your credentials will be shown, do not share these with anyone. Click on the `Download clouds.yaml` button to download your `clouds.yaml` file and place this in the `./terraform/` directory:
+
 ![Application credential created](./.assets/cloud-credential-created.jpg)
 
 At this point your file structure should look like this:
