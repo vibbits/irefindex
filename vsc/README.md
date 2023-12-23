@@ -15,7 +15,7 @@ This is the only step that is not accomodated by any image or command; as this w
 You can find the installation guides here:
 
 - [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) []
+- [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 ### 2. Clone this repository and navigate to the terraform directory
 
@@ -32,7 +32,7 @@ cd irefindex/vsc/terraform
 2. On the dashboard open the `Identity` navigation group:
 ![Cloud overview](./.assets/cloud-overview.jpg)
 3. The group will expand and show you items, of those items click on `Application Credentials`:
-![Cloud overview zoom into Application Credentials](./.assets/cloud-overview-zoom.jpg)
+![Cloud overview zoom into Application Credentials](./.assets/cloud-overview-zoom-identity.jpg)
 4. On the application credentials page we will need to create new credentials, click on the `Create Application Credential` button:
 ![Application Credentials page](./.assets/cloud-credentials.jpg)
 5. Fill in the form with your desired configuration, and click on the `Create Application Credential` button:
