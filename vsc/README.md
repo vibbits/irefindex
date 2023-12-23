@@ -94,6 +94,8 @@ cd irefindex/vsc/terraform
 
 ### 3. Download your `clouds.yaml` file from the VSC platform
 
+> If you are already signed in, you can skip to step 4 by clicking [here](https://cloud.vscentrum.be/dashboard/identity/application_credentials).
+
 1. Go to the [VSC cloud platform](https://cloud.vscentrum.be) and sign in if you haven't already.
 2. On the dashboard open the `Identity` navigation group:
 ![Cloud overview](./.assets/cloud-overview.jpg)
@@ -120,3 +122,37 @@ At this point your file structure should look like this:
         └── variables.tf
 ```
 
+### 4. Provision the machine using terraform, irinit and irdownload.
+
+> Note: The actual provisioning of the machine will take a while, as it will have to download and build the irefindex. During this time your host machine must stay connected to the server.
+
+1. Copy the `irefindex.auto.tfvars.example` file to `irefindex.auto.tfvars`:
+    ```bash
+    # pwd: irefindex/vsc/terraform
+    cp irefindex.auto.tfvars.example irefindex.auto.tfvars
+    ```
+2. Edit the `irefindex.auto.tfvars` file to your liking, you can find your available machine flavors in [Launch Instance > Flavor](https://cloud.vscentrum.be/dashboard/project/instances).
+3. Download Terraform OpenStack provider plugin:
+    ```bash
+    # pwd: irefindex/vsc/terraform
+    terraform init
+    ```
+4. Run terraform to provision the machine and run the `./ansible/main1.yml` playbook:
+    ```bash
+    # pwd: irefindex/vsc/terraform
+    terraform apply
+    ```
+
+### 5. Run irunpack, irmanifest and irparse
+
+```bash
+# pwd: irefindex/vsc
+ansible-playbook -i '193.190.80.24,' --ssh-extra-args='-p 50022' -u 'debian' --private-key=~/.ssh/id_ed25519 ansible/main2.yml
+```
+
+### 6. Run irimport
+
+```bash
+# pwd: irefindex/vsc
+ansible-playbook -i '193.190.80.24,' --ssh-extra-args='-p 50022' -u 'debian' --private-key=~/.ssh/id_ed25519 ansible/main3.yml
+```
