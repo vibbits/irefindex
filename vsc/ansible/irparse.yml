@@ -1,6 +1,6 @@
 ---
 - name: Irparse
-  hosts: localhost
+  hosts: all
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   become: true
   vars_files:
