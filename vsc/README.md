@@ -88,7 +88,7 @@ At this point your file structure should look like this:
     terraform apply
     ```
 
-### 4.1. (Optional) Re-run irdownload for a specific source
+### 4.1. (Optional) Try to fix the problems of main1 automatically
 
 Follow the aproach in [Adding/removing sources from runs](#addingremoving-sources-from-runs) to comment out all sources except the one you want to re-run.
 
@@ -96,7 +96,7 @@ Then run this  command to re-run the `irdownload` process for that source:
 
 ```bash
 # pwd: irefindex/vsc
-ansible-playbook -i '193.190.80.24,' --ssh-extra-args='-p 50022' -u 'debian' --private-key=~/.ssh/id_ed25519 ansible/irdownload.yml
+nsible-playbook -i '193.190.80.24,' --ssh-extra-args='-p 50022' -u 'debian' --private-key=~/.ssh/id_ed25519 ../ansible/after_main1.yml
 ```
 
 ### 5. Run irunpack, irmanifest and irparse
@@ -156,9 +156,12 @@ This allows quick and easy debugging of any issues that may occur.
 
 ## Known issues with sources
 
-### BAR
+### IRDOWNLOAD
 
-This resource can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
+- BAR can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
+- INNATEDB can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
+- IPI can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
+- CORUM can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
 
 ## FAQ
 
