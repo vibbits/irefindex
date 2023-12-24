@@ -1,6 +1,6 @@
 ---
 - name: Irunpack
-  hosts: localhost
+  hosts: all
   become: true
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   vars_files:
