@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Try to solve a problem with a dead state worker">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irdownload.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/ansible/vars/sources.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/vars/sources.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +95,7 @@
       <workItem from="1702889282121" duration="4248000" />
       <workItem from="1703083901895" duration="504000" />
       <workItem from="1703084704112" duration="21000" />
-      <workItem from="1703168979157" duration="18373000" />
+      <workItem from="1703168979157" duration="22342000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -234,14 +236,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00107" summary="Update which resources do fail">
-      <option name="closed" value="true" />
-      <created>1702505544268</created>
-      <option name="number" value="00107" />
-      <option name="presentableId" value="LOCAL-00107" />
-      <option name="project" value="LOCAL" />
-      <updated>1702505544268</updated>
     </task>
     <task id="LOCAL-00108" summary="Update which resources do fail">
       <option name="closed" value="true" />
@@ -467,7 +461,15 @@
       <option name="project" value="LOCAL" />
       <updated>1703327826572</updated>
     </task>
-    <option name="localTasksCounter" value="136" />
+    <task id="LOCAL-00136" summary="Try to solve a problem with a dead state worker">
+      <option name="closed" value="true" />
+      <created>1703371626877</created>
+      <option name="number" value="00136" />
+      <option name="presentableId" value="LOCAL-00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1703371626879</updated>
+    </task>
+    <option name="localTasksCounter" value="137" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

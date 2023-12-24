@@ -70,84 +70,48 @@
       until: job_result.finished == true
       loop: "{{ result.results }}"
 
-    - name: Gather failed jobs
-      ansible.builtin.set_fact:
-        failed_jobs: "{{ failed_jobs | default([]) + [item.item.item.name] }}"
-      no_log: true
-      when: item.failed
-      loop: "{{ job_result.results }}"
-      ignore_errors: true
-
-    - name: Print failed jobs
-      ansible.builtin.fail:
-        msg:
-          - "The following resources failed to download: {{ failed_jobs | join(', ') }}"
-          - "Please check the logs in `{{ log_location }}` for more information."
-      when: failed_jobs is defined
-      ignore_errors: true
-
     - name: "Ensure that `log_location` exists"
       ansible.builtin.file:
         path: "{{ log_location }}"
         state: directory
         mode: "0755"
 
-    - name: Create msg files
-      ansible.builtin.file:
-        path: "{{ log_location }}/{{ item.item.item.name }}.msg"
-        state: touch
+    - name: Copy msg
+      ansible.builtin.copy:
+        content: "{{ item.msg }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.msg"
+        mode: "0644"
+        remote_src: false
+      no_log: true
       when: item.msg is defined and item.msg != ""
       loop: "{{ job_result.results }}"
-      ignore_errors: true
-      no_log: true
 
-    - name: Add content to msg files
-      ansible.builtin.replace:
-        path: "{{ log_location }}/{{ item.item.item.name }}.msg"
-        regexp: '.*'
-        replace: "{{ item.msg }}"
-      when: item.msg is defined and item.msg != ""
-      loop: "{{ job_result.results }}"
-      ignore_errors: true
+    - name: Copy logs
+      ansible.builtin.copy:
+        content: "{{ item.stdout }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.out"
+        mode: "0644"
+        remote_src: false
       no_log: true
-
-    - name: Create log files
-      ansible.builtin.file:
-        path: "{{ log_location }}/{{ item.item.item.name }}.out"
-        state: touch
       when: item.stdout != ""
       loop: "{{ job_result.results }}"
-      ignore_errors: true
-      no_log: true
 
-    - name: Add content to log files
-      ansible.builtin.replace:
-        path: "{{ log_location }}/{{ item.item.item.name }}.out"
-        regexp: '.*'
-        replace: "{{ item.stdout }}"
-      when: item.stdout != ""
-      loop: "{{ job_result.results }}"
-      ignore_errors: true
+    - name: Copy error logs
+      ansible.builtin.copy:
+        content: "{{ item.stderr }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.err"
+        mode: "0644"
+        remote_src: false
       no_log: true
-
-    - name: Create error log files
-      ansible.builtin.file:
-        path: "{{ log_location }}/{{ item.item.item.name }}.err"
-        state: touch
       when: item.stderr != ""
       loop: "{{ job_result.results }}"
-      ignore_errors: true
-      no_log: true
 
-    - name: Add content to error log files
-      ansible.builtin.replace:
-        path: "{{ log_location }}/{{ item.item.item.name }}.err"
-        regexp: '.*'
-        replace: "{{ item.stderr }}"
-      when: item.stderr != ""
-      loop: "{{ job_result.results }}"
-      ignore_errors: true
+    - name: Gather failed jobs
+      ansible.builtin.set_fact:
+        failed_jobs: "{{ failed_jobs | default([]) + [item.item.item.name] }}"
       no_log: true
+      when: item.failed
+      loop: "{{ job_result.results }}"
 
     - name: Print failed jobs
       ansible.builtin.fail:
