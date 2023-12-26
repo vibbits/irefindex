@@ -1,2 +1,6 @@
+vars_files:
+  - ./general.yml
+
 date: "{{ ansible_date_time.iso8601_basic }}"
-logs_dir: "/data/irdata18/logs/{{ date }}"
+logs_root_dir: "/data/irdata{{ release_major }}/logs"
+logs_dir: "{{ logs_root_dir }}/{{ date }}"
