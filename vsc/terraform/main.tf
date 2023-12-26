@@ -93,8 +93,28 @@ resource "openstack_networking_portforwarding_v2" "ssh_pf" {
   }
 
   provisioner "local-exec" {
-    // StrictHostKeyChecking is set to no as when running this multiple times (e.g. after a terraform destroy), the host key will change and this would fail.
+    // StrictHostKeyChecking is set to no as when running this multiple times (e.g. after a terraform destroy), the host key will change and this would fail. However this should not be impactfull anymore as the block under this will clear it.
     command = "ansible-playbook -i '${var.floating_ip},' --ssh-extra-args '-p ${var.ssh_port} -o StrictHostKeyChecking=no' -u ${var.ssh_user} --private-key '${var.private_key_path}' ../ansible/main1.yml"
   }
 }
 
+resource "null_resource" "script_execution" {
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      if [[ "$OSTYPE" == "linux-gnu" ]]; then
+        # Run Bash script on Unix/Linux
+        ssh-keygen -R "[${var.floating_ip}]:${var.ssh_port}"
+      elif [[ "$OSTYPE" == "darwin"* ]]; then
+        # Run Bash script on MacOS
+        ssh-keygen -R "[${var.floating_ip}]:${var.ssh_port}"
+      else
+        # Assume it's Windows and run PowerShell script
+        ssh-keygen.exe -R "[${var.floating_ip}]:${var.ssh_port}"
+      fi
+    EOT
+  }
+}
