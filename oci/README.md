@@ -1,6 +1,6 @@
 # Containerized approach
 
-This repository demonstrates the containerization of this project, providing a portable and reproducible environment for executing Ansible playbooks. Containerization offers several advantages, including isolation, scalability, and consistency across different environments. These containers can be run on CaaS environments.
+This repository demonstrates the containerization of this project, providing a portable and reproducible environment for executing Ansible playbooks. Containerization offers several advantages, including isolation, scalability, and consistency across different environments. These containers can be run on CaaS environments. More information about running the Ansible playbooks on the VSC can be found in `../vsc`.
 
 ## Getting started
 
