@@ -85,6 +85,7 @@
       no_log: true
       when: item.msg is defined and item.msg != ""
       loop: "{{ job_result.results }}"
+      ignore_errors: true
 
     - name: Copy logs
       ansible.builtin.copy:
@@ -95,6 +96,7 @@
       no_log: true
       when: item.stdout != ""
       loop: "{{ job_result.results }}"
+      ignore_errors: true
 
     - name: Copy error logs
       ansible.builtin.copy:
@@ -105,6 +107,7 @@
       no_log: true
       when: item.stderr != ""
       loop: "{{ job_result.results }}"
+      ignore_errors: true
 
     - name: Gather failed jobs
       ansible.builtin.set_fact:
@@ -112,6 +115,7 @@
       no_log: true
       when: item.failed
       loop: "{{ job_result.results }}"
+      ignore_errors: true
 
     - name: Print failed jobs
       ansible.builtin.fail:

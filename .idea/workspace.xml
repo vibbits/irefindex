@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Async downloads">
+    <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Fix problems">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irbuild.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irbuild.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irimport.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irimport.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/irinit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irinit.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/main3.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/main3.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/vars/general.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/vars/general.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/vars/logs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/vars/logs.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/vars/sources.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/vars/sources.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -42,21 +37,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;SCRUM-43-ansible&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/piete/Downloads/irefindex/vsc/ansible&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "SCRUM-43-ansible",
+    "last_opened_file_path": "C:/Users/piete/Downloads/irefindex",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\piete\Downloads\irefindex\vsc\ansible" />
@@ -99,7 +94,8 @@
       <workItem from="1702889282121" duration="4248000" />
       <workItem from="1703083901895" duration="504000" />
       <workItem from="1703084704112" duration="21000" />
-      <workItem from="1703168979157" duration="39880000" />
+      <workItem from="1703168979157" duration="43609000" />
+      <workItem from="1703674501387" duration="208000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -240,62 +236,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00116" summary="Test irmanifest local">
-      <option name="closed" value="true" />
-      <created>1702777915844</created>
-      <option name="number" value="00116" />
-      <option name="presentableId" value="LOCAL-00116" />
-      <option name="project" value="LOCAL" />
-      <updated>1702777915844</updated>
-    </task>
-    <task id="LOCAL-00117" summary="Optimize irmanifest">
-      <option name="closed" value="true" />
-      <created>1702778634969</created>
-      <option name="number" value="00117" />
-      <option name="presentableId" value="LOCAL-00117" />
-      <option name="project" value="LOCAL" />
-      <updated>1702778634969</updated>
-    </task>
-    <task id="LOCAL-00118" summary="Update uniprot mirror source link">
-      <option name="closed" value="true" />
-      <created>1702900934658</created>
-      <option name="number" value="00118" />
-      <option name="presentableId" value="LOCAL-00118" />
-      <option name="project" value="LOCAL" />
-      <updated>1702900934658</updated>
-    </task>
-    <task id="LOCAL-00119" summary="Fix mistake in parse times">
-      <option name="closed" value="true" />
-      <created>1702906655222</created>
-      <option name="number" value="00119" />
-      <option name="presentableId" value="LOCAL-00119" />
-      <option name="project" value="LOCAL" />
-      <updated>1702906655222</updated>
-    </task>
-    <task id="LOCAL-00120" summary="Fix mistake in parse times">
-      <option name="closed" value="true" />
-      <created>1702981410712</created>
-      <option name="number" value="00120" />
-      <option name="presentableId" value="LOCAL-00120" />
-      <option name="project" value="LOCAL" />
-      <updated>1702981410712</updated>
-    </task>
-    <task id="LOCAL-00121" summary="Test locally">
-      <option name="closed" value="true" />
-      <created>1702981957486</created>
-      <option name="number" value="00121" />
-      <option name="presentableId" value="LOCAL-00121" />
-      <option name="project" value="LOCAL" />
-      <updated>1702981957486</updated>
-    </task>
-    <task id="LOCAL-00122" summary="Fix mistake">
-      <option name="closed" value="true" />
-      <created>1702982516339</created>
-      <option name="number" value="00122" />
-      <option name="presentableId" value="LOCAL-00122" />
-      <option name="project" value="LOCAL" />
-      <updated>1702982516339</updated>
     </task>
     <task id="LOCAL-00123" summary="Fix parse times">
       <option name="closed" value="true" />
@@ -473,7 +413,63 @@
       <option name="project" value="LOCAL" />
       <updated>1703618067933</updated>
     </task>
-    <option name="localTasksCounter" value="145" />
+    <task id="LOCAL-00145" summary="Update the used variables">
+      <option name="closed" value="true" />
+      <created>1703619187944</created>
+      <option name="number" value="00145" />
+      <option name="presentableId" value="LOCAL-00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1703619187944</updated>
+    </task>
+    <task id="LOCAL-00146" summary="Use variables in irinit">
+      <option name="closed" value="true" />
+      <created>1703619200653</created>
+      <option name="number" value="00146" />
+      <option name="presentableId" value="LOCAL-00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1703619200653</updated>
+    </task>
+    <task id="LOCAL-00147" summary="Change waiting times">
+      <option name="closed" value="true" />
+      <created>1703619211701</created>
+      <option name="number" value="00147" />
+      <option name="presentableId" value="LOCAL-00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1703619211701</updated>
+    </task>
+    <task id="LOCAL-00148" summary="Update log variables">
+      <option name="closed" value="true" />
+      <created>1703619222035</created>
+      <option name="number" value="00148" />
+      <option name="presentableId" value="LOCAL-00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1703619222035</updated>
+    </task>
+    <task id="LOCAL-00149" summary="Create main3">
+      <option name="closed" value="true" />
+      <created>1703619235556</created>
+      <option name="number" value="00149" />
+      <option name="presentableId" value="LOCAL-00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1703619235556</updated>
+    </task>
+    <task id="LOCAL-00150" summary="Add the next steps to the readme">
+      <option name="closed" value="true" />
+      <created>1703622110911</created>
+      <option name="number" value="00150" />
+      <option name="presentableId" value="LOCAL-00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1703622110911</updated>
+    </task>
+    <task id="LOCAL-00151" summary="Fix problems">
+      <option name="closed" value="true" />
+      <created>1703670329872</created>
+      <option name="number" value="00151" />
+      <option name="presentableId" value="LOCAL-00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1703670329872</updated>
+    </task>
+    <option name="localTasksCounter" value="152" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -491,13 +487,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Delete code with mistakes" />
-    <MESSAGE value="Try to fix mistakes" />
-    <MESSAGE value="Optimize irunpack" />
-    <MESSAGE value="Add known problems in Irunpack phase" />
-    <MESSAGE value="Test irmanifest local" />
-    <MESSAGE value="Optimize irmanifest" />
-    <MESSAGE value="Update uniprot mirror source link" />
     <MESSAGE value="Fix mistake in parse times" />
     <MESSAGE value="Test locally" />
     <MESSAGE value="Fix parse times" />
@@ -516,6 +505,13 @@
     <MESSAGE value="Create a yml file with general variables" />
     <MESSAGE value="Fix mistake" />
     <MESSAGE value="Async downloads" />
-    <option name="LAST_COMMIT_MESSAGE" value="Async downloads" />
+    <MESSAGE value="Update the used variables" />
+    <MESSAGE value="Use variables in irinit" />
+    <MESSAGE value="Change waiting times" />
+    <MESSAGE value="Update log variables" />
+    <MESSAGE value="Create main3" />
+    <MESSAGE value="Add the next steps to the readme" />
+    <MESSAGE value="Fix problems" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix problems" />
   </component>
 </project>
