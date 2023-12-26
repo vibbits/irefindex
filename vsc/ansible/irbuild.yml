@@ -8,14 +8,14 @@
   tasks:
     - name: Ensure external data folder exists
       ansible.builtin.file:
-        path: "{{ DATA }}"
+        path: "{{ data }}"
         state: directory
         mode: '0755'
 
     - name: Download rig2rigid
       ansible.builtin.get_url:
-        url: "{{ PREVIOUS_RIG2RIGID_LINK }}"
-        dest: "{{ DATA }}/rig2rigid"
+        url: "{{ previous_rig2rigid_link }}"
+        dest: "{{ data }}/rig2rigid"
         mode: '0755'
       async: 1200
       poll: 0
@@ -23,8 +23,8 @@
 
     - name: Download rog2rogid
       ansible.builtin.get_url:
-        url: "{{ PREVIOUS_ROG2ROGID_LINK }}"
-        dest: "{{ DATA }}/rog2rogid"
+        url: "{{ previous_rog2rogid_link }}"
+        dest: "{{ data }}/rog2rogid"
         mode: '0755'
       async: 2700
       poll: 0
@@ -32,8 +32,8 @@
 
     - name: Download sequences_archived
       ansible.builtin.get_url:
-        url: "{{ PREVIOUS_SEQUENCES_ARCHIVED_LINK }}"
-        dest: "{{ DATA }}/sequences_archived"
+        url: "{{ previous_sequences_archived_link }}"
+        dest: "{{ data }}/sequences_archived"
         mode: '0755'
       async: 7200
       poll: 0
@@ -41,8 +41,8 @@
 
     - name: Download sequences_archived_original
       ansible.builtin.get_url:
-        url: "{{ PREVIOUS_SEQUENCES_ARCHIVED_ORIGINAL_LINK }}"
-        dest: "{{ DATA }}/sequences_archived_original"
+        url: "{{ previous_sequences_archived_original_link }}"
+        dest: "{{ data }}/sequences_archived_original"
         mode: '0755'
       async: 18000
       poll: 0
