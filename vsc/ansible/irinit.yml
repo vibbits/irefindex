@@ -3,6 +3,9 @@
   hosts: all
   become: true
   gather_facts: true # WE NEED THIS FOR THE 'ansible_distribution_release' VARIABLE
+  vars_files:
+    - ./vars/general.yml
+    - ./vars/logs.yml
 
   tasks:
     - name: Install dependencies
@@ -65,38 +68,24 @@
       become: true
       register: whoami_output
 
-    - name: Check if 'irdata18A' database exists
-      community.postgresql.postgresql_query:
-        login_user: postgres
-        query: "SELECT datname FROM pg_database WHERE datname='irdata18A';"
-        db: postgres
-      become_user: postgres
-      become: true
-      register: irdata18a_db
-
-    - name: Create 'irdata18A' database
-      ansible.builtin.command: createdb irdata18A
-      when: irdata18a_db.rowcount == 0
-      changed_when: true
-
-    - name: Create directory for irdata18A logs
+    - name: Create directory for logs
       ansible.builtin.file:
-        path: /data/irdata18/logs
+        path: "{{ logs_root_dir }}"
         state: directory
         mode: "0755"
 
-    - name: Check if 'irdata19' database exists
+    - name: Check if database exists
       community.postgresql.postgresql_query:
         login_user: postgres
-        query: "SELECT datname FROM pg_database WHERE datname='irdata19';"
+        query: "SELECT datname FROM pg_database WHERE datname='irdata{{ release_major }}';"
         db: postgres
       become_user: postgres
       become: true
-      register: irdata19_db
+      register: irdata_db
 
-    - name: Create 'irdata19' database in PostgreSQL
-      ansible.builtin.command: createdb irdata19
-      when: irdata19_db.rowcount == 0
+    - name: Create database in PostgreSQL
+      ansible.builtin.command: "createdb irdata{{ release_major }}"
+      when: irdata_db.rowcount == 0
       changed_when: true
 
     - name: Install Git
@@ -105,12 +94,11 @@
         state: present
 
     - name: Clone iRefIndex repository
-      # noqa: latest
       ansible.builtin.git:
         repo: https://github.com/vibbits/irefindex.git
         dest: /home/irefindex
 
-    - name: Create directories for irdata data and irdata logs
+    - name: Create directories for irdata data
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
