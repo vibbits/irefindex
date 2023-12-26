@@ -180,7 +180,11 @@ If there is a problem with SSH keys, it can be solved by deleting the key from t
 ssh-keygen -f "/home/<user>/.ssh/known_hosts" -R "[193.190.80.24]:<port>"
 ```
 
-If a issue could be resolved automatically or manually, we will not mention it here. Only the sources for which no solution was found in any way are listed below.
+If an issue could be resolved automatically or manually, we will not mention it here. Only the sources for which no solution was found in any way are listed below.
+
+### GENERAL
+
+- Sometimes we get an Error Dead State while running an Ansible playbook. Most likely the reason is that Ansible only keeps track of processes for x amount of time and "garbage collects" them afterwards, so that if one takes a little longer, the others no longer exist to prevent it from being done. A solution has been searched for hours, but not found, possibly with --forks. It is recommended not to download the 4 largest sources during the initial setup of the environment.
 
 ### IRDOWNLOAD
 
@@ -193,3 +197,11 @@ If a issue could be resolved automatically or manually, we will not mention it h
 
 - BIND_TRANSLATION isn't well-formed because of an external problem.
 - PDB parsing failed with error -3 while decompressing data.
+- IMEX shows citation supressed.
+- REFSEQ failed parsing for certain files with exception: sequence.
+- UNIPROT has an EOF error: compressed file ended before the end-of-stream marker was reached or failed to concatenate data files.
+
+## Next steps
+- Merge the Bash/Python config file and the yml config file with the associated changes to the Bash and Python code.
+- Solve the remaining problems with the resources, these are mainly external problems or require bioinformatics knowledge.
+- Finalize the irbuild and complete the R-checking, irprevious and iroutput phases. More information can be found in the flowchart.

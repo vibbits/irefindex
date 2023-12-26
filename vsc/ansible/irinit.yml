@@ -112,7 +112,7 @@
       args:
         chdir: /home/irefindex/usr/bin
       register: irinit_output
-      when: irdata18a_db.rowcount == 0 or irdata19_db.rowcount == 0
+      when: irdata_db.rowcount == 0
       changed_when: true
 
   handlers:
