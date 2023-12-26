@@ -1,6 +1,6 @@
 ---
 - name: Import
-  hosts: localhost
+  hosts: all
   become: true
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   vars_files:
@@ -15,7 +15,7 @@
       ansible.builtin.command: "./irimport {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
-      async: "{{ item.import_async | default(60) }}"
+      async: "{{ item.import_async | default(90) }}"
       changed_when: false
       poll: 0
       register: job_result
@@ -27,7 +27,7 @@
       register: job_result
       until: job_result.finished
       ignore_errors: true
-      retries: "{{ item.item.import_retries | default(12) }}"
+      retries: "{{ item.item.import_retries | default(18) }}"
       delay: "{{ item.item.import_delay | default(5) }}"
       loop: "{{ job_result.results }}"
 
@@ -81,3 +81,4 @@
           - "The following resources failed to import: {{ failed_import_jobs | join(', ') }}"
           - "Please check the logs in `{{ log_location }}` for more information."
       when: failed_import_jobs is defined
+      ignore_errors: true
