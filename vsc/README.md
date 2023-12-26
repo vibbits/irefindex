@@ -1,12 +1,12 @@
 # IRefIndex VSC
 
-This module contains information about running and building irefindex on the VSC. More information about running the Ansible playbooks on a Docker instance can be found in `../oci`.
+This module contains information about running and building IrefIndex on the VSC. More information about running the Ansible playbooks on a Docker instance can be found in `../oci`.
 
 ## A step by step usage guide
 
-This guide will walk you through the process of provisioning a machine and creating the next version of irefindex.
+This guide will walk you through the process of provisioning a machine and creating the next version of IrefIndex.
 
-If you have already done this once on the host machine, you can skip to step [4](#4-provision-the-machine-using-terraform-irinit-and-irdownload).
+If you have already done this once on the host machine, you can skip to step [4](#4-provision-the-machine-using-terraform--run-irinit-and-irdownload).
 
 ### 1. Install Terraform and Ansible
 
@@ -26,7 +26,7 @@ cd irefindex/vsc/terraform
 
 ### 3. Download your `clouds.yaml` file from the VSC platform
 
-> If you are already signed in, you can skip to step 4 by clicking [here](https://cloud.vscentrum.be/dashboard/identity/application_credentials).
+> If you are already signed in, you can skip to step 4 of this subprocess by clicking [here](https://cloud.vscentrum.be/dashboard/identity/application_credentials).
 
 1. Go to the [VSC cloud platform](https://cloud.vscentrum.be) and sign in if you haven't already.
 
@@ -66,7 +66,7 @@ At this point your file structure should look like this.
 
 ### 4. Provision the machine using Terraform + run irinit and irdownload
 
-> Note: This step will take a while, as it will have to download external resources. During this time your host machine must stay connected to the server.
+> Note: Each Ansible playbook in this guide will take a while, as it will have to respectively download, parse and build external resources. During this time your host machine must stay connected to the server.
 
 1. Copy the `irefindex.auto.tfvars.example` file to `irefindex.auto.tfvars`.
     > Note: Additional variables can be found in the `variables.tf` file.
@@ -80,7 +80,7 @@ At this point your file structure should look like this.
     # pwd: irefindex/vsc/terraform
     terraform init
     ```
-4. Run Terraform to provision the machine (and automatically run the `../ansible/main1.yml` playbook).
+4. Run Terraform to provision the machine (and automatically run the `./ansible/main1.yml` playbook).
     > Note: When asked for confirmation, double check that you want to perform this action and type `yes`.
 
     > If you want to skip the confirmation step, you can add the `-auto-approve` flag to the command.
@@ -91,11 +91,11 @@ At this point your file structure should look like this.
 
 ### 4.1. (Optional) Resolve issues that arise
 
-At the bottom of the previous command, you can see the resources that did fail during the download phase. Look to the log files to see why the download did fail. Try to rerun it automatically with the `../ansible/after_main1.yml` playbook. If it still doesn't work, try to solve the problem(s) manually, be careful, you need to know technical information for this.
+At the bottom of the previous command, you can see the resources that did fail during the download phase. Look to the log files to see why the download did fail. Try to rerun it automatically with the `./ansible/after_main1.yml` playbook. If it still doesn't work, try to solve the problem(s) manually, be careful, you need to know technical information for this.
 
 Follow the approach in [Adding/removing sources from runs](#addingremoving-sources-from-runs) to comment out all sources except the one you want to re-run, so the ones that did fail.
 
-Then run this  command to re-run the `irdownload` process for these resources/that resource.
+Then run this  command to rerun the `irdownload` process for these resources/that resource.
 
 ```bash
 # pwd: irefindex/vsc
@@ -113,7 +113,7 @@ ansible-playbook -i '193.190.80.24,' --ssh-extra-args='-p 50022' -u 'debian' --p
 
 Right after ending each phase (respectively irunpack, irmanifest and irparse), you can see the resources that did fail during that phase, so it is needed to scroll up a bit in case of irunpack and irmanifest. Look to the log files to see why the resource did fail. Try to rerun it automatically with the `../ansible/after_main2.yml` playbook. If it still doesn't work, try to solve the problem(s) manually, be careful, you need to know technical information for this.
 
-Follow the approach in [Adding/removing sources from runs](#addingremoving-sources-from-runs) to comment out all sources except the one you want to re-run, so the ones that did fail.
+Follow the approach in [Adding/removing sources from runs](#addingremoving-sources-from-runs) to comment out all sources except the one you want to rerun, so the ones that did fail.
 
 Then run this  command to re-download, re-unpack, re-manifest and re-parse these resources/that resource.
 
@@ -135,7 +135,7 @@ Right after ending each phase (respectively irimport and irbuild), you can see t
 
 ### 7. Destroy the machine
 
-> IMPORTANT: This will destroy the machine and all data on it. Please make sure you exported the end result before running this.
+> IMPORTANT: This will destroy the machine and all data on it.
 
 ```bash
 # pwd: irefindex/vsc/terraform
@@ -150,11 +150,11 @@ This dynamic aproach also means that adding new sources can simply be done by ad
 
 ### Recommended approach for handling issues that only affect certain sources
 
-If you had issues with a certain source; have resolved the issue, and want to rerun the process for that source. You can simply comment out all other sources by adding a `#` before each source that shouldn't be used.
+If you had issues with a certain source and want to rerun the process for that source. You can simply comment out all other sources by adding a `#` before each source that shouldn't be used.
 
 ## Error handling
 
-The playbooks provide a more advantagous way of starting the actions by running this in parralel. To prevent that a error for another resource would kill or corrupt another source its process; errors are collected and shown together when all sources have finished their process.
+The playbooks provide a more advantageous way of starting the actions by running this in parralel. To prevent that a error for another resource would kill or corrupt another source its process; errors are collected and shown together when all sources have finished their process.
 
 ## Debugging iRefIndex issues
 
@@ -172,14 +172,22 @@ This allows quick and easy debugging of any issues that may occur.
 
 ## Known issues with sources
 
-If a source could be resolved automatically or manually, we will not mention it here. Only the sources for which no solution was found in any way are listed below.
+### SSH problem
+
+If there is a problem with SSH keys, it can be solved by deleting the key from the known_hosts file. Use your own hostname and the port that you did choose earlier.
+
+```bash
+ssh-keygen -f "/home/<user>/.ssh/known_hosts" -R "[193.190.80.24]:<port>"
+```
+
+If a issue could be resolved automatically or manually, we will not mention it here. Only the sources for which no solution was found in any way are listed below.
 
 ### IRDOWNLOAD
 
-- BAR can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
-- INNATEDB can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
-- IPI can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
-- CORUM can not be downloaded, due to infrastructure issues on their side. The resource is still included in the `./ansible/vars/sources.yml` file but will result in an error.
+- BAR can not be downloaded, due to infrastructure issues on their side. 
+- INNATEDB can not be downloaded, due to infrastructure issues on their side. 
+- IPI can not be downloaded, due to infrastructure issues on their side. 
+- CORUM can not be downloaded, due to infrastructure issues on their side. 
 
 ### IRPARSE
 
