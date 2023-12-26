@@ -1,3 +1,6 @@
 ---
 - name: Run irimport playbook
   import_playbook: irimport.yml
+
+- name: Run irbuild playbook
+  import_playbook: irbuild.yml
