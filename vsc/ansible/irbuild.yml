@@ -1,0 +1,86 @@
+---
+- name: Build
+  hosts: all
+  become: true
+  vars_files:
+    - ./vars/general.yml
+
+  tasks:
+    - name: Ensure external data folder exists
+      ansible.builtin.file:
+        path: "{{ DATA }}"
+        state: directory
+        mode: '0755'
+
+    - name: Download rig2rigid
+      ansible.builtin.get_url:
+        url: "{{ PREVIOUS_RIG2RIGID_LINK }}"
+        dest: "{{ DATA }}/rig2rigid"
+        mode: '0755'
+      async: 1200
+      register: rig2rigid_result
+
+    - name: Download rog2rogid
+      ansible.builtin.get_url:
+        url: "{{ PREVIOUS_ROG2ROGID_LINK }}"
+        dest: "{{ DATA }}/rog2rogid"
+        mode: '0755'
+      async: 2700
+      register: rog2rogid_result
+
+    - name: Download sequences_archived
+      ansible.builtin.get_url:
+        url: "{{ PREVIOUS_SEQUENCES_ARCHIVED_LINK }}"
+        dest: "{{ DATA }}/sequences_archived"
+        mode: '0755'
+      async: 7200
+      register: sequences_result
+
+    - name: Download sequences_archived_original
+      ansible.builtin.get_url:
+        url: "{{ PREVIOUS_SEQUENCES_ARCHIVED_ORIGINAL_LINK }}"
+        dest: "{{ DATA }}/sequences_archived_original"
+        mode: '0755'
+      async: 18000
+      register: sequences_original_result
+
+    - name: Wait for rig2rigid to complete
+      async_status:
+        jid: "{{ rig2rigid_result.ansible_job_id }}"
+      register: job_result_1
+      until: job_result_1.finished
+      retries: 20
+      delay: 60
+      ignore_errors: true
+
+    - name: Wait for rog2rogid to complete
+      async_status:
+        jid: "{{ rog2rogid_result.ansible_job_id }}"
+      register: job_result_2
+      until: job_result_2.finished
+      retries: 23
+      delay: 120
+      ignore_errors: true
+
+    - name: Wait for sequences archived to complete
+      async_status:
+        jid: "{{ sequences_result.ansible_job_id }}"
+      register: job_result_3
+      until: job_result_3.finished
+      retries: 18
+      delay: 400
+      ignore_errors: true
+
+    - name: Wait for sequences archived original to complete
+      async_status:
+        jid: "{{ sequences_original_result.ansible_job_id }}"
+      register: job_result_4
+      until: job_result_4.finished
+      retries: 20
+      delay: 900
+      ignore_errors: true
+
+    - name: Run irbuild
+      ansible.builtin.command: ./irbuild --build --reports --output
+      args:
+        chdir: /home/irefindex/usr/bin
