@@ -1,10 +1,10 @@
 # Containerized approach
 
-This repository demonstrates the containerization of the vsc Ansible scripts, providing a portable and reproducible environment for executing Ansible playbooks. Containerization offers several advantages, including isolation, scalability, and consistency across different environments.
+This repository demonstrates the containerization of this project, providing a portable and reproducible environment for executing Ansible playbooks. Containerization offers several advantages, including isolation, scalability, and consistency across different environments. These containers can be run on CaaS environments.
 
 ## Getting started
 
-Build the container (or pull the public one from `<TODO: ask Alexander or James to publish to a repository>`).
+Build the container.
 
 ```bash
 $ # Run this from the root directory of this project.
@@ -13,9 +13,9 @@ $ docker build -t irefindex -f oci/Dockerfile .
 
 ## Customization
 
-To save the output of the data, you can attach a volume and mount them to the expected data location. All locations are the same as how they would be on the VSC instance.
+To save the output of the data, you can attach a volume and mount them to the expected data location. All locations are the same as how they would be on the VSC instance (`../vsc`).
 
-## What ansible files get used?
+## What Ansible files get used?
 
-The ansible files that get used are the ones from the `../vsc/ansible` directory. As these provide a fully functional script for debian based operating systems.
+The Ansible files that get used are the ones from the `../vsc/ansible` directory. As these provide a fully functional script for Debian based operating systems.
 
