@@ -19,3 +19,8 @@ To save the output of the data, you can attach a volume and mount them to the ex
 
 The Ansible files that get used are the ones from the `../vsc/ansible` directory. As these provide a fully functional script for Debian based operating systems.
 
+## Future improvements
+
+- [ ] Container per task _(with compose?)_
+- [ ] Easier debugging for when issues occur
+- [ ] Easier next task invocation _(maybe automated with compose?)_

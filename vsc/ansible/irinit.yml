@@ -59,6 +59,11 @@
         - postgresql-14
         - postgresql-client-14
 
+    - name: Ensure PostgreSQL service is started
+      ansible.builtin.service:
+        name: postgresql
+        state: started
+
     - name: Ensure 'root' user exists with superuser privileges
       community.postgresql.postgresql_user:
         name: root
