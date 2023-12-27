@@ -188,10 +188,10 @@ If an issue could be resolved automatically or manually, we will not mention it 
 
 ### IRDOWNLOAD
 
-- BAR can not be downloaded, due to infrastructure issues on their side. 
-- INNATEDB can not be downloaded, due to infrastructure issues on their side. 
-- IPI can not be downloaded, due to infrastructure issues on their side. 
-- CORUM can not be downloaded, due to infrastructure issues on their side. 
+- BAR can not be downloaded, due to infrastructure issues on their side.
+- INNATEDB can not be downloaded, due to infrastructure issues on their side.
+- IPI can not be downloaded, due to infrastructure issues on their side.
+- CORUM can not be downloaded, due to infrastructure issues on their side.
 
 ### IRPARSE
 
@@ -205,3 +205,4 @@ If an issue could be resolved automatically or manually, we will not mention it 
 - Merge the Bash/Python config file and the yml config file with the associated changes to the Bash and Python code.
 - Solve the remaining problems with the resources, these are mainly external problems or require bioinformatics knowledge.
 - Finalize the irbuild and complete the R-checking, irprevious and iroutput phases. More information can be found in the flowchart.
+- Refactor logging methodology so that it is more DRY
