@@ -4,6 +4,11 @@
   become: true
   vars_files:
     - ./vars/general.yml
+    - ./vars/archives.yml
+    - ./vars/logs.yml
+
+  vars:
+    log_location: "{{ logs_dir }}/irbuild"
 
   tasks:
     - name: Ensure external data folder exists
@@ -12,79 +17,83 @@
         state: directory
         mode: '0755'
 
-    - name: Download rig2rigid
+    - name: Download archives
       ansible.builtin.get_url:
-        url: "{{ previous_rig2rigid_link }}"
-        dest: "{{ data }}/rig2rigid"
+        url: "{{ item.url }}"
+        dest: "{{ data }}/{{ item.name }}"
         mode: '0755'
-      async: 1200
+      async: "{{ item.async }}"
       poll: 0
-      register: rig2rigid_result
+      register: download_result
+      loop: "{{ archives }}"
 
-    - name: Download rog2rogid
-      ansible.builtin.get_url:
-        url: "{{ previous_rog2rogid_link }}"
-        dest: "{{ data }}/rog2rogid"
-        mode: '0755'
-      async: 2700
-      poll: 0
-      register: rog2rogid_result
-
-    - name: Download sequences_archived
-      ansible.builtin.get_url:
-        url: "{{ previous_sequences_archived_link }}"
-        dest: "{{ data }}/sequences_archived"
-        mode: '0755'
-      async: 7200
-      poll: 0
-      register: sequences_result
-
-    - name: Download sequences_archived_original
-      ansible.builtin.get_url:
-        url: "{{ previous_sequences_archived_original_link }}"
-        dest: "{{ data }}/sequences_archived_original"
-        mode: '0755'
-      async: 18000
-      poll: 0
-      register: sequences_original_result
-
-    - name: Wait for rig2rigid to complete
-      async_status:
-        jid: "{{ rig2rigid_result.ansible_job_id }}"
-      register: job_result_1
-      until: job_result_1.finished
-      retries: 20
-      delay: 60
+    - name: Wait for downloads to complete
+      ansible.builtin.async_status:
+        jid: "{{ item.ansible_job_id }}"
+      register: job_result
+      until: job_result.finished
+      retries: "{{ item.item.retries }}"
+      delay: "{{ item.item.delay }}"
       ignore_errors: true
-
-    - name: Wait for rog2rogid to complete
-      async_status:
-        jid: "{{ rog2rogid_result.ansible_job_id }}"
-      register: job_result_2
-      until: job_result_2.finished
-      retries: 23
-      delay: 120
-      ignore_errors: true
-
-    - name: Wait for sequences archived to complete
-      async_status:
-        jid: "{{ sequences_result.ansible_job_id }}"
-      register: job_result_3
-      until: job_result_3.finished
-      retries: 18
-      delay: 400
-      ignore_errors: true
-
-    - name: Wait for sequences archived original to complete
-      async_status:
-        jid: "{{ sequences_original_result.ansible_job_id }}"
-      register: job_result_4
-      until: job_result_4.finished
-      retries: 20
-      delay: 900
-      ignore_errors: true
+      loop: "{{ download_result.results }}"
 
     - name: Run irbuild
       ansible.builtin.command: ./irbuild --build --reports --output
+      changed_when: false
+      ignore_errors: true
       args:
         chdir: /home/irefindex/usr/bin
+
+    - name: "Ensure that `log_location` exists"
+      ansible.builtin.file:
+        path: "{{ log_location }}"
+        state: directory
+        mode: "0755"
+
+    - name: Copy msg
+      ansible.builtin.copy:
+        content: "{{ item.msg }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.msg"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.msg is defined and item.msg != ""
+      loop: "{{ job_result.results }}"
+      ignore_errors: true
+
+    - name: Copy logs
+      ansible.builtin.copy:
+        content: "{{ item.stdout }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.out"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.stdout != ""
+      loop: "{{ job_result.results }}"
+      ignore_errors: true
+
+    - name: Copy error logs
+      ansible.builtin.copy:
+        content: "{{ item.stderr }}"
+        dest: "{{ log_location }}/{{ item.item.item.name }}.err"
+        mode: "0644"
+        remote_src: false
+      no_log: true
+      when: item.stderr != ""
+      loop: "{{ job_result.results }}"
+      ignore_errors: true
+
+    - name: Gather failed jobs
+      ansible.builtin.set_fact:
+        failed_jobs: "{{ failed_jobs | default([]) + [item.item.item.name] }}"
+      no_log: true
+      when: item.failed
+      loop: "{{ job_result.results }}"
+      ignore_errors: true
+
+    - name: Print failed jobs
+      ansible.builtin.fail:
+        msg:
+          - "The following resources failed to download/build: {{ failed_jobs | join(', ') }}"
+          - "Please check the logs in `{{ log_location }}` for more information."
+      when: failed_jobs is defined

@@ -2,8 +2,3 @@ release_major: "19"
 release_minor: "0"
 release: "{{ release_major }}.{{ release_minor }}"
 data: "/dataext/irdata{{ release_major }}"
-
-previous_rig2rigid_link: "https://storage.googleapis.com/irefindex20/rig2rigid"
-previous_rog2rogid_link: "https://storage.googleapis.com/irefindex20/rog2rogid"
-previous_sequences_archived_link: "https://storage.googleapis.com/irefindex20/sequences_archived"
-previous_sequences_archived_original_link: "https://storage.googleapis.com/irefindex20/sequences_archived_original"

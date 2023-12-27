@@ -1,0 +1,5 @@
+archives:
+  - { name: "rig2rigid", url: "https://storage.googleapis.com/irefindex20/rig2rigid", async: 1200, retries: 20, delay: 60 }
+  - { name: "rog2rogid", url: "https://storage.googleapis.com/irefindex20/rog2rogid", async: 2700, retries: 23, delay: 120 }
+  - { name: "sequences_archived", url: "https://storage.googleapis.com/irefindex20/sequences_archived", async: 7200, retries: 18, delay: 400 }
+  - { name: "sequences_archived_original", url: "https://storage.googleapis.com/irefindex20/sequences_archived_original", async: 18000, retries: 20 }
