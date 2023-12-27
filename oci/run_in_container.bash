@@ -5,9 +5,8 @@
 # Run playbooks sequentially in localhost container.
 run_playbooks(){
   for playbook in "$@"; do
-    ansible-playbook -i inventory.ini $playbook
+    ansible-playbook -i inventory.ini $playbook.yml
   done
 }
 
-# TODO: Add other playbooks here (sequentially)
-run_playbooks irdownload.yml
+run_playbooks main1 main2 main3
