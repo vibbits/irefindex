@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="44b37e01-8b2e-4f24-9bc8-608e8395a914" name="Changes" comment="Fix problems">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vsc/ansible/irinit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/irinit.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vsc/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vsc/ansible/vars/sources.yml" beforeDir="false" afterPath="$PROJECT_DIR$/vsc/ansible/vars/sources.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +43,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "SCRUM-43-ansible",
-    "last_opened_file_path": "C:/Users/piete/Downloads/irefindex",
+    "last_opened_file_path": "//wsl$/Ubuntu-22.04/home/alexander/extensions",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -95,7 +95,7 @@
       <workItem from="1703083901895" duration="504000" />
       <workItem from="1703084704112" duration="21000" />
       <workItem from="1703168979157" duration="43609000" />
-      <workItem from="1703674501387" duration="208000" />
+      <workItem from="1703674501387" duration="2914000" />
     </task>
     <task id="LOCAL-00001" summary="Run irinit without human interaction">
       <created>1699480256952</created>
@@ -236,22 +236,6 @@
       <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1700685372964</updated>
-    </task>
-    <task id="LOCAL-00123" summary="Fix parse times">
-      <option name="closed" value="true" />
-      <created>1702982604024</created>
-      <option name="number" value="00123" />
-      <option name="presentableId" value="LOCAL-00123" />
-      <option name="project" value="LOCAL" />
-      <updated>1702982604025</updated>
-    </task>
-    <task id="LOCAL-00124" summary="Test">
-      <option name="closed" value="true" />
-      <created>1702984537307</created>
-      <option name="number" value="00124" />
-      <option name="presentableId" value="LOCAL-00124" />
-      <option name="project" value="LOCAL" />
-      <updated>1702984537307</updated>
     </task>
     <task id="LOCAL-00125" summary="Fix mistake">
       <option name="closed" value="true" />
@@ -469,7 +453,23 @@
       <option name="project" value="LOCAL" />
       <updated>1703670329872</updated>
     </task>
-    <option name="localTasksCounter" value="152" />
+    <task id="LOCAL-00152" summary="Fix problems">
+      <option name="closed" value="true" />
+      <created>1703674751299</created>
+      <option name="number" value="00152" />
+      <option name="presentableId" value="LOCAL-00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1703674751299</updated>
+    </task>
+    <task id="LOCAL-00153" summary="Fix problems">
+      <option name="closed" value="true" />
+      <created>1703674898265</created>
+      <option name="number" value="00153" />
+      <option name="presentableId" value="LOCAL-00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1703674898265</updated>
+    </task>
+    <option name="localTasksCounter" value="154" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

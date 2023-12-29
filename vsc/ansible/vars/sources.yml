@@ -36,44 +36,44 @@
 #  parse_async[default=60]: Number of seconds to wait before checking if the job is finished
 #  parse_retries[default=12]: Number of times to retry the check
 #  parse_delay[default=5]: Delay in seconds between the checks
-#  import_async[default=60]: Number of seconds to wait before checking if the job is finished
-#  import_retries[default=12]: Number of times to retry the check
+#  import_async[default=90]: Number of seconds to wait before checking if the job is finished
+#  import_retries[default=18]: Number of times to retry the check
 #  import_delay[default=5]: Delay in seconds between the checks
 jobs:
-  - { name: "athaliana" }
-  - { name: "bar" }
-  - { name: "bind" }
-  - { name: "dig", import_async: 240, import_delay: 30, import_retries: 8 }
-  - { name: "fly" }
-  - { name: "innatedb" }
-  - { name: "ipi" }
-  - { name: "mppi", import_async: 120, import_delay: 10 }
-  - { name: "psi_mi", import_async: 120, import_delay: 10 }
-  - { name: "quickgo", parse_async: 120, parse_delay: 10, import_async: 120, import_delay: 10 }
-  - { name: "hpidb", parse_async: 300, parse_delay: 25, import_async: 120, import_retries: 12 }
-  - { name: "hprd", parse_async: 400, parse_delay: 30, parse_retries: 14, import_async: 240, import_delay: 30, import_retries: 8 }
-  - { name: "mpact", parse_async: 120, parse_delay: 10, import_async: 120, import_delay: 10 }
-  - { name: "mpidb", parse_async: 400, parse_delay: 30, parse_retries: 14, import_async: 120, import_delay: 10 }
-  - { name: "intact", unpack_async: 180, unpack_delay: 30, parse_async: 6000, parse_delay: 300, parse_retries: 20, import_async: 5100, import_retries: 17, import_delay: 300 }
-  - { name: "bind_translation", parse_async: 120, parse_delay: 10 }
-  - { name: "mbinfo", parse_async: 500, parse_retries: 17, parse_delay: 30, import_async: 600, import_retries: 10, import_delay: 60 }
-  - { name: "dip", parse_async: 240, parse_retries: 20, import_async: 120, import_delay: 10 }
-  - { name: "bhf_ucl", parse_async: 500, parse_retries: 27, parse_delay: 30, import_async: 300, import_retries: 10, import_delay: 30 }
-  - { name: "pdb", download_runner_async: 60, download_retries: 36 }
-  - { name: "mmdb", download_runner_async: 60, download_retries: 36 }
-  - { name: "taxonomy", download_runner_async: 60, download_retries: 36 }
-  - { name: "virushost", download_runner_async: 60, download_retries: 36 }
-  - { name: "yeast", download_runner_async: 90, download_retries: 54 }
-  - { name: "intcomplex", unpack_async: 60, unpack_delay: 10, parse_async: 350, parse_delay: 30, parse_retries: 12, import_async: 360, import_delay: 30 }
-  - { name: "huri", download_runner_async: 60, download_retries: 36, parse_async: 240, parse_retries: 16, parse_delay: 15, import_async: 360, import_delay: 30 }
-  - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15, download_runner_async: 60, download_retries: 12, download_delay: 15, parse_async: 4400, parse_retries: 15, parse_delay: 300, import_async: 4200, import_retries: 14, import_delay: 300 }
-  - { name: "corum", download_runner_async: 60, download_retries: 12, download_delay: 15 }
-  - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 200, parse_retries: 8, parse_delay: 25, import_async: 120, import_delay: 10 }
-  - { name: "uniprotpp", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, import_async: 120, import_delay: 10 }
-  - { name: "uniprot", download_runner_async: 2000, download_retries: 60, download_delay: 100, parse_async: 36000, parse_retries: 60, parse_delay: 600 }
-  - { name: "mint", download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 120, import_async: 360, import_delay: 30 }
-  - { name: "gene", download_runner_async: 800, download_retries: 40, download_delay: 60, parse_async: 1600, parse_retries: 27, parse_delay: 60, import_async: 3240, import_retries: 27, import_delay: 120 }
-  - { name: "reactome", download_runner_async: 300, download_retries: 30, download_delay: 30, import_async: 240, import_retries: 8, import_delay: 30 }
-  - { name: "imex", download_runner_async: 10800, download_retries: 108, download_delay: 300, parse_async: 600, parse_retries: 10, parse_delay: 60, import_async: 1200, import_retries: 20, import_delay: 60 }
-  - { name: "refseq", download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 450, parse_retries: 15, parse_delay: 30 }
-  - { name: "genpept", download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 21000, parse_retries: 60, parse_delay: 350 }
+     - { name: "athaliana" }
+     - { name: "bar" }
+     - { name: "bind" }
+     - { name: "dig", import_async: 300, import_delay: 30, import_retries: 10 }
+     - { name: "fly" }
+     - { name: "innatedb" }
+     - { name: "ipi" }
+     - { name: "mppi", import_async: 160, import_delay: 10, import_retries: 16 }
+     - { name: "psi_mi", import_async: 160, import_delay: 10, import_retries: 16 }
+     - { name: "quickgo", parse_async: 120, parse_delay: 10, import_async: 160, import_delay: 10, import_retries: 16 }
+     - { name: "hpidb", parse_async: 300, parse_delay: 25, import_async: 160, import_retries: 16, import_delay: 10 }
+     - { name: "hprd", parse_async: 400, parse_delay: 30, parse_retries: 14, import_async: 300, import_delay: 30, import_retries: 10 }
+     - { name: "mpact", parse_async: 120, parse_delay: 10, import_async: 160, import_delay: 10, import_retries: 16 }
+     - { name: "mpidb", parse_async: 400, parse_delay: 30, parse_retries: 14, import_async: 160, import_delay: 10, import_retries: 16 }
+     - { name: "intact", unpack_async: 180, unpack_delay: 30, parse_async: 6000, parse_delay: 300, parse_retries: 20, import_async: 6000, import_retries: 20, import_delay: 300 }
+     - { name: "bind_translation", parse_async: 120, parse_delay: 10 }
+     - { name: "mbinfo", parse_async: 500, parse_retries: 17, parse_delay: 30, import_async: 800, import_retries: 14, import_delay: 60 }
+     - { name: "dip", parse_async: 240, parse_retries: 20, import_async: 160, import_delay: 10, import_retries: 16 }
+     - { name: "bhf_ucl", parse_async: 500, parse_retries: 27, parse_delay: 30, import_async: 400, import_retries: 10, import_delay: 40 }
+     - { name: "pdb", download_runner_async: 60, download_retries: 36 }
+     - { name: "mmdb", download_runner_async: 60, download_retries: 36 }
+     - { name: "taxonomy", download_runner_async: 60, download_retries: 36 }
+     - { name: "virushost", download_runner_async: 60, download_retries: 36 }
+     - { name: "yeast", download_runner_async: 90, download_retries: 54 }
+     - { name: "intcomplex", unpack_async: 60, unpack_delay: 10, parse_async: 350, parse_delay: 30, parse_retries: 12, import_async: 400, import_delay: 30, import_retries: 14 }
+     - { name: "huri", download_runner_async: 60, download_retries: 36, parse_async: 240, parse_retries: 16, parse_delay: 15, import_async: 400, import_delay: 30, import_retries: 14 }
+     - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15, download_runner_async: 60, download_retries: 12, download_delay: 15, parse_async: 4400, parse_retries: 15, parse_delay: 300, import_async: 5000, import_retries: 17, import_delay: 300 }
+     - { name: "corum", download_runner_async: 60, download_retries: 12, download_delay: 15 }
+     - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 200, parse_retries: 8, parse_delay: 25, import_async: 160, import_delay: 10, import_retries: 16 }
+     - { name: "uniprotpp", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, import_async: 160, import_delay: 10, import_retries: 16 }
+    # - { name: "uniprot", download_runner_async: 2000, download_retries: 60, download_delay: 100, parse_async: 36000, parse_retries: 60, parse_delay: 600 }
+     - { name: "mint", download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 120, import_async: 400, import_delay: 30, import_retries: 14 }
+     - { name: "gene", download_runner_async: 800, download_retries: 40, download_delay: 60, parse_async: 1600, parse_retries: 27, parse_delay: 60, import_async: 4000, import_retries: 34, import_delay: 120 }
+     - { name: "reactome", download_runner_async: 300, download_retries: 30, download_delay: 30, import_async: 300, import_retries: 10, import_delay: 30 }
+    # - { name: "imex", download_runner_async: 10800, download_retries: 108, download_delay: 300, parse_async: 600, parse_retries: 10, parse_delay: 60, import_async: 1500, import_retries: 25, import_delay: 60 }
+    # - { name: "refseq", download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 450, parse_retries: 15, parse_delay: 30, import_async: 5000, import_retries: 21, import_delay: 240 }
+    # - { name: "genpept", download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 21000, parse_retries: 60, parse_delay: 350, import_async: 5000, import_retries: 21, import_delay: 240 }
