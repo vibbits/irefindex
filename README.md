@@ -1,8 +1,8 @@
 # iRefIndex
 
-Project results from internships Silke: folder ETN-Silke-1.0.0
-Project results from internships Luc: folder howest-stage-lducazu
-Project results from partnership project Alexander Vandepitte, Arthur De Witte & Glenn Callens: folders vsc & oci
+Project results from internships Silke: folder ETN-Silke-1.0.0  
+Project results from internships Luc: folder howest-stage-lducazu  
+Project results from partnership project Alexander Vandepitte, Arthur De Witte & Glenn Callens: folders vsc & oci  
 
 ## iRefIndex background
 
