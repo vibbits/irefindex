@@ -109,8 +109,8 @@
         state: directory
         mode: "0755"
       with_items:
-        - /home/irefindex/var/lib/irdata/data
-        - /home/irefindex/var/log/irdata
+        - "{{ download_data }}var/lib/irdata/data"
+        - "{{ download_data }}var/log/irdata"
 
     - name: Run irinit
       ansible.builtin.command: ./irinit --init
