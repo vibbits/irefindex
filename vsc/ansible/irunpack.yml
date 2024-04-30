@@ -6,10 +6,11 @@
   vars_files:
     - ./vars/logs.yml
     - ./vars/sources.yml
+    - ./vars/general.yml
 
   vars:
     log_location: "{{ logs_dir }}/irunpack"
-    data_dir: " {{download_data}}data/var/lib/irdata/data"
+    data_dir: "{{ download_data }}var/lib/irdata/data"
 
   tasks:
     - name: Install unzip
