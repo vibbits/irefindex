@@ -1,0 +1,71 @@
+---
+title: "ETN_EliasSteyaert-stage"
+author: "Elias Steyaert"
+date: "2024-04-23"
+output: pdf_document
+---
+
+# Electronic traineeship notebook (ETN) - Elias Steyaert 
+### A logbook that describes what happened on a daily basis.
+### Link to my github:
+https://github.com/EliasSteyaert/stage-VIB-irefindex
+
+## Week 1
+#### Monday 22/04/2023
+
+##### Exploring the main project for the following weeks:
+- Explore the github repository of the project (https://github.com/vibbits/irefindex)
+- Read article about the iRefIndex (Razick, S., Magklaras, G., & Donaldson, I. M. (2008). iRefIndex: A consolidated protein interaction database with provenance. BMC Bioinformatics, 9(1), 405. https://doi.org/10.1186/1471-2105-9-405)
+- Read documentation on the iRefIndex (https://irefindex.vib.be/wiki/index.php/iRefIndex)
+- Explore the scripts to be used 
+
+##### Preparation for the project:
+- Making an account on csv
+- Downloading and installing the needed programs and having a look at how to use these (ansible, terraform and nextflow).
+
+
+#### Tuesday 23/04/2023
+
+##### Exploring the main project: 
+- Explore the github repository of the project even further (https://github.com/vibbits/irefindex)
+
+##### Preparation for the project:
+- Getting the csv account fully setup after getting it approved (with a ssh key)
+- Trying to get past the “13000 gate” with VPN’s. (Setting up a KULeuven- and a UGent-VPN)
+- Learning more about ansible and terraform through tutorials and "how-to's"
+- Exploring the ansible code with the newly requiered knowledge from earlier.
+
+
+#### Wednesday 24/04/2023
+
+##### Trying to setup the needed resources through terraform:
+- Setting up the vsc connection (solving troubleshooting for errors for “terraform init” in the VM
+- Setting up the identifcation credentials on the VSC_2021_102 cloud
+- Running into troubleshooting while deleting the previous instance and volume
+
+##### Setting up a github repository
+- Forking and cloning the VIB github repository into my own and setting up the needed folders/files into it (https://github.com/EliasSteyaert/stage-VIB-irefindex)
+
+
+
+#### Thursday 25/04/2023
+
+##### Performing the "terraform-step" of the procedure:
+- Running into troubleshooting for the whole day when trying to perform the command "terraform apply -auto-approve"
+- Been getting a lot of different errors and finding different solutions which don't work
+
+##### side-tasks to do while waiting for the :
+- Making the ETN Markdown file and complement it with the things that are performed till this day
+- Making a troubleshooting file and filling in all the issueas that were encountered so far
+- 
+
+
+
+#### Friday 26/04/2023
+###### Exploration of the Complex Portal
+- Follow a online tutorial concerning a quick tour in the Complex Portal (https://www.ebi.ac.uk/training/online/courses/complex-portal-quick-tour/)
+- Look at a webinar about the Complex Portal (https://www.ebi.ac.uk/training/events/introduction-complex-portal/)
+###### Visualize the number of unique proteins per complex:
+- Make sure to only work with the non-redundant list of subunits in each complex (Human_NonRedundant.py)
+- Make a plot visualizing the data in both Python and R (HumanComplexes.R, onlyHumanComplexes.py)
+
