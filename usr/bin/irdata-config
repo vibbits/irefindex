@@ -13,7 +13,7 @@ RELEASE="${RELEASE_MAJOR}.${RELEASE_MINOR}" # iRefIndex release identifier
 # (SYSPREFIX and EMAIL are most likely to need changing.)
 
 DATAPREFIX="/mnt/disks/data/"               # start of the user defined data directory location
-SYSPREFIX="/mnt/disks/data"                 # system-wide installation root
+SYSPREFIX="/home/irefindex"                 # system-wide installation root
 EMAIL="alexander.botzki@vib.be"             # e-mail address for anonymous FTP logins
 DATABASE="irdata${RELEASE_MAJOR}"           # database name
 DATA="${DATAPREFIX}dataext/irdata${RELEASE_MAJOR}"      # user defined data directory location
@@ -761,7 +761,7 @@ fi
 
 # Data directory.
 
-SYSDATA="$SYSPREFIX/var/lib/irdata/data"
+SYSDATA="$SYSPREFIX/var/lib/irdata/"
 
 if [ "$DATA" ] && [ -e "$DATA" ]; then
     :
