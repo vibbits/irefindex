@@ -10,7 +10,7 @@
 
   vars:
     log_location: "{{ logs_dir }}/irunpack"
-    data_dir: "{{ download_data }}var/lib/irdata/data"
+    data_dir: "{{ download_data }}dataext/irdata{{ release_major }}"
 
   tasks:
     - name: Install unzip
@@ -45,11 +45,19 @@
         recurse: true
       register: all_directories
 
+    - name: Initialise existing_dirs
+      ansible.builtin.set_fact:
+        existing_dirs: []
+
     - name: Convert directories to uniform format
       ansible.builtin.set_fact:
         existing_dirs: "{{ existing_dirs | default([]) + [item.path | regex_replace('_', '-') | lower | basename] }}"
       no_log: true
       loop: "{{ all_directories.files }}"
+
+    - name: wtf as in existing dirs
+      ansible.builtin.debug:
+        msg: "existing_dirs {{ existing_dirs is defined }}"
 
     - name: Gather all directory contents
       ansible.builtin.find:
@@ -69,7 +77,6 @@
     - name: Store all missing directories
       ansible.builtin.set_fact:
         failed_dirs: "{{ failed_dirs | default([]) + [item.name | lower] }}"
-      no_log: true
       when: item.name | regex_replace('_', '-') | lower not in existing_dirs
       loop: "{{ jobs }}"
 
