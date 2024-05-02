@@ -761,8 +761,8 @@ fi
 
 # Data directory.
 
-SYSDATA="$SYSPREFIX/var/lib/irdata/"
-
+SYSDATA="$SYSPREFIX/var/lib/irdata/data"
+echo "marker1 $DATA"
 if [ "$DATA" ] && [ -e "$DATA" ]; then
     :
 elif [ -e "$SCRIPTS/../data" ]; then
@@ -772,6 +772,8 @@ elif [ ! "$SYSPREFIX" ]; then
 else
     DATA="$SYSDATA"
 fi
+
+echo "marker $DATA"
 
 if [ ! -e "$DATA" ] && [ ! "$INSPECTONLY" ]; then
     echo "Cannot locate the irdata data directory." 1>&2
