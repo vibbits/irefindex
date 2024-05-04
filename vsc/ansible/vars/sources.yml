@@ -41,12 +41,12 @@
 #  import_delay[default=5]: Delay in seconds between the checks
 jobs:
      - { name: "athaliana" }
-     - { name: "bar" }
+    # - { name: "bar" }
      - { name: "bind" }
      - { name: "dig", import_async: 300, import_delay: 30, import_retries: 10 }
      - { name: "fly" }
      - { name: "innatedb" }
-     - { name: "ipi" }
+    # - { name: "ipi" }
      - { name: "mppi", import_async: 160, import_delay: 10, import_retries: 16 }
      - { name: "psi_mi", import_async: 160, import_delay: 10, import_retries: 16 }
      - { name: "quickgo", parse_async: 120, parse_delay: 10, import_async: 160, import_delay: 10, import_retries: 16 }
@@ -67,8 +67,8 @@ jobs:
      - { name: "intcomplex", unpack_async: 60, unpack_delay: 10, parse_async: 350, parse_delay: 30, parse_retries: 12, import_async: 400, import_delay: 30, import_retries: 14 }
      - { name: "huri", download_runner_async: 60, download_retries: 36, parse_async: 240, parse_retries: 16, parse_delay: 15, import_async: 400, import_delay: 30, import_retries: 14 }
      - { name: "biogrid", unpack_async: 120, unpack_retries: 8, unpack_delay: 15, download_runner_async: 60, download_retries: 12, download_delay: 15, parse_async: 4400, parse_retries: 15, parse_delay: 300, import_async: 5000, import_retries: 17, import_delay: 300 }
-     - { name: "corum", download_runner_async: 60, download_retries: 12, download_delay: 15 }
-     - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 200, parse_retries: 8, parse_delay: 25, import_async: 160, import_delay: 10, import_retries: 16 }
+    # - { name: "corum", download_runner_async: 60, download_retries: 12, download_delay: 15 }
+    # - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 200, parse_retries: 8, parse_delay: 25, import_async: 160, import_delay: 10, import_retries: 16 }
      - { name: "uniprotpp", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 120, import_async: 160, import_delay: 10, import_retries: 16 }
     # - { name: "uniprot", download_runner_async: 2000, download_retries: 60, download_delay: 100, parse_async: 36000, parse_retries: 60, parse_delay: 600 }
      - { name: "mint", download_runner_async: 600, download_retries: 60, download_delay: 30, parse_async: 120, import_async: 400, import_delay: 30, import_retries: 14 }
