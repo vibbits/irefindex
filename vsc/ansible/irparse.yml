@@ -6,20 +6,27 @@
   vars_files:
     - ./vars/logs.yml
     - ./vars/sources.yml
+    - ./vars/general.yml
 
   vars:
     log_location: "{{ logs_dir }}/irparse"
 
-  tasks:
-    - name: Install irdata module
-      ansible.builtin.pip:
-        name: irdata
+  tasks:    
+    - name: Install python3-venv package
+      ansible.builtin.apt:
+        name: python3-venv
         state: present
+
+    - name: Create virtual environment
+      ansible.builtin.command:
+        cmd: python3 -m venv "{{ download_data }}{{ data2 }}/virtualenv"
 
     - name: Convert the downloaded data to files for each source
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
+      environment:
+        python_interpreter: "{{ download_data }}{{ data2 }}/virtualenv/bin/python"
       changed_when: false
       poll: 0
       async: "{{ item.parse_async | default(60) }}"
