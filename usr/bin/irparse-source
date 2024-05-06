@@ -23,7 +23,7 @@ else
     . 'irdata-config'
 fi
 
-USE_PYTHON_INTERPRETER=${python_interpreter:/usr/bin/python3}
+USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
 
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
