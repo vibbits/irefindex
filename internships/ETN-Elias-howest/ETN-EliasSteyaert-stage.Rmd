@@ -54,18 +54,76 @@ https://github.com/EliasSteyaert/stage-VIB-irefindex
 - Running into troubleshooting for the whole day when trying to perform the command "terraform apply -auto-approve"
 - Been getting a lot of different errors and finding different solutions which don't work
 
-##### side-tasks to do while waiting for the :
+##### side-tasks to do while waiting for the task to be executed:
 - Making the ETN Markdown file and complement it with the things that are performed till this day
 - Making a troubleshooting file and filling in all the issueas that were encountered so far
-- 
 
 
 
 #### Friday 26/04/2023
-###### Exploration of the Complex Portal
-- Follow a online tutorial concerning a quick tour in the Complex Portal (https://www.ebi.ac.uk/training/online/courses/complex-portal-quick-tour/)
-- Look at a webinar about the Complex Portal (https://www.ebi.ac.uk/training/events/introduction-complex-portal/)
-###### Visualize the number of unique proteins per complex:
-- Make sure to only work with the non-redundant list of subunits in each complex (Human_NonRedundant.py)
-- Make a plot visualizing the data in both Python and R (HumanComplexes.R, onlyHumanComplexes.py)
+
+##### Trying to perform "terraform apply"
+- Trying to solve the problems that occur when performing “terraform apply”, trying to get the instance and its volume working. 
+
+##### Learning more about the Vlaamse Super Computer
+- Learning more about instances and their volumes, what they are, how thet are used. 
+Making an instance and a volume manually and connecting them with eachother. 
+Connecting to the instance. 
+
+##### Playing the first playbook
+
+
+#### Monday 29/04/2024
+
+##### Running the playbook 
+- Run the playbook untill I get an error that needs to be solved. (main1 and after_main1 could be ran, main2 gave problems). 
+
+##### Solving minor problems
+- Deleting all the data in google cloud. 
+- Making a new directory to store everything in. 
+
+
+#### Tuesday 30/04/2024
+
+##### Problemsoloving the Irdownload playbook
+- Irdownload doesn’t work anymore so we will be adjusting the irdata-config so it can work again.  
+
+
+#### Wednesday 01/05/2024
+
+##### Labours day
+
+
+#### Thursday 02/05/2024
+
+##### Problemsolving the Irunpack playbook
+- Running into problems when performing the Irunpack playbook, existing_dirs wasn’t defined and the location of the files were wrong
+
+##### Problemsolving the Irparse playbook
+- Running into problems when performing the Irparse playbook, pip3 has to be installed with apt, not dnf 
+
+
+#### Friday 03/05/2024
+
+##### Problemsolving new problems the Irparse playbook brings with it
+- Running into new problems while running the irparse playbook: creating a venv and trying to get the irdata package downloaded 
+
+
+#### Monday 06/05/2024
+
+##### Problemsolving new problems the Irparse playbook brings with it
+- Running into different kinds of problems when running the irparse playbook. The error says that the space is full but that doesn’t seem to be the problem. 
+
+
+
+
+
+
+
+
+
+
+
+
+
 
