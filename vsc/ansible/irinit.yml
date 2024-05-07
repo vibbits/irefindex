@@ -7,6 +7,10 @@
     - ./vars/general.yml
     - ./vars/logs.yml
 
+  vars:
+    local_source_directory: "/home/guest/internship/stage-VIB-irefindex"
+    remote_destination_directory: "/home/irefindex"
+
   tasks:
     - name: Install dependencies
       ansible.builtin.apt:
@@ -98,10 +102,10 @@
         name: git
         state: present
 
-    - name: Clone iRefIndex repository
-      ansible.builtin.git:
-        repo: https://github.com/vibbits/irefindex.git
-        dest: /home/irefindex
+    - name: Copy the irefindex files from my local machine to the remote machine
+      ansible.builtin.copy:
+        src: "{{ local_source_directory }}"
+        dest: "{{ remote_destination_directory }}"
 
     - name: Create directories for irdata data
       ansible.builtin.file:
