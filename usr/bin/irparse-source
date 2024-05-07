@@ -24,6 +24,7 @@ else
 fi
 
 USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
+echo "$USE_PYTHON_INTERPRETER"
 
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
