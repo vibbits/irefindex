@@ -12,6 +12,14 @@
     log_location: "{{ logs_dir }}/irparse"
 
   tasks:    
+    - name: Set permissions on Ansible temporary directory
+      ansible.builtin.file:
+        path: "{{ home_dir }}/.ansible/tmp/"
+        state: directory
+        mode: "0755"
+        recurse: yes
+      become: yes
+    
     - name: Install python3-venv package
       ansible.builtin.apt:
         name: python3-venv
