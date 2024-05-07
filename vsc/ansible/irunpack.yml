@@ -10,7 +10,7 @@
 
   vars:
     log_location: "{{ logs_dir }}/irunpack"
-    data_dir: "{{ download_data }}dataext/irdata{{ release_major }}"
+    data_dir: "{{ download_data }}{{ data2 }}"
 
   tasks:
     - name: Install unzip
