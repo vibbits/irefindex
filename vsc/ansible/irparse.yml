@@ -19,7 +19,7 @@
         mode: "0755"
         recurse: yes
       become: yes
-    
+
     - name: Install python3-venv package
       ansible.builtin.apt:
         name: python3-venv
@@ -27,14 +27,14 @@
 
     - name: Create virtual environment
       ansible.builtin.command:
-        cmd: python3 -m venv "{{ download_data }}{{ data2 }}/virtualenv"
+        cmd: python3 -m venv "{{ download_data }}/{{ data2 }}/virtualenv"
 
     - name: Convert the downloaded data to files for each source
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
       environment:
-        python_interpreter: "{{ download_data }}{{ data2 }}/virtualenv/bin/python"
+        python_interpreter: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python"
       changed_when: false
       poll: 0
       async: "{{ item.parse_async | default(60) }}"
@@ -44,13 +44,24 @@
     - name: Wait for all jobs to complete
       ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
+      environment:
+        python_interpreter: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python"
       register: job_result
       until: job_result.finished
       ignore_errors: true
       retries: "{{ item.item.parse_retries | default(12) }}"
       delay: "{{ item.item.parse_delay | default(5) }}"
       loop: "{{ job_result.results }}"
+      become: yes
+        
+    - name: Debug job_result
+      ansible.builtin.debug:
+        var: job_result
 
+    - name: df -h
+      ansible.builtin.command: "df -h"  
+      register: disk_space
+        
     - name: "Ensure that `log_location` exists"
       ansible.builtin.file:
         path: "{{ log_location }}"
