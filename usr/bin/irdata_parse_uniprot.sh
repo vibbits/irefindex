@@ -50,7 +50,7 @@ for FILENAME in $FILENAMES; do
     # Parse the FASTA files.
 
     if [ "$FILETYPE" = 'fasta' ] || [ "$FILETYPE" = 'fasta.gz' ]; then
-        if ! "$TOOLS/irdata_parse_fasta.py" 'UNIPROT' "$DATADIR" 'sp,acc,id' 'id,acc,date,taxid,mw' "$FILENAME" ; then
+        if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_fasta.py" 'UNIPROT' "$DATADIR" 'sp,acc,id' 'id,acc,date,taxid,mw' "$FILENAME" ; then
             echo "$PROGNAME: FASTA parsing of $FILENAME failed." 1>&2
             exit 1
         fi
@@ -66,7 +66,7 @@ for FILENAME in $FILENAMES; do
         # Split the data file into $PROCESS pieces.
         # Pass each process its rank (0-based) and the total number of processes.
         seq 0 $((PROCESSES - 1)) \
-        | "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py $FILENAME {} $PROCESSES | $TOOLS/irdata_parse_uniprot.py $DATADIR - ${LEAFNAME}_%s-{}.txt"
+        | "$SCRIPTS/irparallel" "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_altsplit.py $FILENAME {} $PROCESSES | $TOOLS/irdata_parse_uniprot.py $DATADIR - ${LEAFNAME}_%s-{}.txt"
 
         # Merge the pieces.
         echo "$PROGNAME: Merging data files for $LEAFNAME..." 1>&2

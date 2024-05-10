@@ -48,7 +48,7 @@ for FILENAME in "$DATADIR/"*_proteins.txt ; do
         exit 1
     fi
 
-    if ! "$TOOLS/irdata_process_signatures.py" "$FILENAME" "$FILENAME.seq" $* ; then
+    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_process_signatures.py" "$FILENAME" "$FILENAME.seq" $* ; then
         echo "$PROGNAME: Sequence digest processing of $FILENAME failed." 1>&2
         exit 1
     fi

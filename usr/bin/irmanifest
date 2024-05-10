@@ -99,7 +99,7 @@ function irfiletime {
             source=$(echo $SOURCE | tr '[:upper:]' '[:lower:]')
             DETAILS="$MANIFESTS/irdata_manifest_$source.txt"
 
-            "$TOOLS/irdata_manifest.py" "$URL" < "$DETAILS" \
+            "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_manifest.py" "$URL" < "$DETAILS" \
               | sed -e "s/\(.*\)/$SOURCE\t\\1/"
 
         # If a source uses a manifest parser, use that to obtain information.

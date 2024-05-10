@@ -91,7 +91,7 @@ for FILENAME in $FILENAMES; do
 
         # Pad the file in order to add missing methods.
 
-          "$TOOLS/irdata_text_pad.py" -n 4 -p \\N "$FILENAME" \
+          "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_pad.py" -n 4 -p \\N "$FILENAME" \
         > "$DATADIR/references.txt"
 
     elif [ "$FILETYPE" = 'complex2refs.txt' ]; then
@@ -107,7 +107,7 @@ for FILENAME in $FILENAMES; do
 
           sed -n -e 'p;=' "$FILENAME" \
         | sed -e 'N;s/\n/\t/' \
-        | "$TOOLS/irdata_text_transpose.py" -f 8 -t 8 -w '|' -s 0 - \
+        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 8 -t 8 -w '|' -s 0 - \
         | sed -e "s/^/$SED_FILENAME\t/" \
         > "$DATADIR/complexes.txt"
 
@@ -116,14 +116,14 @@ for FILENAME in $FILENAMES; do
         # First interactor (add position 0).
 
           cut -f 1,2,4 "$FILENAME" \
-        | "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
+        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
         | sed -e "s/^/0\t/" \
         > "$DATADIR/labels.txt"
 
         # Second interactor (add position 1).
 
           cut -f 1,3,5 "$FILENAME" \
-        | "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
+        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
         | sed -e "s/^/1\t/" \
         >> "$DATADIR/labels.txt"
 

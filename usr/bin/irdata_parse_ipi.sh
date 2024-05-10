@@ -47,7 +47,7 @@ for FILENAME in $FILENAMES; do
     BASENAME=`basename "$FILENAME"`
     FILETYPE=${BASENAME##*.}
     if [ "$FILETYPE" = 'fasta' ] || [ "$FILETYPE" = 'gz' ]; then
-        if ! "$TOOLS/irdata_parse_fasta.py" 'IPI' "$DATADIR" 'acc' 'acc' "$FILENAME" ; then
+        if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_fasta.py" 'IPI' "$DATADIR" 'acc' 'acc' "$FILENAME" ; then
             echo "$PROGNAME: FASTA parsing of $FILENAME failed." 1>&2
             exit 1
         fi
@@ -74,10 +74,10 @@ for FILENAME in $FILENAMES; do
         | cut -d '>' -f 2- \
         | cut -d ' ' -f 1,2 \
         | sed -e 's/ /|/g' \
-        | "$TOOLS/irdata_text_transpose.py" -f 2 -d '|' - \
+        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 2 -d '|' - \
         | sed -e 's/[:=]/\t/g' \
         | cut -f 2- \
-        | "$TOOLS/irdata_text_transpose.py" -f 3 -w ';' - \
+        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 3 -w ';' - \
         > "$DATADIR/${BASENAME}_identifiers.txt"
 
     else

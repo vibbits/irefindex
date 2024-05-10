@@ -47,7 +47,7 @@ for FILENAME in $FILENAMES; do
     BASENAME=`basename "$FILENAME"`
     FILETYPE=${BASENAME#*.}
     if [ "$FILETYPE" = 'fasta' ] || [ "$FILETYPE" = 'gz' ]; then
-        if ! "$TOOLS/irdata_parse_fasta.py" 'PDB' "$DATADIR" 'acc,chain' 'acc,chain' "$FILENAME" ; then
+        if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_fasta.py" 'PDB' "$DATADIR" 'acc,chain' 'acc,chain' "$FILENAME" ; then
             echo "$PROGNAME: FASTA parsing of $FILENAME failed." 1>&2
             exit 1
         fi

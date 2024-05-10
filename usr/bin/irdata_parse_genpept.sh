@@ -44,7 +44,7 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
 fi
 
   "$SCRIPTS/argument-per-line" $FILENAMES \
-| "$SCRIPTS/irparallel" "\"$TOOLS/irdata_parse_fasta.py\" 'GENPEPT' \"$DATADIR\" 'acc,name,organism' 'acc,name,organism' {}"
+| "$SCRIPTS/irparallel" "\"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_fasta.py\" 'GENPEPT' \"$DATADIR\" 'acc,name,organism' 'acc,name,organism' {}"
 
 # Concatenate the output data
 # Tab character used in the sed command.

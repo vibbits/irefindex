@@ -58,4 +58,4 @@ for THISFILE in $FILENAMES; do
 done
 
 
-"$TOOLS/irdata_parse_mitab.py" 'HURI' "$DATADIR" $FILENAMES
+"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_mitab.py" 'HURI' "$DATADIR" $FILENAMES

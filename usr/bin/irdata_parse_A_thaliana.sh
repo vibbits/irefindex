@@ -57,5 +57,5 @@ echo "$FILETYPE"
 # cat the file and present it to the parser.
 echo "$DATADIR/$OUTFILE" 1>&2
 zcat "$FILENAME" \
-| "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
+| "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
 > "$DATADIR/$OUTFILE"

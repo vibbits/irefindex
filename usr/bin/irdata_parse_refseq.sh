@@ -52,7 +52,7 @@ fi
 # Parse the data files.
 
   "$SCRIPTS/argument-per-line" $FILENAMES \
-| "$SCRIPTS/irparallel" "\"$TOOLS/irdata_parse_refseq.py\" \"$DATADIR\" {}"
+| "$SCRIPTS/irparallel" "\"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_refseq.py\" \"$DATADIR\" {}"
 
 # Concatenate the output data.
 echo "$DATADIR cat step" 1>&2

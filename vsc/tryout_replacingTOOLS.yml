@@ -1,0 +1,22 @@
+---
+- name: Replace TOOLS in files
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Find files containing "TOOLS"
+      find:
+        paths: ./usr/test/
+        patterns: "*"
+        recurse: yes
+      register: found_files
+
+    - name: Iterate over found files
+      vars:
+        use_python_interpreter: "{{ USE_PYTHON_INTERPRETER }}"
+      ansible.builtin.shell: |
+        for filename in {{ found_files.files | map(attribute='path') | join(' ') }}; do
+          sed "s|\(\$TOOLS/.*.py\)|{{ use_python_interpreter }}\" \"\1|g" "{{ filename }}" > "{{ filename }}.tmp" && mv "{{ filename }}.tmp" "{{ filename }}"
+        done
+      args:
+        executable: /bin/bash
+      when: found_files.matched > 0

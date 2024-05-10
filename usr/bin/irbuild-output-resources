@@ -66,22 +66,22 @@ if [ "$BUILD" ]; then
 
     # Make convenient representations for other entity types.
 
-    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_interactions.sql" $PSQL_OPTIONS ; then
+    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_interactions.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build interaction information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_experiments.sql" $PSQL_OPTIONS ; then
+    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_experiments.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build experiment information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_participants.sql" $PSQL_OPTIONS ; then
+    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_participants.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build participant information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_confidence.sql" $PSQL_OPTIONS ; then
+    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_confidence.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not generate confidence score information." 1>&2
         exit 1
     fi

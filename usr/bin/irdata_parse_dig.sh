@@ -51,6 +51,6 @@ fi
 
   tail -n +2 "$FILENAME" \
 | cut -f 2,7 \
-| "$TOOLS/irdata_text_transpose.py" -f 1 -t 1 -w ', ' - \
+| "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 1 -t 1 -w ', ' - \
 | sort -u \
 > "$DATADIR/dig_genes.txt"

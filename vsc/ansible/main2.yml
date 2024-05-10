@@ -5,5 +5,5 @@
 - name: Run irmanifest playbook
   import_playbook: irmanifest.yml
 
-- name: Run irparse playbook
+- name: Run irparse playbook 
   import_playbook: irparse.yml

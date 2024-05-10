@@ -102,10 +102,10 @@
         name: git
         state: present
 
-    - name: Copy the irefindex files from my local machine to the remote machine
-      ansible.builtin.copy:
-        src: "{{ local_source_directory }}"
-        dest: "{{ remote_destination_directory }}"
+   # - name: Copy the irefindex files from my local machine to the remote machine
+   #   ansible.builtin.copy:
+   #     src: "{{ local_source_directory }}"
+   #     dest: "{{ remote_destination_directory }}"
 
     - name: Create directories for irdata data
       ansible.builtin.file:
@@ -115,6 +115,7 @@
       with_items:
         - "{{ download_data }}var/lib/irdata/data"
         - "{{ download_data }}var/log/irdata"
+        - "{{ download_data }}/{{ data }}"
 
     - name: Run irinit
       ansible.builtin.command: ./irinit --init

@@ -52,4 +52,4 @@ if [ $? != 0 ]; then
     exit 1
 fi
 
-"$TOOLS/irdata_parse_mitab.py" 'INNATEDB' "$DATADIR" $DST
+"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_mitab.py" 'INNATEDB' "$DATADIR" $DST

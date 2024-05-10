@@ -53,9 +53,9 @@ fi
 
 if [ "$DROPALL" ]; then
 
-    if ! ( "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop.sql" $PSQL_OPTIONS \
-        && "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_psixml.sql" $PSQL_OPTIONS \
-        && "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_mitab.sql" $PSQL_OPTIONS \
+    if ! ( "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop.sql" $PSQL_OPTIONS \
+        && "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_psixml.sql" $PSQL_OPTIONS \
+        && "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_mitab.sql" $PSQL_OPTIONS \
         ) ; then
         echo "$PROGNAME: Could not remove the database schema." 1>&2
         exit 1
@@ -67,7 +67,7 @@ if [ "$DROPALL" ]; then
         eval SCHEMA='$'"$SOURCE"_SCHEMA
 
         if [ "$SCHEMA" ]; then
-            if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_${SCHEMA}.sql" $PSQL_OPTIONS ; then
+            if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_${SCHEMA}.sql" $PSQL_OPTIONS ; then
                 echo "$PROGNAME: Could not remove schema for $SOURCE." 1>&2
                 [ ! "$FORCE" ]  && exit 1
             fi
@@ -78,72 +78,72 @@ fi
 # Remove the different build tables.
 # Continue without exiting if the force option is given.
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_manifest.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_manifest.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the manifest schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if [ ! "$DROPALL" ] && ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_constraints.sql" $PSQL_OPTIONS ; then
+if [ ! "$DROPALL" ] && ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_constraints.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the common representation's constraints." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_sequences.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_sequences.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the consolidated sequence information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_archived.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_archived.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the archived sequence information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_interactors.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_interactors.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the interactor information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_gene_mappings.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_gene_mappings.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the gene-to-protein mappings schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_canonical.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_canonical.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the canonical interactor information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_assignments.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_assignments.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the assignment information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_rigids.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_rigids.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the interaction information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_integer_identifiers.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_integer_identifiers.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the integer identifier mappings schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_interactions.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_interactions.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the additional interaction information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_experiments.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_experiments.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the additional experiment information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_participants.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_participants.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the additional participant information schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi
 
-if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_confidence.sql" $PSQL_OPTIONS ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/drop_irefindex_confidence.sql" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not remove the confidence score schema." 1>&2
     [ ! "$FORCE" ] && exit 1
 fi

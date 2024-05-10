@@ -139,7 +139,7 @@ BHF_UCL_DOWNLOAD_FILES="bhfucl_psicquic.txt"
 BHF_UCL_DIR_NAME="BHF-UCL"
 BHF_UCL_OTHER_FILE_PATTERN='*.txt'
 BHF_UCL_PARSER='irdata_parse_bhfucl.sh'
-BHF_UCL_IMPORT_TEMPLATE='import_mitab.sql'
+BHF_UCL_IMPORT_TEMPLATE='import_mitab.sql'  
 
 ############################################################
 # BIND

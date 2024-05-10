@@ -71,7 +71,7 @@ for ATTEMPT in `seq 1 $WGET_ATTEMPTS` ; do
     # Split the input file into manageable pieces and process each one in turn.
     # Note that this is done serially due to Entrez usage restrictions.
 
-      "$TOOLS/irdata_split.py" -1 10000 "$WORKFILE" \
+      "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_split.py" -1 10000 "$WORKFILE" \
     | xargs $XARGS_I'{}' sh -c "echo {} | \"$SCRIPTS/irslice\" \"$WORKFILE\" - | \"$TOOLS/irdata_fetch_eutils.sh\" \"$FILENAME\"" \
     >> "$RESULTFILE"
 
@@ -87,7 +87,7 @@ done
 # Parse the feature table output, producing files similar to those normally
 # available for RefSeq.
 
-if ! "$TOOLS/irdata_parse_refseq.py" "$DATADIR" "$RESULTFILE" ; then
+if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_refseq.py" "$DATADIR" "$RESULTFILE" ; then
     echo "$PROGNAME: Could not parse the retrieved data." 1>&2
     exit 1
 fi
