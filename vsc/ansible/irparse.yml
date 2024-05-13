@@ -10,6 +10,7 @@
 
   vars:
     log_location: "{{ logs_dir }}/irparse"
+    USE_PYTHON_INTERPRETER: "{{ python_interpreter | default('/usr/bin/python3') }}"
 
   tasks:    
     - name: Set permissions on Ansible temporary directory
@@ -31,19 +32,19 @@
       
     - name: Find files containing "TOOLS"
       find:
-        paths: ./../usr/bin/
+        paths: /home/irefindex/usr/bin/
         patterns: "*"
         recurse: yes
       register: found_files
 
-    - name: Iterate over found files
-      vars:
-        use_python_interpreter: "{{ USE_PYTHON_INTERPRETER }}"
-      ansible.builtin.shell: |
-        for filename in {{ found_files.files | map(attribute='path') | join(' ') }}; do sed "s|\(\$TOOLS/.*.py\)|{{ use_python_interpreter }}\" \"\1|g" "{{ filename }}" > "{{ filename }}.tmp" && mv "{{ filename }}.tmp" "{{ filename }}"; done
-      args:
-        executable: /bin/bash
-      when: found_files.matched > 0    
+   # - name: Iterate over found files
+   #   vars:
+   #     use_python_interpreter: "{{ USE_PYTHON_INTERPRETER }}"
+   #   ansible.builtin.shell: |
+   #     for filename in {{ found_files.files | map(attribute='path') | join(' ') }}; do sed "s|\(\$TOOLS/.*.py\)|{{ use_python_interpreter }}\" \"\1|g" "{{ filename }}" > "{{ filename }}.tmp" && mv "{{ filename }}.tmp" "{{ filename }}"; done
+   #   args:
+   #     executable: /bin/bash
+   #   when: found_files.matched > 0    
 
     - name: Convert the downloaded data to files for each source
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
