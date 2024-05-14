@@ -2,6 +2,7 @@ release_major: "19"
 release_minor: "0"
 release: "{{ release_major }}.{{ release_minor }}"
 data: "/dataext/irdata{{ release_major }}"
-download_data: "/mnt/disks/data/"
+download_data: "/mnt/disks/data/"      # The directory linked to /dev/sda
 data2: "/dataext/irdata{{ release_major }}" 
-home_dir: "/home/elias.steyaert"
+home_dir: "/home/elias.steyaert"      # personal home folder on the google cloud server
+home_folder: "/home/irefindex"  # Personal folder on local machine where the GitHub is stored of the project
