@@ -46,6 +46,18 @@
    #     executable: /bin/bash
    #   when: found_files.matched > 0    
 
+    - name: Find .sh and .py files
+      find:
+        paths: /home/irefindex/usr/bin
+        patterns: "*.sh,*.py"
+      register: files_to_update
+
+    - name: Give execute permissions to .sh and .py files
+      file:
+        path: "{{ item.path }}"
+        mode: u+x,g+x,o+x
+      loop: "{{ files_to_update.files }}"
+
     - name: Convert the downloaded data to files for each source
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
       args:
