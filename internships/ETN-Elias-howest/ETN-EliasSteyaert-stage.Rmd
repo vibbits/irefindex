@@ -173,6 +173,63 @@ After the /mnt/disks/data was set-up, the playbook could be played from my VM on
 
 
 
+### Trainee documentation plan (TDP)
+
+#####Tentative planning:
+Which tasks will be performed during the traineeship (briefly)?
+The main task of this internship is to go look at all the steps involved in the iRefIndex pipeline. This pipeline is like a big system for gathering and organizing information about how proteins interact with each other. It collects data from different places and puts it all together in one place. By going through each part of this process, we want to improve the automatization of using this dataset. That means fewer mistakes and quicker fixes if something goes wrong. This helps other users to get the protein interaction data they need faster and with fewer errors.
+
+##### Data management: 
+Use the FAIR principle (Table 2) as a guide to store and structure your data.
+The structure of my data is stored in my GitHub, in its own repository. This can be found in the following link: https://github.com/EliasSteyaert/stage-VIB-irefindex.git
+
+##### Which aspects of the FAIR principle can be applied to your documentation system?
+All of the aspects of the FAIR principle can be applied: 
+- Findability: The data used originates from the iRefIndex and Complex Portal databases. iRefIndex data, available at ‘https://irefindex.vib.be/wiki/index.php/iRefIndex', provides unique identifiers for interactors, taxonomy identifiers, interaction types, and interaction sources. Each protein interaction record and participant protein has a corresponding key.
+ - Accesiblity: The iRefIndex database, available at 'https://irefindex.vib.be/wiki/index.php/iRefIndex', provides version 19.0 data in PSI-MITAB format, specifically for human (taxon id: 9606). The dataset can be accessed at 'https://storage.googleapis.com/irefindex-data/archive/release_19.0/psi_mitab/MITAB2.6/9606.mitab.08-22-2022.txt'. Additionally, the dataset for all organisms in iRefIndex is available at 'https://storage.googleapis.com/irefindex-data/archive/release_19.0/psi_mitab/MITAB2.6/All.mitab.08-22-2022.txt'.
+- Interoperability: The iRefIndex data is accessible in PSI-MITAB 2.6 tab-delimited format.
+- Reproducibility: the iRefIndex data can be reused using the method that can be found on the VIB GitHub: https://github.com/EliasSteyaert/stage-VIB-irefindex.git
+
+##### Traceability of steps and methods:
+Which platform or application (e.g. Markdown pages on Git, Word document ...) will be used to document the project steps and progression in a traceable manner? 
+There is a Rmarkdown file in my GitHub repository. In this Rmarkdown file is my ETN (Electronic Traineeship Notebook), where there is a description of the actions performed during each day.
+
+##### Version control of code:
+Which Git repository will be used to store the code?
+The code will be stored in my own GitHub repository which is a clone of the fork of the original project of the VIB. The GitHub repository can be found with the following link: https://github.com/EliasSteyaert/stage-VIB-irefindex.git
+How will the repository be made available for the internal and external supervisors?
+The status of the repository is set on public. Everyone can see the code on my GitHub repository.
+
+
+### The Learning Outcome (LO)
+
+##### Development goal:
+Trying to learn/become better at using ansible so I can automate processes easier.
+
+##### Development activity:
+I will be working with ansible playbooks, find errors and parts of it that don’t work properly and fix them so it can be more automated.
+
+##### Desired results:
+Being able to make a fully running ansible playbook so that other users don’t have to do anything except to run the playbook.
+
+##### Schedule:
+These activities will be performed throughout the internship (on daily basis).
+
+##### Necessary support and facilities:
+Normally, all this should be done in the traineeship and its 250 hours. Nothing should be bought for this goal to be achieved.
+
+##### SMART-principle:
+- Specific: learning how to use ansible and make my own playbooks.
+- Measurable: At the end of the traineeship I should be able to make my own working ansible playbook.
+- Achievable: As I’m working daily with ansible for my traineeship, I should be able to achieve this goal.
+- Relevant: In the context of the traineeship, this learning outcome is relevant.
+- Time-bound: This should be achieved by the end of the traineeship.
+
+
+
+
+
+
 
 
 
