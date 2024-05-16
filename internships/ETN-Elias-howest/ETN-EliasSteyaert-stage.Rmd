@@ -85,7 +85,7 @@ Connecting to the instance.
 
 #### Tuesday 30/04/2024
 
-##### Problemsoloving the Irdownload playbook
+##### Problem-soloving the Irdownload playbook
 - Irdownload doesn’t work anymore so we will be adjusting the irdata-config so it can work again.  
 
 
@@ -96,23 +96,75 @@ Connecting to the instance.
 
 #### Thursday 02/05/2024
 
-##### Problemsolving the Irunpack playbook
+##### Problem-solving the Irunpack playbook
 - Running into problems when performing the Irunpack playbook, existing_dirs wasn’t defined and the location of the files were wrong
 
-##### Problemsolving the Irparse playbook
+##### Problem-solving the Irparse playbook
 - Running into problems when performing the Irparse playbook, pip3 has to be installed with apt, not dnf 
 
 
 #### Friday 03/05/2024
 
-##### Problemsolving new problems the Irparse playbook brings with it
+##### Problem-solving new problems the Irparse playbook brings with it
 - Running into new problems while running the irparse playbook: creating a venv and trying to get the irdata package downloaded 
 
 
 #### Monday 06/05/2024
 
-##### Problemsolving new problems the Irparse playbook brings with it
+##### Problem-solving new problems the Irparse playbook brings with it
 - Running into different kinds of problems when running the irparse playbook. The error says that the space is full but that doesn’t seem to be the problem. 
+- Adding a python interpreter as an environment for the .py scripts
+
+
+#### Thursday 07/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Being stuck on the irparse.yml playbook. 
+- Trying to figure out how to solve the “need more space” error.
+
+
+#### Wednesday 08/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Creating a "for loop" to get the python interpreter into the scripts which need the environment to solve “from irdata import data ModuleNotFoundError: No module named 'irdata'” 
+- for filename in $(grep -rl "TOOLS" ./usr/bin/* | sort | uniq); do cat "$filename" | sed "s|\(\$TOOLS/.*.py\)|\${USE_PYTHON_INTERPRETER}\" \"\1|g" > "$filename.tmp" && mv "$filename.tmp" "$filename"; done
+
+
+#### Thursday 09/05/204
+
+##### Ascension Day 
+
+
+#### Friday 10/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to expand the disk space to solve the problem of “need more space”. Doing so I messed up the server by trying to make a new partition. 
+- I made the server crash. Alex setted up a new server. The IP-adress in the file "inventory" must be updated to the new one. To get the /mnt/disks/data back (linked to the /dev/sda), I followed the following site of google itself: https://cloud.google.com/compute/docs/disks/format-mount-disk-linux
+After the /mnt/disks/data was set-up, the playbook could be played from my VM onto the google cloud instance.
+
+
+#### Monday 13/05/2024
+
+##### Playing the playbook all over again
+- Starting over again with the playbook: changing the inventory, playing main1.yml, after_main1.yml and main2.yml till it got stuck at irparse.yml 
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to find a solution for the "from irdata import data as irdt ModuleNotFoundError: No module named 'irdata'"
+
+
+#### Tuesday 14/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to get the Irparse.yml running 
+- Learning more about binairy and how a kernel works. Learning more about the hashbang, how it works and why it is there. 
+
+
+#### Wednesday 15/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Looking for a solution to get Irparse.yml running with the knowledge of the day before.
+- Running into a new error: "/home/irefindex/usr/bin/irdata_parse_bind.sh: line 94: : command not found" where the line it references is a line with the python interpreter.
+- Trying little things like installing pip into the environment, even though it should be already there
 
 
 
