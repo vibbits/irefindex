@@ -1,0 +1,2 @@
+jobs:
+     - { name: "mint", download_runner_async: 600, download_retries: 1, download_delay: 30, parse_async: 120, import_async: 400, import_delay: 30, import_retries: 14 }
