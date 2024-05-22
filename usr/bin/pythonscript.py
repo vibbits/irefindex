@@ -1,11 +1,10 @@
 #!/usr/bin/python3
 
-from irdata import data as irdt
-import subprocess
+import irdata 
 
-print(subprocess.getoutput("irdata --version"))
-
+print(irdata.__file__)
 print("would be cool if this worked")
+
 
 
 
