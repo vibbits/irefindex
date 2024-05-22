@@ -5,7 +5,7 @@
   become: true
   vars_files:
     - ./vars/logs.yml
-    - ./vars/sources.yml
+    - ./vars/sources3.yml
     - ./vars/general.yml
 
   vars:
@@ -13,36 +13,41 @@
     USE_PYTHON_INTERPRETER: "{{ python_interpreter | default('/usr/bin/python3') }}"
 
   tasks:    
-    - name: Set permissions on Ansible temporary directory
-      ansible.builtin.file:
-        path: "{{ home_dir }}/.ansible/tmp/"
-        state: directory
-        mode: "0755"
-        recurse: yes
-      become: yes
+#COMMENTED BECAUSE DOING THIS ONCE IS ENOUGH
+    #- name: Set permissions on Ansible temporary directory
+    #  ansible.builtin.file:
+    #    path: "{{ home_dir }}/.ansible/tmp/"
+    #    state: directory
+    #    mode: "0755"
+    #    recurse: yes
+    #  become: yes
 
-    - name: Install python3-venv package
+    - name: Ensure python3-venv and python3-pip are installed
       ansible.builtin.apt:
-        name: python3-venv
+        name:
+          - python3-venv
+          - python3-pip
         state: present
 
     - name: Create virtual environment
       ansible.builtin.command:
         cmd: python3 -m venv "{{ download_data }}/{{ data2 }}/virtualenv"
+      args:
+        creates: "{{ download_data }}/{{ data2 }}/virtualenv"
 
-    - name: Install irdata module
-      pip:
-        name: irdata
-        executable: "{{ download_data }}/{{ data2 }}/virtualenv/bin/pip"
-      become: true
+    - name: install irdata
+      ansible.builtin.command:
+        cmd: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python3 -m pip install irdata"  
       
-    - name: Find files containing "TOOLS"
-      find:
-        paths: /home/irefindex/usr/bin/
-        patterns: "*"
-        recurse: yes
-      register: found_files
 
+#THIS DOESN'T WORK YET BUT IS NEEDED FOR REPRODUCIBILTY
+   # - name: Find files containing "TOOLS"
+   #   find:
+   #     paths: /home/irefindex/usr/bin/
+   #     patterns: "*"
+   #     recurse: yes
+   #   register: found_files
+#SAME AS THE COMMENT ABOVE, THESE BELONG TOGETHER
    # - name: Iterate over found files
    #   vars:
    #     use_python_interpreter: "{{ USE_PYTHON_INTERPRETER }}"
@@ -52,17 +57,19 @@
    #     executable: /bin/bash
    #   when: found_files.matched > 0    
 
-    - name: Find .sh and .py files
-      find:
-        paths: /home/irefindex/usr/bin
-        patterns: "*.sh,*.py"
-      register: files_to_update
 
-    - name: Give execute permissions to .sh and .py files
-      file:
-        path: "{{ item.path }}"
-        mode: u+x,g+x,o+x
-      loop: "{{ files_to_update.files }}"
+# NEEDED FOR REPRODUCIBILTY, WORKS BUT TAKES A WHILE SO ITS COMMENTED
+   # - name: Find .sh and .py files
+   #   find:
+   #     paths: /home/irefindex/usr/bin
+   #     patterns: "*.sh,*.py"
+   #   register: files_to_update
+# SAME AS THE COMMENT ABOVE, THESE BELONG TOGETHER
+   # - name: Give execute permissions to .sh and .py files
+   #   file:
+   #     path: "{{ item.path }}"
+   #     mode: u+x,g+x,o+x
+   #   loop: "{{ files_to_update.files }}"
 
     - name: Convert the downloaded data to files for each source
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
@@ -92,10 +99,6 @@
     - name: Debug job_result
       ansible.builtin.debug:
         var: job_result
-
-    - name: df -h
-      ansible.builtin.command: "df -h"  
-      register: disk_space
         
     - name: "Ensure that `log_location` exists"
       ansible.builtin.file:
