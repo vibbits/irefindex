@@ -16,6 +16,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# My interpreter
+USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
+
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -36,6 +39,9 @@ fi
 
 DATADIR=$1
 
+# Log the value of $1
+echo "main_script: \$1 is $1" > /home/irefindex/logfile.log
+
 if [ ! "$DATADIR" ]; then
     echo "$PROGNAME: A data directory must be specified." 1>&2
     exit 1
@@ -51,8 +57,9 @@ fi
 
 # Parse the data files.
 
-  "$SCRIPTS/argument-per-line" $FILENAMES \
-| "$SCRIPTS/irparallel" "\"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_refseq.py\" \"$DATADIR\" {}"
+"$SCRIPTS/argument-per-line" $FILENAMES \
+| "$SCRIPTS/irparallel" "\"$TOOLS/irdata_parse_refseq.py\" \"$DATADIR\" {}"
+
 
 # Concatenate the output data.
 echo "$DATADIR cat step" 1>&2
