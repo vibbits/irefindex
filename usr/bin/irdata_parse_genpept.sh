@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# My interpreter
+USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
+
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -44,7 +47,8 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
 fi
 
   "$SCRIPTS/argument-per-line" $FILENAMES \
-| "$SCRIPTS/irparallel" "\"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_fasta.py\" 'GENPEPT' \"$DATADIR\" 'acc,name,organism' 'acc,name,organism' {}"
+| "$SCRIPTS/irparallel" "\"$TOOLS/irdata_parse_fasta.py\" 'GENPEPT' \"$DATADIR\" 'acc,name,organism' 'acc,name,organism' {}"
+
 
 # Concatenate the output data
 # Tab character used in the sed command.
