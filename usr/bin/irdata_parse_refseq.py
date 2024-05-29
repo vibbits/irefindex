@@ -218,9 +218,8 @@ if __name__ == "__main__":
     progname = os.path.basename(sys.argv[0])
 
     try:
-        i = 1
-        data_directory = sys.argv[i]
-        filenames = sys.argv[i + 1 :]
+        data_directory = sys.argv[1]
+        filenames = sys.argv[2:]
     except IndexError:
         print(
             "Usage: %s <output data directory> <data file>..." % progname,
