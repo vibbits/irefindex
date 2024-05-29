@@ -11,6 +11,8 @@
   vars:
     log_location: "{{ logs_dir }}/irparse"
     USE_PYTHON_INTERPRETER: "{{ python_interpreter | default('/usr/bin/python3') }}"
+    local_source_directory: "/home/guest/internship/stage-VIB-irefindex/usr/bin"  # Directory containing the files on your local machine
+    remote_destination_directory: "/home/irefindex/usr/bin"  # Destination directory on the remote machine
 
   tasks:    
 #COMMENTED BECAUSE DOING THIS ONCE IS ENOUGH
@@ -21,6 +23,17 @@
     #    mode: "0755"
     #    recurse: yes
     #  become: yes
+
+    #- name: Get list of files in local source directory
+    #  shell: ls -1 {{ local_source_directory }}
+    #  register: local_files_list
+
+    #- name: Copy files to remote destination directory
+    #  ansible.builtin.copy:
+    #    src: "{{ local_source_directory }}{{ item }}"
+    #    dest: "{{ remote_destination_directory }}/{{ item }}"
+    #    mode: 'u+x,g+x,o+x'
+    #  with_items: "{{ local_files_list.stdout_lines }}"
 
     - name: Ensure python3-venv and python3-pip are installed
       ansible.builtin.apt:
@@ -71,8 +84,9 @@
    #     mode: u+x,g+x,o+x
    #   loop: "{{ files_to_update.files }}"
 
-    - name: Convert the downloaded data to files for each source
+    - name: Parse downloads for each source 
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
+      #ansible.builtin.command: "./echoscript {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
       environment:
