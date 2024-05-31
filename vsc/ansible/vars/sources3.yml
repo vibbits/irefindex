@@ -1,3 +1,68 @@
 jobs:
-     - { name: "athaliana" }
-     - { name: "bind" }
+
+    # - { name: "ipi" } 
+    # UNABLE TO DOWNLOAD SO UNABLE TO PARSE
+    # /data/irdata/logs/20240522T115852003408/irparse
+
+    # - { name: "bar" }
+    # UNABLE TO DOWNLOAD SO UNABLE TO PARSE
+
+    # - { name: "corum", download_runner_async: 60, download_retries: 12, download_delay: 15 }
+    # UNABLE TO DOWNLOAD SO UNABLE TO PARSE
+    # /data/irdata/logs/20240523T081112716280/irparse
+
+    # - { name: "matrixdb", download_runner_async: 300, download_retries: 30, download_delay: 30, parse_async: 200, parse_retries: 8, parse_delay: 25, import_async: 160, import_delay: 10, import_retries: 16 }
+    # UNABLE TO DOWNLOAD SO UNABLE TO PARSE
+    #/data/irdata/logs/20240523T081306290855/irparse
+
+
+
+    # - { name: "hprd", parse_async: 400, parse_delay: 30, parse_retries: 14, import_async: 300, import_delay: 30, import_retries: 10 } 
+    # BIG ERROR FOR THIS ONE but looks like everything is in the files ?! 
+    # " unassigned701 is not a pubmedID or DOI: citation suppressed" 
+    # " unassigned1513 is not a pubmedID or DOI: citation suppressed"
+    # ALL THE FILES ARE NOT EMPTY
+
+    # - { name: "bind_translation", parse_async: 120, parse_delay: 10 } 
+    #ERROR FOR THIS ONE: irdata_xml2tab.py: Parsing failed with exception: /mnt/disks/data/dataext/irdata19/BIND_Translation/taxid10090_PSIMI25.xml:969431:746: not well-formed (invalid token)
+    #/data/irdata/logs/20240522T132332434617/irparse
+    
+    # - { name: "intcomplex", unpack_async: 60, unpack_delay: 10, parse_async: 350, parse_delay: 30, parse_retries: 12, import_async: 400, import_delay: 30, import_retries: 14 }
+    # irdata_xml2tab.py: Parsing failed with exception: 'utf-8' codec can't encode characters in position 50-52: surrogates not allowed
+    # irparse-source: XML processing for source INTCOMPLEX failed.non-zero return code
+    # /data/irdata/logs/20240523T074916877736/irparse/
+
+    # - { name: "huri", download_runner_async: 60, download_retries: 36, parse_async: 240, parse_retries: 16, parse_delay: 15, import_async: 400, import_delay: 30, import_retries: 14 }
+    #/data/irdata/logs/20240523T070911706214/irparse 
+    # irparse-source: Data processing for source HURI failed.non-zero return 
+        
+    
+    # - { name: "uniprot", download_runner_async: 2000, download_retries: 60, download_delay: 100, parse_async: 36000, parse_retries: 60, parse_delay: 600 }
+    # /data/irdata/logs/20240523T082021716989/irparse/uniprot.*
+    # irparallel: Please specify a command to run on each file (to be given as {}).
+    # irdata_parse_uniprot.sh: Merging data files for uniprot_sprot...
+    # cat: '/mnt/disks/data/dataext/irdata19/import/UniProt/uniprot_sprot_accessions-*.txt': such file or directory
+    # irdata_parse_uniprot.sh: Failed to concatenate data files for uniprot_sprot_accessions.
+    # irparse-source: Data processing for source UNIPROT failed.non-zero return code
+
+    # - { name: "imex", download_runner_async: 10800, download_retries: 108, download_delay: 300, parse_async: 600, parse_retries: 10, parse_delay: 60, import_async: 1500, import_retries: 25, import_delay: 60 }
+    # " unassigned1513 is not a pubmedID or DOI: citation suppressed"
+    # " unassigned701 is not a pubmedID or DOI: citation suppressed"
+    # " unassigned2614 is not a pubmedID or DOI: citation suppressed",
+    # " unassigned2616 is not a pubmedID or DOI: citation suppressed",
+    # " unassigned2293 is not a pubmedID or DOI: citation suppressed",
+    # /root/.ansible_async/j832151890912.1559858
+
+    # - { name: "refseq", download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 450, parse_retries: 5, parse_delay: 30, import_async: 5000, import_retries: 21, import_delay: 240 }
+    # /import/RefSeq is empty after parsing, BIG ERROR BUT NO LOG FILES
+    # "sh: 1: Syntax error: Unterminated quoted string" 
+    # "cat: '/mnt/disks/data/dataext/irdata19/import/RefSeq/*_proteins': No such file or directory",
+    # "cat: '/mnt/disks/data/dataext/irdata19/import/RefSeq/*_identifiers': No such file or directory"
+
+     - { name: "genpept", download_runner_async: 36000, download_retries: 60, download_delay: 1800, parse_async: 21000, parse_retries: 60, parse_delay: 350, import_async: 5000, import_retries: 21, import_delay: 240 }
+    # EMPTY AFTER PARSING
+    # "sh: 1: Syntax error: Unterminated quoted string",
+    # "cat: '/mnt/disks/data/dataext/irdata19/import/GenPept/*_proteins.txt': No such file or directory"
+
+
+    # - { name: "gene", download_runner_async: 800, download_retries: 40, download_delay: 60, parse_async: 1600, parse_retries: 27, parse_delay: 60, import_async: 4000, import_retries: 34, import_delay: 120 }

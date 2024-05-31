@@ -1,2 +1,4 @@
 jobs:
-     - { name: "mint", download_runner_async: 600, download_retries: 1, download_delay: 30, parse_async: 120, import_async: 400, import_delay: 30, import_retries: 14 }
+    # - { name: "mint", download_runner_async: 600, download_retries: 1, download_delay: 30, parse_async: 120, import_async: 400, import_delay: 30, import_retries: 14 }
+    # - { name: "bar" }
+     - { name: "gene", download_runner_async: 800, download_retries: 40, download_delay: 60, parse_async: 1600, parse_retries: 27, parse_delay: 60, import_async: 4000, import_retries: 34, import_delay: 120 }

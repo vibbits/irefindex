@@ -1,5 +1,11 @@
 #!/bin/bash
 
+
+
+############################################################
+# My own environments
+
+
 ############################################################
 # Output and publication options.
 # (RELEASE is most likely to need changing.)
@@ -18,7 +24,7 @@ EMAIL="alexander.botzki@vib.be"             # e-mail address for anonymous FTP l
 DATABASE="irdata${RELEASE_MAJOR}"           # database name
 DATA="${DATAPREFIX}dataext/irdata${RELEASE_MAJOR}"      # user defined data directory location
 WIKIFORMAT="MediaWiki"                      # format for generated Wiki pages
-CURL_OPT="-kL"                               # Follow HTTP redirects
+CURL_OPT="-L"                               # Follow HTTP redirects
 WGET_WAIT="5"                               # time to wait between wget requests
 WGET_ATTEMPTS="5"                           # number of attempts to make using wget
 PSQL_OPTIONS=""                             # "--psql-options <psql connection options>"

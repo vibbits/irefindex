@@ -5,12 +5,13 @@
   gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
   vars_files:
     - ./vars/logs.yml
-    - ./vars/sources2.yml
+    - ./vars/sources.yml     #THIS SHOULD BE sources.yml
 
   vars:
     log_location: "{{ logs_dir }}/irdownload"
 
   tasks:
+#ALL UNDERNEETH IS COMMENTED BECAUSE IT TAKES TO LONG, IT WORKS AND NEEDS TO BE UNCOMMENTED 
     #- name: Update apt packages
     #  ansible.builtin.apt:
     #    update_cache: true
@@ -61,7 +62,7 @@
       retries: "{{ item.download_runner_retries | default(18) }}"
 
     - name: Wait for jobs to complete
-      debugger: always
+      # debugger: always
       ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
       delay: "{{ item.item.download_delay | default(5) }}"

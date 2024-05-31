@@ -68,8 +68,21 @@ for FILENAME in $FILENAMES; do
 
         # Split the data file into $PROCESS pieces.
         # Pass each process its rank (0-based) and the total number of processes.
+        echo "can I see this echo, which is situated in my uniprotscript" >> /home/irefindex/logfile2.log
         seq 0 $((PROCESSES - 1)) \
-        | "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py $FILENAME {} $PROCESSES | ${USE_PYTHON_INTERPRETER} $TOOLS/irdata_parse_uniprot.py $DATADIR - ${LEAFNAME}_%s-{}.txt"
+            | "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py \"$FILENAME\" {} \"$PROCESSES\" | $TOOLS/irdata_parse_uniprot.py \"$DATADIR\" - \"${LEAFNAME}_%s-{}.txt\""
+
+        #for rank in $(seq 0 $((PROCESSES - 1))); do
+        #    cmd="\"$TOOLS/irdata_altsplit.py\" \"$FILENAME\" \"$rank\" \"$PROCESSES\" | \"${USE_PYTHON_INTERPRETER}\" \"$TOOLS/irdata_parse_uniprot.py\" \"$DATADIR\" - \"${LEAFNAME}_%s-$rank.txt\""
+        #    echo "Executing: $cmd"  # Debug: print the command being executed
+        #    "$SCRIPTS/irparallel" "$cmd"
+        #done
+        
+        #for rank in $(seq 0 $((PROCESSES - 1))); do
+        #    "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py" "$FILENAME" "$rank" "$PROCESSES" | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_uniprot.py" "$DATADIR" - "${LEAFNAME}_%s-${rank}.txt"
+        #done
+
+        echo "uniprot.sh \echo: seq 0 $((PROCESSES - 1))" >> /home/irefindex/logfile2.log
 
         # Merge the pieces.
         echo "$PROGNAME: Merging data files for $LEAFNAME..." 1>&2
