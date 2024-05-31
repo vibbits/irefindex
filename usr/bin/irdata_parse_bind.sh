@@ -22,9 +22,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# My interpreter
-USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
-
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -94,7 +91,7 @@ for FILENAME in $FILENAMES; do
 
         # Pad the file in order to add missing methods.
 
-          "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_pad.py" -n 4 -p \\N "$FILENAME" \
+          "$TOOLS/irdata_text_pad.py" -n 4 -p \\N "$FILENAME" \
         > "$DATADIR/references.txt"
 
     elif [ "$FILETYPE" = 'complex2refs.txt' ]; then
@@ -110,7 +107,7 @@ for FILENAME in $FILENAMES; do
 
           sed -n -e 'p;=' "$FILENAME" \
         | sed -e 'N;s/\n/\t/' \
-        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 8 -t 8 -w '|' -s 0 - \
+        | "$TOOLS/irdata_text_transpose.py" -f 8 -t 8 -w '|' -s 0 - \
         | sed -e "s/^/$SED_FILENAME\t/" \
         > "$DATADIR/complexes.txt"
 
@@ -119,14 +116,14 @@ for FILENAME in $FILENAMES; do
         # First interactor (add position 0).
 
           cut -f 1,2,4 "$FILENAME" \
-        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
+        | "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
         | sed -e "s/^/0\t/" \
         > "$DATADIR/labels.txt"
 
         # Second interactor (add position 1).
 
           cut -f 1,3,5 "$FILENAME" \
-        | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
+        | "$TOOLS/irdata_text_transpose.py" -f 3 -w '|' -s 0 - \
         | sed -e "s/^/1\t/" \
         >> "$DATADIR/labels.txt"
 

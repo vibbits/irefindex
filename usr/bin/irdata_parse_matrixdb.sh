@@ -57,4 +57,4 @@ for THISFILE in $FILENAMES; do
     mv tmp $THISFILE
 done
 
-"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_mitab.py" 'MATRIXDB' "$DATADIR" $FILENAMES
+"$TOOLS/irdata_parse_mitab.py" 'MATRIXDB' "$DATADIR" $FILENAMES

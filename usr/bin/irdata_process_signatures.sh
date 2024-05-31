@@ -15,9 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# My interpreter
-USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
-
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -51,7 +48,7 @@ for FILENAME in "$DATADIR/"*_proteins.txt ; do
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_process_signatures.py" "$FILENAME" "$FILENAME.seq" $* ; then
+    if ! "$TOOLS/irdata_process_signatures.py" "$FILENAME" "$FILENAME.seq" $* ; then
         echo "$PROGNAME: Sequence digest processing of $FILENAME failed." 1>&2
         exit 1
     fi

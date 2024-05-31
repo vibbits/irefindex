@@ -15,9 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# My interpreter
-USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
-
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -60,5 +57,5 @@ END=`grep -ne '^----' "$FILENAME" | tail -n 2 | head -n 1 | cut -d ':' -f 1`
 
   head -n $((END - 1)) "$FILENAME" \
 | tail -n "+$START" \
-| "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_fly.py" "$FILETYPE" --discard-ill-formed \
+| "$TOOLS/irdata_parse_fly.py" "$FILETYPE" --discard-ill-formed \
 > "$DATADIR/$OUTFILE"

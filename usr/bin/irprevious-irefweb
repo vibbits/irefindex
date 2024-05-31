@@ -55,7 +55,7 @@ if [ "$PGSQL" ]; then
 
     # Export data from a PostgreSQL database.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefweb.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefweb.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not export iRefWeb data from the previous database." 1>&2
         exit 1
     fi

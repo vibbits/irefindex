@@ -31,7 +31,7 @@ echo $SQL
 echo $PSQL_OPTIONS
 echo `whoami`
 
-if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefpro.sql" "$DATA" $PSQL_OPTIONS ; then
+if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefpro.sql" "$DATA" $PSQL_OPTIONS ; then
     echo "$PROGNAME: Could not generate iRefPro data." 1>&2
     exit 1
 fi

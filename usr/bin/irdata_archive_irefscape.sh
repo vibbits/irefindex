@@ -62,7 +62,7 @@ done
 
 # Convert the graph to the Java serialisation format.
 
-"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_convert_graph.py" "$DATADIR/graph.txt" "$DATADIR/graph"
+"$TOOLS/irdata_convert_graph.py" "$DATADIR/graph.txt" "$DATADIR/graph"
 
 
 

@@ -15,9 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# My interpreter
-USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
-
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -53,7 +50,7 @@ for FILENAME in $FILENAMES; do
     # Parse the FASTA files.
 
     if [ "$FILETYPE" = 'fasta' ] || [ "$FILETYPE" = 'fasta.gz' ]; then
-        if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_fasta.py" 'UNIPROT' "$DATADIR" 'sp,acc,id' 'id,acc,date,taxid,mw' "$FILENAME" ; then
+        if ! "$TOOLS/irdata_parse_fasta.py" 'UNIPROT' "$DATADIR" 'sp,acc,id' 'id,acc,date,taxid,mw' "$FILENAME" ; then
             echo "$PROGNAME: FASTA parsing of $FILENAME failed." 1>&2
             exit 1
         fi
@@ -79,7 +76,7 @@ for FILENAME in $FILENAMES; do
         #done
         
         #for rank in $(seq 0 $((PROCESSES - 1))); do
-        #    "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py" "$FILENAME" "$rank" "$PROCESSES" | "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_uniprot.py" "$DATADIR" - "${LEAFNAME}_%s-${rank}.txt"
+        #    "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py" "$FILENAME" "$rank" "$PROCESSES" | "$TOOLS/irdata_parse_uniprot.py" "$DATADIR" - "${LEAFNAME}_%s-${rank}.txt"
         #done
 
         echo "uniprot.sh \echo: seq 0 $((PROCESSES - 1))" >> /home/irefindex/logfile2.log

@@ -43,4 +43,4 @@ if [ ! "$DATADIR" ] || [ ! "$FILENAMES" ]; then
 fi
 
 
-"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_mitab.py" 'APID' "$DATADIR" $FILENAMES
+"$TOOLS/irdata_parse_mitab.py" 'APID' "$DATADIR" $FILENAMES

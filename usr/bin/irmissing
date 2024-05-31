@@ -69,14 +69,14 @@ if [ ! -e "$DATADIR" ] ; then
 fi
 
 if [ "$CHECK" ] ; then
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_unknown_refseq.sql" "$DATADIR" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_unknown_refseq.sql" "$DATADIR" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not export RefSeq identifiers not providing sequences." 1>&2
         exit 1
     fi
 
 #    commented since gi no longer in use
 
-#    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_unknown_gi.sql" "$DATADIR" $PSQL_OPTIONS ; then
+#    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_unknown_gi.sql" "$DATADIR" $PSQL_OPTIONS ; then
 #        echo "$PROGNAME: Could not export GenBank identifiers not providing sequences." 1>&2
 #        exit 1
 #    fi
@@ -102,7 +102,7 @@ if [ "$IMPORT" ] ; then
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_unknown_refseq.sql" "$DATADIR" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_unknown_refseq.sql" "$DATADIR" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not import missing sequences." 1>&2
         exit 1
     fi

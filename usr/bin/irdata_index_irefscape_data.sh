@@ -48,5 +48,5 @@ fi
 
 INTERVAL=100
 
-  "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_index.py" $INTERVAL "$FILENAME" -d '|' \
+  "$TOOLS/irdata_text_index.py" $INTERVAL "$FILENAME" -d '|' \
 > "$OUTFILE"

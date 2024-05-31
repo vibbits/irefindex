@@ -15,9 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# My interpreter
-USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
-
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -60,5 +57,5 @@ echo "$FILETYPE"
 # cat the file and present it to the parser.
 echo "$DATADIR/$OUTFILE" 1>&2
 zcat "$FILENAME" \
-| "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
+| "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
 > "$DATADIR/$OUTFILE"

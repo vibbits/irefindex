@@ -24,9 +24,6 @@ else
     . 'irdata-config'
 fi
 
-USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
-
-
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
 Usage: $PROGNAME [ --check | --no-parse ] <source>
@@ -147,7 +144,7 @@ for FILEPATTERN in $FILEPATTERNS; do
 
             # Where the check fails, run the fixing tool if requested.
 
-            if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_xmlcheck.py" "$FILE" > /dev/null 2> "$CHECKLOG" ; then
+            if ! "$TOOLS/irdata_xmlcheck.py" "$FILE" > /dev/null 2> "$CHECKLOG" ; then
 
                 if [ "$FIX" ]; then
                     "$TOOLS/irdata_fixencoding.sh" "$FILE"
@@ -177,7 +174,7 @@ for FILEPATTERN in $FILEPATTERNS; do
     echo "$TOOLS/$PARSER" "$OUTPUTDIR" $FILES
     if [ ! "$NO_PARSE" ]; then
         if [ "$XMLFILEPATTERN" ]; then
-            if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_xml2tab.py" "$OUTPUTDIR" "$SOURCE" $FILES ; then
+            if ! "$TOOLS/irdata_xml2tab.py" "$OUTPUTDIR" "$SOURCE" $FILES ; then
                 echo "$PROGNAME: XML processing for source $SOURCE failed." 1>&2
                 exit 1
             fi

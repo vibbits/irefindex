@@ -15,9 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# My interpreter
-USE_PYTHON_INTERPRETER=${python_interpreter:-/usr/bin/python3}
-
 if [ -e "irdata-config" ]; then
     . "$PWD/irdata-config"
 elif [ -e "scripts/irdata-config" ]; then
@@ -64,4 +61,4 @@ fi
 #    mv tmp $THISFILE
 #done
 
-"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_mitab.py" 'REACTOME' "$DATADIR" $FILENAMES
+"$TOOLS/irdata_parse_mitab.py" 'REACTOME' "$DATADIR" $FILENAMES

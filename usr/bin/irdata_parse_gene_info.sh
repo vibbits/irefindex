@@ -76,7 +76,7 @@ fi
 | tail -n +2 \
 | cut -f 2,8 \
 | grep -v -e 'NEWENTRY' \
-| "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 2 -w '|' -s 0 - \
+| "$TOOLS/irdata_text_transpose.py" -f 2 -w '|' -s 0 - \
 > "$DATADIR/$OUTFILE_MAPLOCATIONS"
 
 # For synonyms, remove the header, extract the geneid and synonyms.
@@ -87,5 +87,5 @@ fi
 | tail -n +2 \
 | cut -f 2,5 \
 | grep -v -e 'NEWENTRY' \
-| "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_text_transpose.py" -f 2 -w '|' -s 0 - \
+| "$TOOLS/irdata_text_transpose.py" -f 2 -w '|' -s 0 - \
 > "$DATADIR/$OUTFILE_SYNONYMS"

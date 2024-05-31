@@ -76,7 +76,7 @@ if [ "$MITAB" ]; then
 
     cp "$SQL/organisms.txt" "$DATA"
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefindex_mitab.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefindex_mitab.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not generate MITAB data." 1>&2
         exit 1
     fi
@@ -107,7 +107,7 @@ fi
 
 if [ "$MAPPING" ]; then
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_protein_identifier_mapping.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_protein_identifier_mapping.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not generate mapping file." 1>&2
         exit 1
     fi
@@ -125,7 +125,7 @@ if [ "$IREFSCAPE" ]; then
         rm "$DATA/iRefScape/"*
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefscape.sql" "$DATA/iRefScape" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefscape.sql" "$DATA/iRefScape" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not generate iRefScape data." 1>&2
         exit 1
     fi
@@ -147,7 +147,7 @@ if [ "$IREFWEB" ]; then
         rm "$DATA/iRefWeb/"*
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefweb.sql" "$DATA/iRefWeb" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefweb.sql" "$DATA/iRefWeb" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not generate iRefWeb data." 1>&2
         exit 1
     fi

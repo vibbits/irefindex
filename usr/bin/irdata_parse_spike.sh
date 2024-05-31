@@ -62,4 +62,4 @@ fi
 #    mv tmp $THISFILE
 #done
 
-"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_mitab.py" 'SPIKE' "$DATADIR" $FILENAMES
+"$TOOLS/irdata_parse_mitab.py" 'SPIKE' "$DATADIR" $FILENAMES

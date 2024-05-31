@@ -57,4 +57,4 @@ fi
    # mv tmp $THISFILE
 #done
 
-"${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_parse_mitab.py" 'DIP' "$DATADIR" $FILENAMES
+"$TOOLS/irdata_parse_mitab.py" 'DIP' "$DATADIR" $FILENAMES

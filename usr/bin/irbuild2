@@ -60,14 +60,14 @@ if [ "$MAKE_REPORTS" ]; then
 
     # Make a tidied up manifest report.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/manifest.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/manifest.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report manifest information." 1>&2
         exit 1
     fi
 
     # Make an interactor report.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/interactors_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/interactors_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report source interactor information." 1>&2
         exit 1
     fi
@@ -86,7 +86,7 @@ if [ "$BUILD" ]; then
 
     # Assign definitive sequence information to interactors.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_assignments.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_assignments.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build assignment information from the imported data." 1>&2
         exit 1
     fi
@@ -96,17 +96,17 @@ if [ "$MAKE_REPORTS" ]; then
 
     # Make assigned interactor reports, if requested.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/assignments_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/assignments_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report sequence assignment information." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rogids_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rogids_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report ROG identifier assignment information." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rogids_by_score.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rogids_by_score.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report ROG identifier scoring information." 1>&2
         exit 1
     fi
@@ -118,34 +118,34 @@ if [ "$BUILD" ]; then
 
     # Export ROG information for RIG identifier calculation, make and import RIG identifiers.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefindex_rogids.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefindex_rogids.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not export ROG identifiers for assigned sequences." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_process_signatures.py" "$DATA/rogids_for_interactions" "$DATA/rigids_for_interactions" ; then
+    if ! "$TOOLS/irdata_process_signatures.py" "$DATA/rogids_for_interactions" "$DATA/rigids_for_interactions" ; then
         echo "$PROGNAME: Could not generate RIG identifiers for the exported ROG identifiers." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_rigids.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_rigids.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not import the generated RIG identifiers." 1>&2
         exit 1
     fi
 
     # Make canonical interaction information.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefindex_rogids_canonical.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/export_irefindex_rogids_canonical.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not export canonical ROG identifiers." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_process_signatures.py" "$DATA/rogids_for_interactions_canonical" "$DATA/rigids_for_interactions_canonical" ; then
+    if ! "$TOOLS/irdata_process_signatures.py" "$DATA/rogids_for_interactions_canonical" "$DATA/rigids_for_interactions_canonical" ; then
         echo "$PROGNAME: Could not generate canonical RIG identifiers for the exported canonical ROG identifiers." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_rigids_canonical.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_rigids_canonical.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not import the generated canonical RIG identifiers." 1>&2
         exit 1
     fi
@@ -155,22 +155,22 @@ if [ "$MAKE_REPORTS" ]; then
 
     # Make an interactions report, if requested.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rigids_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rigids_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report RIG identifier assignment information." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rigids_by_taxonomy.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/rigids_by_taxonomy.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report RIG identifier taxonomy statistics." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/interactions_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$REPORTS/interactions_by_source.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not report interaction statistics." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_reports2wiki.py" "$DATA" "$DATA/Statistics.wiki" "$WIKIFORMAT" ; then
+    if ! "$TOOLS/irdata_reports2wiki.py" "$DATA" "$DATA/Statistics.wiki" "$WIKIFORMAT" ; then
         echo "$PROGNAME: Could not generate statistics Wiki page." 1>&2
         exit 1
     fi
@@ -182,29 +182,29 @@ if [ "$BUILD" ]; then
 
     # Make convenient representations for other entity types.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_interactions.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_interactions.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build interaction information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_experiments.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_experiments.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build experiment information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_participants.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_participants.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build participant information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_confidence.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_confidence.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not generate confidence score information." 1>&2
         exit 1
     fi
 
     # Import integer identifiers from a previous release.
 
-    if [ -e "$DATA/rig2rigid" ] && [ -e "$DATA/rog2rogid" ] && ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_integer_identifiers.sql" "$DATA" $PSQL_OPTIONS ; then
+    if [ -e "$DATA/rig2rigid" ] && [ -e "$DATA/rog2rogid" ] && ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_integer_identifiers.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not import integer identifiers from the previous release." 1>&2
         exit 1
     fi

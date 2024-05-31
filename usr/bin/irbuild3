@@ -59,24 +59,24 @@ if [ "$BUILD" ]; then
 
     # Make convenient representations for other entity types.
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_experiments.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_experiments.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build experiment information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_participants.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_participants.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not build participant information from the imported data." 1>&2
         exit 1
     fi
 
-    if ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_confidence.sql" $PSQL_OPTIONS ; then
+    if ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_confidence.sql" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not generate confidence score information." 1>&2
         exit 1
     fi
 
     # Import integer identifiers from a previous release.
 
-    if [ -e "$DATA/rig2rigid" ] && [ -e "$DATA/rog2rogid" ] && ! "${USE_PYTHON_INTERPRETER}" "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_integer_identifiers.sql" "$DATA" $PSQL_OPTIONS ; then
+    if [ -e "$DATA/rig2rigid" ] && [ -e "$DATA/rog2rogid" ] && ! "$TOOLS/irdata_database_action.py" "$DATABASE" "$SQL/import_irefindex_integer_identifiers.sql" "$DATA" $PSQL_OPTIONS ; then
         echo "$PROGNAME: Could not import integer identifiers from the previous release." 1>&2
         exit 1
     fi
