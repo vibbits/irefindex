@@ -47,7 +47,6 @@ https://github.com/EliasSteyaert/stage-VIB-irefindex
 - Forking and cloning the VIB github repository into my own and setting up the needed folders/files into it (https://github.com/EliasSteyaert/stage-VIB-irefindex)
 
 
-
 #### Thursday 25/04/2023
 
 ##### Performing the "terraform-step" of the procedure:
@@ -57,7 +56,6 @@ https://github.com/EliasSteyaert/stage-VIB-irefindex
 ##### side-tasks to do while waiting for the task to be executed:
 - Making the ETN Markdown file and complement it with the things that are performed till this day
 - Making a troubleshooting file and filling in all the issueas that were encountered so far
-
 
 
 #### Friday 26/04/2023
@@ -73,6 +71,7 @@ Connecting to the instance.
 ##### Playing the first playbook
 
 
+## Week 2
 #### Monday 29/04/2024
 
 ##### Running the playbook 
@@ -109,6 +108,7 @@ Connecting to the instance.
 - Running into new problems while running the irparse playbook: creating a venv and trying to get the irdata package downloaded 
 
 
+## Week 3
 #### Monday 06/05/2024
 
 ##### Problem-solving new problems the Irparse playbook brings with it
@@ -143,6 +143,7 @@ Connecting to the instance.
 After the /mnt/disks/data was set-up, the playbook could be played from my VM onto the google cloud instance.
 
 
+## Week 4
 #### Monday 13/05/2024
 
 ##### Playing the playbook all over again
@@ -184,7 +185,115 @@ After the /mnt/disks/data was set-up, the playbook could be played from my VM on
 - Making the download work after seeing where the error occurs (the link had to be updated).
 
 
+## Week 5
+#### Monday (20/05/2024)
+
+##### Pentecostmonday
+
+
+#### Tuesday (21/05/2024)
+
+##### Irdownload for the databases that didn't work before
+- Fully downloading the mint database 
+- Trying to get the irdownload running for “ipi”, “bar”, “corumdb” and “matrixdb” 
+
+##### Fixing the “Irdata” problem 
+- Problem-solving the irdata "module not found" further on the basis of the mini-version of the scripts
+- Learning more about the subprocess module: what it is and what it is used for (https://docs.python.org/3/library/subprocess.html)
+
+
+#### Wednesday (22/05/2024)
+
+##### Learning more about the individual aspects of the scripts
+- Figuring out what “dir” does, why it is usefull and how it is used 
+
+##### Fixing the irpase playbook
+- Finally fixing the irparse playbook so the "irmodule irdata could not be found" error is solved
+- Piece of code that installed the irdata, with this solution, every .sh script where irdata is being used needs to be in the virtual environment:
+    - name: Ensure python3-venv and python3-pip are installed
+      ansible.builtin.apt:
+        name:
+          - python3-venv
+          - python3-pip
+        state: present
+
+    - name: Create virtual environment
+      ansible.builtin.command:
+        cmd: python3 -m venv "{{ download_data }}/{{ data2 }}/virtualenv"
+      args:
+        creates: "{{ download_data }}/{{ data2 }}/virtualenv"
+
+    - name: install irdata
+      ansible.builtin.command:
+        cmd: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python3 -m pip install irdata"  
+
+##### Parsing the job "Athelian"
+- With the knowledge that the smaller version of the playbook which I made earlier works, I can adjust the process of parsing "Athelian
+- Figuring out how to get the job “Athelian” to get parsed and get passed the error 
+
+
+#### Thursday (23/05/2024)
  
+##### Running the irparse playbook
+- Running the jobs one by one, fixing the easy errors and logging the harder errors. 
+
+ 
+#### Friday (24/05/2024)
+
+##### Fixing a parsing error
+- Investigating the error: mkdir: cannot create directory '/home/elias.steyaert/.ansible/tmp/ansible-tmp-1716456592.068384-36656-83367091344262': No space left on device
+- This was fixed with making an ansible.cfg file with the code “remote_tmp = /mnt/disks/data 
+- Investigating the error: "sh: 1: Syntax error: Unterminated quoted string" 
+
+
+## Week 6
+#### Monday (27/05/2024)
+
+##### Fixing the parsing step of the job “refseq” 
+- The error "sh: 1: Syntax error: Unterminated quoted string" occured and looking for a fix for that
+- Figuring out how the irparallel script works 
+
+
+#### Tuesday (28/05/2024)
+
+##### Getting the irparallel script to work together with the jobs genpept, refseq and uniprot. 
+- The interpreter and the irparallel together caused an annoying error. 
+- To fix the error (specifically for refseq first), the following block of code was added to the irparallel script:
+COMMAND=$1 
+EXPLODED=($COMMAND) 
+EXENAME=$(echo ${EXPLODED[0]} | sed 's/\"//g') 
+if [[ $(basename $EXENAME .py) == $(basename $EXENAME) ]]; then  
+ COMMAND2="$COMMAND" 
+else 
+ REST="\"$(echo ${EXPLODED[@]:1} | sed 's/\"//g')\"";  
+ COMMAND2="$USE_PYTHON_INTERPRETER ${EXPLODED[0]} $REST" 
+fi 
+
+
+#### Wednesday (29/05/2024)
+
+##### Using the fixed script for refseq to get the UniProt and GenPept parsing working  
+- Running the GenPept parsing step while trying to get the UniProt parsing step working 
+- Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. Which is hard because the basis of the command is a whole lot bigger with an extra pipeline and two python scripts instead of one
+
+
+#### Thursday (29/05/2024)
+
+##### Using the fixed script for refseq to get the UniProt and GenPept parsing working  
+- Running the GenPept parsing step while trying to get the UniProt parsing step working 
+- Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. 
+
+
+#### Friday (30/05/2024)
+##### Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. 
+- Not succeeding at this and deciding to start all over again, just before the step where the python interpreter starts getting used. Cleaning up the files were there are traces of the usage of a virtual environment 
+
+
+ 
+
+ 
+
+
 
 
 
