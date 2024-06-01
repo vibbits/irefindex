@@ -167,6 +167,26 @@ After the /mnt/disks/data was set-up, the playbook could be played from my VM on
 - Trying little things like installing pip into the environment, even though it should be already there
 
 
+#### Thursday 16/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Making a smaller version of the ansible playbook where the same error occurs so it’s easier to try to get the error out of the script. To test this, an ansible playbook was made(.yml). This playbook executed a bash script (.sh) which on it's part executed a python script (.py) where the irdata module could be found in. 
+- Trying multiple things to fix the script but failing so. 
+
+
+#### Friday (17/05/2024)
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to get all the jobs running 
+
+##### Downloading the "mint" database
+- Making a sources2.yml where only mint is present so it can be downloaded quicker and the errors are better logged.
+- Making the download work after seeing where the error occurs (the link had to be updated).
+
+
+ 
+
+
 
 
 
