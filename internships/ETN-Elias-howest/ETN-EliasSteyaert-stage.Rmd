@@ -127,8 +127,11 @@ Connecting to the instance.
 
 ##### Problem-solving new problems the Irparse playbook brings with it
 - Creating a "for loop" to get the python interpreter into the scripts which need the environment to solve “from irdata import data ModuleNotFoundError: No module named 'irdata'” 
-- for filename in $(grep -rl "TOOLS" ./usr/bin/* | sort | uniq); do cat "$filename" | sed "s|\(\$TOOLS/.*.py\)|\${USE_PYTHON_INTERPRETER}\" \"\1|g" > "$filename.tmp" && mv "$filename.tmp" "$filename"; done
-
+```bash
+for filename in $(grep -rl "TOOLS" ./usr/bin/* | sort | uniq); do 
+cat "$filename" | sed "s|\(\$TOOLS/.*.py\)|\${USE_PYTHON_INTERPRETER}\" \"\1|g"
+> "$filename.tmp" && mv "$filename.tmp" "$filename"; done
+```
 
 #### Thursday 09/05/204
 
@@ -210,6 +213,7 @@ After the /mnt/disks/data was set-up, the playbook could be played from my VM on
 ##### Fixing the irpase playbook
 - Finally fixing the irparse playbook so the "irmodule irdata could not be found" error is solved
 - Piece of code that installed the irdata, with this solution, every .sh script where irdata is being used needs to be in the virtual environment:
+```bash
     - name: Ensure python3-venv and python3-pip are installed
       ansible.builtin.apt:
         name:
@@ -226,6 +230,7 @@ After the /mnt/disks/data was set-up, the playbook could be played from my VM on
     - name: install irdata
       ansible.builtin.command:
         cmd: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python3 -m pip install irdata"  
+```
 
 ##### Parsing the job "Athelian"
 - With the knowledge that the smaller version of the playbook which I made earlier works, I can adjust the process of parsing "Athelian
@@ -242,9 +247,14 @@ After the /mnt/disks/data was set-up, the playbook could be played from my VM on
 
 ##### Fixing a parsing error
 - Investigating the error: mkdir: cannot create directory '/home/elias.steyaert/.ansible/tmp/ansible-tmp-1716456592.068384-36656-83367091344262': No space left on device
-- This was fixed with making an ansible.cfg file with the code “remote_tmp = /mnt/disks/data 
-- Investigating the error: "sh: 1: Syntax error: Unterminated quoted string" 
-
+- This was fixed with making an ansible.cfg file with the code 
+```bash 
+“remote_tmp = /mnt/disks/data 
+```
+- Investigating the error: 
+```bash
+"sh: 1: Syntax error: Unterminated quoted string" 
+```
 
 ## Week 6
 #### Monday (27/05/2024)
@@ -259,6 +269,7 @@ After the /mnt/disks/data was set-up, the playbook could be played from my VM on
 ##### Getting the irparallel script to work together with the jobs genpept, refseq and uniprot. 
 - The interpreter and the irparallel together caused an annoying error. 
 - To fix the error (specifically for refseq first), the following block of code was added to the irparallel script:
+```bash
 COMMAND=$1 
 EXPLODED=($COMMAND) 
 EXENAME=$(echo ${EXPLODED[0]} | sed 's/\"//g') 
@@ -268,7 +279,7 @@ else
  REST="\"$(echo ${EXPLODED[@]:1} | sed 's/\"//g')\"";  
  COMMAND2="$USE_PYTHON_INTERPRETER ${EXPLODED[0]} $REST" 
 fi 
-
+```
 
 #### Wednesday (29/05/2024)
 
@@ -287,17 +298,6 @@ fi
 #### Friday (30/05/2024)
 ##### Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. 
 - Not succeeding at this and deciding to start all over again, just before the step where the python interpreter starts getting used. Cleaning up the files were there are traces of the usage of a virtual environment 
-
-
- 
-
- 
-
-
-
-
-
-
 
 
 
@@ -353,15 +353,3 @@ Normally, all this should be done in the traineeship and its 250 hours. Nothing 
 - Achievable: As I’m working daily with ansible for my traineeship, I should be able to achieve this goal.
 - Relevant: In the context of the traineeship, this learning outcome is relevant.
 - Time-bound: This should be achieved by the end of the traineeship.
-
-
-
-
-
-
-
-
-
-
-
-
