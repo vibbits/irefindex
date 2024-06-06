@@ -70,7 +70,7 @@ for FILENAME in $FILENAMES; do
             | "$SCRIPTS/irparallel" "$TOOLS/irdata_altsplit.py \"$FILENAME\" {} \"$PROCESSES\" | $TOOLS/irdata_parse_uniprot.py \"$DATADIR\" - \"${LEAFNAME}_%s-{}.txt\""
 
         #for rank in $(seq 0 $((PROCESSES - 1))); do
-        #    cmd="\"$TOOLS/irdata_altsplit.py\" \"$FILENAME\" \"$rank\" \"$PROCESSES\" | \"${USE_PYTHON_INTERPRETER}\" \"$TOOLS/irdata_parse_uniprot.py\" \"$DATADIR\" - \"${LEAFNAME}_%s-$rank.txt\""
+        #    cmd="\"$TOOLS/irdata_altsplit.py\" \"$FILENAME\" \"$rank\" \"$PROCESSES\" | \"$TOOLS/irdata_parse_uniprot.py\" \"$DATADIR\" - \"${LEAFNAME}_%s-$rank.txt\""
         #    echo "Executing: $cmd"  # Debug: print the command being executed
         #    "$SCRIPTS/irparallel" "$cmd"
         #done
