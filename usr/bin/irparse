@@ -23,6 +23,8 @@ else
     . 'irdata-config'
 fi
 
+echo "does it get till here 1"
+
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
 Usage: $PROGNAME [ --fix | --check | --no-parse ] ( --all | <source>... )
@@ -39,6 +41,8 @@ $EXCLUDEDSOURCES
 EOF
     exit 1
 fi
+
+echo "does it get till here 2"
 
 if [ "$1" = '--fix' ]; then
     FIX=$1
@@ -64,6 +68,9 @@ elif [ ! "$SOURCES" ]; then
     exit 1
 fi
 
+
+echo "does it get till here 3"
+
 # Exclude sources.
 
 PARSESOURCES=
@@ -76,3 +83,5 @@ done
 
 # The pipeline.
 "$SCRIPTS/argument-per-line" $PARSESOURCES | "$SCRIPTS/irparallel" "\"$SCRIPTS/irparse-source\" $FIX $CHECK $NO_PARSE {}"
+
+echo "does it get till here 4"

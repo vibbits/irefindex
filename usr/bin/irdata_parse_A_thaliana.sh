@@ -23,6 +23,8 @@ else
     . 'irdata-config'
 fi
 
+echo "does it get till here 5"
+
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
 Usage: $PROGNAME <output data directory> <filename>
@@ -59,3 +61,5 @@ echo "$DATADIR/$OUTFILE" 1>&2
 zcat "$FILENAME" \
 | "$TOOLS/irdata_parse_A_thaliana2.py" "$FILETYPE" --discard-ill-formed \
 > "$DATADIR/$OUTFILE"
+
+echo "does it get till here 6"

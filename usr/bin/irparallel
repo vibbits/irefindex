@@ -44,6 +44,7 @@ fi
 COMMAND=$1
 
 # Make sure that certain arguments are defined.
+
 if [ ! "$COMMAND" ]; then
     echo "$PROGNAME: Please specify a command to run on each file (to be given as {})." 1>&2
     exit 1
@@ -51,4 +52,4 @@ fi
 
 # The pipeline.
 
-xargs -P $PROCESSES $XARGS_I'{}' sh -c "$COMMAND2"
+xargs -P $PROCESSES $XARGS_I'{}' sh -c "$COMMAND"

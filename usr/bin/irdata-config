@@ -1,11 +1,5 @@
 #!/bin/bash
 
-
-
-############################################################
-# My own environments
-
-
 ############################################################
 # Output and publication options.
 # (RELEASE is most likely to need changing.)
@@ -708,6 +702,7 @@ if [ "$1" = '--inspect-only' ]; then
     shift 1
 fi
 
+
 # Tools.
 
 if [ -e "$SCRIPTS/../tools" ]; then
@@ -768,7 +763,7 @@ fi
 # Data directory.
 
 SYSDATA="$SYSPREFIX/var/lib/irdata/data"
-echo "marker1 $DATA"
+
 if [ "$DATA" ] && [ -e "$DATA" ]; then
     :
 elif [ -e "$SCRIPTS/../data" ]; then
@@ -779,7 +774,6 @@ else
     DATA="$SYSDATA"
 fi
 
-echo "marker $DATA"
 
 if [ ! -e "$DATA" ] && [ ! "$INSPECTONLY" ]; then
     echo "Cannot locate the irdata data directory." 1>&2
@@ -788,7 +782,7 @@ fi
 
 # Log file directory.
 
-SYSLOGS="$SYSPREFIX/var/log/irdata"
+SYSLOGS="$DATAPREFIX/var/log/irdata"
 
 if [ -e "$SCRIPTS/../logs" ]; then
     LOGS=`realpath "$SCRIPTS/../logs"`
@@ -797,6 +791,7 @@ elif [ ! "$SYSPREFIX" ]; then
 else
     LOGS="$SYSLOGS"
 fi
+
 
 if [ ! -e "$LOGS" ] && [ ! "$INSPECTONLY" ]; then
     echo "Cannot locate the irdata logs directory." 1>&2
