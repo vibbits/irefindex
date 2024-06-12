@@ -24,8 +24,6 @@ else
     . 'irdata-config'
 fi
 
-echo "does it get till here 5.05"
-
 if [ "$1" = '--help' ]; then
     cat 1>&2 <<EOF
 Usage: $PROGNAME [ --check | --no-parse ] <source>
@@ -203,5 +201,3 @@ else
     echo "$PROGNAME: Source $SOURCE did not provide any data." 1>&2
     exit 1
 fi
-
-echo "does it get till here 5.1"
