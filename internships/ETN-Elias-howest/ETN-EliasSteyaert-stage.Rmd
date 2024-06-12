@@ -377,7 +377,9 @@ when: item.name == "uniprot"
 
 
 #### Wednesday (12/06/2024)
-#####Working on powerpoint presentation 
+##### Working on powerpoint presentation 
+- Presenting this ppt and answering questions about the project
+- Going over the evaluation report together with James Collier (supervisor)
 
 ##### adding code in irinit 
 - This is done so the data from irimport is written on the disk and not in the home directory (adjusting the postgresql.conf file through ansible so its automated) 
