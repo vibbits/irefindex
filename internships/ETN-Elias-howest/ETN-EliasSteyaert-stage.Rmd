@@ -299,6 +299,92 @@ fi
 ##### Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. 
 - Not succeeding at this and deciding to start all over again, just before the step where the python interpreter starts getting used. Cleaning up the files were there are traces of the usage of a virtual environment 
 
+## Week 7
+#### Monday (03/06/2024)
+##### Running into an error while running irparse.yml
+- Cannot locate the irdata logs directory.  
+- the problem could be tracked down with "grep -r" till it could be concluded that it occured here:
+```bash
+if [ ! -e "$LOGS" ] && [ ! "$INSPECTONLY" ]; then echo "Cannot locate the irdata logs directory." 1>&2 exit 1 fi 
+```
+it was trying to write to a directory that didn’t exist. 
+- solution, changing the $LOGS into a directory that does exist (on the mnt disk)
+- Cleaning the playbooks up so all the signs to an external environment are gone 
+
+ 
+#### Tuesday (04/06/2024)
+##### Running into an error while running irparse.yml
+- cannot create directory ‘/home/elias.steyaert/.ansible/tmp/ansible-tmp-1717502869.8542364-50434-182160768545910’: No space left on device 
+Making another ansibl.cfg file but now on a different directory so that directory does also have a config file
+- Irparse didn’t work, no error or message on why it was happening -> in irparallel there was a variable being used which didn’t exist anymore 
+
+##### manual QC for the refseq parsing step
+- Following the parsing step of the refseq database to make up a conclusion if everything is parsed or not 
+
+
+#### Wednesday (05/06/2024)
+##### Running irimport
+- Running irimport for the first time, first with all the jobs at once, after that only with the Athaliana  
+- Rapidly showing new errors
+
+
+#### Thursday (06/06/2024)
+##### Trying to download “gene”
+- Which constantly fails or gives error messages like: Can’t find the job” while all the right things are included. 
+
+##### The "/" directory was full again, this time not because of temporary files
+- Figuring out a good CLI command to find the right output to see where the largest files are: 
+```bash
+sudo du -hS / | grep -v "^/mnt" | sort -h -r | head -n 25 | more 
+```
+- The problem was a random /tmp file in the /home/irefindex/usr/bin directory
+
+
+#### Friday (07/06/2024)
+##### Checking for each downloaded source that everything is downloaded 
+- This is done manually, the size ("ls -lh" into the downloaded folder) is compared with how big the databases are online (the source)
+- Trying to succesfully download Uniprot, which always stops at a maximum of 16G. Trying to adjust the custom settings of the job without succeeding 
+
+
+## Week 8
+#### Monday (10/06/2024)
+##### Trying to get the database Uniprot fully downloaded, as of now it always stops around 16GB of the 171GB. 
+- For example tried the code:
+```bash
+# Run jobs for uniprot 
+- name: Run jobs for uniprot 
+ansible.builtin.command: "./irdownload {{ item.name | upper }}" 
+args: 
+chdir: "/home/irefindex/usr/bin" 
+async: "{{ item.download_runner_async | default(2000) }}" 
+poll: 0 
+register: result 
+retries: "{{ item.download_retries | default(60) }}" 
+until: result.finished 
+delay: "{{ item.download_delay | default(100) }}" 
+loop: "{{ jobs }}" 
+when: item.name == "uniprot" 
+```
+- It finally went on to download all the GB's, let this run in a tmux session because downloading 172GB takes its time
+
+
+#### Tuesday (11/06/2024)
+##### Adjusting the playbook so the parsing of Uniprot can’t be timed-out by ansible. 
+- Parsing the Uniprot data, this took more than 24 houres and so was done in a tmux session
+
+#### Parsing Uniprot and trying to run irimport
+- Running irimport on the jobs that were succesfull after downloading and parsing and having a look what goes wrong (the data gets written to the “/” disk instead on a disk with more space) 
+
+
+#### Wednesday (12/06/2024)
+#####Working on powerpoint presentation 
+
+##### adding code in irinit 
+- This is done so the data from irimport is written on the disk and not in the home directory (adjusting the postgresql.conf file through ansible so its automated) 
+
+
+
+
 
 
 
