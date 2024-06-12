@@ -136,6 +136,3 @@ if __name__ == "__main__":
         sys.exit(1)
 
 # vim: tabstop=4 expandtab shiftwidth=4
-
-
-print("does it get till here 7")
