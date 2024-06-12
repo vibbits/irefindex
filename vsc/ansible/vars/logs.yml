@@ -1,3 +1,4 @@
 date: "{{ ansible_date_time.iso8601_basic }}"
-logs_root_dir: "/data/irdata/logs"
+download_data: "/mnt/disks/data/"      # The directory linked to /dev/sda
+logs_root_dir: "{{ download_data }}/data/irdata/logs"
 logs_dir: "{{ logs_root_dir }}/{{ date }}"
