@@ -68,6 +68,58 @@
         name: postgresql
         state: started
 
+    - name: Ensure data directory exists
+      file:
+        path: /mnt/disks/data/var/lib/postgresql/14/main
+        state: directory
+        owner: postgres
+        group: postgres
+        mode: '0777'
+
+    - name: Ensure stats temp directory exists
+      file:
+        path: /mnt/disks/data/var/run/postgresql/14-main.pg_stat_tmp
+        state: directory
+        owner: postgres
+        group: postgres
+        mode: '0777'
+
+    - name: Ensure PostgreSQL instance is stopped before changing configuration
+      service:
+        name: postgresql@14-main
+        state: stopped
+
+    - name: Ensure specific settings are set in postgresql.conf
+      ansible.builtin.lineinfile:
+        path: /etc/postgresql/14/main/postgresql.conf
+        regexp: '^#?\s*{{ item.setting_name }}\s*='
+        line: "{{ item.setting_name }} = '{{ item.desired_value }}'"
+        state: present
+      loop:
+        - { setting_name: 'data_directory', desired_value: '/mnt/disks/data/var/lib/postgresql/14/main' }
+        - { setting_name: 'stats_temp_directory', desired_value: '/mnt/disks/data/var/run/postgresql/14-main.pg_stat_tmp' }
+    
+    - name: Ensure PostgreSQL data directory exists and is empty
+      become: true
+      become_user: postgres
+      shell: rm -rf /mnt/disks/data/var/lib/postgresql/14/main/*
+      ignore_errors: yes  # Ignore errors if the directory is already empty
+
+    - name: Initialize PostgreSQL data directory
+      become: true
+      become_user: postgres
+      command: /usr/lib/postgresql/14/bin/initdb -D /mnt/disks/data/var/lib/postgresql/14/main
+
+    - name: Ensure PostgreSQL instance is running
+      service:
+        name: postgresql@14-main
+        state: started
+
+    - name: Restart PostgreSQL
+      service:
+        name: postgresql@14-main
+        state: restarted
+
     - name: Ensure 'root' user exists with superuser privileges
       community.postgresql.postgresql_user:
         name: root
@@ -96,16 +148,6 @@
       ansible.builtin.command: "createdb irdata{{ release_major }}"
       when: irdata_db.rowcount == 0
       changed_when: true
-
-    - name: Ensure specific settings are set in postgresql.conf
-      lineinfile:
-        path: /etc/postgresql/14/main/postgresql.conf
-        regexp: '^#?{{ item.setting_name }}\s*='
-        line: '{{ item.setting_name }} = {{ item.desired_value }}'
-        state: present
-      with_items:
-        - { setting_name: 'data_directory', desired_value: '/mnt/disks/data/var/lib/postgresql/14/main' }    #CHANGE THIS TO THE DISK YOU WANT TO WRITE IT TO
-        - { setting_name: 'stats_temp_directory', desired_value: '/mnt/disks/data/var/run/postgresql/14-main.pg_stat_tmp'}     #CHANGE THIS TO THE DISK YOU WANT TO WRITE IT TO
 
     - name: Restart PostgreSQL service
       service:
