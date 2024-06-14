@@ -55,10 +55,6 @@
       no_log: true
       loop: "{{ all_directories.files }}"
 
-    - name: wtf as in existing dirs
-      ansible.builtin.debug:
-        msg: "existing_dirs {{ existing_dirs is defined }}"
-
     - name: Gather all directory contents
       ansible.builtin.find:
         paths: "{{ item.path }}"

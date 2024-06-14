@@ -5,12 +5,11 @@
   become: true
   vars_files:
     - ./vars/logs.yml
-    - ./vars/sources3.yml
+    - ./vars/sources.yml
     - ./vars/general.yml
 
   vars:
     log_location: "{{ logs_dir }}/irparse"
-    USE_PYTHON_INTERPRETER: "{{ python_interpreter | default('/usr/bin/python3') }}"
     local_source_directory: "/home/guest/internship/stage-VIB-irefindex/usr/bin"  # Directory containing the files on your local machine
     remote_destination_directory: "/home/irefindex/usr/bin"  # Destination directory on the remote machine
 
@@ -33,25 +32,7 @@
     #    src: "{{ local_source_directory }}{{ item }}"
     #    dest: "{{ remote_destination_directory }}/{{ item }}"
     #    mode: 'u+x,g+x,o+x'
-    #  with_items: "{{ local_files_list.stdout_lines }}"
-
-    - name: Ensure python3-venv and python3-pip are installed
-      ansible.builtin.apt:
-        name:
-          - python3-venv
-          - python3-pip
-        state: present
-
-    - name: Create virtual environment
-      ansible.builtin.command:
-        cmd: python3 -m venv "{{ download_data }}/{{ data2 }}/virtualenv"
-      args:
-        creates: "{{ download_data }}/{{ data2 }}/virtualenv"
-
-    - name: install irdata
-      ansible.builtin.command:
-        cmd: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python3 -m pip install irdata"  
-      
+    #  with_items: "{{ local_files_list.stdout_lines }}"    
 
 #THIS DOESN'T WORK YET BUT IS NEEDED FOR REPRODUCIBILTY
    # - name: Find files containing "TOOLS"
@@ -70,7 +51,6 @@
    #     executable: /bin/bash
    #   when: found_files.matched > 0    
 
-
 # NEEDED FOR REPRODUCIBILTY, WORKS BUT TAKES A WHILE SO ITS COMMENTED
    # - name: Find .sh and .py files
    #   find:
@@ -84,13 +64,18 @@
    #     mode: u+x,g+x,o+x
    #   loop: "{{ files_to_update.files }}"
 
+    - name: Ensure pip is installed
+      package:
+        name: python3-pip
+        state: present
+
+    - name: Install irdata using pip with --break-system-packages
+      command: pip3 install --break-system-packages irdata
+
     - name: Parse downloads for each source 
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
-      #ansible.builtin.command: "./echoscript {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
-      environment:
-        python_interpreter: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python3"
       changed_when: false
       poll: 0
       async: "{{ item.parse_async | default(60) }}"
@@ -100,15 +85,12 @@
     - name: Wait for all jobs to complete
       ansible.builtin.async_status:
         jid: "{{ item.ansible_job_id }}"
-      environment:
-        python_interpreter: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python3"
       register: job_result
       until: job_result.finished
       ignore_errors: true
-      retries: "{{ item.item.parse_retries | default(12) }}"
-      delay: "{{ item.item.parse_delay | default(5) }}"
+      retries: "{{ item.item.parse_retries | default(120) }}"
+      delay: "{{ item.item.parse_delay | default(50) }}"
       loop: "{{ job_result.results }}"
-      become: yes
         
     - name: Debug job_result
       ansible.builtin.debug:
