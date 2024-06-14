@@ -536,3 +536,13 @@ I don't ask the same question twice and I ask for help when needed
 ### Internal aspects
 - We never really got introduced to the other collegues, as their desks were 2 floors above us. We could rely on James Collier (our second supervisor) at all times, Mr. Collier worked from home but we were able to communicate through chat or teams meetings very easily.
 - We saw Alexander Botzki (our main supervisor) on average once a day, except when he was abroad for congresses which was in total for 10 days. He almost never had a lot of time but was always happy to help us or give hints to proceed on the project
+
+### Planning
+- Week 1: Getting to know the project, getting an VSC account and finding out a way to set up a working VPN 
+- Week 2: Setting up the infrastructure, running the terraform and running the first ansible playbook (main1) 
+- Week 3: Getting the first playbook fully ran and starting the second playbook (main2) 
+- Week 4: working on the second playbook to make it work 
+- Week 5: getting the second playbook fully ran 
+- Week 6: starting over and running the first playbook again. Using a different approach 
+- Week 7: Monitoring if the downloads are OK, if so, starting the parsing 
+- Week 8: Expanding the disk and trying to import the data with the third playbook (main3) 
