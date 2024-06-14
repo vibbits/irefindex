@@ -384,17 +384,15 @@ when: item.name == "uniprot"
 ##### adding code in irinit 
 - This is done so the data from irimport is written on the disk and not in the home directory (adjusting the postgresql.conf file through ansible so its automated) 
 
-
-
-
-
-
+### Self-assesment of the intermediate evaluation
+- There were a lot of negative points, which I agree with. It was a rough start and I didn't have the right problem-solving skills to solve the issues that were on my path. I had to ask a lot of times when I got stuck to being helped out. Most of the times I waited too long to ask for help since I didn't want my question to be embarrasingly easy to solve.
 
 ### Trainee documentation plan (TDP)
 
 #####Tentative planning:
-Which tasks will be performed during the traineeship (briefly)?
-The main task of this internship is to go look at all the steps involved in the iRefIndex pipeline. This pipeline is like a big system for gathering and organizing information about how proteins interact with each other. It collects data from different places and puts it all together in one place. By going through each part of this process, we want to improve the automatization of using this dataset. That means fewer mistakes and quicker fixes if something goes wrong. This helps other users to get the protein interaction data they need faster and with fewer errors.
+The main task of this internship is to go look at all the steps involved in the iRefIndex pipeline. This pipeline is like a big system for gathering and organizing information about how proteins interact with each other. It collects data from different sources and puts it all together in one place. By going through each part of this process, we want to improve the automatization of using this dataset. That means fewer mistakes and quicker fixes if something goes wrong. This helps other users to get the protein interaction data they need faster and with fewer errors. 
+
+The main goal is to fix the pipeline that is coded with ansible and automate it further so when a person wants to update the iRefIndex after me, it goes way smoother and it shouldn’t run into problems. Normally the environment should be made with Terraform and the Vlaamse Supercomputer, but this didn’t work out as previously thought it would work. The task to create the infrastructure got changed that way. It changed from using the Vlaamse Supercomputer as an instance to using google cloud as the instance and work around with that. 
 
 ##### Data management: 
 Use the FAIR principle (Table 2) as a guide to store and structure your data.
@@ -417,27 +415,134 @@ The code will be stored in my own GitHub repository which is a clone of the fork
 How will the repository be made available for the internal and external supervisors?
 The status of the repository is set on public. Everyone can see the code on my GitHub repository.
 
+``` 
+The Learning Outcome (LO) 
 
-### The Learning Outcome (LO)
+Development goal: 
 
-##### Development goal:
-Trying to learn/become better at using ansible so I can automate processes easier.
+Understanding the iRefIndex, what it does, what it is used for and why it is an important tool.  
 
-##### Development activity:
-I will be working with ansible playbooks, find errors and parts of it that don’t work properly and fix them so it can be more automated.
+The second goal is to update the iRefIndex, in a way that it is automated for the next time it has to be updated. Not only the iRefIndex must be automated, but the infrastructure that is used to execute the pipeline of building the iRefIndex must be automated aswell. 
 
-##### Desired results:
-Being able to make a fully running ansible playbook so that other users don’t have to do anything except to run the playbook.
+Every error that occurs must be handled in a way that nothing gets hardcoded but that the individual steps are coded so that. 
 
-##### Schedule:
-These activities will be performed throughout the internship (on daily basis).
+Trying to learn/become better at using ansible and terraform (these are the main tools that are used to automate the pipeline and the infrastructure) so I can automate processes easier. 
 
-##### Necessary support and facilities:
-Normally, all this should be done in the traineeship and its 250 hours. Nothing should be bought for this goal to be achieved.
+Development activity: 
 
-##### SMART-principle:
-- Specific: learning how to use ansible and make my own playbooks.
-- Measurable: At the end of the traineeship I should be able to make my own working ansible playbook.
-- Achievable: As I’m working daily with ansible for my traineeship, I should be able to achieve this goal.
-- Relevant: In the context of the traineeship, this learning outcome is relevant.
-- Time-bound: This should be achieved by the end of the traineeship.
+I will be working with ansible playbooks and code from terraform. I will also read about it on the internet to get more insights and information. On my internship I will find errors and parts of it that don’t work properly and fix them so it can be more automated. 
+
+I will recreate and make my own smaller versions of the playbooks and code so that when an error occurs, I can fix it in smaller environments instead of going through the whole playbook. 
+
+Desired results: 
+
+Being able to make a fully running ansible playbook so that other users don’t have to do anything except to run the playbook. 
+
+Being better at finding where the error occurs and at general problem-solving. Also to have more knowledge about iRefIndex, ansible and terraform. 
+
+Schedule: 
+
+These activities will be performed throughout the internship (on daily basis). I will start to use Terraform first to create the infrastructure. While doing this I will see how the infrastructure as code works and how the code defines the infrastructure. 
+
+After that I will be using ansible to build and perfect the pipeline to update the iRefIndex. I will have a lot of problem-solving to do there and see the different techniques to use for the problem-solving itself. 
+
+Necessary support and facilities: 
+
+Normally, all this should be done in the traineeship and its 295 hours. Nothing should be bought for this goal to be achieved.  
+
+SMART-principle: 
+
+Specific: First learning how to create an infrastructure, what it is and why all the different features are important. Learning how to use ansible and make my own playbooks. 
+
+Measurable: At the end of the traineeship, I should be able to make my own working ansible playbook, see how errors occur more rapidly and being able to create a good instance with the correct amount of volume. 
+
+Achievable: As I’m working daily with ansible for my traineeship, I should be able to achieve this goal. I should be able to accomplish this before the internship ends so I can end the internship with a full product 
+
+Relevant: In the context of the traineeship, this learning outcome is relevant. But it is also relevant for later as it is a great tool to work with and easy to use since it is with human-readable code and it is always handy to automate as much as possible. 
+
+Time-bound: This should be achieved by the end of the traineeship. But it would be excellent if it is already achieved at the first half of the internship. 
+ 
+
+Result: 
+
+I wasn’t able to update the iRefIndex due to a lot of difficulties and problems. I was able to give insights and better the pipeline till where I ended up.  
+```
+
+### My interpretation of the evaluation excel sheet
+```
+The student writes, adjusts or uses code on the command line to process (biological) data, to create or manipulate a database structure, to create a (web) interface, … independent of the programming language	
+Good	"Through reading the code in the scripts, I was able to perform the tasks in the scripts through CLI, for example: 
+curl ""$CURL_OPT"" ""$RELEASE_URL"" -o ""$DATADIR/$DOWNLOAD""
+curl -L https://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/complete/ -o /mnt/disks/data/dataext/data19/UniProt"
+
+The code is written in an elegant way, is not redundant and/or makes use of loop structures and functions where possible	
+Sufficient	
+There are some parts that could be left out or more clear, but at the end of the day, every part of the script has a clear name and it is visible what that specific code does
+
+The student adjusts an analysis pipeline or script in a correct way, with eye for detail, with the goal to apply the pipeline or script within a new research context or on new data	
+Good	
+The pipeline to build iRefIndex was analysed and adjusted where it had to be without creating different problems 
+
+The student is able to work with files containing data, to read data and write data to new files, to filter and/or transform data, … and to check the data for correctness	
+Good	
+The basics to work with files are met. Checking the data for correctness was for example done at the end to check if everything was parsed alright
+
+The student can deposit data in a (relational) database system and/or can query a database system, whether or not by using a programming language	
+Limited	
+The howto for this is very limited, I can do the basics but answering questions about this is difficult
+
+The student creates a (relational) database system and/or creates a directory structure to store and organize (biological) data to be able to efficiently select data from the database/directory structure	
+Good	
+The repository looks clean and is well organised without things that shouldn't be there
+
+The student makes use of (dynamic) programming to develop an interface to visualize, analyse or store (biological) data, independent of the programming language	
+NA	
+
+The student looks independently for new possibilities to program more efficiently, to store, organize or process data, to analyze data, ... and is able to apply the new techniques, with or without results	
+Limited	
+There are a lot of new things being tried out, but these are never of a high level (and mostly don't work so something else has to be tried)
+
+The student learns new programming and data processing techniques to store select, organize or analyze biological data in a more efficient way	
+Sufficient	
+I work with postgresql but my knowledge to operate this is not super advanced, I can follow the steps to use this and after asking help I can change the config file
+
+The student knows and spontaneously applies the rules to protect non-public data	
+NA	
+
+The student searches for and compares various programming and data processing techniques and has insight into the advantages and disadvantages of the different techniques	
+Sufficient	
+I know about the different tools to use but I don't really know about the differences between and which one has a bigger advantage over the other, I just know the positive sides of the tools, not the downsides
+
+The student himself can select the appropriate programming language or software to process data on the basis of advantages and disadvantages	
+Sufficient	
+I know about the different tools to use but I don't really know about the differences between and which one has a bigger advantage over the other, I just know the positive sides of the tools, not the downsides
+
+The student combines programming skills with computer science knowledge and bioinformatics techniques to solve a (biological) research question, but the focus of the project remains on the bioinformatics aspect 	
+Sufficient	
+The project is IT heavy combined with bioinformatics, I could use my bio-informatics part of the education well and the linux skills
+
+The student can use his knowledge from multiple disciplines to summarize results in a scientifically correct way and to make a conclusion for the project	
+NA	
+
+The student organizes his code, information and documents in an orderly manner, uses comments to document code, keeps track of results in an (electronic) lab notebook and/or uses version control (e.g. GIT)	
+Excellent	
+My ETN is uptodate, I pushed my commits and the commits are clear of what happened when pushed. Everything is organised.
+
+The student works fluently with colleagues, helps or asks for help wherever possible or needed, does more than just the bare minimum, …	
+Excellent	
+I don't ask the same question twice and I ask for help when needed
+```
+
+### Internal aspects
+- We never really got introduced to the other collegues, as their desks were 2 floors above us. We could rely on James Collier (our second supervisor) at all times, Mr. Collier worked from home but we were able to communicate through chat or teams meetings very easily.
+- We saw Alexander Botzki (our main supervisor) on average once a day, except when he was abroad for congresses which was in total for 10 days. He almost never had a lot of time but was always happy to help us or give hints to proceed on the project
+
+### Planning
+- Week 1: Getting to know the project, getting an VSC account and finding out a way to set up a working VPN 
+- Week 2: Setting up the infrastructure, running the terraform and running the first ansible playbook (main1) 
+- Week 3: Getting the first playbook fully ran and starting the second playbook (main2) 
+- Week 4: working on the second playbook to make it work 
+- Week 5: getting the second playbook fully ran 
+- Week 6: starting over and running the first playbook again. Using a different approach 
+- Week 7: Monitoring if the downloads are OK, if so, starting the parsing 
+- Week 8: Expanding the disk and trying to import the data with the third playbook (main3) 
