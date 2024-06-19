@@ -14,56 +14,6 @@
     remote_destination_directory: "/home/irefindex/usr/bin"  # Destination directory on the remote machine
 
   tasks:    
-#COMMENTED BECAUSE DOING THIS ONCE IS ENOUGH
-    #- name: Set permissions on Ansible temporary directory
-    #  ansible.builtin.file:
-    #    path: "{{ home_dir }}/.ansible/tmp/"
-    #    state: directory
-    #    mode: "0755"
-    #    recurse: yes
-    #  become: yes
-
-    #- name: Get list of files in local source directory
-    #  shell: ls -1 {{ local_source_directory }}
-    #  register: local_files_list
-
-    #- name: Copy files to remote destination directory
-    #  ansible.builtin.copy:
-    #    src: "{{ local_source_directory }}{{ item }}"
-    #    dest: "{{ remote_destination_directory }}/{{ item }}"
-    #    mode: 'u+x,g+x,o+x'
-    #  with_items: "{{ local_files_list.stdout_lines }}"    
-
-#THIS DOESN'T WORK YET BUT IS NEEDED FOR REPRODUCIBILTY
-   # - name: Find files containing "TOOLS"
-   #   find:
-   #     paths: /home/irefindex/usr/bin/
-   #     patterns: "*"
-   #     recurse: yes
-   #   register: found_files
-#SAME AS THE COMMENT ABOVE, THESE BELONG TOGETHER
-   # - name: Iterate over found files
-   #   vars:
-   #     use_python_interpreter: "{{ USE_PYTHON_INTERPRETER }}"
-   #   ansible.builtin.shell: |
-   #     for filename in {{ found_files.files | map(attribute='path') | join(' ') }}; do sed "s|\(\$TOOLS/.*.py\)|{{ use_python_interpreter }}\" \"\1|g" "{{ filename }}" > "{{ filename }}.tmp" && mv "{{ filename }}.tmp" "{{ filename }}"; done
-   #   args:
-   #     executable: /bin/bash
-   #   when: found_files.matched > 0    
-
-# NEEDED FOR REPRODUCIBILTY, WORKS BUT TAKES A WHILE SO ITS COMMENTED
-   # - name: Find .sh and .py files
-   #   find:
-   #     paths: /home/irefindex/usr/bin
-   #     patterns: "*.sh,*.py"
-   #   register: files_to_update
-# SAME AS THE COMMENT ABOVE, THESE BELONG TOGETHER
-   # - name: Give execute permissions to .sh and .py files
-   #   file:
-   #     path: "{{ item.path }}"
-   #     mode: u+x,g+x,o+x
-   #   loop: "{{ files_to_update.files }}"
-
     - name: Ensure pip is installed
       package:
         name: python3-pip
