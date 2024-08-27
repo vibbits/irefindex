@@ -6,10 +6,11 @@
   vars_files:
     - ./vars/logs.yml
     - ./vars/sources.yml
+    - ./vars/general.yml
 
   vars:
     log_location: "{{ logs_dir }}/irunpack"
-    data_dir: "/home/irefindex/var/lib/irdata/data"
+    data_dir: "{{ download_data }}{{ data2 }}"
 
   tasks:
     - name: Install unzip
@@ -44,6 +45,10 @@
         recurse: true
       register: all_directories
 
+    - name: Initialise existing_dirs
+      ansible.builtin.set_fact:
+        existing_dirs: []
+
     - name: Convert directories to uniform format
       ansible.builtin.set_fact:
         existing_dirs: "{{ existing_dirs | default([]) + [item.path | regex_replace('_', '-') | lower | basename] }}"
@@ -68,7 +73,6 @@
     - name: Store all missing directories
       ansible.builtin.set_fact:
         failed_dirs: "{{ failed_dirs | default([]) + [item.name | lower] }}"
-      no_log: true
       when: item.name | regex_replace('_', '-') | lower not in existing_dirs
       loop: "{{ jobs }}"
 

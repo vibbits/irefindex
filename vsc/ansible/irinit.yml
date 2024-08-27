@@ -7,6 +7,10 @@
     - ./vars/general.yml
     - ./vars/logs.yml
 
+  vars:
+    local_source_directory: "/home/guest/internship/stage-VIB-irefindex"
+    remote_destination_directory: "/home/irefindex"
+
   tasks:
     - name: Install dependencies
       ansible.builtin.apt:
@@ -64,6 +68,58 @@
         name: postgresql
         state: started
 
+    - name: Ensure data directory exists
+      file:
+        path: /mnt/disks/data/var/lib/postgresql/14/main
+        state: directory
+        owner: postgres
+        group: postgres
+        mode: '0777'
+
+    - name: Ensure stats temp directory exists
+      file:
+        path: /mnt/disks/data/var/run/postgresql/14-main.pg_stat_tmp
+        state: directory
+        owner: postgres
+        group: postgres
+        mode: '0777'
+
+    - name: Ensure PostgreSQL instance is stopped before changing configuration
+      service:
+        name: postgresql@14-main
+        state: stopped
+
+    - name: Ensure specific settings are set in postgresql.conf
+      ansible.builtin.lineinfile:
+        path: /etc/postgresql/14/main/postgresql.conf
+        regexp: '^#?\s*{{ item.setting_name }}\s*='
+        line: "{{ item.setting_name }} = '{{ item.desired_value }}'"
+        state: present
+      loop:
+        - { setting_name: 'data_directory', desired_value: '/mnt/disks/data/var/lib/postgresql/14/main' }
+        - { setting_name: 'stats_temp_directory', desired_value: '/mnt/disks/data/var/run/postgresql/14-main.pg_stat_tmp' }
+    
+    - name: Ensure PostgreSQL data directory exists and is empty
+      become: true
+      become_user: postgres
+      shell: rm -rf /mnt/disks/data/var/lib/postgresql/14/main/*
+      ignore_errors: yes  # Ignore errors if the directory is already empty
+
+    - name: Initialize PostgreSQL data directory
+      become: true
+      become_user: postgres
+      command: /usr/lib/postgresql/14/bin/initdb -D /mnt/disks/data/var/lib/postgresql/14/main
+
+    - name: Ensure PostgreSQL instance is running
+      service:
+        name: postgresql@14-main
+        state: started
+
+    - name: Restart PostgreSQL
+      service:
+        name: postgresql@14-main
+        state: restarted
+
     - name: Ensure 'root' user exists with superuser privileges
       community.postgresql.postgresql_user:
         name: root
@@ -93,24 +149,51 @@
       when: irdata_db.rowcount == 0
       changed_when: true
 
+    - name: Restart PostgreSQL service
+      service:
+        name: postgresql
+        state: restarted
+
     - name: Install Git
       ansible.builtin.apt:
         name: git
         state: present
 
-    - name: Clone iRefIndex repository
-      ansible.builtin.git:
-        repo: https://github.com/vibbits/irefindex.git
-        dest: /home/irefindex
+    - name: Install rsync
+      ansible.builtin.apt:
+        name: rsync
+        state: present
 
+    - name: Copy the irefindex files from my local machine to the remote machine
+      ansible.builtin.synchronize:
+        src: "{{ local_source_directory }}/"
+        dest: "{{ remote_destination_directory }}"
+        delete: yes
+        rsync_opts:
+          - "--delete"
+
+    - name: Find all files in /home/irefindex/usr/bin
+      find:
+        paths: /home/irefindex/usr/bin
+        recurse: yes
+        file_type: file
+      register: files_to_update
+
+    - name: Set execute permissions on all files
+      file:
+        path: "{{ item.path }}"
+        mode: '0755'
+      loop: "{{ files_to_update.files }}"
+          
     - name: Create directories for irdata data
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
         mode: "0755"
       with_items:
-        - /home/irefindex/var/lib/irdata/data
-        - /home/irefindex/var/log/irdata
+        - "{{ download_data }}var/lib/irdata/data"
+        - "{{ download_data }}var/log/irdata"
+        - "{{ download_data }}/{{ data }}"
 
     - name: Run irinit
       ansible.builtin.command: ./irinit --init

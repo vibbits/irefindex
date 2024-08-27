@@ -23,7 +23,6 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import re
 
-
 class Parser:
 
     "A parser for UniProt Arabidopsis  format text files."

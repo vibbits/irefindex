@@ -1,0 +1,3 @@
+---
+- name: Run shellscript playbook
+  import_playbook: shellscript.yml

@@ -6,17 +6,23 @@
   vars_files:
     - ./vars/logs.yml
     - ./vars/sources.yml
+    - ./vars/general.yml
 
   vars:
     log_location: "{{ logs_dir }}/irparse"
+    local_source_directory: "/home/guest/internship/stage-VIB-irefindex/usr/bin"  # Directory containing the files on your local machine
+    remote_destination_directory: "/home/irefindex/usr/bin"  # Destination directory on the remote machine
 
-  tasks:
-    - name: Install irdata module
-      ansible.builtin.pip:
-        name: irdata
+  tasks:    
+    - name: Ensure pip is installed
+      package:
+        name: python3-pip
         state: present
 
-    - name: Convert the downloaded data to files for each source
+    - name: Install irdata using pip with --break-system-packages
+      command: pip3 install --break-system-packages irdata
+
+    - name: Parse downloads for each source 
       ansible.builtin.command: "./irparse {{ item.name | upper }}"
       args:
         chdir: "/home/irefindex/usr/bin"
@@ -32,10 +38,14 @@
       register: job_result
       until: job_result.finished
       ignore_errors: true
-      retries: "{{ item.item.parse_retries | default(12) }}"
-      delay: "{{ item.item.parse_delay | default(5) }}"
+      retries: "{{ item.item.parse_retries | default(120) }}"
+      delay: "{{ item.item.parse_delay | default(50) }}"
       loop: "{{ job_result.results }}"
-
+        
+    - name: Debug job_result
+      ansible.builtin.debug:
+        var: job_result
+        
     - name: "Ensure that `log_location` exists"
       ansible.builtin.file:
         path: "{{ log_location }}"

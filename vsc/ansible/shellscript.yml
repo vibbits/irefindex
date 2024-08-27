@@ -1,0 +1,84 @@
+---
+- name: shellscript
+  hosts: all
+  gather_facts: true # WE NEED THIS HERE FOR THE DATES FOR THE LOGS!
+  become: true
+  vars_files:
+    - ./vars/general.yml
+
+  vars:
+    local_source_directory: "/home/guest/internship/stage-VIB-irefindex/usr/bin"  # Directory containing the files on your local machine
+    remote_destination_directory: "/home/irefindex/usr/bin"  # Destination directory on the remote machine
+
+  tasks:
+    - name: Copy shellscript.sh from local to remote
+      ansible.builtin.copy:
+        src: "{{ local_source_directory }}/shellscript.sh"
+        dest: "{{ remote_destination_directory }}/shellscript.sh"
+        mode: u+x,g+x,o+x
+
+    - name: Copy pythonscript.py from local to remote
+      ansible.builtin.copy:
+        src: "{{ local_source_directory }}/pythonscript.py"
+        dest: "{{ remote_destination_directory }}/pythonscript.py"
+        mode: u+x,g+x,o+x
+
+    - name: Ensure python3-venv and python3-pip are installed
+      ansible.builtin.apt:
+        name:
+          - python3-venv
+          - python3-pip
+        state: present
+
+    - name: Create virtual environment
+      ansible.builtin.command:
+        cmd: python3 -m venv "{{ download_data }}/venv"  
+      args:
+        creates: "{{ download_data }}/venv"
+
+    - name: install irdata
+      ansible.builtin.command:
+        cmd: "{{ download_data }}/venv/bin/python3 -m pip install irdata"  
+
+    
+      #args:
+       # creates: "{{ download_data }}/venv/lib/python3.8/site-packages/irdata"
+
+ #   - name: Activate virtual environment
+ #     ansible.builtin.command:
+ #       cmd: "bash -c 'source /mnt/disks/data/venv/bin/activate'"  
+#
+ #   - name: Install pip for Python 3
+ #     apt:
+ #       name: python3-pip
+ #       state: present 
+#
+ #   - name: Install irdata package
+ #     pip:
+ #       name: irdata
+ #       executable: pip3  # Use 'pip3' for Python 3
+ #       state: present        
+#
+    #- name: Install irdata package
+    #  environment:
+    #    python_interpreter: "{{ download_data }}/venv/bin/python3"   
+    #  ansible.builtin.pip:
+    #    name: irdata
+    #    state: present
+
+    - name: Execute shell script
+      environment:
+        python_interpreter: "{{ download_data }}/venv/bin/python3"
+      ansible.builtin.command:
+        cmd: "/home/irefindex/usr/bin/shellscript.sh"
+      register: output
+
+    - name: debug
+      ansible.builtin.debug:
+        msg: "{{ output.stdout }}" 
+    
+
+#To do:
+#- playbook:  making a venv, running a shell script
+#- shellscript: set up use_python_interpreter, run python script
+#- pythonscript: import irdata, print irdata version, print a stupid text

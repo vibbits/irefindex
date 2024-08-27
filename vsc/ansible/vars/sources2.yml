@@ -1,0 +1,17 @@
+jobs:
+    # - { name: "mint", download_runner_async: 600, download_retries: 1, download_delay: 30, parse_async: 120, import_async: 400, import_delay: 30, import_retries: 14 }
+    # - { name: "bar" }
+    # - { name: "gene", download_runner_async: 800, download_retries: 40, download_delay: 60, parse_async: 1600, parse_retries: 27, parse_delay: 60, import_async: 4000, import_retries: 34, import_delay: 120 }
+    # - { name: "athaliana" }
+    # - { name: "ipi" }
+    # - { name: "uniprot", download_runner_async: 2000, download_retries: 60, download_delay: 100, parse_async: 36000, parse_retries: 60, parse_delay: 600 }
+    # - { name: "mint", download_runner_async: 600, download_retries: 15, download_delay: 30, parse_async: 120, import_async: 400, import_delay: 30, import_retries: 14 }
+    # - { name: "gene", download_runner_async: 800, download_retries: 20, download_delay: 60, parse_async: 1600, parse_retries: 27, parse_delay: 60, import_async: 4000, import_retries: 34, import_delay: 120 }
+    # - { name: "reactome", download_runner_async: 300, download_retries: 15, download_delay: 30, import_async: 300, import_retries: 10, import_delay: 30 }
+    # - { name: "imex", download_runner_async: 10800, download_retries: 15, download_delay: 300, parse_async: 600, parse_retries: 10, parse_delay: 60, import_async: 1500, import_retries: 25, import_delay: 60 }
+    # - { name: "refseq", download_runner_async: 36000, download_retries: 30, download_delay: 1800, parse_async: 450, parse_retries: 15, parse_delay: 30, import_async: 5000, import_retries: 21, import_delay: 240 }
+    # - { name: "genpept", download_runner_async: 36000, download_retries: 30, download_delay: 1800, parse_async: 21000, parse_retries: 60, parse_delay: 350, import_async: 5000, import_retries: 21, import_delay: 240 }
+    # - { name: "huri", download_runner_async: 60, download_retries: 36, parse_async: 240, parse_retries: 16, parse_delay: 15, import_async: 400, import_delay: 30, import_retries: 14 }
+     - { name: "intact", unpack_async: 180, unpack_delay: 30, parse_async: 60000, parse_delay: 300, parse_retries: 200, import_async: 6000, import_retries: 20, import_delay: 300 }
+
+    

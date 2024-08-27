@@ -12,10 +12,11 @@ RELEASE="${RELEASE_MAJOR}.${RELEASE_MINOR}" # iRefIndex release identifier
 # General configuration settings for irdata.
 # (SYSPREFIX and EMAIL are most likely to need changing.)
 
+DATAPREFIX="/mnt/disks/data/"               # start of the user defined data directory location
 SYSPREFIX="/home/irefindex"                 # system-wide installation root
 EMAIL="alexander.botzki@vib.be"             # e-mail address for anonymous FTP logins
 DATABASE="irdata${RELEASE_MAJOR}"           # database name
-DATA="/dataext/irdata${RELEASE_MAJOR}"      # user defined data directory location
+DATA="${DATAPREFIX}dataext/irdata${RELEASE_MAJOR}"      # user defined data directory location
 WIKIFORMAT="MediaWiki"                      # format for generated Wiki pages
 CURL_OPT="-L"                               # Follow HTTP redirects
 WGET_WAIT="5"                               # time to wait between wget requests
@@ -138,7 +139,7 @@ BHF_UCL_DOWNLOAD_FILES="bhfucl_psicquic.txt"
 BHF_UCL_DIR_NAME="BHF-UCL"
 BHF_UCL_OTHER_FILE_PATTERN='*.txt'
 BHF_UCL_PARSER='irdata_parse_bhfucl.sh'
-BHF_UCL_IMPORT_TEMPLATE='import_mitab.sql'
+BHF_UCL_IMPORT_TEMPLATE='import_mitab.sql'  
 
 ############################################################
 # BIND
@@ -325,7 +326,7 @@ INTCOMPLEX_XML_FILE_PATTERN='pmid/*/*.xml *.xml'
 # InnateDB
 # OK
 INNATEDB_DOWNLOAD_FILES="innatedb_all.mitab.gz"
-INNATEDB_MIRROR='http://www.innatedb.com'
+INNATEDB_MIRROR='https://www.innatedb.com'
 
 INNATEDB_RELEASE_URL="$INNATEDB_MIRROR/download/interactions/"
 INNATEDB_DIR_NAME="INNATEDB"
@@ -562,7 +563,7 @@ TAXONOMY_SCHEMA='taxonomy'
 # UniProt
 # OK
 UNIPROT_DOWNLOAD_FILES="uniprot_sprot.dat.gz uniprot_trembl.dat.gz uniprot_sprot_varsplic.fasta.gz reldate.txt"
-UNIPROT_MIRROR='ftp://ftp.ebi.ac.uk'
+UNIPROT_MIRROR='https://ftp.ebi.ac.uk'
 UNIPROT_RELEASE='current_release'
 
 UNIPROT_RELEASE_URL="$UNIPROT_MIRROR/pub/databases/uniprot/$UNIPROT_RELEASE/knowledgebase/complete/"
@@ -578,7 +579,7 @@ UNIPROT_MANIFEST_FILE='reldate.txt'
 # UniProt (Fly)
 # OK
 FLY_DOWNLOAD_FILES="fly.txt"
-FLY_MIRROR='ftp://ftp.uniprot.org'
+FLY_MIRROR='https://ftp.uniprot.org'
 
 FLY_RELEASE_URL="$FLY_MIRROR/pub/databases/uniprot/current_release/knowledgebase/complete/docs/"
 FLY_DIR_NAME="fly"
@@ -593,7 +594,7 @@ FLY_MANIFEST_FILE='fly.txt'
 # UniProt (Yeast)
 # OK
 YEAST_DOWNLOAD_FILES="yeast.txt"
-YEAST_MIRROR='ftp://ftp.uniprot.org'
+YEAST_MIRROR='https://ftp.uniprot.org'
 
 YEAST_RELEASE_URL="$YEAST_MIRROR/pub/databases/uniprot/current_release/knowledgebase/complete/docs/"
 YEAST_DIR_NAME="yeast"
@@ -701,6 +702,7 @@ if [ "$1" = '--inspect-only' ]; then
     shift 1
 fi
 
+
 # Tools.
 
 if [ -e "$SCRIPTS/../tools" ]; then
@@ -772,6 +774,7 @@ else
     DATA="$SYSDATA"
 fi
 
+
 if [ ! -e "$DATA" ] && [ ! "$INSPECTONLY" ]; then
     echo "Cannot locate the irdata data directory." 1>&2
     exit 1
@@ -779,7 +782,7 @@ fi
 
 # Log file directory.
 
-SYSLOGS="$SYSPREFIX/var/log/irdata"
+SYSLOGS="$DATAPREFIX/var/log/irdata"
 
 if [ -e "$SCRIPTS/../logs" ]; then
     LOGS=`realpath "$SCRIPTS/../logs"`
@@ -788,6 +791,7 @@ elif [ ! "$SYSPREFIX" ]; then
 else
     LOGS="$SYSLOGS"
 fi
+
 
 if [ ! -e "$LOGS" ] && [ ! "$INSPECTONLY" ]; then
     echo "Cannot locate the irdata logs directory." 1>&2

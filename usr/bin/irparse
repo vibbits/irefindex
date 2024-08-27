@@ -64,6 +64,7 @@ elif [ ! "$SOURCES" ]; then
     exit 1
 fi
 
+
 # Exclude sources.
 
 PARSESOURCES=
@@ -75,6 +76,4 @@ for SOURCE in $SOURCES ; do
 done
 
 # The pipeline.
-
-  "$SCRIPTS/argument-per-line" $PARSESOURCES \
-| "$SCRIPTS/irparallel" "\"$SCRIPTS/irparse-source\" $FIX $CHECK $NO_PARSE {}"
+"$SCRIPTS/argument-per-line" $PARSESOURCES | "$SCRIPTS/irparallel" "\"$SCRIPTS/irparse-source\" $FIX $CHECK $NO_PARSE {}"

@@ -1,0 +1,548 @@
+---
+title: "ETN_EliasSteyaert-stage"
+author: "Elias Steyaert"
+date: "2024-04-23"
+output: pdf_document
+---
+
+# Electronic traineeship notebook (ETN) - Elias Steyaert 
+### A logbook that describes what happened on a daily basis.
+### Link to my github:
+https://github.com/EliasSteyaert/stage-VIB-irefindex
+
+## Week 1
+#### Monday 22/04/2023
+
+##### Exploring the main project for the following weeks:
+- Explore the github repository of the project (https://github.com/vibbits/irefindex)
+- Read article about the iRefIndex (Razick, S., Magklaras, G., & Donaldson, I. M. (2008). iRefIndex: A consolidated protein interaction database with provenance. BMC Bioinformatics, 9(1), 405. https://doi.org/10.1186/1471-2105-9-405)
+- Read documentation on the iRefIndex (https://irefindex.vib.be/wiki/index.php/iRefIndex)
+- Explore the scripts to be used 
+
+##### Preparation for the project:
+- Making an account on csv
+- Downloading and installing the needed programs and having a look at how to use these (ansible, terraform and nextflow).
+
+
+#### Tuesday 23/04/2023
+
+##### Exploring the main project: 
+- Explore the github repository of the project even further (https://github.com/vibbits/irefindex)
+
+##### Preparation for the project:
+- Getting the csv account fully setup after getting it approved (with a ssh key)
+- Trying to get past the “13000 gate” with VPN’s. (Setting up a KULeuven- and a UGent-VPN)
+- Learning more about ansible and terraform through tutorials and "how-to's"
+- Exploring the ansible code with the newly requiered knowledge from earlier.
+
+
+#### Wednesday 24/04/2023
+
+##### Trying to setup the needed resources through terraform:
+- Setting up the vsc connection (solving troubleshooting for errors for “terraform init” in the VM
+- Setting up the identifcation credentials on the VSC_2021_102 cloud
+- Running into troubleshooting while deleting the previous instance and volume
+
+##### Setting up a github repository
+- Forking and cloning the VIB github repository into my own and setting up the needed folders/files into it (https://github.com/EliasSteyaert/stage-VIB-irefindex)
+
+
+#### Thursday 25/04/2023
+
+##### Performing the "terraform-step" of the procedure:
+- Running into troubleshooting for the whole day when trying to perform the command "terraform apply -auto-approve"
+- Been getting a lot of different errors and finding different solutions which don't work
+
+##### side-tasks to do while waiting for the task to be executed:
+- Making the ETN Markdown file and complement it with the things that are performed till this day
+- Making a troubleshooting file and filling in all the issueas that were encountered so far
+
+
+#### Friday 26/04/2023
+
+##### Trying to perform "terraform apply"
+- Trying to solve the problems that occur when performing “terraform apply”, trying to get the instance and its volume working. 
+
+##### Learning more about the Vlaamse Super Computer
+- Learning more about instances and their volumes, what they are, how thet are used. 
+Making an instance and a volume manually and connecting them with eachother. 
+Connecting to the instance. 
+
+##### Playing the first playbook
+
+
+## Week 2
+#### Monday 29/04/2024
+
+##### Running the playbook 
+- Run the playbook untill I get an error that needs to be solved. (main1 and after_main1 could be ran, main2 gave problems). 
+
+##### Solving minor problems
+- Deleting all the data in google cloud. 
+- Making a new directory to store everything in. 
+
+
+#### Tuesday 30/04/2024
+
+##### Problem-soloving the Irdownload playbook
+- Irdownload doesn’t work anymore so we will be adjusting the irdata-config so it can work again.  
+
+
+#### Wednesday 01/05/2024
+
+##### Labours day
+
+
+#### Thursday 02/05/2024
+
+##### Problem-solving the Irunpack playbook
+- Running into problems when performing the Irunpack playbook, existing_dirs wasn’t defined and the location of the files were wrong
+
+##### Problem-solving the Irparse playbook
+- Running into problems when performing the Irparse playbook, pip3 has to be installed with apt, not dnf 
+
+
+#### Friday 03/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Running into new problems while running the irparse playbook: creating a venv and trying to get the irdata package downloaded 
+
+
+## Week 3
+#### Monday 06/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Running into different kinds of problems when running the irparse playbook. The error says that the space is full but that doesn’t seem to be the problem. 
+- Adding a python interpreter as an environment for the .py scripts
+
+
+#### Thursday 07/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Being stuck on the irparse.yml playbook. 
+- Trying to figure out how to solve the “need more space” error.
+
+
+#### Wednesday 08/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Creating a "for loop" to get the python interpreter into the scripts which need the environment to solve “from irdata import data ModuleNotFoundError: No module named 'irdata'” 
+```bash
+for filename in $(grep -rl "TOOLS" ./usr/bin/* | sort | uniq); do 
+cat "$filename" | sed "s|\(\$TOOLS/.*.py\)|\${USE_PYTHON_INTERPRETER}\" \"\1|g"
+> "$filename.tmp" && mv "$filename.tmp" "$filename"; done
+```
+
+#### Thursday 09/05/204
+
+##### Ascension Day 
+
+
+#### Friday 10/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to expand the disk space to solve the problem of “need more space”. Doing so I messed up the server by trying to make a new partition. 
+- I made the server crash. Alex setted up a new server. The IP-adress in the file "inventory" must be updated to the new one. To get the /mnt/disks/data back (linked to the /dev/sda), I followed the following site of google itself: https://cloud.google.com/compute/docs/disks/format-mount-disk-linux
+After the /mnt/disks/data was set-up, the playbook could be played from my VM onto the google cloud instance.
+
+
+## Week 4
+#### Monday 13/05/2024
+
+##### Playing the playbook all over again
+- Starting over again with the playbook: changing the inventory, playing main1.yml, after_main1.yml and main2.yml till it got stuck at irparse.yml 
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to find a solution for the "from irdata import data as irdt ModuleNotFoundError: No module named 'irdata'"
+
+
+#### Tuesday 14/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to get the Irparse.yml running 
+- Learning more about binairy and how a kernel works. Learning more about the hashbang, how it works and why it is there. 
+
+
+#### Wednesday 15/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Looking for a solution to get Irparse.yml running with the knowledge of the day before.
+- Running into a new error: "/home/irefindex/usr/bin/irdata_parse_bind.sh: line 94: : command not found" where the line it references is a line with the python interpreter.
+- Trying little things like installing pip into the environment, even though it should be already there
+
+
+#### Thursday 16/05/2024
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Making a smaller version of the ansible playbook where the same error occurs so it’s easier to try to get the error out of the script. To test this, an ansible playbook was made(.yml). This playbook executed a bash script (.sh) which on it's part executed a python script (.py) where the irdata module could be found in. 
+- Trying multiple things to fix the script but failing so. 
+
+
+#### Friday (17/05/2024)
+
+##### Problem-solving new problems the Irparse playbook brings with it
+- Trying to get all the jobs running 
+
+##### Downloading the "mint" database
+- Making a sources2.yml where only mint is present so it can be downloaded quicker and the errors are better logged.
+- Making the download work after seeing where the error occurs (the link had to be updated).
+
+
+## Week 5
+#### Monday (20/05/2024)
+
+##### Pentecostmonday
+
+
+#### Tuesday (21/05/2024)
+
+##### Irdownload for the databases that didn't work before
+- Fully downloading the mint database 
+- Trying to get the irdownload running for “ipi”, “bar”, “corumdb” and “matrixdb” 
+
+##### Fixing the “Irdata” problem 
+- Problem-solving the irdata "module not found" further on the basis of the mini-version of the scripts
+- Learning more about the subprocess module: what it is and what it is used for (https://docs.python.org/3/library/subprocess.html)
+
+
+#### Wednesday (22/05/2024)
+
+##### Learning more about the individual aspects of the scripts
+- Figuring out what “dir” does, why it is usefull and how it is used 
+
+##### Fixing the irpase playbook
+- Finally fixing the irparse playbook so the "irmodule irdata could not be found" error is solved
+- Piece of code that installed the irdata, with this solution, every .sh script where irdata is being used needs to be in the virtual environment:
+```bash
+    - name: Ensure python3-venv and python3-pip are installed
+      ansible.builtin.apt:
+        name:
+          - python3-venv
+          - python3-pip
+        state: present
+
+    - name: Create virtual environment
+      ansible.builtin.command:
+        cmd: python3 -m venv "{{ download_data }}/{{ data2 }}/virtualenv"
+      args:
+        creates: "{{ download_data }}/{{ data2 }}/virtualenv"
+
+    - name: install irdata
+      ansible.builtin.command:
+        cmd: "{{ download_data }}/{{ data2 }}/virtualenv/bin/python3 -m pip install irdata"  
+```
+
+##### Parsing the job "Athelian"
+- With the knowledge that the smaller version of the playbook which I made earlier works, I can adjust the process of parsing "Athelian
+- Figuring out how to get the job “Athelian” to get parsed and get passed the error 
+
+
+#### Thursday (23/05/2024)
+ 
+##### Running the irparse playbook
+- Running the jobs one by one, fixing the easy errors and logging the harder errors. 
+
+ 
+#### Friday (24/05/2024)
+
+##### Fixing a parsing error
+- Investigating the error: mkdir: cannot create directory '/home/elias.steyaert/.ansible/tmp/ansible-tmp-1716456592.068384-36656-83367091344262': No space left on device
+- This was fixed with making an ansible.cfg file with the code 
+```bash 
+“remote_tmp = /mnt/disks/data 
+```
+- Investigating the error: 
+```bash
+"sh: 1: Syntax error: Unterminated quoted string" 
+```
+
+## Week 6
+#### Monday (27/05/2024)
+
+##### Fixing the parsing step of the job “refseq” 
+- The error "sh: 1: Syntax error: Unterminated quoted string" occured and looking for a fix for that
+- Figuring out how the irparallel script works 
+
+
+#### Tuesday (28/05/2024)
+
+##### Getting the irparallel script to work together with the jobs genpept, refseq and uniprot. 
+- The interpreter and the irparallel together caused an annoying error. 
+- To fix the error (specifically for refseq first), the following block of code was added to the irparallel script:
+```bash
+COMMAND=$1 
+EXPLODED=($COMMAND) 
+EXENAME=$(echo ${EXPLODED[0]} | sed 's/\"//g') 
+if [[ $(basename $EXENAME .py) == $(basename $EXENAME) ]]; then  
+ COMMAND2="$COMMAND" 
+else 
+ REST="\"$(echo ${EXPLODED[@]:1} | sed 's/\"//g')\"";  
+ COMMAND2="$USE_PYTHON_INTERPRETER ${EXPLODED[0]} $REST" 
+fi 
+```
+
+#### Wednesday (29/05/2024)
+
+##### Using the fixed script for refseq to get the UniProt and GenPept parsing working  
+- Running the GenPept parsing step while trying to get the UniProt parsing step working 
+- Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. Which is hard because the basis of the command is a whole lot bigger with an extra pipeline and two python scripts instead of one
+
+
+#### Thursday (29/05/2024)
+
+##### Using the fixed script for refseq to get the UniProt and GenPept parsing working  
+- Running the GenPept parsing step while trying to get the UniProt parsing step working 
+- Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. 
+
+
+#### Friday (30/05/2024)
+##### Trying to get the irdata_parse_uniprot.sh compatible to run the irparallel script. 
+- Not succeeding at this and deciding to start all over again, just before the step where the python interpreter starts getting used. Cleaning up the files were there are traces of the usage of a virtual environment 
+
+## Week 7
+#### Monday (03/06/2024)
+##### Running into an error while running irparse.yml
+- Cannot locate the irdata logs directory.  
+- the problem could be tracked down with "grep -r" till it could be concluded that it occured here:
+```bash
+if [ ! -e "$LOGS" ] && [ ! "$INSPECTONLY" ]; then echo "Cannot locate the irdata logs directory." 1>&2 exit 1 fi 
+```
+it was trying to write to a directory that didn’t exist. 
+- solution, changing the $LOGS into a directory that does exist (on the mnt disk)
+- Cleaning the playbooks up so all the signs to an external environment are gone 
+
+ 
+#### Tuesday (04/06/2024)
+##### Running into an error while running irparse.yml
+- cannot create directory ‘/home/elias.steyaert/.ansible/tmp/ansible-tmp-1717502869.8542364-50434-182160768545910’: No space left on device 
+Making another ansibl.cfg file but now on a different directory so that directory does also have a config file
+- Irparse didn’t work, no error or message on why it was happening -> in irparallel there was a variable being used which didn’t exist anymore 
+
+##### manual QC for the refseq parsing step
+- Following the parsing step of the refseq database to make up a conclusion if everything is parsed or not 
+
+
+#### Wednesday (05/06/2024)
+##### Running irimport
+- Running irimport for the first time, first with all the jobs at once, after that only with the Athaliana  
+- Rapidly showing new errors
+
+
+#### Thursday (06/06/2024)
+##### Trying to download “gene”
+- Which constantly fails or gives error messages like: Can’t find the job” while all the right things are included. 
+
+##### The "/" directory was full again, this time not because of temporary files
+- Figuring out a good CLI command to find the right output to see where the largest files are: 
+```bash
+sudo du -hS / | grep -v "^/mnt" | sort -h -r | head -n 25 | more 
+```
+- The problem was a random /tmp file in the /home/irefindex/usr/bin directory
+
+
+#### Friday (07/06/2024)
+##### Checking for each downloaded source that everything is downloaded 
+- This is done manually, the size ("ls -lh" into the downloaded folder) is compared with how big the databases are online (the source)
+- Trying to succesfully download Uniprot, which always stops at a maximum of 16G. Trying to adjust the custom settings of the job without succeeding 
+
+
+## Week 8
+#### Monday (10/06/2024)
+##### Trying to get the database Uniprot fully downloaded, as of now it always stops around 16GB of the 171GB. 
+- For example tried the code:
+```bash
+# Run jobs for uniprot 
+- name: Run jobs for uniprot 
+ansible.builtin.command: "./irdownload {{ item.name | upper }}" 
+args: 
+chdir: "/home/irefindex/usr/bin" 
+async: "{{ item.download_runner_async | default(2000) }}" 
+poll: 0 
+register: result 
+retries: "{{ item.download_retries | default(60) }}" 
+until: result.finished 
+delay: "{{ item.download_delay | default(100) }}" 
+loop: "{{ jobs }}" 
+when: item.name == "uniprot" 
+```
+- It finally went on to download all the GB's, let this run in a tmux session because downloading 172GB takes its time
+
+
+#### Tuesday (11/06/2024)
+##### Adjusting the playbook so the parsing of Uniprot can’t be timed-out by ansible. 
+- Parsing the Uniprot data, this took more than 24 houres and so was done in a tmux session
+
+#### Parsing Uniprot and trying to run irimport
+- Running irimport on the jobs that were succesfull after downloading and parsing and having a look what goes wrong (the data gets written to the “/” disk instead on a disk with more space) 
+
+
+#### Wednesday (12/06/2024)
+##### Working on powerpoint presentation 
+- Presenting this ppt and answering questions about the project
+- Going over the evaluation report together with James Collier (supervisor)
+
+##### adding code in irinit 
+- This is done so the data from irimport is written on the disk and not in the home directory (adjusting the postgresql.conf file through ansible so its automated) 
+
+### Self-assesment of the intermediate evaluation
+- There were a lot of negative points, which I agree with. It was a rough start and I didn't have the right problem-solving skills to solve the issues that were on my path. I had to ask a lot of times when I got stuck to being helped out. Most of the times I waited too long to ask for help since I didn't want my question to be embarrasingly easy to solve.
+
+### Trainee documentation plan (TDP)
+
+#####Tentative planning:
+The main task of this internship is to go look at all the steps involved in the iRefIndex pipeline. This pipeline is like a big system for gathering and organizing information about how proteins interact with each other. It collects data from different sources and puts it all together in one place. By going through each part of this process, we want to improve the automatization of using this dataset. That means fewer mistakes and quicker fixes if something goes wrong. This helps other users to get the protein interaction data they need faster and with fewer errors. 
+
+The main goal is to fix the pipeline that is coded with ansible and automate it further so when a person wants to update the iRefIndex after me, it goes way smoother and it shouldn’t run into problems. Normally the environment should be made with Terraform and the Vlaamse Supercomputer, but this didn’t work out as previously thought it would work. The task to create the infrastructure got changed that way. It changed from using the Vlaamse Supercomputer as an instance to using google cloud as the instance and work around with that. 
+
+##### Data management: 
+Use the FAIR principle (Table 2) as a guide to store and structure your data.
+The structure of my data is stored in my GitHub, in its own repository. This can be found in the following link: https://github.com/EliasSteyaert/stage-VIB-irefindex.git
+
+##### Which aspects of the FAIR principle can be applied to your documentation system?
+All of the aspects of the FAIR principle can be applied: 
+- Findability: The data used originates from the iRefIndex and Complex Portal databases. iRefIndex data, available at ‘https://irefindex.vib.be/wiki/index.php/iRefIndex', provides unique identifiers for interactors, taxonomy identifiers, interaction types, and interaction sources. Each protein interaction record and participant protein has a corresponding key.
+ - Accesiblity: The iRefIndex database, available at 'https://irefindex.vib.be/wiki/index.php/iRefIndex', provides version 19.0 data in PSI-MITAB format, specifically for human (taxon id: 9606). The dataset can be accessed at 'https://storage.googleapis.com/irefindex-data/archive/release_19.0/psi_mitab/MITAB2.6/9606.mitab.08-22-2022.txt'. Additionally, the dataset for all organisms in iRefIndex is available at 'https://storage.googleapis.com/irefindex-data/archive/release_19.0/psi_mitab/MITAB2.6/All.mitab.08-22-2022.txt'.
+- Interoperability: The iRefIndex data is accessible in PSI-MITAB 2.6 tab-delimited format.
+- Reproducibility: the iRefIndex data can be reused using the method that can be found on the VIB GitHub: https://github.com/EliasSteyaert/stage-VIB-irefindex.git
+
+##### Traceability of steps and methods:
+Which platform or application (e.g. Markdown pages on Git, Word document ...) will be used to document the project steps and progression in a traceable manner? 
+There is a Rmarkdown file in my GitHub repository. In this Rmarkdown file is my ETN (Electronic Traineeship Notebook), where there is a description of the actions performed during each day.
+
+##### Version control of code:
+Which Git repository will be used to store the code?
+The code will be stored in my own GitHub repository which is a clone of the fork of the original project of the VIB. The GitHub repository can be found with the following link: https://github.com/EliasSteyaert/stage-VIB-irefindex.git
+How will the repository be made available for the internal and external supervisors?
+The status of the repository is set on public. Everyone can see the code on my GitHub repository.
+
+``` 
+The Learning Outcome (LO) 
+
+Development goal: 
+
+Understanding the iRefIndex, what it does, what it is used for and why it is an important tool.  
+
+The second goal is to update the iRefIndex, in a way that it is automated for the next time it has to be updated. Not only the iRefIndex must be automated, but the infrastructure that is used to execute the pipeline of building the iRefIndex must be automated aswell. 
+
+Every error that occurs must be handled in a way that nothing gets hardcoded but that the individual steps are coded so that. 
+
+Trying to learn/become better at using ansible and terraform (these are the main tools that are used to automate the pipeline and the infrastructure) so I can automate processes easier. 
+
+Development activity: 
+
+I will be working with ansible playbooks and code from terraform. I will also read about it on the internet to get more insights and information. On my internship I will find errors and parts of it that don’t work properly and fix them so it can be more automated. 
+
+I will recreate and make my own smaller versions of the playbooks and code so that when an error occurs, I can fix it in smaller environments instead of going through the whole playbook. 
+
+Desired results: 
+
+Being able to make a fully running ansible playbook so that other users don’t have to do anything except to run the playbook. 
+
+Being better at finding where the error occurs and at general problem-solving. Also to have more knowledge about iRefIndex, ansible and terraform. 
+
+Schedule: 
+
+These activities will be performed throughout the internship (on daily basis). I will start to use Terraform first to create the infrastructure. While doing this I will see how the infrastructure as code works and how the code defines the infrastructure. 
+
+After that I will be using ansible to build and perfect the pipeline to update the iRefIndex. I will have a lot of problem-solving to do there and see the different techniques to use for the problem-solving itself. 
+
+Necessary support and facilities: 
+
+Normally, all this should be done in the traineeship and its 295 hours. Nothing should be bought for this goal to be achieved.  
+
+SMART-principle: 
+
+Specific: First learning how to create an infrastructure, what it is and why all the different features are important. Learning how to use ansible and make my own playbooks. 
+
+Measurable: At the end of the traineeship, I should be able to make my own working ansible playbook, see how errors occur more rapidly and being able to create a good instance with the correct amount of volume. 
+
+Achievable: As I’m working daily with ansible for my traineeship, I should be able to achieve this goal. I should be able to accomplish this before the internship ends so I can end the internship with a full product 
+
+Relevant: In the context of the traineeship, this learning outcome is relevant. But it is also relevant for later as it is a great tool to work with and easy to use since it is with human-readable code and it is always handy to automate as much as possible. 
+
+Time-bound: This should be achieved by the end of the traineeship. But it would be excellent if it is already achieved at the first half of the internship. 
+ 
+
+Result: 
+
+I wasn’t able to update the iRefIndex due to a lot of difficulties and problems. I was able to give insights and better the pipeline till where I ended up.  
+```
+
+### My interpretation of the evaluation excel sheet
+```
+The student writes, adjusts or uses code on the command line to process (biological) data, to create or manipulate a database structure, to create a (web) interface, … independent of the programming language	
+Good	"Through reading the code in the scripts, I was able to perform the tasks in the scripts through CLI, for example: 
+curl ""$CURL_OPT"" ""$RELEASE_URL"" -o ""$DATADIR/$DOWNLOAD""
+curl -L https://ftp.ebi.ac.uk/pub/databases/uniprot/current_release/knowledgebase/complete/ -o /mnt/disks/data/dataext/data19/UniProt"
+
+The code is written in an elegant way, is not redundant and/or makes use of loop structures and functions where possible	
+Sufficient	
+There are some parts that could be left out or more clear, but at the end of the day, every part of the script has a clear name and it is visible what that specific code does
+
+The student adjusts an analysis pipeline or script in a correct way, with eye for detail, with the goal to apply the pipeline or script within a new research context or on new data	
+Good	
+The pipeline to build iRefIndex was analysed and adjusted where it had to be without creating different problems 
+
+The student is able to work with files containing data, to read data and write data to new files, to filter and/or transform data, … and to check the data for correctness	
+Good	
+The basics to work with files are met. Checking the data for correctness was for example done at the end to check if everything was parsed alright
+
+The student can deposit data in a (relational) database system and/or can query a database system, whether or not by using a programming language	
+Limited	
+The howto for this is very limited, I can do the basics but answering questions about this is difficult
+
+The student creates a (relational) database system and/or creates a directory structure to store and organize (biological) data to be able to efficiently select data from the database/directory structure	
+Good	
+The repository looks clean and is well organised without things that shouldn't be there
+
+The student makes use of (dynamic) programming to develop an interface to visualize, analyse or store (biological) data, independent of the programming language	
+NA	
+
+The student looks independently for new possibilities to program more efficiently, to store, organize or process data, to analyze data, ... and is able to apply the new techniques, with or without results	
+Limited	
+There are a lot of new things being tried out, but these are never of a high level (and mostly don't work so something else has to be tried)
+
+The student learns new programming and data processing techniques to store select, organize or analyze biological data in a more efficient way	
+Sufficient	
+I work with postgresql but my knowledge to operate this is not super advanced, I can follow the steps to use this and after asking help I can change the config file
+
+The student knows and spontaneously applies the rules to protect non-public data	
+NA	
+
+The student searches for and compares various programming and data processing techniques and has insight into the advantages and disadvantages of the different techniques	
+Sufficient	
+I know about the different tools to use but I don't really know about the differences between and which one has a bigger advantage over the other, I just know the positive sides of the tools, not the downsides
+
+The student himself can select the appropriate programming language or software to process data on the basis of advantages and disadvantages	
+Sufficient	
+I know about the different tools to use but I don't really know about the differences between and which one has a bigger advantage over the other, I just know the positive sides of the tools, not the downsides
+
+The student combines programming skills with computer science knowledge and bioinformatics techniques to solve a (biological) research question, but the focus of the project remains on the bioinformatics aspect 	
+Sufficient	
+The project is IT heavy combined with bioinformatics, I could use my bio-informatics part of the education well and the linux skills
+
+The student can use his knowledge from multiple disciplines to summarize results in a scientifically correct way and to make a conclusion for the project	
+NA	
+
+The student organizes his code, information and documents in an orderly manner, uses comments to document code, keeps track of results in an (electronic) lab notebook and/or uses version control (e.g. GIT)	
+Excellent	
+My ETN is uptodate, I pushed my commits and the commits are clear of what happened when pushed. Everything is organised.
+
+The student works fluently with colleagues, helps or asks for help wherever possible or needed, does more than just the bare minimum, …	
+Excellent	
+I don't ask the same question twice and I ask for help when needed
+```
+
+### Internal aspects
+- We never really got introduced to the other collegues, as their desks were 2 floors above us. We could rely on James Collier (our second supervisor) at all times, Mr. Collier worked from home but we were able to communicate through chat or teams meetings very easily.
+- We saw Alexander Botzki (our main supervisor) on average once a day, except when he was abroad for congresses which was in total for 10 days. He almost never had a lot of time but was always happy to help us or give hints to proceed on the project
+
+### Planning
+- Week 1: Getting to know the project, getting an VSC account and finding out a way to set up a working VPN 
+- Week 2: Setting up the infrastructure, running the terraform and running the first ansible playbook (main1) 
+- Week 3: Getting the first playbook fully ran and starting the second playbook (main2) 
+- Week 4: working on the second playbook to make it work 
+- Week 5: getting the second playbook fully ran 
+- Week 6: starting over and running the first playbook again. Using a different approach 
+- Week 7: Monitoring if the downloads are OK, if so, starting the parsing 
+- Week 8: Expanding the disk and trying to import the data with the third playbook (main3) 
